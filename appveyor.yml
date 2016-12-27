@@ -1,0 +1,19 @@
+configuration: Release
+before_build:
+- cmd: nuget restore
+- ps: .\.nuget\setVersion.ps1    
+build:
+  verbosity: minimal
+# to run your custom scripts instead of automatic tests
+after_test:
+- ps: .\.nuget\pack.ps1    
+artifacts:
+  - path: src\**\bin\$(configuration)\DotNetStarter*
+  - path: net40\**\bin\$(configuration)\DotNetStarter*
+  - path: net45\**\bin\$(configuration)\DotNetStarter*
+  - path: netstandard13\**\bin\$(configuration)\DotNetStarter*
+  - path: '*.nupkg'
+    name: nuget
+
+#http://andrewlock.net/publishing-your-first-nuget-package-with-appveyor-and-myget/
+#[System.Diagnostics.FileVersionInfo]::GetVersionInfo($path).ProductVersion

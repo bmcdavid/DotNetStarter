@@ -1,0 +1,122 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{BA813DC5-D696-461D-8E62-F04FCD669ADB}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>DotNetStarter</RootNamespace>
+    <AssemblyName>DotNetStarter</AssemblyName>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>TRACE;DEBUG;NET35</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+    <DocumentationFile>bin\Debug\DotNetStarter.xml</DocumentationFile>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE;NET35</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <DocumentationFile>bin\Release\DotNetStarter.xml</DocumentationFile>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Abstractions\AssemblyDependentBaseAttribute.cs" />
+    <Compile Include="Abstractions\AssemblyFactoryBaseAttribute.cs" />
+    <Compile Include="Abstractions\DependencyBaseAttribute.cs" />
+    <Compile Include="Abstractions\ILocatorDefaultRegistrations.cs" />
+    <Compile Include="Abstractions\ILocatorRegistryFactory.cs" />
+    <Compile Include="Abstractions\IShutdownHandler.cs" />
+    <Compile Include="Abstractions\LocatorRegistryFactoryAttribute.cs" />
+    <Compile Include="Abstractions\StartupObjectFactoryAttribute.cs" />
+    <Compile Include="Abstractions\StartupModuleAttribute.cs" />
+    <Compile Include="Abstractions\IReflectionHelper.cs" />
+    <Compile Include="Abstractions\ScanTypeRegistryAttribute.cs" />
+    <Compile Include="Abstractions\RegisterAttribute.cs" />
+    <Compile Include="Abstractions\ContructorType.cs" />
+    <Compile Include="Abstractions\LifeTime.cs" />
+    <Compile Include="Abstractions\LogLevel.cs" />
+    <Compile Include="Abstractions\TimedActionScope.cs" />
+    <Compile Include="Abstractions\IAssemblyLoader.cs" />
+    <Compile Include="Abstractions\IAssemblyFilter.cs" />
+    <Compile Include="Abstractions\IAssemblyScanner.cs" />
+    <Compile Include="Abstractions\ILocatorConfigure.cs" />
+    <Compile Include="Abstractions\ILocatorRegistry.cs" />
+    <Compile Include="Abstractions\IDependencyFinder.cs" />
+    <Compile Include="Abstractions\IDependencyNode.cs" />
+    <Compile Include="Abstractions\IDependencySorter.cs" />
+    <Compile Include="Abstractions\IStartupModule.cs" />
+    <Compile Include="Abstractions\IStartupModuleFilter.cs" />
+    <Compile Include="Abstractions\IStartupConfiguration.cs" />
+    <Compile Include="Abstractions\IStartupContext.cs" />
+    <Compile Include="Abstractions\IStartupHandler.cs" />
+    <Compile Include="Abstractions\IStartupLogger.cs" />
+    <Compile Include="Abstractions\IStartupObjectFactory.cs" />
+    <Compile Include="Abstractions\ILocator.cs" />
+    <Compile Include="Abstractions\StartupContainerException.cs" />
+    <Compile Include="Abstractions\IRequestSettingsProvider.cs" />
+    <Compile Include="Abstractions\ITimedTask.cs" />
+    <Compile Include="Abstractions\ITimedTaskManager.cs" />
+    <Compile Include="AssemblyFilter.cs" />
+    <Compile Include="AssemblyScanner.cs" />
+    <Compile Include="Import.cs" />
+    <Compile Include="ImportAll.cs" />
+    <Compile Include="Internal\AssemblyLoader.cs" />
+    <Compile Include="Internal\ContainerDefaults.cs" />
+    <Compile Include="Internal\TypeExtensions.cs" />
+    <Compile Include="DependencyComparer.cs" />
+    <Compile Include="DependencyFinder.cs" />
+    <Compile Include="DependencyNode.cs" />
+    <Compile Include="DependencySorter.cs" />
+    <Compile Include="Context.cs" />
+    <Compile Include="StartupObjectFactory.cs" />
+    <Compile Include="StartupContext.cs" />
+    <Compile Include="Internal\ObjectFactory.cs" />
+    <Compile Include="StartupHandler.cs" />
+    <Compile Include="StartupModuleFilter.cs" />
+    <Compile Include="Internal\StartupConfiguration.cs" />
+    <Compile Include="Internal\RegisterScanTypes.cs" />
+    <Compile Include="Internal\Shutdown.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ReflectionHelper.cs" />
+    <Compile Include="RequestSettingsProvider.cs" />
+    <Compile Include="RegisterConfiguration.cs" />
+    <Compile Include="StringLogger.cs" />
+    <Compile Include="TimedTask.cs" />
+    <Compile Include="TimedTaskManager.cs" />
+    <Compile Include="_ToDo.cs" />
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="readme.txt" />
+    <None Include="gulpfile.js" />
+    <None Include="DotNetStarter.nuspec" />
+    <None Include="package.json" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

@@ -1,0 +1,42 @@
+<?xml version="1.0"?>
+<package>
+  <metadata>
+    <id>DotNetStarter.Web</id>
+    <version>$version$</version><!-- overridden by "NuGet pack -Version" flag -->
+    <authors>Brad McDavid</authors>
+    <owners>Brad McDavid</owners>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>Startup system for IHttpModule.</description>
+    <releaseNotes>Initial release</releaseNotes>
+    <copyright>Copyright 2016</copyright>
+    <tags>Startup Modules</tags>
+    <dependencies>
+      <group targetFramework="net35">
+        <dependency id="DotNetStarter" version="[0.1,1)" />
+      </group>
+      <group targetFramework="net40">
+        <dependency id="DotNetStarter" version="[0.1,1)" />
+        <dependency id="Microsoft.Web.Infrastructure" version="[1,2)" />
+      </group>
+      <group targetFramework="net45">
+        <dependency id="DotNetStarter" version="[0.1,1)" />
+      </group>
+    </dependencies>
+  </metadata>
+  <files>
+    <!--https://docs.nuget.org/ndocs/schema/target-frameworks-->
+    <file src="bin\Release\DotNetStarter.Web.dll" target="lib\net35" />
+    <file src="bin\Release\DotNetStarter.Web.pdb" target="lib\net35" />
+    <file src="bin\Release\DotNetStarter.Web.xml" target="lib\net35" />
+    
+    <file src="..\..\net40\bin\Release\DotNetStarter.Web.dll" target="lib\net40" />
+    <file src="..\..\net40\bin\Release\DotNetStarter.Web.pdb" target="lib\net40" />
+    <file src="..\..\net40\bin\Release\DotNetStarter.Web.xml" target="lib\net40" />
+    
+    <file src="..\..\net45\bin\Release\DotNetStarter.Web.dll" target="lib\net45" />
+    <file src="..\..\net45\bin\Release\DotNetStarter.Web.pdb" target="lib\net45" />
+    <file src="..\..\net45\bin\Release\DotNetStarter.Web.xml" target="lib\net45" />
+    
+    <file src="readme.txt" target="readme.txt" />
+  </files>
+</package>
