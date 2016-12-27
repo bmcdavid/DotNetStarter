@@ -1,8 +1,8 @@
 # DotNetStarter Read Me
 
-[![Build status](https://ci.appveyor.com/api/projects/status/5fop92dergddj1e9?svg=true)](https://ci.appveyor.com/project/bmcdavid/dotnetstarter)
+[![Build status](https://ci.appveyor.com/api/projects/status/a907wfniy73sk5de?svg=true)](https://ci.appveyor.com/project/bmcdavid/dotnetstarter)
 
-This package supports native .netframeworks 3.5, 4.0, and 4.5.
+This package supports native .netframeworks 3.5, 4.0, and 4.5 as well as netstandard 1.3.
 
 The goal of this package to create a startup framework for any dotnet project where everything is swappable via Inversion Of Control (IoC) or object factories (AssemblyFactoryBaseAttribute).
 
