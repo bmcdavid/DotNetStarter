@@ -1,9 +1,0 @@
-﻿Perhaps web should be extracted completely then have a web package for .net 4.5 that uses pre start to register modules
-
-//PreApplicationStartMethodAttribute
-//HttpApplication.RegisterModule(null)
-
-
-// requires Microsoft.Web.Infrastructure for .net 4.0
-// Register our module
-Microsoft.Web.Infrastructure.DynamicModuleHelper.DynamicModuleUtility.RegisterModule(typeof(MyModule));

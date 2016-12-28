@@ -8,7 +8,7 @@
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>Startup system for IHttpModule.</description>
     <releaseNotes>Initial release</releaseNotes>
-    <copyright>Copyright 2016</copyright>
+    <copyright>Copyright $year$</copyright>
     <tags>Startup Modules</tags>
     <dependencies>
       <group targetFramework="net35">

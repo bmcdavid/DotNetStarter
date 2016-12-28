@@ -9,6 +9,8 @@ DotNetStarter is a startup framework for creating modules spread across assembli
 
 This package supports native .netframeworks 3.5, 4.0, and 4.5 as well as netstandard 1.3.
 
-* Todo: Module creation, discovery, and dependencies
-* Todo: Create documentation about registering to locator
-* Todo: Create documentation about assembly scanner
+* [Module creation, discovery, and dependencies](./modules.html)
+* [Registering items](./register.html)
+* [Assembly Scanning](./scanning.html)
+* [Custom Locator](./custom-locator.html)
+* [Known Issues](./known-issues.html)
