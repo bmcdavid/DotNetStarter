@@ -12,14 +12,14 @@
     <tags>Startup Modules</tags>
     <dependencies>
       <group targetFramework="net35">
-        <dependency id="DotNetStarter" version="[0.1,1)" />
+        <dependency id="DotNetStarter" version="[0,1)" />
       </group>
       <group targetFramework="net40">
-        <dependency id="DotNetStarter" version="[0.1,1)" />
+        <dependency id="DotNetStarter" version="[0,1)" />
         <dependency id="Microsoft.Web.Infrastructure" version="[1,2)" />
       </group>
       <group targetFramework="net45">
-        <dependency id="DotNetStarter" version="[0.1,1)" />
+        <dependency id="DotNetStarter" version="[0,1)" />
       </group>
     </dependencies>
   </metadata>

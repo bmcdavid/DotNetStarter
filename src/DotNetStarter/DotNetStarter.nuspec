@@ -46,9 +46,9 @@
     <file src="..\..\net45\bin\Release\DotNetStarter.pdb" target="lib\net45" />
     <file src="..\..\net45\bin\Release\DotNetStarter.xml" target="lib\net45" />
     
-    <file src="..\..\netstandard13\bin\Release\DotNetStarter.dll" target="lib\netstandard1.3" />
-    <file src="..\..\netstandard13\bin\Release\DotNetStarter.pdb" target="lib\netstandard1.3" />
-    <file src="..\..\netstandard13\bin\Release\DotNetStarter.xml" target="lib\netstandard1.3" />
+    <file src="..\..\netstandard1.3\bin\Release\DotNetStarter.dll" target="lib\netstandard1.3" />
+    <file src="..\..\netstandard1.3\bin\Release\DotNetStarter.pdb" target="lib\netstandard1.3" />
+    <file src="..\..\netstandard1.3\bin\Release\DotNetStarter.xml" target="lib\netstandard1.3" />
     
     <file src="readme.txt" target="readme.txt" />
   </files>

@@ -12,19 +12,19 @@
     <tags>Startup Modules</tags>
     <dependencies>
       <group targetFramework="net35">
-        <dependency id="DotNetStarter" version="[0.1,1)" />
+        <dependency id="DotNetStarter" version="[0,1)" />
         <dependency id="StructureMap" version="[2.6,3)" />
       </group>
       <group targetFramework="net40">
-        <dependency id="DotNetStarter" version="[0.1,1)" />
+        <dependency id="DotNetStarter" version="[0,1)" />
         <dependency id="StructureMap" version="[4,5)" />
       </group>
       <group targetFramework="net45">
-        <dependency id="DotNetStarter" version="[0.1,1)" />
+        <dependency id="DotNetStarter" version="[0,1)" />
         <dependency id="StructureMap" version="[4.4,5)" />
       </group>
       <group targetFramework="netstandard1.3">
-        <dependency id="DotNetStarter" version="[0.1,1)" />
+        <dependency id="DotNetStarter" version="[0,1)" />
         <dependency id="StructureMap" version="[4.4,5)" />
         <dependency id="System.AppContext" version="4.1.0" />
         <dependency id="System.Collections" version="4.0.11" />
@@ -56,9 +56,9 @@
     <file src="..\..\net45\bin\Release\DotNetStarter.StructureMap.pdb" target="lib\net45" />
     <file src="..\..\net45\bin\Release\DotNetStarter.StructureMap.xml" target="lib\net45" />
     
-    <file src="..\..\netstandard13\bin\Release\DotNetStarter.StructureMap.dll" target="lib\netstandard1.3" />
-    <file src="..\..\netstandard13\bin\Release\DotNetStarter.StructureMap.pdb" target="lib\netstandard1.3" />
-    <file src="..\..\netstandard13\bin\Release\DotNetStarter.StructureMap.xml" target="lib\netstandard1.3" />
+    <file src="..\..\netstandard1.3\bin\Release\DotNetStarter.StructureMap.dll" target="lib\netstandard1.3" />
+    <file src="..\..\netstandard1.3\bin\Release\DotNetStarter.StructureMap.pdb" target="lib\netstandard1.3" />
+    <file src="..\..\netstandard1.3\bin\Release\DotNetStarter.StructureMap.xml" target="lib\netstandard1.3" />
     
     <file src="readme.txt" target="readme.txt" />
   </files>
