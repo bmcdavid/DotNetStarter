@@ -1,5 +1,5 @@
 # custom nuspec pack
-$path = 'src\**\*.nuspec'
+$path = '**\*.nuspec'
 $nuget = '.\.nuget\nuget.exe'
 $year = [System.DateTime]::Now.Year
 $specFiles = Get-ChildItem $path -Recurse
