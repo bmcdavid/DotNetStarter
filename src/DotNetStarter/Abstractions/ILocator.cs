@@ -14,6 +14,14 @@
         object InternalContainer { get; }
 
         /// <summary>
+        /// Creates a scoped locator
+        /// </summary>
+        /// <param name="scopeName"></param>
+        /// <param name="scopeContext"></param>
+        /// <returns></returns>
+        ILocator OpenScope(object scopeName = null, object scopeContext = null);
+
+        /// <summary>
         /// Debug information about container
         /// </summary>
         string DebugInfo { get; }

@@ -1,0 +1,12 @@
+﻿{
+  "supports": {},
+  "dependencies": {
+    "Microsoft.NETCore.Portable.Compatibility": "1.0.1",
+    "NETStandard.Library": "1.6.1",
+    "Microsoft.AspNetCore.Http.Abstractions": "1.1.0",
+    "Microsoft.Extensions.DependencyInjection": "1.0.0"
+  },
+  "frameworks": {
+    "netstandard1.3": {}
+  }
+}

@@ -47,6 +47,7 @@
     <Compile Include="..\..\src\DotNetStarter\Abstractions\DependencyBaseAttribute.cs" />
     <Compile Include="..\..\src\DotNetStarter\Abstractions\ILocatorDefaultRegistrations.cs" />
     <Compile Include="..\..\src\DotNetStarter\Abstractions\ILocatorRegistryFactory.cs" />
+    <Compile Include="..\..\src\DotNetStarter\Abstractions\ILocatorSetContainer.cs" />
     <Compile Include="..\..\src\DotNetStarter\Abstractions\IShutdownHandler.cs" />
     <Compile Include="..\..\src\DotNetStarter\Abstractions\LocatorRegistryFactoryAttribute.cs" />
     <Compile Include="..\..\src\DotNetStarter\Abstractions\StartupObjectFactoryAttribute.cs" />

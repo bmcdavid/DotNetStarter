@@ -57,6 +57,8 @@
     <Compile Include="..\..\src\DotNetStarter\Abstractions\IAssemblyLoader.cs" />
     <Compile Include="..\..\src\DotNetStarter\Abstractions\IAssemblyFilter.cs" />
     <Compile Include="..\..\src\DotNetStarter\Abstractions\IAssemblyScanner.cs" />
+    <Compile Include="..\..\src\DotNetStarter\Abstractions\ILocator.cs" />
+    <Compile Include="..\..\src\DotNetStarter\Abstractions\ILocatorSetContainer.cs" />
     <Compile Include="..\..\src\DotNetStarter\Abstractions\ILocatorConfigure.cs" />
     <Compile Include="..\..\src\DotNetStarter\Abstractions\ILocatorRegistry.cs" />
     <Compile Include="..\..\src\DotNetStarter\Abstractions\IDependencyFinder.cs" />
@@ -69,7 +71,6 @@
     <Compile Include="..\..\src\DotNetStarter\Abstractions\IStartupHandler.cs" />
     <Compile Include="..\..\src\DotNetStarter\Abstractions\IStartupLogger.cs" />
     <Compile Include="..\..\src\DotNetStarter\Abstractions\IStartupObjectFactory.cs" />
-    <Compile Include="..\..\src\DotNetStarter\Abstractions\ILocator.cs" />
     <Compile Include="..\..\src\DotNetStarter\Abstractions\StartupContainerException.cs" />
     <Compile Include="..\..\src\DotNetStarter\Abstractions\IRequestSettingsProvider.cs" />
     <Compile Include="..\..\src\DotNetStarter\Abstractions\ITimedTask.cs" />

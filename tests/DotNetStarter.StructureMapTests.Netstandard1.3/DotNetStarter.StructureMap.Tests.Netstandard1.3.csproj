@@ -80,11 +80,11 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\netstandard13\DotNetStarter.StructureMap\DotNetStarter.StructureMap.csproj">
+    <ProjectReference Include="..\..\netstandard1.3\DotNetStarter.StructureMap\DotNetStarter.StructureMap.csproj">
       <Project>{1d13ad2f-8490-4e6a-86e6-a6722cb32b5a}</Project>
       <Name>DotNetStarter.StructureMap</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\netstandard13\DotNetStarter\DotNetStarter.csproj">
+    <ProjectReference Include="..\..\netstandard1.3\DotNetStarter\DotNetStarter.csproj">
       <Project>{17dd8cbf-62b6-42e5-9e38-2ae4a630a97f}</Project>
       <Name>DotNetStarter</Name>
     </ProjectReference>

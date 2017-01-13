@@ -10,21 +10,9 @@ namespace DotNetStarter
     using System.Linq;
 
     /// <summary>
-    /// Locator with DryIoc Container 
-    /// </summary>
-    public class DryIocLocatorFactory : ILocatorRegistryFactory
-    {
-        /// <summary>
-        /// Creates DryIoc Locator
-        /// </summary>
-        /// <returns></returns>
-        public ILocatorRegistry CreateRegistry() => new DryIocLocator();
-    }
-
-    /// <summary>
     /// Default container implementation, can be customized in object factory create registry.
     /// </summary>
-    public class DryIocLocator : ILocatorRegistry
+    public class DryIocLocator : ILocatorRegistry, ILocatorSetContainer
     {
         /// <summary>
         /// Raw container reference
@@ -34,26 +22,16 @@ namespace DotNetStarter
         /// <summary>
         /// Constructor
         /// </summary>
-        public DryIocLocator()
+        public DryIocLocator(IContainer container = null)
         {
-            // for v2.x
             var rules = Rules.Default
                 .WithFactorySelector(Rules.SelectLastRegisteredFactory())
                 .WithTrackingDisposableTransients() //used in transient delegate cases
-                //.WithImplicitRootOpenScope() // allows LifeTime.Container to work
-                ; 
+                .WithImplicitRootOpenScope()
+                ;
 
-            _Container = new Container(rules);
-
-            // for v1.x
-            //_Container = new Container();
-            //_Container.ResolutionRules.GetSingleRegisteredFactory = factories => factories.Last();
+            _Container = container ?? new Container(rules);
         }
-
-        /// <summary>
-        /// Allows access to wrapped container
-        /// </summary>        
-        public virtual object InternalContainer => _Container;
 
         /// <summary>
         /// Provides debug information about the container
@@ -61,6 +39,10 @@ namespace DotNetStarter
         public string DebugInfo => _Container?.GetServiceRegistrations()?.Select(x => x.ToString()).
             Aggregate((current, next) => current + Environment.NewLine + next);
 
+        /// <summary>
+        /// Allows access to wrapped container
+        /// </summary>        
+        public virtual object InternalContainer => _Container;
         /// <summary>
         /// Adds service type to container, given its implementation type. 
         /// </summary>
@@ -96,8 +78,7 @@ namespace DotNetStarter
         /// <param name="lifeTime"></param>
         public virtual void Add(Type serviceType, Func<object> implementationFactory, LifeTime lifeTime)
         {
-            _Container.RegisterDelegate(serviceType, r => implementationFactory(), ConvertLifeTime(lifeTime));            
-            //_Container.Register(serviceType, reuse: ConvertLifeTime(lifeTime), made: Made.Of(() => Create(implementationFactory)));
+            _Container.RegisterDelegate(serviceType, r => implementationFactory(), ConvertLifeTime(lifeTime));
         }
 
         /// <summary>
@@ -120,7 +101,6 @@ namespace DotNetStarter
             try
             {
                 _Container.InjectPropertiesAndFields(target); // v2.x
-                // _Container.ResolvePropertiesAndFields(target); // v1.x
 
                 return true;
             }
@@ -186,6 +166,23 @@ namespace DotNetStarter
                     _Container.ResolveMany<TService>(serviceKey: key); //_Container.Resolve<IEnumerable<TService>>(IfUnresolved.ReturnDefault);
 
         /// <summary>
+        /// Creates a scoped container
+        /// </summary>
+        /// <param name="scopeName"></param>
+        /// <param name="scopeContext"></param>
+        /// <returns></returns>
+        public ILocator OpenScope(object scopeName = null, object scopeContext = null)
+        {
+            var typedContext = scopeContext as IScopeContext;
+            var container = _Container;
+
+            if (typedContext != null)
+                container = container.With(scopeContext: typedContext);
+
+            return new DryIocLocator(container.OpenScope(scopeName));
+        }
+
+        /// <summary>
         /// Removes a service, note: not all containers support this.
         /// </summary>
         /// <param name="serviceType"></param>
@@ -193,8 +190,6 @@ namespace DotNetStarter
         /// <param name="serviceImplementation"></param>
         public virtual void Remove(Type serviceType, string key = null, Type serviceImplementation = null)
         {
-            //throw new NotImplementedException(); for 1.x
-
             // for 2.x
             if (serviceImplementation == null)
             {
@@ -204,6 +199,17 @@ namespace DotNetStarter
             {
                 _Container.Unregister(serviceType, key, FactoryType.Service, (f) => f.ImplementationType == serviceType);
             }
+        }
+
+        /// <summary>
+        /// Allows container to be set externally, example is ConfigureServices in a netcore app
+        /// </summary>
+        /// <param name="container"></param>
+        public void SetContainer(object container)
+        {
+            var tempContainer = container as IContainer;
+
+            _Container = tempContainer ?? throw new ArgumentException($"{container} doesn't implement {typeof(IContainer).FullName}!");
         }
 
         private static IReuse ConvertLifeTime(LifeTime lifetime)
@@ -243,19 +249,13 @@ namespace DotNetStarter
 
             // return the delegate Made.of for v2.x
             return Made.Of(allConstructors.FirstOrDefault());
-
-            // return the delegate GetConstructor for v1.x
-            // return (Type t) => allConstructors.FirstOrDefault();
         }
 
         private static void RegisterSimple<TInterface, TImplementation>(DryIoc.IContainer register, IReuse reuse = null, ConstructorType constructor = ConstructorType.Empty, string key = null)
             where TImplementation : TInterface
         {
             // for v2.x
-            register.Register<TInterface, TImplementation>(reuse: reuse, made: GetConstructorFor(register, typeof(TImplementation), constructor), serviceKey: key);//, ifAlreadyRegistered: alreadyRegistered);
-
-            // for v1.x
-            //register.Register<TInterface, TImplementation>(reuse: reuse, withConstructor: GetConstructorFor<TImplementation>(register, greedyConstructor));
+            register.Register<TInterface, TImplementation>(reuse: reuse, made: GetConstructorFor(register, typeof(TImplementation), constructor), serviceKey: key);
         }
 
         private static void RegisterSimple(DryIoc.IContainer register, Type service, Type implementation, IReuse reuse = null, ConstructorType constructor = ConstructorType.Empty, string key = null)
@@ -268,11 +268,11 @@ namespace DotNetStarter
                 }
             }
             else
-            {                
+            {
                 if (!implementation.IsGenericInterface(service))
                 {
                     ThrowRegisterException(service, implementation);
-                }                    
+                }
             }
 
             register.Register(service, implementation, reuse: reuse, made: GetConstructorFor(register, implementation, constructor), serviceKey: key);
@@ -284,5 +284,17 @@ namespace DotNetStarter
 
             throw ex;
         }
+    }
+
+    /// <summary>
+    /// Locator with DryIoc Container 
+    /// </summary>
+    public class DryIocLocatorFactory : ILocatorRegistryFactory
+    {
+        /// <summary>
+        /// Creates DryIoc Locator
+        /// </summary>
+        /// <returns></returns>
+        public ILocatorRegistry CreateRegistry() => new DryIocLocator();
     }
 }

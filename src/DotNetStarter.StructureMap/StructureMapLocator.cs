@@ -11,12 +11,12 @@ using System.Linq;
 namespace DotNetStarter
 {
     /// <summary>
-    /// Locator with DryIoc Container 
+    /// Locator with Structuremap Container 
     /// </summary>
     public class StructureMapFactory : ILocatorRegistryFactory
     {
         /// <summary>
-        /// Creates DryIoc Locator
+        /// Creates Structuremap Locator
         /// </summary>
         /// <returns></returns>
         public ILocatorRegistry CreateRegistry() => new StructureMapLocator();
@@ -25,16 +25,16 @@ namespace DotNetStarter
     /// <summary>
     /// Structuremap Locator
     /// </summary>
-    public class StructureMapLocator : ILocatorRegistry
+    public class StructureMapLocator : ILocatorRegistry, ILocatorSetContainer
     {
         private IContainer _Container;
 
         /// <summary>
         /// Constructor
         /// </summary>
-        public StructureMapLocator()
+        public StructureMapLocator(IContainer container = null)
         {
-            _Container = new Container();
+            _Container = container ?? new Container();
         }
 
         /// <summary>
@@ -251,6 +251,32 @@ namespace DotNetStarter
                     return serviceImplementation.IsAssignableFromCheck(type);
                 });
             }
+        }
+
+        /// <summary>
+        /// Creates a scoped container
+        /// </summary>
+        /// <param name="scopeName"></param>
+        /// <param name="scopeContext"></param>
+        /// <returns></returns>
+        public ILocator OpenScope(object scopeName = null, object scopeContext = null)
+        {
+#if NET35
+            throw new NotImplementedException();
+#else
+            return new StructureMapLocator(_Container.CreateChildContainer());
+#endif
+        }
+
+        /// <summary>
+        /// Allows container to be set externally, example is ConfigureServices in a netcore app
+        /// </summary>
+        /// <param name="container"></param>
+        public void SetContainer(object container)
+        {
+            var tempContainer = container as IContainer;
+
+            _Container = tempContainer ?? throw new ArgumentException($"{container} doesn't implement {typeof(IContainer).FullName}!");
         }
     }
 }

@@ -9,7 +9,7 @@
     {
         private static readonly object _Lock = new object();
 
-        private static bool __Started = false;
+        private static bool _Started = false;
 
         private static IStartupContext _Default;
 
@@ -19,17 +19,17 @@
 
         static Context()
         {
-            if (!__Started)
+            if (!_Started)
             {
                 lock (_Lock)
                 {
-                    if (!__Started)
+                    if (!_Started)
                     {
                         var factory = ObjectFactory.Default;
                         _Handler = factory.CreateStartupHandler();
                         _Configuration = factory.CreateStartupConfiguration(ObjectFactory.Assemblies);
 
-                        __Started = _Handler.Startup(_Configuration, factory, out _Default);
+                        _Started = _Handler.Startup(_Configuration, factory, out _Default);
                     }
                 }
             }

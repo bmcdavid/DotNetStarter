@@ -84,7 +84,7 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\netstandard13\DotNetStarter\DotNetStarter.csproj">
+    <ProjectReference Include="..\..\netstandard1.3\DotNetStarter\DotNetStarter.csproj">
       <Project>{17dd8cbf-62b6-42e5-9e38-2ae4a630a97f}</Project>
       <Name>DotNetStarter</Name>
     </ProjectReference>
