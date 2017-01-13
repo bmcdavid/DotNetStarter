@@ -209,7 +209,10 @@ namespace DotNetStarter
         {
             var tempContainer = container as IContainer;
 
-            _Container = tempContainer ?? throw new ArgumentException($"{container} doesn't implement {typeof(IContainer).FullName}!");
+            if (tempContainer == null)
+                throw new ArgumentException($"{container} doesn't implement {typeof(IContainer).FullName}!");
+
+            _Container = tempContainer;
         }
 
         private static IReuse ConvertLifeTime(LifeTime lifetime)
