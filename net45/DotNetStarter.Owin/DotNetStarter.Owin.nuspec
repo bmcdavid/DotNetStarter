@@ -17,8 +17,8 @@
       </group>
       <group targetFramework="netstandard1.3">
         <dependency id="DotNetStarter" version="[0,1)" />
-        <dependency id="Microsoft.AspNetCore.Http.Abstractions" value="[1,2)" />
-        <dependency id="Microsoft.Extensions.DependencyInjection" value="[1,2)" />
+        <dependency id="Microsoft.AspNetCore.Http.Abstractions" version="[1,2)" />
+        <dependency id="Microsoft.Extensions.DependencyInjection" version="[1,2)" />
       </group>
     </dependencies>
   </metadata>
