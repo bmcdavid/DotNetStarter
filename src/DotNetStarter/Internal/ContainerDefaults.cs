@@ -1,6 +1,6 @@
 ﻿namespace DotNetStarter.Internal
 {
-    using Abstractions;    
+    using Abstractions;
     using System;
     using System.Collections.Generic;
     using System.Linq;
@@ -20,11 +20,16 @@
         public virtual void Configure(ILocatorRegistry locator, IEnumerable<IDependencyNode> filteredModules, IStartupConfiguration configuration, IStartupObjectFactory objectFactory)
         {
             Type initModuleType = typeof(IStartupModule);
+            Type configureModuleType = typeof(ILocatorConfigure);
             var modules = filteredModules.Select(x => x.Node).OfType<Type>();
 
             foreach (var module in modules)
             {
-                locator.Add(initModuleType, module, null, LifeTime.Singleton, ConstructorType.Greediest);
+                if (initModuleType.IsAssignableFromCheck(module))
+                    locator.Add(initModuleType, module, null, LifeTime.Singleton, ConstructorType.Greediest);
+
+                if (configureModuleType.IsAssignableFromCheck(module))
+                    locator.Add(configureModuleType, module, null, LifeTime.Singleton, ConstructorType.Greediest);
             }
 
             // add default instances    

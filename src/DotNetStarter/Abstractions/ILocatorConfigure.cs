@@ -3,7 +3,7 @@
     /// <summary>
     /// Init module that configures the container object.
     /// </summary>
-    public interface ILocatorConfigure : IStartupModule
+    public interface ILocatorConfigure //: IStartupModule
     {
         /// <summary>
         /// Configure container object

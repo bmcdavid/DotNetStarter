@@ -41,5 +41,10 @@ namespace DotNetStarter.Abstractions
         /// Configuration reference
         /// </summary>
         IStartupConfiguration Configuration { get; }
+
+        /// <summary>
+        /// Reference to locator
+        /// </summary>
+        ILocator Locator { get; }
     }
 }

@@ -53,6 +53,11 @@
         public IStartupConfiguration Configuration { get; protected set; }
 
         /// <summary>
+        /// Locator Reference
+        /// </summary>
+        public ILocator Locator { get; protected set; }
+
+        /// <summary>
         /// Starup process, by default it scans assemblies, sorts modules, configures container, and runs startup for each module
         /// </summary>
         /// <param name="config"></param>
@@ -63,6 +68,7 @@
         {
             _Engine = this;
             Configuration = config;
+            Locator = objectFactory.CreateRegistry(config);
 
             IEnumerable<Assembly> assemblies = config.Assemblies;
             IStartupContext tempContext = null;
@@ -100,29 +106,30 @@
             containerSetup.Name = timerNameBase + ".ContainerSetup";
             containerSetup.TimedAction = () =>
             {
-                var locator = objectFactory.CreateRegistry(config);
+                var registry = Locator as ILocatorRegistry;
 
-                if (locator != null)
+                if (registry != null)
                 {
                     var setDefaults = objectFactory.CreateContainerDefaults();
 
                     if (setDefaults == null)
                         throw new NotSupportedException("Unable to set container defaults, the object factory returned a null service for it!");
 
-                    objectFactory.CreateContainerDefaults().Configure(locator, filteredModules, config, objectFactory);
-                    modules = locator.GetAll<IStartupModule>();
-                    var locatorRegistries = modules.OfType<ILocatorConfigure>();
+                    objectFactory.CreateContainerDefaults().Configure(registry, filteredModules, config, objectFactory);
+                    //modules = registry.GetAll<IStartupModule>();
+                    var locatorRegistries = registry.GetAll<ILocatorConfigure>();// modules.OfType<ILocatorConfigure>();
 
                     foreach (var map in locatorRegistries)
                     {
-                        map.Configure(locator, this);
+                        map.Configure(registry, this);
                     }
                 }
 
-                tempContext = objectFactory.CreateStartupContext(locator, filteredModules, sortedModules, config);
+                tempContext = objectFactory.CreateStartupContext(registry, filteredModules, sortedModules, config);
 
                 // register context once its created
-                locator?.Add(typeof(IStartupContext), tempContext);
+                registry?.Add(typeof(IStartupContext), tempContext);
+                modules = registry?.GetAll<IStartupModule>(); // resolve all startup modules for DI
             };
 
             // execute tasks in order
