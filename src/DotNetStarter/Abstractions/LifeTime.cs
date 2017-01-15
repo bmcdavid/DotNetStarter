@@ -14,25 +14,16 @@
         /// </summary>
         Singleton = 1,
         /// <summary>
-        /// Single instance per http request, note: not all containers support this
+        /// Single instance per http request
         /// </summary>
         HttpRequest = 2,
         /// <summary>
-        /// Single instance per thread, note: not all containers support this
+        /// Single instance per scope
         /// </summary>
-        //Thread = 3,
-        /// <summary>
-        /// Single instance per container, note: not all containers support this
-        /// </summary>
-        //Container = 4,
-        /// <summary>
-        /// Single instance per scope: note: not all containers support this
-        /// </summary>
-        Scoped = 5,
+        Scoped = 4,
         /// <summary>
         /// Always creates a new instance
         /// </summary>
-        AlwaysUnique = 6
-
+        AlwaysUnique = 5
     }
 }

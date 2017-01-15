@@ -32,7 +32,7 @@
         /// <param name="serviceType"></param>
         /// <param name="implementationFactory"></param>
         /// <param name="lifeTime"></param>        
-        void Add(Type serviceType, Func<object> implementationFactory, LifeTime lifeTime);
+        void Add(Type serviceType, Func<ILocator, object> implementationFactory, LifeTime lifeTime);
 
         /// <summary>
         /// Adds instance to container, the lifetime is set to either singleton or container

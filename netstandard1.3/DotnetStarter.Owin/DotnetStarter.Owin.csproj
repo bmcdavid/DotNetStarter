@@ -48,6 +48,9 @@
     <Compile Include="..\..\net45\DotnetStarter.Owin\MiddlewareOwinConstants.cs" />
     <Compile Include="..\..\net45\DotnetStarter.Owin\MiddlewareRequest.cs" />
     <Compile Include="..\..\net45\DotnetStarter.Owin\MiddlewareResponse.cs" />
+    <Compile Include="..\..\net45\DotnetStarter.Owin\ServiceProvider.cs" />
+    <Compile Include="..\..\net45\DotnetStarter.Owin\ServiceScope.cs" />
+    <Compile Include="..\..\net45\DotnetStarter.Owin\ServiceScopeFactory.cs" />
     <Compile Include="..\..\net45\DotnetStarter.Owin\Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

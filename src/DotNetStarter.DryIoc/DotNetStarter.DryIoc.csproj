@@ -49,11 +49,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="DotNetStarter.DryIoc.nuspec" />
-    <None Include="package.json" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="gulpfile.js" />
     <Content Include="readme.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

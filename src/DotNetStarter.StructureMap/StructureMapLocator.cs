@@ -63,9 +63,9 @@ namespace DotNetStarter
         /// <param name="serviceType"></param>
         /// <param name="implementationFactory"></param>
         /// <param name="lifeTime"></param>
-        public void Add(Type serviceType, Func<object> implementationFactory, LifeTime lifeTime)
+        public void Add(Type serviceType, Func<ILocator, object> implementationFactory, LifeTime lifeTime)
         {
-            _Container.Configure(x => x.For(serviceType).LifecycleIs(ConvertLifeTime(lifeTime)).Use((context) => implementationFactory.Invoke()));
+            _Container.Configure(x => x.For(serviceType).LifecycleIs(ConvertLifeTime(lifeTime)).Use((context) => implementationFactory.Invoke(context.GetInstance<ILocator>())));
         }
 
         /// <summary>

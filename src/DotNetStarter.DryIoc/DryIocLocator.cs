@@ -76,9 +76,9 @@ namespace DotNetStarter
         /// <param name="serviceType"></param>
         /// <param name="implementationFactory"></param>
         /// <param name="lifeTime"></param>
-        public virtual void Add(Type serviceType, Func<object> implementationFactory, LifeTime lifeTime)
+        public virtual void Add(Type serviceType, Func<ILocator, object> implementationFactory, LifeTime lifeTime)
         {
-            _Container.RegisterDelegate(serviceType, r => implementationFactory(), ConvertLifeTime(lifeTime));
+            _Container.RegisterDelegate(serviceType, r => implementationFactory(r.Resolve<ILocator>()), ConvertLifeTime(lifeTime));
         }
 
         /// <summary>

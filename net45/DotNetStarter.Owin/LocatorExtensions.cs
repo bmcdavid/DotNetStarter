@@ -10,6 +10,7 @@
 #if NETSTANDARD
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Http;
+    using Microsoft.Extensions.DependencyInjection;
 #elif NET45
     using global::Owin;
     using System.Linq;
@@ -21,21 +22,21 @@
     public static class LocatorExtensions
     {
         /// <summary>
-        /// Dictionary Key to retrive scoped container
+        /// Dictionary Key to retrive scoped IServiceProvider
         /// </summary>
-        public static readonly string ScopedLocatorKeyInContext = typeof(LocatorExtensions).FullName;
+        public static readonly string ScopedKeyInContext = typeof(LocatorExtensions).FullName;
 
         /// <summary>
         /// Retrieves scope container stored in OWIN context.
         /// </summary>
         /// <param name="context"></param>
         /// <returns>Scoped container.</returns>
-        public static ILocator GetScopedLocator(this IDictionary<string, object> context)
+        public static IServiceProvider GetServiceProvider(this IDictionary<string, object> context)
         {
-            object scopedLocator = null;
-            context?.TryGetValue(ScopedLocatorKeyInContext, out scopedLocator);
+            object scoped = null;
+            context?.TryGetValue(ScopedKeyInContext, out scoped);
 
-            return scopedLocator as ILocator;
+            return scoped as IServiceProvider;
         }
 
         /// <summary>
@@ -73,7 +74,7 @@
 
 #if NET45
         /// <summary>
-        /// Opens scope for OWIN pipeline, default scopename and scopecontext are DryIoc specific.
+        /// Opens scope for OWIN pipeline as an IServiceProvider, scopename and scopecontext are for DryIoc containers.
         /// </summary>
         /// <param name="app"></param>
         /// <param name="locator"></param>
@@ -89,9 +90,11 @@
                 {
                     var registry = scope as ILocatorRegistry;
                     registry?.Add(typeof(IDictionary<string, object>), context);
-                    //registry?.Add(typeof(IMiddlewareContext), new MiddlewareContext(context));
+                    registry?.Add(typeof(IMiddlewareContext), new MiddlewareContext(context));
                     addToScope?.Invoke(registry);
-                    context[ScopedLocatorKeyInContext] = scope;
+
+                    var serviceProvider = new ServiceProvider(scope);
+                    context[ScopedKeyInContext] = serviceProvider;
 
                     await next.Invoke(context);
                 }
@@ -100,35 +103,68 @@
         
 #elif NETSTANDARD
         /// <summary>
-        /// Opens scope for IApplicationBuilder pipeline and injects the HttpContext for scoped locator.
+        /// Stores IServiceProvider in builder pipeline.
         /// </summary>
         /// <param name="app"></param>
-        /// <param name="locator"></param>
-        /// <param name="addToScope"></param>
-        public static void UseScopedLocator(this IApplicationBuilder app, ILocator locator, Action<ILocatorRegistry> addToScope = null)
+        public static void UseScopedLocator(this IApplicationBuilder app)
         {
             app.Use(new Func<RequestDelegate, RequestDelegate>(next => (async context =>
             {
-                //todo: Figure out way to convert context.RequestServices to ILocator
-                // once converted add to context.Items
-
                 // netcore uses IScopeFactory that wraps all middleware calls, so a scope.Open isn't needed 
-                
+                context.Items[ScopedKeyInContext] = context.RequestServices; //context.RequestServices is already opened scope
+
                 await next(context);
-
-                // not helpful in netcore, the request scope is already opened
-                // wraps all following items in scoped locator
-                //using (var scope = locator.OpenScope(scopeName, scopeContext))
-                //{
-                //    var registry = scope as ILocatorRegistry;
-                //    registry?.Add(typeof(HttpContext), context);
-                //    addToScope?.Invoke(registry);
-                //    context.Set(ScopedLocatorKeyInContext, scope);
-
-                //    await next(context);
-
-                //}
             })));
+        }
+
+        /// <summary>
+        /// Adds service collection items to locator
+        /// </summary>
+        /// <param name="services"></param>
+        /// <param name="locator"></param>
+        public static void AddServicesToLocator(this IServiceCollection services, ILocatorRegistry locator)
+        {
+            if (locator == null)
+                throw new ArgumentNullException();
+
+            locator.Add<IServiceProvider, ServiceProvider>(lifetime: LifeTime.Scoped);
+
+            // Scope factory should be scoped itself to enable nested scopes creation
+            locator.Add<IServiceScopeFactory, ServiceScopeFactory>(lifetime: LifeTime.Scoped);
+            
+            for (int i = 0; i < services.Count; i++)
+            {
+                var service = services[i];
+                var lifetime = ConvertLifeTime(service.Lifetime);                
+
+                if (service.ImplementationType != null)
+                {
+                    locator.Add(service.ServiceType, service.ImplementationType, lifeTime: lifetime);
+                }
+                else if (service.ImplementationFactory != null)
+                {
+                    locator.Add(service.ServiceType, l => service.ImplementationFactory(l.Get<IServiceProvider>()), lifetime);
+                }
+                else
+                {
+                    locator.Add(service.ServiceType, service.ImplementationInstance);
+                }
+            }
+        }
+
+        private static LifeTime ConvertLifeTime(ServiceLifetime lifetime)
+        {
+            switch (lifetime)
+            {
+                case ServiceLifetime.Scoped:
+                    return LifeTime.Scoped;
+                case ServiceLifetime.Singleton:
+                    return LifeTime.Singleton;
+                case ServiceLifetime.Transient:
+                    return LifeTime.Transient;
+            }
+
+            return LifeTime.Transient;
         }
 
         /// <summary>
@@ -136,12 +172,12 @@
         /// </summary>
         /// <param name="context"></param>
         /// <returns></returns>
-        public static ILocator GetScopedLocator(this HttpContext context)
+        public static IServiceProvider GetServiceProvider(this HttpContext context)
         {
-            object scopedLocator = null;
-            context?.Items?.TryGetValue(ScopedLocatorKeyInContext, out scopedLocator);
+            object scoped = null;
+            context?.Items?.TryGetValue(ScopedKeyInContext, out scoped);
 
-            return scopedLocator as ILocator;
+            return scoped as IServiceProvider;
         }
 
         /// <summary>
@@ -189,12 +225,12 @@
 
             public Task Invoke(IDictionary<string, object> context)
             {
-                var scopedContainer = context.GetScopedLocator();
+                var scopedProvider = context.GetServiceProvider();
 
-                if (scopedContainer == null)
-                    throw new NullReferenceException($"Cannot get {typeof(ILocator).FullName} from current context for key {ScopedLocatorKeyInContext}!");
+                if (scopedProvider == null)
+                    throw new NullReferenceException($"Cannot get {typeof(IServiceProvider).FullName} from current context for key {ScopedKeyInContext}!");
 
-                var middleware = scopedContainer.Get<Func<AppFunc, TServiceMiddleware>>();
+                var middleware = scopedProvider.GetService(typeof(Func<AppFunc, TServiceMiddleware>)) as Func<AppFunc, TServiceMiddleware>;
 
                 if (middleware == null)
                     return Next.Invoke(context);
@@ -203,9 +239,4 @@
             }
         }
     }
-
-    /// <summary>
-    /// Class that typically allows for additonal IRegistrator entries, but those should funnel through container registrations
-    /// </summary>
-    internal class CompositionRoot { }
 }

@@ -157,7 +157,7 @@ namespace DotNetStarter.Tests
 
             container.Add<BaseTest, BaseImpl>(lifetime: LifeTime.Singleton);
 
-            container.Add(typeof(IFooTwo), () => FooTwoFactory.CreateFoo(), LifeTime.Transient);
+            container.Add(typeof(IFooTwo), locator => FooTwoFactory.CreateFoo(), LifeTime.Transient);
         }
 
         public void Shutdown(IStartupEngine engine)
