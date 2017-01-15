@@ -122,7 +122,7 @@
         /// </summary>
         /// <param name="services"></param>
         /// <param name="locator"></param>
-        public static void AddServicesToLocator(this IServiceCollection services, ILocatorRegistry locator)
+        public static IServiceProvider AddServicesToLocator(this IServiceCollection services, ILocatorRegistry locator)
         {
             if (locator == null)
                 throw new ArgumentNullException();
@@ -132,6 +132,7 @@
             // Scope factory should be scoped itself to enable nested scopes creation
             locator.Add<IServiceScopeFactory, ServiceScopeFactory>(lifetime: LifeTime.Scoped);
             
+            // map .net services to locator
             for (int i = 0; i < services.Count; i++)
             {
                 var service = services[i];
@@ -150,6 +151,8 @@
                     locator.Add(service.ServiceType, service.ImplementationInstance);
                 }
             }
+
+            return locator.Get<IServiceProvider>();
         }
 
         private static LifeTime ConvertLifeTime(ServiceLifetime lifetime)

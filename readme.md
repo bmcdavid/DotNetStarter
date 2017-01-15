@@ -2,9 +2,13 @@
 
 [![Build status](https://ci.appveyor.com/api/projects/status/a907wfniy73sk5de?svg=true)](https://ci.appveyor.com/project/bmcdavid/dotnetstarter)
 
-This package supports native .netframeworks 3.5, 4.0, and 4.5 as well as netstandard 1.3.
+The goal of this project is to create a startup and IoC/DI framework for netframeworks 3.5+ and netstandard 1.3+ which allows packages to support container registrations without a specific container defined.
 
-The goal of this package to create a startup framework for any dotnet project where everything is swappable via Inversion Of Control (IoC) or object factories (AssemblyFactoryBaseAttribute).
+For IoC/DI containers, they can be swapped at runtime via the assembly attribute as noted below for DryIoc:
+
+```
+[assembly: DotNetStarter.Abstractions.LocatorRegistryFactory(typeof(DotNetStarter.DryIocLocatorFactory))]
+```
 
 ## Known Issues
 
@@ -69,7 +73,7 @@ All attributes, baseclasses and interfaces reside in the DotNetStarter.Abstracti
 ### Usage
 ```
 	private Import<ITest> TestService;
-	// Import<T> is preferred over DotNetStarter.Context.Default.Locator.Get<T>(), unless you are in a factory context of needing new instances.
+	// Import<T> is a struct wrapper for DotNetStarter.Context.Default.Locator and can be used when scoping or unique instances aren't required.
         
     public void ExampleMethod()
     {

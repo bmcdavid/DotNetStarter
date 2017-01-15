@@ -10,7 +10,7 @@ namespace DotNetStarter
     using System.Linq;
 
     /// <summary>
-    /// Default container implementation, can be customized in object factory create registry.
+    /// Creates a locator based on DryIoc.dll
     /// </summary>
     public class DryIocLocator : ILocatorRegistry, ILocatorSetContainer
     {

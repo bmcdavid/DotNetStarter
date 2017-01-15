@@ -84,6 +84,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "docs", "docs", "{C36723A8-B
 		docs\modules.md = docs\modules.md
 		docs\register.md = docs\register.md
 		docs\scanning.md = docs\scanning.md
+		docs\scoped-locator.md = docs\scoped-locator.md
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotNetStarter.Owin", "net45\DotNetStarter.Owin\DotNetStarter.Owin.csproj", "{8770811C-EB67-41B2-AE93-55CC50882CA0}"
