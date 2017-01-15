@@ -84,6 +84,7 @@
         {
             app.Use(new Func<AppFunc, AppFunc>(next => (async context =>
             {
+                //todo: figure out how to handle if scope opened in IHttpModule
                 using (var scope = locator.OpenScope(scopeName, scopeContext))
                 {
                     var registry = scope as ILocatorRegistry;
@@ -103,23 +104,30 @@
         /// </summary>
         /// <param name="app"></param>
         /// <param name="locator"></param>
-        /// <param name="scopeName"></param>
         /// <param name="addToScope"></param>
-        /// <param name="scopeContext"></param>
-        public static void UseScopedLocator(this IApplicationBuilder app, ILocator locator, Action<ILocatorRegistry> addToScope = null, object scopeName = null, object scopeContext = null)
+        public static void UseScopedLocator(this IApplicationBuilder app, ILocator locator, Action<ILocatorRegistry> addToScope = null)
         {
             app.Use(new Func<RequestDelegate, RequestDelegate>(next => (async context =>
             {
-                // wraps all following items in scoped locator
-                using (var scope = locator.OpenScope(scopeName, scopeContext))
-                {
-                    var registry = scope as ILocatorRegistry;
-                    registry?.Add(typeof(HttpContext), context);
-                    addToScope?.Invoke(registry);
-                    context.Set(ScopedLocatorKeyInContext, scope);
+                //todo: Figure out way to convert context.RequestServices to ILocator
+                // once converted add to context.Items
 
-                    await next(context);
-                }
+                // netcore uses IScopeFactory that wraps all middleware calls, so a scope.Open isn't needed 
+                
+                await next(context);
+
+                // not helpful in netcore, the request scope is already opened
+                // wraps all following items in scoped locator
+                //using (var scope = locator.OpenScope(scopeName, scopeContext))
+                //{
+                //    var registry = scope as ILocatorRegistry;
+                //    registry?.Add(typeof(HttpContext), context);
+                //    addToScope?.Invoke(registry);
+                //    context.Set(ScopedLocatorKeyInContext, scope);
+
+                //    await next(context);
+
+                //}
             })));
         }
 

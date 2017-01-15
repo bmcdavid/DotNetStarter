@@ -101,16 +101,14 @@ namespace DotNetStarter
             {
                 case LifeTime.Transient:
                     return Lifecycles.Transient;
-                case LifeTime.HttpRequest:
-                    return Lifecycles.ThreadLocal;//determine what this is
                 case LifeTime.Singleton:
                     return Lifecycles.Singleton;
-                case LifeTime.Container:
-                    return Lifecycles.Container;
-                case LifeTime.Thread:
-                    return Lifecycles.ThreadLocal;
+                case LifeTime.HttpRequest:
                 case LifeTime.Scoped:
-                    throw new NotSupportedException();
+                    return Lifecycles.Container;
+                case LifeTime.AlwaysUnique:
+                    return Lifecycles.Unique;
+
             }
 
             return Lifecycles.Transient;
@@ -122,15 +120,13 @@ namespace DotNetStarter
             {
                 case LifeTime.Transient:
                     return InstanceScope.Transient;
+                case LifeTime.Scoped: // assumption here that this is for a web app.
                 case LifeTime.HttpRequest:
                     return InstanceScope.HttpContext;
                 case LifeTime.Singleton:
-                case LifeTime.Container:
                     return InstanceScope.Singleton;
-                case LifeTime.Thread:
-                    return InstanceScope.ThreadLocal;
-                case LifeTime.Scoped:
-                    throw new NotSupportedException();
+                case LifeTime.AlwaysUnique:
+                    return InstanceScope.Unique;
             }
 
             return InstanceScope.Transient;

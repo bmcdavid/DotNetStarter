@@ -190,7 +190,6 @@ namespace DotNetStarter
         /// <param name="serviceImplementation"></param>
         public virtual void Remove(Type serviceType, string key = null, Type serviceImplementation = null)
         {
-            // for 2.x
             if (serviceImplementation == null)
             {
                 _Container.Unregister(serviceType, key, FactoryType.Service, (f) => true);
@@ -219,7 +218,7 @@ namespace DotNetStarter
         {
             switch (lifetime)
             {
-                case LifeTime.Container: // in dryioc really not container scope, so just treat as a singleton in the container
+                //case LifeTime.Container: // in dryioc really not container scope, so just treat as a singleton in the container
                 case LifeTime.Singleton:
                     return Reuse.Singleton;
                 case LifeTime.Transient:
@@ -230,9 +229,10 @@ namespace DotNetStarter
                 // web scoping takes special context which is setup in a special IContainerRegistry setup in the DotNetStarter.Web package
                 case LifeTime.HttpRequest:
                     return Reuse.InWebRequest;
-                // throw new NotSupportedException(); for 1.x
-                case LifeTime.Thread:
-                    return Reuse.InThread;
+                //case LifeTime.Thread:
+                //    return Reuse.InThread;
+                case LifeTime.AlwaysUnique:
+                    return Reuse.Transient;
             }
 
             return Reuse.Transient;
