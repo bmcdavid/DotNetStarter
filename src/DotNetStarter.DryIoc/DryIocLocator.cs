@@ -263,6 +263,9 @@ namespace DotNetStarter
 
         private static void RegisterSimple(DryIoc.IContainer register, Type service, Type implementation, IReuse reuse = null, ConstructorType constructor = ConstructorType.Empty, string key = null)
         {
+            //todo: evaluate how these can be better, example in netcore has issue
+            //   Microsoft.AspNetCore.Server.Kestrel.Internal.KestrelServerOptionsSetup cannot be converted to Microsoft.Extensions.Options.IConfigureOptions`1[[Microsoft.AspNetCore.Server.Kestrel.KestrelServerOptions, Microsoft.AspNetCore.Server.Kestrel, Version=1.0.1.0, Culture=neutral, PublicKeyToken=adb9793829ddae60]]!
+
             if (!service.IsGenericType())
             {
                 if (!service.IsAssignableFromCheck(implementation))
