@@ -159,15 +159,5 @@ namespace DotNetStarter.Tests
 
             container.Add(typeof(IFooTwo), locator => FooTwoFactory.CreateFoo(), LifeTime.Transient);
         }
-
-        public void Shutdown(IStartupEngine engine)
-        {
-            Debug.WriteLine("Called shutdown" + typeof(RegistrationTests).FullName);
-        }
-
-        public void Startup(IStartupEngine engine)
-        {
-            Debug.WriteLine("Called startup" + typeof(RegistrationTests).FullName);
-        }
     }
 }

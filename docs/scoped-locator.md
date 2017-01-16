@@ -7,7 +7,8 @@ Container scoping allows for a single instance to be used until the scope is dis
 
 In aspnetcore apps, the provided HttpContext.RequestServices is a scoped IServiceProvider. 
 
-One important note: although app.UseMiddleware supports DI for service injection, its scoped instances will not be the same as the HttpContext.RequestServices. In order to use HttpContext scoped items, they must be retrieved in the middleware's Invoke method!
+***Important:*** Although app.UseMiddleware supports DI for service injection, its scoped instances will not be the same as the HttpContext.RequestServices. In order to use HttpContext scoped items, they must be retrieved in the middleware's Invoke method!
+Also some containers may handle scoped items differently, some may have a singleton instance when no scoping is available, others may throw exceptions or return null.
 
 ## Examples
 

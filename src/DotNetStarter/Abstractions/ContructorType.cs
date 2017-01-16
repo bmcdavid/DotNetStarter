@@ -12,10 +12,6 @@
         /// <summary>
         /// Constructor with no parameters
         /// </summary>
-        Empty = 1,
-        /// <summary>
-        /// Constructor with resolved parameters, note: not all containers support this.
-        /// </summary>
-        Resolved = 2
+        Empty = 1
     }
 }
