@@ -104,6 +104,10 @@
     <Compile Include="..\..\src\DotNetStarter\StringLogger.cs" />
     <Compile Include="..\..\src\DotNetStarter\TimedTask.cs" />
     <Compile Include="..\..\src\DotNetStarter\TimedTaskManager.cs" />
+    <Compile Include="..\..\src\DotNetStarter\ServiceProvider.cs" />
+    <Compile Include="..\..\src\DotNetStarter\ServiceScope.cs" />
+    <Compile Include="..\..\src\DotNetStarter\ServiceScopeFactory.cs" />
+    <Compile Include="..\..\src\DotNetStarter\NetcoreExtensions.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

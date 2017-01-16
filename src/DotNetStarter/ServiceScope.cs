@@ -4,9 +4,9 @@
     using Microsoft.Extensions.DependencyInjection;
 #endif
 
-namespace DotNetStarter.Owin
+namespace DotNetStarter
 {
-#if NET45
+#if NET45 || NET35 || NET40
     /// <summary>
     /// Access to scoped provider
     /// </summary>

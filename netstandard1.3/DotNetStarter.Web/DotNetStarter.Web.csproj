@@ -5,10 +5,10 @@
     <MinimumVisualStudioVersion>14.0</MinimumVisualStudioVersion>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{558357B7-70C6-4347-8FDC-DB9818C53A5A}</ProjectGuid>
+    <ProjectGuid>{35871841-F988-4534-81D4-07C4B28F07A2}</ProjectGuid>
     <OutputType>Library</OutputType>
-    <RootNamespace>DotnetStarter.Owin</RootNamespace>
-    <AssemblyName>DotnetStarter.Owin</AssemblyName>
+    <RootNamespace>DotNetStarter.Web</RootNamespace>
+    <AssemblyName>DotNetStarter.Web</AssemblyName>
     <DefaultLanguage>en-US</DefaultLanguage>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{786C830F-07A1-408B-BD7F-6EE04809D6DB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
@@ -24,7 +24,7 @@
     <DefineConstants>TRACE;DEBUG;NETSTANDARD;NETSTANDARD1_3</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <DocumentationFile>..\bin\Debug\DotnetStarter.Owin.XML</DocumentationFile>
+    <DocumentationFile>..\bin\Debug\DotNetStarter.Web.XML</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -33,26 +33,15 @@
     <DefineConstants>TRACE;NETSTANDARD;NETSTANDARD1_3</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <DocumentationFile>..\bin\Release\DotnetStarter.Owin.XML</DocumentationFile>
+    <DocumentationFile>..\bin\Release\DotNetStarter.Web.XML</DocumentationFile>
   </PropertyGroup>
-  <ItemGroup>
-    <Compile Include="..\..\net45\DotnetStarter.Owin\Abstractions\IMiddlewareContext.cs" />
-    <Compile Include="..\..\net45\DotnetStarter.Owin\Abstractions\IMiddlewareRequest.cs" />
-    <Compile Include="..\..\net45\DotnetStarter.Owin\Abstractions\IMiddlewareResponse.cs" />
-    <Compile Include="..\..\net45\DotnetStarter.Owin\Abstractions\IOwinMiddleware.cs" />
-    <Compile Include="..\..\net45\DotnetStarter.Owin\HeaderDictionary.cs" />
-    <Compile Include="..\..\net45\DotnetStarter.Owin\Internal\Segments.cs" />
-    <Compile Include="..\..\net45\DotnetStarter.Owin\LocatorExtensions.cs" />
-    <Compile Include="..\..\net45\DotnetStarter.Owin\MiddlewareContext.cs" />
-    <Compile Include="..\..\net45\DotnetStarter.Owin\MiddlewareHelpers.cs" />
-    <Compile Include="..\..\net45\DotnetStarter.Owin\MiddlewareOwinConstants.cs" />
-    <Compile Include="..\..\net45\DotnetStarter.Owin\MiddlewareRequest.cs" />
-    <Compile Include="..\..\net45\DotnetStarter.Owin\MiddlewareResponse.cs" />
-    <Compile Include="..\..\net45\DotnetStarter.Owin\Properties\AssemblyInfo.cs" />
-  </ItemGroup>
   <ItemGroup>
     <!-- A reference to the entire .NET Framework is automatically included -->
     <None Include="project.json" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\..\src\DotNetStarter.Web\Properties\AssemblyInfo.cs" />
+    <Compile Include="..\..\src\DotNetStarter.Web\NetcoreExtensions.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\DotNetStarter\DotNetStarter.csproj">

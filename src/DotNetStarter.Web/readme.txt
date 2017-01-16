@@ -1,6 +1,8 @@
 # DotNetStarter.Web Read Me
 
-This package supports native .netframeworks 3.5, 4.0, and 4.5 and is intended for IIS compatible sites.
+This package supports native .netframeworks 3.5+ for System.Web and is intended for IIS compatible sites.
+
+For netstandard1.3+ there are a few extensions at this point.
 
 IHttpModule(s) startup by inheriting IWebModule or IHttpModule and IStartupModule. These modules also require the [StartupModuleAttribute].
 

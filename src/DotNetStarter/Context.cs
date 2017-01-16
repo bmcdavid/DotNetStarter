@@ -7,6 +7,11 @@
     /// </summary>
     public class Context
     {
+        /// <summary>
+        /// Dictionary Key to retrive scoped IServiceProvider
+        /// </summary>
+        public static readonly string ScopedKeyInContext = typeof(Context).FullName;
+
         private static readonly object _Lock = new object();
 
         private static bool _Started = false;

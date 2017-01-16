@@ -19,7 +19,7 @@
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
     <OutputPath>..\bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DefineConstants>TRACE;DEBUG;NET40</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <DocumentationFile>..\bin\Debug\DotNetStarter.XML</DocumentationFile>
@@ -28,7 +28,7 @@
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>..\bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
+    <DefineConstants>TRACE;NET40</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <DocumentationFile>..\bin\Release\DotNetStarter.XML</DocumentationFile>
@@ -102,6 +102,9 @@
     <Compile Include="..\..\src\DotNetStarter\StringLogger.cs" />
     <Compile Include="..\..\src\DotNetStarter\TimedTask.cs" />
     <Compile Include="..\..\src\DotNetStarter\TimedTaskManager.cs" />
+    <Compile Include="..\..\src\DotNetStarter\ServiceProvider.cs" />
+    <Compile Include="..\..\src\DotNetStarter\ServiceScope.cs" />
+    <Compile Include="..\..\src\DotNetStarter\ServiceScopeFactory.cs" />
     <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

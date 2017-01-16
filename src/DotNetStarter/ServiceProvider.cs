@@ -1,13 +1,13 @@
-﻿namespace DotNetStarter.Owin
+﻿namespace DotNetStarter
 {
-    using DotNetStarter.Abstractions;
+    using Abstractions;
     using System;
 
 #if NETSTANDARD
     using Microsoft.Extensions.DependencyInjection;
 #endif
 
-#if NET45
+#if NET45 || NET40 || NET35
     /// <summary>
     /// Serive provider that throws exceptions if type cannot be found
     /// </summary>

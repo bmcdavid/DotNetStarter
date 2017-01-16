@@ -88,6 +88,9 @@
     <Compile Include="DependencyNode.cs" />
     <Compile Include="DependencySorter.cs" />
     <Compile Include="Context.cs" />
+    <Compile Include="ServiceProvider.cs" />
+    <Compile Include="ServiceScope.cs" />
+    <Compile Include="ServiceScopeFactory.cs" />
     <Compile Include="StartupObjectFactory.cs" />
     <Compile Include="StartupContext.cs" />
     <Compile Include="Internal\ObjectFactory.cs" />
