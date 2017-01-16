@@ -266,18 +266,18 @@ namespace DotNetStarter
             //todo: evaluate how these can be better, example in netcore has issue
             //   Microsoft.AspNetCore.Server.Kestrel.Internal.KestrelServerOptionsSetup cannot be converted to Microsoft.Extensions.Options.IConfigureOptions`1[[Microsoft.AspNetCore.Server.Kestrel.KestrelServerOptions, Microsoft.AspNetCore.Server.Kestrel, Version=1.0.1.0, Culture=neutral, PublicKeyToken=adb9793829ddae60]]!
 
-            if (!service.IsGenericType())
+            if (!service.IsAssignableFromCheck(implementation))
             {
-                if (!service.IsAssignableFromCheck(implementation))
+                if (!service.IsGenericType())
                 {
                     ThrowRegisterException(service, implementation);
                 }
-            }
-            else
-            {
-                if (!implementation.IsGenericInterface(service))
+                else
                 {
-                    ThrowRegisterException(service, implementation);
+                    if (!implementation.IsGenericInterface(service))
+                    {
+                        ThrowRegisterException(service, implementation);
+                    }
                 }
             }
 
