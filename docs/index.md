@@ -7,6 +7,7 @@ title: DotNetStarter
 
 The goal of this project is to create a startup and IoC/DI framework for netframeworks 3.5+ and netstandard 1.3+ which allows packages to support container registrations without a specific container defined.
 
+* [Object Factory and customization](./custom-objectfactory.html)
 * [Module creation, discovery, and dependencies](./modules.html)
 * [Registering items](./register.html)
 * [Assembly Scanning](./scanning.html)

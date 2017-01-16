@@ -15,6 +15,7 @@ This works for registering type implementations but doesn't support delegate or 
 
 ## DotNetStarter.Abstractions.ILocatorConfigure
 The second method requires a class that implements DotNetStarter.Abstractions.ILocatorConfigure with a StartupModuleAttribute decoration.
+
 ```
 [StartupModule]
 public class Example : ILocatorConfigure
@@ -27,12 +28,14 @@ public class Example : ILocatorConfigure
     }
 }
 ```
+
 ***IMPORTANT:*** The types that implement this interface also need empty constructors as locator with its underlying container have not been configured, there will be nothing to inject.
 
 ## Dependencies
 Both methods support adding dependencies which allows for an override system. The most common example will be overriding services registered with the RegisterAttribute
 
 Below is an ILocatorConfigure module dependent on the RegisterConfiguration type:
+
 ```
 [StartupModule(typeof(RegisterConfiguration))]
 public class DependencyExample : ILocatorConfigure
@@ -43,7 +46,9 @@ public class DependencyExample : ILocatorConfigure
     }
 }
 ```
+
 Below is a RegisterAttribute dependent on another implementation type:
+
 ```
 [Register(typeof(IServiceType), LifeTime.Singleton, Contructor.Greediest, typeof(ServiceTypeImplToOverride))]
 ```

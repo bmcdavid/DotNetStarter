@@ -79,6 +79,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "docs", "docs", "{C36723A8-B
 	ProjectSection(SolutionItems) = preProject
 		docs\_config.yml = docs\_config.yml
 		docs\custom-locator.md = docs\custom-locator.md
+		docs\custom-objectfactory.md = docs\custom-objectfactory.md
 		docs\index.md = docs\index.md
 		docs\known-issues.md = docs\known-issues.md
 		docs\modules.md = docs\modules.md
