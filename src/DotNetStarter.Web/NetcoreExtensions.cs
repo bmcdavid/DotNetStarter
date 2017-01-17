@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Builder;
+﻿using DotNetStarter.Abstractions;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using System;
 using static DotNetStarter.Context;
@@ -11,7 +12,7 @@ namespace DotNetStarter.Web
     public static class NetcoreExtensions
     {
         /// <summary>
-        /// Stores IServiceProvider in builder pipeline.
+        /// Stores IServiceProvider and ILocator in HttpContext.Items
         /// </summary>
         /// <param name="app"></param>
         public static void UseScopedLocator(this IApplicationBuilder app)
@@ -20,6 +21,7 @@ namespace DotNetStarter.Web
             {
                 // netcore uses IScopeFactory that wraps all middleware calls, so a scope.Open isn't needed 
                 context.Items[ScopedProviderKeyInContext] = context.RequestServices; //context.RequestServices is already opened scope
+                context.Items[ScopedLocatorKeyInContext] = context.RequestServices.GetService(typeof(ILocator));
 
                 await next(context);
             })));
@@ -30,12 +32,19 @@ namespace DotNetStarter.Web
         /// </summary>
         /// <param name="context"></param>
         /// <returns></returns>
-        public static IServiceProvider GetServiceProvider(this HttpContext context)
+        public static IServiceProvider GetScopedServiceProvider(this HttpContext context)
         {
-            object scoped = null;
-            context?.Items?.TryGetValue(ScopedProviderKeyInContext, out scoped);
+            return Get<IServiceProvider>(context, ScopedProviderKeyInContext, null);
+        }
 
-            return scoped as IServiceProvider;
+        /// <summary>
+        /// Retrieves scope container stored in HttpContext.
+        /// </summary>
+        /// <param name="context"></param>
+        /// <returns></returns>
+        public static ILocator GetScopedLocator(this HttpContext context)
+        {
+            return Get<ILocator>(context, ScopedLocatorKeyInContext, null);
         }
 
         /// <summary>

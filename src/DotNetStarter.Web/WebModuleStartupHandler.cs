@@ -90,8 +90,9 @@
                 var x = sender as HttpApplication;
                 var context = x.Context;
 
-                var scopedLocator = Default.Locator.OpenScope();
+                var scopedLocator = _StartupContext.Locator.OpenScope();
                 var scopedRegistry = scopedLocator as ILocatorRegistry;
+                scopedRegistry?.Add(typeof(ILocator), scopedLocator); // override ILocator resolves to use scoped version
                 scopedRegistry?.Add(typeof(HttpContextBase), new HttpContextWrapper(context));
                 scopedRegistry?.Add<IServiceProvider, ServiceProvider>(lifetime: LifeTime.Scoped);
 

@@ -34,7 +34,7 @@ namespace DotNetStarter
         /// </summary>
         public StructureMapLocator(IContainer container = null)
         {
-            _Container = container ?? new Container();
+            _Container = container ?? new Container();              
         }
 
         /// <summary>

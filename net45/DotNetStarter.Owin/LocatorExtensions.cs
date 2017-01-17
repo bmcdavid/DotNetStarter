@@ -23,12 +23,19 @@
         /// </summary>
         /// <param name="context"></param>
         /// <returns>Scoped container.</returns>
-        public static IServiceProvider GetServiceProvider(this IDictionary<string, object> context)
+        public static IServiceProvider GetScopedServiceProvider(this IDictionary<string, object> context)
         {
-            object scoped = null;
-            context?.TryGetValue(ScopedProviderKeyInContext, out scoped);
+            return Get<IServiceProvider>(context, ScopedProviderKeyInContext, null);
+        }
 
-            return scoped as IServiceProvider;
+        /// <summary>
+        /// Retrieves scope container stored in OWIN context.
+        /// </summary>
+        /// <param name="context"></param>
+        /// <returns>Scoped container.</returns>
+        public static ILocator GetScopedLocator(this IDictionary<string, object> context)
+        {
+            return Get<ILocator>(context, ScopedLocatorKeyInContext, null);
         }
 
         /// <summary>
@@ -104,7 +111,7 @@
 
             public Task Invoke(IDictionary<string, object> context)
             {
-                var scopedProvider = context.GetServiceProvider();
+                var scopedProvider = context.GetScopedServiceProvider();
 
                 if (scopedProvider == null)
                     throw new NullReferenceException($"Cannot get {typeof(IServiceProvider).FullName} from current context for key {ScopedProviderKeyInContext}!");

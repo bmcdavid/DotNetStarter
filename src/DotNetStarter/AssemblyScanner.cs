@@ -15,6 +15,11 @@
         private static Dictionary<Type, HashSet<Type>> ScannedRegistry = new Dictionary<Type, HashSet<Type>>();
 
         /// <summary>
+        /// Creates a new dictionary from scanned registry, not part of IAssemblyScanner
+        /// </summary>
+        public virtual Dictionary<Type, HashSet<Type>> ReviewRegistry => new Dictionary<Type, HashSet<Type>>(ScannedRegistry);
+
+        /// <summary>
         /// Get scanned types for given type, note: it doesn't filter interfaces or abstracts. 
         /// <para>To register a type use the ScanTypeRegistryAttribute assembly attribute!</para>
         /// </summary>
@@ -52,13 +57,13 @@
                     {
                         isMatch = type.CustomAttribute(item, false).Any();
                     }
-                    else if(item.IsInterface())
+                    else if (item.IsInterface())
                     {
                         isMatch = type.HasInterface(item);
                     }
-                    else if (type.IsAssignableFromCheck(item))
+                    else
                     {
-                        isMatch = true;
+                        isMatch = item.IsAssignableFromCheck(type);
                     }
 
                     if (isMatch)
