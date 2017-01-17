@@ -19,7 +19,7 @@ namespace DotNetStarter.Web
             app.Use(new Func<RequestDelegate, RequestDelegate>(next => (async context =>
             {
                 // netcore uses IScopeFactory that wraps all middleware calls, so a scope.Open isn't needed 
-                context.Items[ScopedKeyInContext] = context.RequestServices; //context.RequestServices is already opened scope
+                context.Items[ScopedProviderKeyInContext] = context.RequestServices; //context.RequestServices is already opened scope
 
                 await next(context);
             })));
@@ -33,7 +33,7 @@ namespace DotNetStarter.Web
         public static IServiceProvider GetServiceProvider(this HttpContext context)
         {
             object scoped = null;
-            context?.Items?.TryGetValue(ScopedKeyInContext, out scoped);
+            context?.Items?.TryGetValue(ScopedProviderKeyInContext, out scoped);
 
             return scoped as IServiceProvider;
         }

@@ -12,13 +12,25 @@ namespace DotNetStarter.Web
         /// Determines if startup is executed
         /// </summary>
         /// <returns></returns>
-        bool Enabled();
+        bool StartupEnabled();
+
+        /// <summary>
+        /// Determines if startup handler creates a scoped ILocator stored in HttpContext.Items
+        /// </summary>
+        /// <returns></returns>
+        bool ScopeEnabled();
 
         /// <summary>
         /// Initialize modules
         /// </summary>
-        /// <param name="context"></param>
+        /// <param name="applicationContext"></param>
         /// <param name="startupModules"></param>
-        void Startup(HttpApplication context, IEnumerable<IHttpModule> startupModules);
+        void Startup(HttpApplication applicationContext, IEnumerable<IHttpModule> startupModules);
+
+        /// <summary>
+        /// Opens locator scope
+        /// </summary>
+        /// <param name="applicationContext"></param>
+        void OpenLocatorScope(HttpApplication applicationContext);
     }
 }

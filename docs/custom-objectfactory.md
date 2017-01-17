@@ -17,7 +17,7 @@ Implementations must use the IStartupObjectFactory interface, which is typically
 
 namespace Example 
 {    
-    public class CustomLocatorFactory : DotNetStarter.StartupObjectFactory
+    public class CustomObjectFactory : DotNetStarter.StartupObjectFactory
     {
         // set higher than base
         public override int SortOrder => base.SortOrder + 1;

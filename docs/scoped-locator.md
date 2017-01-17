@@ -28,13 +28,4 @@ using (var scope = locator.OpenScope())
 To do
 
 ### Adding aspnetcore services to Locator for scoped IServiceProvider
-```
-// using DotNetStarter.Owin;
-
-public IServiceProvider ConfigureServices(IServiceCollection services)
-{
-    services.AddScoped(typeof(IScopedService), typeof(ScopedServiceImpl));
-
-    return services.AddServicesToLocator(DotNetStarter.Context.Default.Locator as ILocatorRegistry);
-}
-```
+To do

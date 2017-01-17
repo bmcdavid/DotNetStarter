@@ -26,7 +26,7 @@
         public static IServiceProvider GetServiceProvider(this IDictionary<string, object> context)
         {
             object scoped = null;
-            context?.TryGetValue(ScopedKeyInContext, out scoped);
+            context?.TryGetValue(ScopedProviderKeyInContext, out scoped);
 
             return scoped as IServiceProvider;
         }
@@ -86,7 +86,7 @@
                     addToScope?.Invoke(registry);
 
                     var serviceProvider = new ServiceProvider(scope);
-                    context[ScopedKeyInContext] = serviceProvider;
+                    context[ScopedProviderKeyInContext] = serviceProvider;
 
                     await next.Invoke(context);
                 }
@@ -107,7 +107,7 @@
                 var scopedProvider = context.GetServiceProvider();
 
                 if (scopedProvider == null)
-                    throw new NullReferenceException($"Cannot get {typeof(IServiceProvider).FullName} from current context for key {ScopedKeyInContext}!");
+                    throw new NullReferenceException($"Cannot get {typeof(IServiceProvider).FullName} from current context for key {ScopedProviderKeyInContext}!");
 
                 var middleware = scopedProvider.GetService(typeof(Func<AppFunc, TServiceMiddleware>)) as Func<AppFunc, TServiceMiddleware>;
 

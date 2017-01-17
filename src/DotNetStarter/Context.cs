@@ -1,6 +1,7 @@
 ﻿namespace DotNetStarter
 {
     using Abstractions;
+    using System;
 
     /// <summary>
     /// Default hook into startup process, preferred to access using Import&lt;T> which call this.
@@ -10,7 +11,12 @@
         /// <summary>
         /// Dictionary Key to retrive scoped IServiceProvider
         /// </summary>
-        public static readonly string ScopedKeyInContext = typeof(Context).FullName;
+        public static readonly string ScopedProviderKeyInContext = typeof(Context).FullName + "." + nameof(IServiceProvider);
+
+        /// <summary>
+        /// Dictionary Key to retrive scoped ILocator
+        /// </summary>
+        public static readonly string ScopedLocatorKeyInContext = typeof(Context).FullName + "." + nameof(ILocator);
 
         private static readonly object _Lock = new object();
 

@@ -1,8 +1,9 @@
 ﻿namespace DotNetStarter.Web
 {
+    using System;
     using System.Collections.Generic;
     using System.Web;
-
+    
     /// <summary>
     /// Main startup module
     /// </summary>
@@ -34,13 +35,20 @@
         /// <summary>
         /// Initialize modules
         /// </summary>
-        /// <param name="context"></param>
-        public void Init(HttpApplication context)
+        /// <param name="application"></param>
+        public void Init(HttpApplication application)
         {
-            if (StartupWebModuleHandler.Service.Enabled())
-            {
-                StartupWebModuleHandler.Service.Startup(context, StartupModules);
-            }
+            var handler = StartupWebModuleHandler.Service;
+
+            if (handler == null)
+                throw new ArgumentNullException();
+
+            if (handler.ScopeEnabled())
+                handler.OpenLocatorScope(application);
+
+            if (handler.StartupEnabled())
+                handler.Startup(application, StartupModules);
+
         }
     }
 }
