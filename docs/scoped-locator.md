@@ -32,4 +32,4 @@ var scopedLocator = HttpContext.Current?.GetScopedLocator(); // using DotNetStar
 ```
 
 ### Adding aspnetcore services to Locator for scoped IServiceProvider
-See [examples for netcore](./example-netcore-configure-services.html)
+See [examples for netcore](https://bmcdavid.github.io/DotNetStarter/example-netcore-configure-services.html)

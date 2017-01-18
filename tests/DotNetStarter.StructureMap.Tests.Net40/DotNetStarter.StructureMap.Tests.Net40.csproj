@@ -64,6 +64,10 @@
     <Compile Include="..\DotNetStarter.DryIoc.Tests\_TestSetup.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\net40\DotNetStarter.Abstractions\DotNetStarter.Abstractions.csproj">
+      <Project>{cb1afdb1-73b4-4ec2-a375-7130e1591b59}</Project>
+      <Name>DotNetStarter.Abstractions</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\net40\DotNetStarter.StructureMap\DotNetStarter.StructureMap.csproj">
       <Project>{3a259846-848f-40c9-9443-d2a4817ca6e2}</Project>
       <Name>DotNetStarter.StructureMap</Name>

@@ -65,6 +65,10 @@
     <Compile Include="..\DotNetStarter.DryIoc.Tests\_TestSetup.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\net45\DotNetStarter.Abstractions\DotNetStarter.Abstractions.csproj">
+      <Project>{cc46afbd-8f6d-4575-9ffe-9e8effa75d20}</Project>
+      <Name>DotNetStarter.Abstractions</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\net45\DotNetStarter.DryIoc\DotNetStarter.DryIoc.csproj">
       <Project>{2bac4235-8547-4d91-af18-040e851d4ad9}</Project>
       <Name>DotNetStarter.DryIoc</Name>

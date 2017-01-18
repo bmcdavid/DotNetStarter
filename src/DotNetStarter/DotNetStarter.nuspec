@@ -2,7 +2,8 @@
 <package>
   <metadata>
     <id>DotNetStarter</id>
-    <version>$version$</version><!-- overridden by "NuGet pack -Version" flag -->
+    <version>$version$</version>
+    <!-- overridden by "NuGet pack -Version" flag -->
     <authors>Brad McDavid</authors>
     <owners>Brad McDavid</owners>
     <projectUrl>https://bmcdavid.github.io/DotNetStarter/</projectUrl>
@@ -12,10 +13,17 @@
     <copyright>Copyright $year$</copyright>
     <tags>Startup Modules</tags>
     <dependencies>
-      <group targetFramework="net35"></group>
-      <group targetFramework="net40"></group>
-      <group targetFramework="net45"></group>
+      <group targetFramework="net35">
+        <dependency id="DotNetStarter.Abstractions" version="[0,1)" />
+      </group>
+      <group targetFramework="net40">
+        <dependency id="DotNetStarter.Abstractions" version="[0,1)" />
+      </group>
+      <group targetFramework="net45">
+        <dependency id="DotNetStarter.Abstractions" version="[0,1)" />
+      </group>
       <group targetFramework="netstandard1.3">
+        <dependency id="DotNetStarter.Abstractions" version="[0,1)" />
         <dependency id="System.AppContext" version="4.1.0" />
         <dependency id="System.Collections" version="4.0.11" />
         <dependency id="System.Diagnostics.Debug" version="4.0.11" />
@@ -38,19 +46,19 @@
     <file src="bin\Release\DotNetStarter.dll" target="lib\net35" />
     <file src="bin\Release\DotNetStarter.pdb" target="lib\net35" />
     <file src="bin\Release\DotNetStarter.xml" target="lib\net35" />
-    
+
     <file src="..\..\net40\bin\Release\DotNetStarter.dll" target="lib\net40" />
     <file src="..\..\net40\bin\Release\DotNetStarter.pdb" target="lib\net40" />
     <file src="..\..\net40\bin\Release\DotNetStarter.xml" target="lib\net40" />
-    
+
     <file src="..\..\net45\bin\Release\DotNetStarter.dll" target="lib\net45" />
     <file src="..\..\net45\bin\Release\DotNetStarter.pdb" target="lib\net45" />
     <file src="..\..\net45\bin\Release\DotNetStarter.xml" target="lib\net45" />
-    
+
     <file src="..\..\netstandard1.3\bin\Release\DotNetStarter.dll" target="lib\netstandard1.3" />
     <file src="..\..\netstandard1.3\bin\Release\DotNetStarter.pdb" target="lib\netstandard1.3" />
     <file src="..\..\netstandard1.3\bin\Release\DotNetStarter.xml" target="lib\netstandard1.3" />
-    
+
     <file src="readme.txt" target="readme.txt" />
   </files>
 </package>

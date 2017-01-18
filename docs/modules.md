@@ -6,7 +6,7 @@ title: DotNetStarter - Modules
 DotNetStarter module types:
 
 * IStartupModule: startup/shutdown system with support for DI but no scoped registrations.
-* [ILocatorConfigure](./register.html): system for configurating locator/container services which requires empty constructors for implementations;
+* [ILocatorConfigure](https://bmcdavid.github.io/DotNetStarter/register.html): system for configurating locator/container services which requires empty constructors for implementations;
 * IWebModule: startup module that implements IHttpModule in DotNetStarter.Web (only for netframework projects).
 
 ## IStartupModules
@@ -18,11 +18,11 @@ This call should be placed early in the application, below are a few possible pl
 * Console apps - use as first line in Main method.
 * Owin apps - use app.UseScopedLocator(DotNetStarter.Context.Default.Locator) as first middleware.
 
-***Note:*** The Shutdown method may not execute by default in all systems as noted in the [known issues](./known-issues.html).
+***Note:*** The Shutdown method may not execute by default in all systems as noted in the [known issues](https://bmcdavid.github.io/DotNetStarter/known-issues.html).
 
 ## Filtering Modules
 Scanned modules can be removed by creating a class that implements IStartupModuleFilter and
- swapping out the default implementation in a custom [object factory](./custom-objectfactory.html).
+ swapping out the default implementation in a custom [object factory](https://bmcdavid.github.io/DotNetStarter/custom-objectfactory.html).
 
 ## Startup Module Example
 ```cs

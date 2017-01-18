@@ -49,6 +49,10 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\DotNetStarter.Abstractions\DotNetStarter.Abstractions.csproj">
+      <Project>{cb1afdb1-73b4-4ec2-a375-7130e1591b59}</Project>
+      <Name>DotNetStarter.Abstractions</Name>
+    </ProjectReference>
     <ProjectReference Include="..\DotNetStarter\DotNetStarter.csproj">
       <Project>{e4771522-237a-47cd-8548-ba9579cc4f55}</Project>
       <Name>DotNetStarter</Name>

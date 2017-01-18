@@ -55,9 +55,17 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\net45\DotNetStarter.Abstractions\DotNetStarter.Abstractions.csproj">
+      <Project>{cc46afbd-8f6d-4575-9ffe-9e8effa75d20}</Project>
+      <Name>DotNetStarter.Abstractions</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\net45\DotNetStarter.Owin\DotNetStarter.Owin.csproj">
       <Project>{8770811c-eb67-41b2-ae93-55cc50882ca0}</Project>
       <Name>DotNetStarter.Owin</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\src\DotNetStarter\DotNetStarter.csproj">
+      <Project>{ba813dc5-d696-461d-8e62-f04fcd669adb}</Project>
+      <Name>DotNetStarter</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets" Condition="Exists('$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets')" />

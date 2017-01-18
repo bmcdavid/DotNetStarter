@@ -39,55 +39,18 @@
     <Reference Include="System" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Abstractions\AssemblyDependentBaseAttribute.cs" />
-    <Compile Include="Abstractions\AssemblyFactoryBaseAttribute.cs" />
-    <Compile Include="Abstractions\DependencyBaseAttribute.cs" />
-    <Compile Include="Abstractions\ILocatorDefaultRegistrations.cs" />
-    <Compile Include="Abstractions\ILocatorRegistryFactory.cs" />
-    <Compile Include="Abstractions\ILocatorSetContainer.cs" />
-    <Compile Include="Abstractions\IShutdownHandler.cs" />
-    <Compile Include="Abstractions\LocatorRegistryFactoryAttribute.cs" />
-    <Compile Include="Abstractions\StartupObjectFactoryAttribute.cs" />
-    <Compile Include="Abstractions\StartupModuleAttribute.cs" />
-    <Compile Include="Abstractions\IReflectionHelper.cs" />
-    <Compile Include="Abstractions\ScanTypeRegistryAttribute.cs" />
-    <Compile Include="Abstractions\RegisterAttribute.cs" />
-    <Compile Include="Abstractions\ContructorType.cs" />
-    <Compile Include="Abstractions\LifeTime.cs" />
-    <Compile Include="Abstractions\LogLevel.cs" />
-    <Compile Include="Abstractions\TimedActionScope.cs" />
-    <Compile Include="Abstractions\IAssemblyLoader.cs" />
-    <Compile Include="Abstractions\IAssemblyFilter.cs" />
-    <Compile Include="Abstractions\IAssemblyScanner.cs" />
-    <Compile Include="Abstractions\ILocatorConfigure.cs" />
-    <Compile Include="Abstractions\ILocatorRegistry.cs" />
-    <Compile Include="Abstractions\IDependencyFinder.cs" />
-    <Compile Include="Abstractions\IDependencyNode.cs" />
-    <Compile Include="Abstractions\IDependencySorter.cs" />
-    <Compile Include="Abstractions\IStartupModule.cs" />
-    <Compile Include="Abstractions\IStartupModuleFilter.cs" />
-    <Compile Include="Abstractions\IStartupConfiguration.cs" />
-    <Compile Include="Abstractions\IStartupContext.cs" />
-    <Compile Include="Abstractions\IStartupHandler.cs" />
-    <Compile Include="Abstractions\IStartupLogger.cs" />
-    <Compile Include="Abstractions\IStartupObjectFactory.cs" />
-    <Compile Include="Abstractions\ILocator.cs" />
-    <Compile Include="Abstractions\StartupContainerException.cs" />
-    <Compile Include="Abstractions\IRequestSettingsProvider.cs" />
-    <Compile Include="Abstractions\ITimedTask.cs" />
-    <Compile Include="Abstractions\ITimedTaskManager.cs" />
     <Compile Include="AssemblyFilter.cs" />
     <Compile Include="AssemblyScanner.cs" />
     <Compile Include="Import.cs" />
     <Compile Include="ImportAll.cs" />
     <Compile Include="Internal\AssemblyLoader.cs" />
     <Compile Include="Internal\ContainerDefaults.cs" />
-    <Compile Include="Internal\TypeExtensions.cs" />
     <Compile Include="DependencyComparer.cs" />
     <Compile Include="DependencyFinder.cs" />
     <Compile Include="DependencyNode.cs" />
     <Compile Include="DependencySorter.cs" />
     <Compile Include="Context.cs" />
+    <Compile Include="Internal\TypeExtensions.cs" />
     <Compile Include="ServiceProvider.cs" />
     <Compile Include="ServiceScope.cs" />
     <Compile Include="ServiceScopeFactory.cs" />
@@ -114,6 +77,12 @@
     <None Include="gulpfile.js" />
     <None Include="DotNetStarter.nuspec" />
     <None Include="package.json" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\DotNetStarter.Abstractions\DotNetStarter.Abstractions.csproj">
+      <Project>{f01c1501-b8f5-4b3d-b2a1-0975731992e6}</Project>
+      <Name>DotNetStarter.Abstractions</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

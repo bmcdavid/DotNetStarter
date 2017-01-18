@@ -41,43 +41,6 @@
     <Reference Include="Microsoft.CSharp" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="..\..\src\DotNetStarter\Abstractions\AssemblyDependentBaseAttribute.cs" />
-    <Compile Include="..\..\src\DotNetStarter\Abstractions\AssemblyFactoryBaseAttribute.cs" />
-    <Compile Include="..\..\src\DotNetStarter\Abstractions\DependencyBaseAttribute.cs" />
-    <Compile Include="..\..\src\DotNetStarter\Abstractions\ILocatorDefaultRegistrations.cs" />
-    <Compile Include="..\..\src\DotNetStarter\Abstractions\ILocatorRegistryFactory.cs" />
-    <Compile Include="..\..\src\DotNetStarter\Abstractions\ILocatorSetContainer.cs" />
-    <Compile Include="..\..\src\DotNetStarter\Abstractions\IShutdownHandler.cs" />
-    <Compile Include="..\..\src\DotNetStarter\Abstractions\LocatorRegistryFactoryAttribute.cs" />
-    <Compile Include="..\..\src\DotNetStarter\Abstractions\StartupObjectFactoryAttribute.cs" />
-    <Compile Include="..\..\src\DotNetStarter\Abstractions\StartupModuleAttribute.cs" />
-    <Compile Include="..\..\src\DotNetStarter\Abstractions\IReflectionHelper.cs" />
-    <Compile Include="..\..\src\DotNetStarter\Abstractions\ScanTypeRegistryAttribute.cs" />
-    <Compile Include="..\..\src\DotNetStarter\Abstractions\RegisterAttribute.cs" />
-    <Compile Include="..\..\src\DotNetStarter\Abstractions\ContructorType.cs" />
-    <Compile Include="..\..\src\DotNetStarter\Abstractions\LifeTime.cs" />
-    <Compile Include="..\..\src\DotNetStarter\Abstractions\LogLevel.cs" />
-    <Compile Include="..\..\src\DotNetStarter\Abstractions\TimedActionScope.cs" />
-    <Compile Include="..\..\src\DotNetStarter\Abstractions\IAssemblyLoader.cs" />
-    <Compile Include="..\..\src\DotNetStarter\Abstractions\IAssemblyFilter.cs" />
-    <Compile Include="..\..\src\DotNetStarter\Abstractions\IAssemblyScanner.cs" />
-    <Compile Include="..\..\src\DotNetStarter\Abstractions\ILocatorConfigure.cs" />
-    <Compile Include="..\..\src\DotNetStarter\Abstractions\ILocatorRegistry.cs" />
-    <Compile Include="..\..\src\DotNetStarter\Abstractions\IDependencyFinder.cs" />
-    <Compile Include="..\..\src\DotNetStarter\Abstractions\IDependencyNode.cs" />
-    <Compile Include="..\..\src\DotNetStarter\Abstractions\IDependencySorter.cs" />
-    <Compile Include="..\..\src\DotNetStarter\Abstractions\IStartupModule.cs" />
-    <Compile Include="..\..\src\DotNetStarter\Abstractions\IStartupModuleFilter.cs" />
-    <Compile Include="..\..\src\DotNetStarter\Abstractions\IStartupConfiguration.cs" />
-    <Compile Include="..\..\src\DotNetStarter\Abstractions\IStartupContext.cs" />
-    <Compile Include="..\..\src\DotNetStarter\Abstractions\IStartupHandler.cs" />
-    <Compile Include="..\..\src\DotNetStarter\Abstractions\IStartupLogger.cs" />
-    <Compile Include="..\..\src\DotNetStarter\Abstractions\IStartupObjectFactory.cs" />
-    <Compile Include="..\..\src\DotNetStarter\Abstractions\ILocator.cs" />
-    <Compile Include="..\..\src\DotNetStarter\Abstractions\StartupContainerException.cs" />
-    <Compile Include="..\..\src\DotNetStarter\Abstractions\IRequestSettingsProvider.cs" />
-    <Compile Include="..\..\src\DotNetStarter\Abstractions\ITimedTask.cs" />
-    <Compile Include="..\..\src\DotNetStarter\Abstractions\ITimedTaskManager.cs" />
     <Compile Include="..\..\src\DotNetStarter\AssemblyFilter.cs" />
     <Compile Include="..\..\src\DotNetStarter\AssemblyScanner.cs" />
     <Compile Include="..\..\src\DotNetStarter\Import.cs" />
@@ -109,6 +72,12 @@
     <Compile Include="..\..\src\DotNetStarter\ServiceScope.cs" />
     <Compile Include="..\..\src\DotNetStarter\ServiceScopeFactory.cs" />
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\DotNetStarter.Abstractions\DotNetStarter.Abstractions.csproj">
+      <Project>{cc46afbd-8f6d-4575-9ffe-9e8effa75d20}</Project>
+      <Name>DotNetStarter.Abstractions</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

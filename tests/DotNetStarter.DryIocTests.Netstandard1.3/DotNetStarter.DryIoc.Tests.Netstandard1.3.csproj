@@ -130,6 +130,10 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\netstandard1.3\DotNetStarter.Abstractions\DotNetStarter.Abstractions.csproj">
+      <Project>{d32c6eca-a524-44fd-aca2-64f7b2384aa8}</Project>
+      <Name>DotNetStarter.Abstractions</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\netstandard1.3\DotNetStarter.DryIoc\DotNetStarter.DryIoc.csproj">
       <Project>{6ae866e1-054c-4470-95d0-3ec06e3a7486}</Project>
       <Name>DotNetStarter.DryIoc</Name>

@@ -44,6 +44,10 @@
     <Compile Include="..\..\src\DotNetStarter.DryIoc\Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\DotNetStarter.Abstractions\DotNetStarter.Abstractions.csproj">
+      <Project>{d32c6eca-a524-44fd-aca2-64f7b2384aa8}</Project>
+      <Name>DotNetStarter.Abstractions</Name>
+    </ProjectReference>
     <ProjectReference Include="..\DotNetStarter\DotNetStarter.csproj">
       <Project>{17dd8cbf-62b6-42e5-9e38-2ae4a630a97f}</Project>
       <Name>DotNetStarter</Name>

@@ -69,6 +69,10 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\src\DotNetStarter.Abstractions\DotNetStarter.Abstractions.csproj">
+      <Project>{f01c1501-b8f5-4b3d-b2a1-0975731992e6}</Project>
+      <Name>DotNetStarter.Abstractions</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\src\DotNetStarter.StructureMap\DotNetStarter.StructureMap.csproj">
       <Project>{b9852d14-ec6f-47fb-888c-75c238bc9a06}</Project>
       <Name>DotNetStarter.StructureMap</Name>
