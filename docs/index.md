@@ -14,6 +14,9 @@ The goal of this project is to create a startup and IoC/DI framework for netfram
 * [Assembly Scanning](./scanning.html)
 * [Custom Locator](./custom-locator.html)
 * [Scoped Services](./scoped-locator.html)
-* [DryIoc Locator Examples](./dryioc-locator.html)
-* [Structure Locator Examples](./structuremap-locator.html)
 * [Known Issues](./known-issues.html)
+* Examples
+  * [MVC with Scoped Dependency Resolver](./example-netframework-mvc.html)
+  * [WebApi with Scoped Depenendy Resolver](./example-netframework-webapi.html)
+  * [Episerver Locator with Scoped Dependency Resolver](./example-episerver-locator.html)
+  * [ASP.Net Core Service Configuration](./example-netcore-configure-services.html)

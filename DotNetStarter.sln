@@ -80,14 +80,16 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "docs", "docs", "{C36723A8-B
 		docs\_config.yml = docs\_config.yml
 		docs\custom-locator.md = docs\custom-locator.md
 		docs\custom-objectfactory.md = docs\custom-objectfactory.md
-		docs\dryioc-locator.md = docs\dryioc-locator.md
+		docs\example-episerver-locator.md = docs\example-episerver-locator.md
+		docs\example-netcore-configure-services.md = docs\example-netcore-configure-services.md
+		docs\example-netframework-mvc.md = docs\example-netframework-mvc.md
+		docs\example-netframework-webapi.md = docs\example-netframework-webapi.md
 		docs\index.md = docs\index.md
 		docs\known-issues.md = docs\known-issues.md
 		docs\modules.md = docs\modules.md
 		docs\register.md = docs\register.md
 		docs\scanning.md = docs\scanning.md
 		docs\scoped-locator.md = docs\scoped-locator.md
-		docs\structuremap-locator.md = docs\structuremap-locator.md
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotNetStarter.Owin", "net45\DotNetStarter.Owin\DotNetStarter.Owin.csproj", "{8770811C-EB67-41B2-AE93-55CC50882CA0}"

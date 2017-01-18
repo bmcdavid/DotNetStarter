@@ -11,7 +11,7 @@ Implementations must use the IStartupObjectFactory interface, which is typically
 
 ## Example Custom Object Factory
 
-```
+```cs
 // attribute to register 
 [assembly: StartupObjectFactory(typeof(Example.CustomObjectFactory))]
 

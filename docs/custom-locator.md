@@ -11,7 +11,7 @@ The following are the currently supported container implementations:
 
 ## Example Custom Locator with factory
 
-```
+```cs
 // attribute to register container with the default object factory
 [assembly: DotNetStarter.Abstractions.LocatorRegistryFactory
 (
