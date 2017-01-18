@@ -10,7 +10,7 @@ There are two ways to register items with to the locator.
 The first and simplest way is using the DotNetStarter.Abstractions.RegisterAttribute on the implementation class.
 This works for registering type implementations but doesn't support delegate or instance based registrations.
 
-```
+```cs
 [Register(typeof(IServiceType), LifeTime.Singleton)]
 ```
 
