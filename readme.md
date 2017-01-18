@@ -6,14 +6,14 @@ The goal of this project is to create a startup and IoC/DI framework for netfram
 
 For IoC/DI containers, they can be swapped at runtime via the assembly attribute as noted below for DryIoc:
 
-```
+```cs
 [assembly: DotNetStarter.Abstractions.LocatorRegistryFactory(typeof(DotNetStarter.DryIocLocatorFactory))]
 ```
 
 ## Known Issues
 
 * IStartupModule.Shutdown doesn't execute in netcoreapps. Workaround is to add an init module and attach to unloading event as noted below:
-```
+```cs
     [StartupModule]
     public class ShutdownHook : IStartupModule
     {
@@ -36,7 +36,7 @@ For IoC/DI containers, they can be swapped at runtime via the assembly attribute
 ```
 
 * netcoreapps require a custom IAssemblyLoader noted below:
-```
+```cs
     /// <summary>
     /// Assigned by AssemblyLoader.SetAssemblyLoader(new WebAssemblyLoader()); as first line in Program.cs
     /// </summary>
@@ -58,7 +58,7 @@ All attributes, baseclasses and interfaces reside in the DotNetStarter.Abstracti
 
 ## Examples of DI/IOC, requires an ILocator package such as DotNetStarter.DryIoc or DotNetStarter.StructureMap
 ### Registration
-```
+```cs
     public interface ITest
     {
         string SayHi(string n);
@@ -71,7 +71,7 @@ All attributes, baseclasses and interfaces reside in the DotNetStarter.Abstracti
     }
 ```
 ### Usage
-```
+```cs
 	private Import<ITest> TestService;
 	// Import<T> is a struct wrapper for DotNetStarter.Context.Default.Locator and can be used when scoping or unique instances aren't required.
         

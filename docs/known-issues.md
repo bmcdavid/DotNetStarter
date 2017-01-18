@@ -4,7 +4,7 @@ title: DotNetStarter - Known Issues
 # Known Issues
 
 #### IStartupModule.Shutdown doesn't execute in netcoreapps. Workaround is to add an init module and attach to unloading event as noted below:
-```
+```cs
     [StartupModule]
     public class ShutdownHook : IStartupModule
     {
@@ -27,7 +27,7 @@ title: DotNetStarter - Known Issues
 ```
 
 #### netcoreapps require a custom IAssemblyLoader noted below:
-```
+```cs
     /// <summary>
     /// Assigned by AssemblyLoader.SetAssemblyLoader(new WebAssemblyLoader()); as first line in Program.cs
     /// </summary>

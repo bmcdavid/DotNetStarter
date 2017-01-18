@@ -13,7 +13,7 @@ Also some containers may handle scoped items differently, some may have a single
 ## Examples
 
 ### Creating a scope
-```
+```cs
 var locator = DotNetStarter.Context.Default.Locator;
 
 using (var scope = locator.OpenScope())
@@ -25,7 +25,11 @@ using (var scope = locator.OpenScope())
 ```
 
 ### Creating a scope for System.Web requests
-To do
+Install package DotNetStarter.Web. The scoped locator can be retrieved with
+
+```cs
+var scopedLocator = HttpContext.Current?.GetScopedLocator(); // using DotNetStarter.Web;
+```
 
 ### Adding aspnetcore services to Locator for scoped IServiceProvider
-To do
+See [examples for netcore](./example-netcore-configure-services.html)

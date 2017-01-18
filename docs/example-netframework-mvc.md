@@ -11,7 +11,7 @@ Below is an example of how to enable dependency injection in MVC for ASP.Net.
 * DotNetStarter.Web
 * Microsoft.AspNet.Mvc
 
-```
+```cs
 using DotNetStarter.Abstractions;
 using DotNetStarter.Web;
 using System;

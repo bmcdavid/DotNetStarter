@@ -11,7 +11,7 @@ Below is an example of how to enable dependency injection in WebApi for ASP.Net.
 * DotNetStarter.Web
 * Microsoft.AspNet.WebApi
 
-```
+```cs
 using DotNetStarter.Abstractions;
 using DotNetStarter.Web;
 using System;

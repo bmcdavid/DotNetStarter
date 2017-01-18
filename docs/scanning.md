@@ -8,7 +8,7 @@ Assembly scanning occurs to discover IStartupModule and ILocatorConfigure module
 
 #### Below is the default for DotNetStarter to discover its needed types:
 
- ```
+ ```cs
 
  // this scans for types that implement IStartupModule, StartupModuleAttribute, and RegisterAttribute usages
 [assembly: ScanTypeRegistry(
@@ -20,7 +20,7 @@ Assembly scanning occurs to discover IStartupModule and ILocatorConfigure module
 
 #### The default assembly scanner stores these in a static dictionary for retrieval noted below:
  
- ```
+ ```cs
 
 [StartupModule]
 public class RegisterConfiguration : ILocatorConfigure
