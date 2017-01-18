@@ -6,7 +6,7 @@ title: DotNetStarter - Modules
 DotNetStarter module types:
 
 * IStartupModule: startup/shutdown system with support for DI but no scoped registrations.
-* [ILocatorConfigure](./register.html): sstem for configurating locator/container services which requires empty constructors for implementations;
+* [ILocatorConfigure](./register.html): system for configurating locator/container services which requires empty constructors for implementations;
 * IWebModule: startup module that implements IHttpModule in DotNetStarter.Web (only for netframework projects).
 
 ## IStartupModules
