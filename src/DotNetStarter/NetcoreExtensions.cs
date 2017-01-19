@@ -11,11 +11,11 @@ namespace DotNetStarter
     {
         // todo: remove this for now, its not very helpful in DryIoc, not tested in Structuremap...
 
-        /// <summary>
-        /// Adds service collection items to locator
-        /// </summary>
-        /// <param name="services"></param>
-        /// <param name="locator"></param>
+        ///// <summary>
+        ///// Adds service collection items to locator
+        ///// </summary>
+        ///// <param name="services"></param>
+        ///// <param name="locator"></param>
         //public static IServiceProvider AddServicesToLocator(this IServiceCollection services, ILocatorRegistry locator)
         //{
         //    if (locator == null)

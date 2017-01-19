@@ -1,16 +1,16 @@
-using System.Reflection;
+﻿using System.Reflection;
 using System.Runtime.InteropServices;
 
-[assembly: AssemblyTitle("DotNetStarter.Web")]
+[assembly: AssemblyTitle("DotNetStarter.Extensions.Mvc")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("DotNetStarter.Web")]
-[assembly: AssemblyCopyright("Copyright � {year}")]
+[assembly: AssemblyProduct("DotNetStarter.Extensions.Mvc")]
+[assembly: AssemblyCopyright("Copyright © {year}")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 [assembly: ComVisible(false)]
-[assembly: Guid("51e722e9-62ac-46c7-87b2-0f1a9d647cc2")]
+[assembly: Guid("5f0d3088-4b29-4ecd-8df0-c5f14366db5b")]
 [assembly: AssemblyVersion("0.1.0")]
 [assembly: AssemblyFileVersion("0.1.0")]
 [assembly: AssemblyInformationalVersion("0.1.0.{build} Build: {build} Commit Hash: {commit}")]
