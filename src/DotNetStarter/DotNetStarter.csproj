@@ -41,8 +41,6 @@
   <ItemGroup>
     <Compile Include="AssemblyFilter.cs" />
     <Compile Include="AssemblyScanner.cs" />
-    <Compile Include="Import.cs" />
-    <Compile Include="ImportAll.cs" />
     <Compile Include="Internal\AssemblyLoader.cs" />
     <Compile Include="Internal\ContainerDefaults.cs" />
     <Compile Include="DependencyComparer.cs" />

@@ -4,7 +4,16 @@
 
 The goal of this project is to create a startup and IoC/DI framework for netframeworks 3.5+ and netstandard 1.3+ which allows packages to support container registrations without a specific container defined.
 
-For IoC/DI containers, they can be swapped at runtime via the assembly attribute as noted below for DryIoc:
+## Getting Started
+To kickoff the startup modules and configure the locator please execute the following early in the project startup, for example global.asax for web applications.
+
+```cs
+DotNetStarter.Context.Startup():
+```
+
+### Inversion of Control / Dependency Injection
+An IoC/DI package must be installed to enable the ILocator, two are provided by default DotNetStarter.DryIoc and DotNetStarter.Structuremap.
+They can also be swapped at runtime via the assembly attribute as noted below for DryIoc:
 
 ```cs
 [assembly: DotNetStarter.Abstractions.LocatorRegistryFactory(typeof(DotNetStarter.DryIocLocatorFactory))]
@@ -52,10 +61,6 @@ For IoC/DI containers, they can be swapped at runtime via the assembly attribute
     }
 
 ```
-## Abstractions
-
-All attributes, baseclasses and interfaces reside in the DotNetStarter.Abstractions namespace. Documentation is provided in the intellisense.
-
 ## Examples of DI/IOC, requires an ILocator package such as DotNetStarter.DryIoc or DotNetStarter.StructureMap
 ### Registration
 ```cs
@@ -73,7 +78,7 @@ All attributes, baseclasses and interfaces reside in the DotNetStarter.Abstracti
 ### Usage
 ```cs
 	private Import<ITest> TestService;
-	// Import<T> is a struct wrapper for DotNetStarter.Context.Default.Locator and can be used when scoping or unique instances aren't required.
+	// Import<T> is a struct wrapper for DotNetStarter.Context.Default.Locator and can be used when scoping isn't required.
         
     public void ExampleMethod()
     {

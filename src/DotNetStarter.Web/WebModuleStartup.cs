@@ -1,5 +1,6 @@
 ﻿namespace DotNetStarter.Web
 {
+    using DotNetStarter.Abstractions;
     using System;
     using System.Collections.Generic;
     using System.Web;

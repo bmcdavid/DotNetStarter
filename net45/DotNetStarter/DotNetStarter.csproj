@@ -43,8 +43,6 @@
   <ItemGroup>
     <Compile Include="..\..\src\DotNetStarter\AssemblyFilter.cs" />
     <Compile Include="..\..\src\DotNetStarter\AssemblyScanner.cs" />
-    <Compile Include="..\..\src\DotNetStarter\Import.cs" />
-    <Compile Include="..\..\src\DotNetStarter\ImportAll.cs" />
     <Compile Include="..\..\src\DotNetStarter\Internal\AssemblyLoader.cs" />
     <Compile Include="..\..\src\DotNetStarter\Internal\ContainerDefaults.cs" />
     <Compile Include="..\..\src\DotNetStarter\Internal\TypeExtensions.cs" />

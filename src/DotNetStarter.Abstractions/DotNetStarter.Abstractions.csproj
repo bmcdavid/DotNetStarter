@@ -51,6 +51,7 @@
     <Compile Include="ILocatorRegistry.cs" />
     <Compile Include="ILocatorRegistryFactory.cs" />
     <Compile Include="ILocatorSetContainer.cs" />
+    <Compile Include="Import.cs" />
     <Compile Include="Internal\TypeExtensions.cs" />
     <Compile Include="IReflectionHelper.cs" />
     <Compile Include="IRequestSettingsProvider.cs" />

@@ -41,6 +41,9 @@
                         _Configuration = factory.CreateStartupConfiguration(ObjectFactory.Assemblies);
 
                         _Started = _Handler.Startup(_Configuration, factory, out _Default);
+
+                        //todo: figure out best spot to call this
+                        ImportHelper.OnEnsureLocator += (() => _Default.Locator);
                     }
                 }
             }

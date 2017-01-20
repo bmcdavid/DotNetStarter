@@ -56,6 +56,7 @@
     <Compile Include="..\..\src\DotNetStarter.Abstractions\ILocatorRegistry.cs" />
     <Compile Include="..\..\src\DotNetStarter.Abstractions\ILocatorRegistryFactory.cs" />
     <Compile Include="..\..\src\DotNetStarter.Abstractions\ILocatorSetContainer.cs" />
+    <Compile Include="..\..\src\DotNetStarter.Abstractions\Import.cs" />
     <Compile Include="..\..\src\DotNetStarter.Abstractions\Internal\TypeExtensions.cs" />
     <Compile Include="..\..\src\DotNetStarter.Abstractions\IReflectionHelper.cs" />
     <Compile Include="..\..\src\DotNetStarter.Abstractions\IRequestSettingsProvider.cs" />
