@@ -45,41 +45,64 @@
                 scanAssemblies = scanAssemblies.Where(assemblyFilter);
 
             var types = scanAssemblies.SelectMany(x => x.GetTypesCheck());
-            var attrType = typeof(Attribute);
+            var matches = from checkType in types
+                          from registerType in forTypes
+                          where IsMatch(registerType, checkType)
+                          select new { registerType, checkType };
 
-            foreach (var type in types)
+            foreach (var item in matches)
             {
-                foreach (var item in forTypes)
+                HashSet<Type> storedTypes;
+
+                if (!ScannedRegistry.TryGetValue(item.registerType, out storedTypes))
                 {
-                    bool isMatch = false;
-
-                    if (attrType.IsAssignableFromCheck(item))
-                    {
-                        isMatch = type.CustomAttribute(item, false).Any();
-                    }
-                    else if (item.IsInterface())
-                    {
-                        isMatch = type.HasInterface(item);
-                    }
-                    else
-                    {
-                        isMatch = item.IsAssignableFromCheck(type);
-                    }
-
-                    if (isMatch)
-                    {
-                        HashSet<Type> storedTypes;
-
-                        if (!ScannedRegistry.TryGetValue(item, out storedTypes))
-                        {
-                            storedTypes = new HashSet<Type>();
-                        }
-
-                        storedTypes.Add(type);
-                        ScannedRegistry[item] = storedTypes;
-                    }
+                    storedTypes = new HashSet<Type>();
                 }
+
+                storedTypes.Add(item.checkType);
+                ScannedRegistry[item.registerType] = storedTypes;
             }
+
+            //foreach (var type in types)
+            //{
+            //    foreach (var item in forTypes)
+            //    {
+            //        if (IsMatch(item, type))
+            //        {
+            //            HashSet<Type> storedTypes;
+
+            //            if (!ScannedRegistry.TryGetValue(item, out storedTypes))
+            //            {
+            //                storedTypes = new HashSet<Type>();
+            //            }
+
+            //            storedTypes.Add(type);
+            //            ScannedRegistry[item] = storedTypes;
+            //        }
+            //    }
+            //}
+        }
+
+        static Type _AttrType = typeof(Attribute);
+
+        static bool IsMatch(Type registeredType, Type checkType)
+        {
+            bool isMatch = false;
+
+            if (_AttrType.IsAssignableFromCheck(registeredType))
+            {
+                isMatch = checkType.CustomAttribute(registeredType, false).Any();
+            }
+            else if (registeredType.IsInterface())
+            {
+                isMatch = checkType.HasInterface(registeredType);
+            }
+            else
+            {
+                isMatch = registeredType.IsAssignableFromCheck(checkType);
+            }
+
+            return isMatch;
         }
     }
 }
