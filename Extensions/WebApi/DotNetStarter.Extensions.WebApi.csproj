@@ -50,6 +50,8 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ApiControllerRegistrationSetup.cs" />
+    <Compile Include="IApiControllerRegistrationSetup.cs" />
     <Compile Include="IPipelineScope.cs" />
     <Compile Include="PipelineScope.cs" />
     <Compile Include="StartupWebApi.cs" />

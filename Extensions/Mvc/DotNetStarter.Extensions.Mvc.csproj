@@ -58,6 +58,8 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ControllerRegistrationSetup.cs" />
+    <Compile Include="IControllerRegistrationSetup.cs" />
     <Compile Include="ScopedDependencyResolver.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="StartupMvc.cs" />

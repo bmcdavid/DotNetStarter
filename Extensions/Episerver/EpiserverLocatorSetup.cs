@@ -1,5 +1,5 @@
 ﻿using DotNetStarter.Abstractions;
-using DotNetStarter.Mvc;
+using DotNetStarter.Extensions.Mvc;
 using EPiServer.Framework;
 using EPiServer.Framework.Initialization;
 using EPiServer.ServiceLocation;

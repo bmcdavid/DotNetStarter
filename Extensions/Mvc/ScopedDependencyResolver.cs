@@ -8,7 +8,7 @@ using System.Web.Mvc;
 // adds controller implementations to the assembly scanner
 [assembly: ScanTypeRegistry(typeof(IController))]
 
-namespace DotNetStarter.Mvc
+namespace DotNetStarter.Extensions.Mvc
 {
     /// <summary>
     /// Requires DotNetStarter.Web and Microsoft.AspNet.Mvc packages

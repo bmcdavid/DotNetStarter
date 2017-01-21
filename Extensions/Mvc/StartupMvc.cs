@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
 
-namespace DotNetStarter.Mvc
+namespace DotNetStarter.Extensions.Mvc
 {
     /// <summary>
     /// executes on DotNetStarter startup to set MVC dependency resolver and register controllers
@@ -14,13 +14,17 @@ namespace DotNetStarter.Mvc
     {
         ILocator _Locator;
 
+        IControllerRegistrationSetup _ControllerRegistrationSetup;
+
         /// <summary>
         /// Constructor
         /// </summary>
         /// <param name="locator"></param>
-        public StartupMvc(ILocator locator)
+        /// <param name="controllerRegistrationSetup"></param>
+        public StartupMvc(ILocator locator, IControllerRegistrationSetup controllerRegistrationSetup)
         {
             _Locator = locator;
+            _ControllerRegistrationSetup = controllerRegistrationSetup;
         }
 
         /// <summary>
@@ -35,12 +39,13 @@ namespace DotNetStarter.Mvc
         /// <param name="engine"></param>
         public void Startup(IStartupEngine engine)
         {
-            RegisterMvcControllers(engine.Locator);
+            if (_ControllerRegistrationSetup?.EnableControllerRegisterations == true)
+                RegisterMvcControllers(engine.Locator, _ControllerRegistrationSetup.ControllerLifeTime);
 
             DependencyResolver.SetResolver(new ScopedDependencyResolver(engine.Locator));
         }
 
-        static void RegisterMvcControllers(ILocator locator)
+        static void RegisterMvcControllers(ILocator locator, LifeTime controllerLifetime)
         {
             if (locator == null)
                 throw new ArgumentNullException($"{nameof(locator)} cannot be null, please install a locator package such as DotNetStarter.DryIoc or DotNetStart.Structuremap!");
@@ -50,7 +55,7 @@ namespace DotNetStarter.Mvc
 
             foreach (var controller in controllerTypes.Where(x => !x.IsAbstract && !x.IsInterface))
             {
-                registry?.Add(controller, controller, lifeTime: LifeTime.Scoped);
+                registry?.Add(controller, controller, lifeTime: controllerLifetime);
             }
         }
     }
