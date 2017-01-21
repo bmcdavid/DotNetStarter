@@ -46,20 +46,16 @@ They can also be swapped at runtime via the assembly attribute as noted below fo
 
 * netcoreapps require a custom IAssemblyLoader noted below:
 ```cs
-    /// <summary>
-    /// Assigned by AssemblyLoader.SetAssemblyLoader(new WebAssemblyLoader()); as first line in Program.cs
-    /// </summary>
-    public class WebAssemblyLoader : IAssemblyLoader
-    {
-        public IEnumerable<Assembly> GetAssemblies()
-        {
-            var runtimeId = Microsoft.DotNet.PlatformAbstractions.RuntimeEnvironment.GetRuntimeIdentifier();
-            var libraries = Microsoft.Extensions.DependencyModel.DependencyContextExtensions.GetRuntimeAssemblyNames(Microsoft.Extensions.DependencyModel.DependencyContext.Default, runtimeId);
+// Add the following lines in the Startup class constructor, for netcore assembly loading
+Func<IEnumerable<Assembly>> assemblyLoader = () =>
+{
+    var runtimeId = Microsoft.DotNet.PlatformAbstractions.RuntimeEnvironment.GetRuntimeIdentifier();
+    var libraries = Microsoft.Extensions.DependencyModel.DependencyContextExtensions.GetRuntimeAssemblyNames(Microsoft.Extensions.DependencyModel.DependencyContext.Default, runtimeId);
 
-            return libraries.Select(x => Assembly.Load(new AssemblyName(x.Name)));
-        }
-    }
+    return libraries.Select(x => Assembly.Load(new AssemblyName(x.Name)));
+};
 
+DotNetStarter.ApplicationContext.Startup(assemblies: assemblyLoader());
 ```
 ## Examples of DI/IOC, requires an ILocator package such as DotNetStarter.DryIoc or DotNetStarter.StructureMap
 ### Registration
