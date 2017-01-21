@@ -8,7 +8,7 @@ namespace DotNetStarter.Tests
         [AssemblyInitialize]
         public static void Setup(TestContext context)
         {
-            Context.Startup();
+            ApplicationContext.Startup();
         }
     }
 }

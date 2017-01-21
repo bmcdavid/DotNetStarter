@@ -42,6 +42,9 @@ namespace DotNetStarter.Mvc
 
         static void RegisterMvcControllers(ILocator locator)
         {
+            if (locator == null)
+                throw new ArgumentNullException($"{nameof(locator)} cannot be null, please install a locator package such as DotNetStarter.DryIoc or DotNetStart.Structuremap!");
+
             var registry = locator as ILocatorRegistry;
             IEnumerable<Type> controllerTypes = locator.Get<IAssemblyScanner>()?.GetTypesFor(typeof(IController));
 
@@ -51,5 +54,4 @@ namespace DotNetStarter.Mvc
             }
         }
     }
-
 }

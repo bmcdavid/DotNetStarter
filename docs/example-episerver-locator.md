@@ -42,7 +42,7 @@ namespace Example
             _Container = context.Container; // store the containr for use in CreateRegistry
 
             // creates a new dependency resolver via the Locator instead of typical context.Container
-            DependencyResolver.SetResolver(new EpiserverLocatorDependencyResolver(DotNetStarter.Context.Default.Locator));
+            DependencyResolver.SetResolver(new EpiserverLocatorDependencyResolver(DotNetStarter.ApplicationContext.Default.Locator));
         }
 
         public ILocatorRegistry CreateRegistry() => new EpiserverStructuremapLocator(_Container);

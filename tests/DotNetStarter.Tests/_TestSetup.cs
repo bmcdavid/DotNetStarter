@@ -12,7 +12,7 @@ namespace DotNetStarter.Tests
         public static void Setup(TestContext context)
         {
             AssemblyLoader.SetAssemblyLoader(new TestAssemblyLoader());
-            Context.Startup();
+            ApplicationContext.Startup();
         }
     }
 

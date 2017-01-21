@@ -5,7 +5,7 @@
     using System.Linq;
     using System.Web;
     using System;
-    using static Context;
+    using static ApplicationContext;
 
     // todo: move to its own file
 
@@ -89,14 +89,18 @@
             {
                 var x = sender as HttpApplication;
                 var context = x.Context;
+                var locator = _StartupContext.Locator; // a locator package may not be installed
 
-                var scopedLocator = _StartupContext.Locator.OpenScope();
-                var scopedRegistry = scopedLocator as ILocatorRegistry;
-                scopedRegistry?.Add(typeof(ILocator), scopedLocator); // override ILocator resolves to use scoped version
-                scopedRegistry?.Add(typeof(HttpContextBase), new HttpContextWrapper(context));
-                scopedRegistry?.Add<IServiceProvider, ServiceProvider>(lifetime: LifeTime.Scoped);
+                if (locator != null)
+                {
+                    var scopedLocator = locator.OpenScope();
+                    var scopedRegistry = scopedLocator as ILocatorRegistry;
+                    scopedRegistry?.Add(typeof(ILocator), scopedLocator); // override ILocator resolves to use scoped version
+                    scopedRegistry?.Add(typeof(HttpContextBase), new HttpContextWrapper(context));
+                    scopedRegistry?.Add<IServiceProvider, ServiceProvider>(lifetime: LifeTime.Scoped);
 
-                context.Items.Add(ScopedLocatorKeyInContext, scopedLocator);
+                    context.Items.Add(ScopedLocatorKeyInContext, scopedLocator);
+                }
             };
 
             applicationContext.EndRequest += (sender, args) =>

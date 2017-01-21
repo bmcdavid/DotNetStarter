@@ -1,5 +1,8 @@
 # DotNetStarter.Extensions.WebApi Read Me
 
-To enable, please add the following to your global.asax Application_Start:
+To enable, please add the following line to your GlobalConfiguration.Configure(Register) configuration callback.
 
-DotNetStarter.Context.Startup():
+
+```cs
+config.DependencyResolver = new WebApiDependencyResolver(DotNetStarter.ApplicationContext.Default.Locator);
+```

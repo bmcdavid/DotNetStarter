@@ -30,8 +30,8 @@ namespace DotNetStarter.Tests
         [TestMethod]
         public void ShouldRemoveInitModule()
         {
-            var allCount = DotNetStarter.Context.Default.AllModuleTypes.Count();
-            var filteredCount = DotNetStarter.Context.Default.FilteredModuleTypes.Count();
+            var allCount = DotNetStarter.ApplicationContext.Default.AllModuleTypes.Count();
+            var filteredCount = DotNetStarter.ApplicationContext.Default.FilteredModuleTypes.Count();
 
             Assert.AreNotEqual(allCount, filteredCount);
         }

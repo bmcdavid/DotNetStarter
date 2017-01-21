@@ -6,7 +6,7 @@
     using System.Collections.Generic;
     using System.Threading.Tasks;
     using AppFunc = System.Func<System.Collections.Generic.IDictionary<string, object>, System.Threading.Tasks.Task>;
-    using static DotNetStarter.Context;
+    using static DotNetStarter.ApplicationContext;
 
 #if NET45
     using global::Owin;

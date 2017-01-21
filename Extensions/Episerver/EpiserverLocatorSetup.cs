@@ -43,7 +43,7 @@ namespace DotNetStarter.Extensions.Episerver
             // try to ensure the scoped dependency resolver is used by waiting til initcomplete to set it.
             context.InitComplete += (sender, _) =>
             {
-                DependencyResolver.SetResolver(new ScopedDependencyResolver(DotNetStarter.Context.Default.Locator));
+                DependencyResolver.SetResolver(new ScopedDependencyResolver(DotNetStarter.ApplicationContext.Default.Locator));
             };
         }
 

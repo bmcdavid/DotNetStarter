@@ -14,7 +14,7 @@ Also some containers may handle scoped items differently, some may have a single
 
 ### Creating a scope
 ```cs
-var locator = DotNetStarter.Context.Default.Locator;
+var locator = DotNetStarter.ApplicationContext.Default.Locator;
 
 using (var scope = locator.OpenScope())
 {

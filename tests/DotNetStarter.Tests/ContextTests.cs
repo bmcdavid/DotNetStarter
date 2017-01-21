@@ -9,7 +9,7 @@
         [TestMethod]
         public void ShouldGetContext()
         {
-            var sut = Context.Default;
+            var sut = ApplicationContext.Default;
 
             Assert.IsNotNull(sut);
         }
@@ -17,7 +17,7 @@
         [TestMethod]
         public void ShouldOverrideLogger()
         {
-            Assert.IsTrue(Context.Default.Configuration.Logger is TestLogger);
+            Assert.IsTrue(ApplicationContext.Default.Configuration.Logger is TestLogger);
         }
     }
 }

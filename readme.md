@@ -8,7 +8,7 @@ The goal of this project is to create a startup and IoC/DI framework for netfram
 To kickoff the startup modules and configure the locator please execute the following early in the project startup, for example global.asax for web applications.
 
 ```cs
-DotNetStarter.Context.Startup():
+DotNetStarter.ApplicationContext.Startup():
 ```
 
 ### Inversion of Control / Dependency Injection
@@ -78,7 +78,7 @@ They can also be swapped at runtime via the assembly attribute as noted below fo
 ### Usage
 ```cs
 	private Import<ITest> TestService;
-	// Import<T> is a struct wrapper for DotNetStarter.Context.Default.Locator and can be used when scoping isn't required.
+	// Import<T> is a struct wrapper for DotNetStarter.ApplicationContext.Default.Locator and can be used when scoping isn't required.
         
     public void ExampleMethod()
     {

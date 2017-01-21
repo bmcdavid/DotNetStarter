@@ -28,11 +28,16 @@ namespace DotNetStarter.Extensions.WebApi
         {
             RegisterApiControllers(engine.Locator);
 
-            GlobalConfiguration.Configure((config) => Register(config, engine.Locator));
+            // throws exception  and don't want to call  GlobalConfiguration.Configuration.EnsureInitialized();
+            // updating readme.txt to reflect proper wire-up.
+            //GlobalConfiguration.Configure(Register);
         }
 
         static void RegisterApiControllers(ILocator locator)
         {
+            if (locator == null)
+                throw new ArgumentNullException($"{nameof(locator)} cannot be null, please install a locator package such as DotNetStarter.DryIoc or DotNetStart.Structuremap!");
+
             var registry = locator as ILocatorRegistry;
             IEnumerable<Type> controllerTypes = registry.Get<IAssemblyScanner>()?.GetTypesFor(typeof(ApiController));
 
@@ -40,11 +45,6 @@ namespace DotNetStarter.Extensions.WebApi
             {
                 registry?.Add(controller, controller, lifeTime: LifeTime.Scoped);
             }
-        }
-
-        static void Register(HttpConfiguration config, ILocator locator)
-        {
-            config.DependencyResolver = new WebApiDependencyResolver(locator);            
         }
     }
 }

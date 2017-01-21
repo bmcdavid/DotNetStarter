@@ -64,26 +64,23 @@ namespace WebFrameworkApp.App_Start
         {
             RegisterApiControllers(engine.Locator);
 
-            GlobalConfiguration.Configure((config) => Register(config, engine.Locator));
+            // then set DependencyResolver in your WebApi config callback
+            // GlobalConfiguration.Configure(Register);
+            // config.DependencyResolver = new WebApiDependencyResolver(DotNetStarter.ApplicationContext.Default.Locator);
         }
 
-        public static void RegisterApiControllers(ILocator locator)
+        static void RegisterApiControllers(ILocator locator)
         {
+            if (locator == null)
+                throw new ArgumentNullException($"{nameof(locator)} cannot be null, please install a locator package such as DotNetStarter.DryIoc or DotNetStart.Structuremap!");
+
             var registry = locator as ILocatorRegistry;
             IEnumerable<Type> controllerTypes = registry.Get<IAssemblyScanner>()?.GetTypesFor(typeof(ApiController));
-            
+
             foreach (var controller in controllerTypes)
             {
                 registry?.Add(controller, controller, lifeTime: LifeTime.Scoped);
             }
-        }
-
-        public static void Register(HttpConfiguration config, ILocator locator)
-        {
-            config.DependencyResolver = new WebApiDependencyResolver(locator);
-
-            // modify rest as needed
-            config.MapHttpAttributeRoutes();
         }
     }
 }

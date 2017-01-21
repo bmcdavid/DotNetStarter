@@ -6,17 +6,17 @@
     /// <summary>
     /// Default hook into startup process, preferred to access using Import&lt;T> which call this.
     /// </summary>
-    public class Context
+    public class ApplicationContext
     {
         /// <summary>
         /// Dictionary Key to retrive scoped IServiceProvider
         /// </summary>
-        public static readonly string ScopedProviderKeyInContext = typeof(Context).FullName + "." + nameof(IServiceProvider);
+        public static readonly string ScopedProviderKeyInContext = typeof(ApplicationContext).FullName + "." + nameof(IServiceProvider);
 
         /// <summary>
         /// Dictionary Key to retrive scoped ILocator
         /// </summary>
-        public static readonly string ScopedLocatorKeyInContext = typeof(Context).FullName + "." + nameof(ILocator);
+        public static readonly string ScopedLocatorKeyInContext = typeof(ApplicationContext).FullName + "." + nameof(ILocator);
 
         private static readonly object _Lock = new object();
 
@@ -28,7 +28,7 @@
 
         private static IStartupConfiguration _Configuration;
 
-        static Context()
+        static ApplicationContext()
         {
             if (!_Started)
             {
@@ -52,13 +52,13 @@
         /// <summary>
         /// Finalizer
         /// </summary>
-        ~Context()
+        ~ApplicationContext()
         {
             _Handler?.Dispose();
             _Default?.Dispose();
         }
 
-        private Context() { }
+        private ApplicationContext() { }
 
         /// <summary>
         /// Startup kickoff, to customize the IAssemblyLoader please execute AssemblyLoader.SetAssemblyLoader(IAssemblyLoader loader) before using Context!

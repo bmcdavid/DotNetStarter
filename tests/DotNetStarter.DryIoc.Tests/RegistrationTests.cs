@@ -48,7 +48,7 @@ namespace DotNetStarter.Tests
         [TestMethod]
         public void ShouldRemoveService()
         {
-            Assert.IsNull(DotNetStarter.Context.Default.Locator.Get<IRemove>());
+            Assert.IsNull(DotNetStarter.ApplicationContext.Default.Locator.Get<IRemove>());
         }
 
         [TestMethod]
@@ -67,7 +67,7 @@ namespace DotNetStarter.Tests
         public void ShouldGetDifferentServiceFromFactory()
         {
             var one = FooTwo.Service;
-            var two = DotNetStarter.Context.Default.Locator.Get<IFooTwo>();
+            var two = DotNetStarter.ApplicationContext.Default.Locator.Get<IFooTwo>();
 
             Assert.AreNotEqual(one, two);
         }
@@ -75,7 +75,7 @@ namespace DotNetStarter.Tests
         [TestMethod]
         public void ShouldGetImplFromAbstract()
         {
-            var sut = DotNetStarter.Context.Default.Locator.Get<BaseTest>();
+            var sut = DotNetStarter.ApplicationContext.Default.Locator.Get<BaseTest>();
 
             Assert.IsNotNull(sut);
         }
@@ -84,7 +84,7 @@ namespace DotNetStarter.Tests
         [TestMethod]
         public void ShouldGetGenericService()
         {
-            var sut = DotNetStarter.Context.Default.Locator.Get<IPagedData<object>>();
+            var sut = DotNetStarter.ApplicationContext.Default.Locator.Get<IPagedData<object>>();
 
             Assert.IsNotNull(sut);
         }

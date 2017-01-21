@@ -66,7 +66,7 @@ All attributes, baseclasses and interfaces reside in the DotNetStarter.Abstracti
 ```
 ### Usage
 ```
-	private Import<ITest> TestService; // Import<T> is preferred over DotNetStarter.Context.Default.Locator.Get<T>(), unless you are in a factory context of needing new instances.
+	private Import<ITest> TestService; // Import<T> is preferred over DotNetStarter.ApplicationContext.Default.Locator.Get<T>(), unless you are in a factory context of needing new instances.
         
     public void ExampleMethod()
     {

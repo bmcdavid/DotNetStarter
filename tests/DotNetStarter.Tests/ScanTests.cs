@@ -19,7 +19,7 @@ namespace DotNetStarter.Tests
         [TestInitialize]
         public void Setup()
         {
-            AssemblyScanner = Context.Default.Configuration.AssemblyScanner;
+            AssemblyScanner = ApplicationContext.Default.Configuration.AssemblyScanner;
         }
 
         [TestMethod]

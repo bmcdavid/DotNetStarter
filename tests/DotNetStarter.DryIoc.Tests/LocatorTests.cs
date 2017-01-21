@@ -11,7 +11,7 @@ namespace DotNetStarter.Tests
         [TestMethod]
         public void ShouldImportContext()
         {
-            Assert.AreEqual(_Context.Service, Context.Default);
+            Assert.AreEqual(_Context.Service, ApplicationContext.Default);
         }
     }
 }

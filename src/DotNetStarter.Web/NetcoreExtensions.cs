@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using System;
-using static DotNetStarter.Context;
+using static DotNetStarter.ApplicationContext;
 
 namespace DotNetStarter.Web
 {
