@@ -15,7 +15,7 @@
 
         internal static IEnumerable<Assembly> Assemblies;
 
-        static ObjectFactory()
+        internal static void EnsureDefaultObjectFactory(IEnumerable<Assembly> assemblies = null, IStartupObjectFactory defaultFactory = null)
         {
             if (_Default == null)
             {
@@ -23,17 +23,31 @@
                 {
                     if (_Default == null)
                     {
-                        Assemblies = AssemblyLoader.Default.GetAssemblies();
-                        var configurations = Assemblies.SelectMany(x => x.CustomAttribute(typeof(StartupObjectFactoryAttribute), false)).OfType<StartupObjectFactoryAttribute>();
-                        var configurationInstances = configurations.Select(x => Activator.CreateInstance(x.FactoryType)).OfType<IStartupObjectFactory>();
-                        var sortedIntances = configurationInstances.OrderBy(x => x.SortOrder);
+                        Assemblies = assemblies ?? AssemblyLoader.Default.GetAssemblies();
+                        _Default = defaultFactory;
 
-                        _Default = sortedIntances.LastOrDefault();
+                        if (_Default == null)
+                        {
+                            var configurations = Assemblies.SelectMany(x => x.CustomAttribute(typeof(StartupObjectFactoryAttribute), false)).OfType<StartupObjectFactoryAttribute>();
+                            var configurationInstances = configurations.Select(x => Activator.CreateInstance(x.FactoryType)).OfType<IStartupObjectFactory>();
+                            var sortedIntances = configurationInstances.OrderBy(x => x.SortOrder);
+
+                            _Default = sortedIntances.LastOrDefault();
+                        }
                     }
                 }
             }
         }
 
-        public static IStartupObjectFactory Default => _Default;
+        public static IStartupObjectFactory Default
+        {
+            get
+            {
+                if (_Default == null)
+                    EnsureDefaultObjectFactory();
+
+                return _Default;
+            }
+        }
     }
 }

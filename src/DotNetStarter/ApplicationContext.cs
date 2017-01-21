@@ -71,6 +71,7 @@
                 {
                     if (!_Started)
                     {
+                        ObjectFactory.EnsureDefaultObjectFactory(assemblies, objectFactory);
                         var factory = objectFactory ?? ObjectFactory.Default;
                         _Handler = factory.CreateStartupHandler();
                         _Configuration = configuration ?? factory.CreateStartupConfiguration(assemblies ?? ObjectFactory.Assemblies);
