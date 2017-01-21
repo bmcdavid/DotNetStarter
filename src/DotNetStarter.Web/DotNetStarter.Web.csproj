@@ -36,6 +36,7 @@
     <Reference Include="System.Web.Abstractions" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="HttpContextExtensions.cs" />
     <Compile Include="IWebModuleStartupHandler.cs" />
     <Compile Include="IWebModule.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

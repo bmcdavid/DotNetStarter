@@ -41,6 +41,8 @@
             locator.Add(typeof(IDependencyFinder), configuration.DependencyFinder);
             locator.Add(typeof(IDependencySorter), configuration.DependencySorter);
             locator.Add<ITimedTask, TimedTask>(lifetime: LifeTime.Transient, constructorType: ConstructorType.Greediest);
+
+            ImportHelper.OnEnsureLocator += (() => locator); // configure import<T> locator
         }
     }
 }

@@ -39,6 +39,7 @@
     <Reference Include="System.Web" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\..\src\DotNetStarter.Web\HttpContextExtensions.cs" />
     <Compile Include="..\..\src\DotNetStarter.Web\IWebModuleStartupHandler.cs" />
     <Compile Include="..\..\src\DotNetStarter.Web\IWebModule.cs" />
     <Compile Include="..\..\src\DotNetStarter.Web\Properties\AssemblyInfo.cs" />

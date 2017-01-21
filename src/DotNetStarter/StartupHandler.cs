@@ -28,7 +28,6 @@
         /// </summary>
         public event Action OnStartupComplete;
 
-        // todo: verify this works in a website context and console....
         /// <summary>
         /// Finalizer
         /// </summary>        

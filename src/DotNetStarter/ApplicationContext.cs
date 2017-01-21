@@ -2,6 +2,8 @@
 {
     using Abstractions;
     using System;
+    using System.Collections.Generic;
+    using System.Reflection;
 
     /// <summary>
     /// Default hook into startup process, preferred to access using Import&lt;T> which call this.
@@ -28,27 +30,6 @@
 
         private static IStartupConfiguration _Configuration;
 
-        static ApplicationContext()
-        {
-            if (!_Started)
-            {
-                lock (_Lock)
-                {
-                    if (!_Started)
-                    {
-                        var factory = ObjectFactory.Default;
-                        _Handler = factory.CreateStartupHandler();
-                        _Configuration = factory.CreateStartupConfiguration(ObjectFactory.Assemblies);
-
-                        _Started = _Handler.Startup(_Configuration, factory, out _Default);
-
-                        //todo: figure out best spot to call this
-                        ImportHelper.OnEnsureLocator += (() => _Default.Locator);
-                    }
-                }
-            }
-        }
-
         /// <summary>
         /// Finalizer
         /// </summary>
@@ -63,11 +44,40 @@
         /// <summary>
         /// Startup kickoff, to customize the IAssemblyLoader please execute AssemblyLoader.SetAssemblyLoader(IAssemblyLoader loader) before using Context!
         /// </summary>
-        public static void Startup() { }
+        public static void Startup(IStartupConfiguration configuration = null, IStartupObjectFactory objectFactory = null, IEnumerable<Assembly> assemblies = null)
+        {
+            EnsureStartup(configuration, objectFactory, assemblies);
+        }
 
         /// <summary>
         /// Default context instance, swapped out by ObjectFactory.CreateStartupHandler();
         /// </summary>
-        public static IStartupContext Default => _Default;
+        public static IStartupContext Default
+        {
+            get
+            {
+                if (_Default == null)
+                    EnsureStartup();
+
+                return _Default;
+            }
+        }
+
+        static void EnsureStartup(IStartupConfiguration configuration = null, IStartupObjectFactory objectFactory = null, IEnumerable<Assembly> assemblies = null)
+        {
+            if (!_Started)
+            {
+                lock (_Lock)
+                {
+                    if (!_Started)
+                    {
+                        var factory = objectFactory ?? ObjectFactory.Default;
+                        _Handler = factory.CreateStartupHandler();
+                        _Configuration = configuration ?? factory.CreateStartupConfiguration(assemblies ?? ObjectFactory.Assemblies);
+                        _Started = _Handler.Startup(_Configuration, factory, out _Default);
+                    }
+                }
+            }
+        }
     }
 }
