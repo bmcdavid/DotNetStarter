@@ -6,13 +6,13 @@ The goal of this project is to create a startup and IoC/DI framework for netfram
 
 Package  | Version |
 -------- | :------------ | :------------------
-[DotNetStarter](https://www.nuget.org/packages/DotNetStarter/) |  [![DotNetStarter](https://img.shields.io/nuget/v/DotNetStarter.svg?colorB=1081C1)](https://www.nuget.org/packages/DotNetStarter/) |
-[DotNetStarter.Abstractions](https://www.nuget.org/packages/DotNetStarter.Abstractions/) |  [![DotNetStarter.Abstractions](https://img.shields.io/nuget/v/DotNetStarter.Abstractions.svg?colorB=1081C1)](https://www.nuget.org/packages/DotNetStarter.Abstractions/) |
-[DotNetStarter.Web](https://www.nuget.org/packages/DotNetStarter.Web/) |  [![DotNetStarter.Web](https://img.shields.io/nuget/v/DotNetStarter.Web.svg?colorB=1081C1)](https://www.nuget.org/packages/DotNetStarter.Web/) |
-[DotNetStarter.DryIoc](https://www.nuget.org/packages/DotNetStarter.DryIoc/) |  [![NuGet](https://img.shields.io/nuget/v/DotNetStarter.DryIoc.svg?colorB=1081C1)](https://www.nuget.org/packages/DotNetStarter.DryIoc/) |
-[DotNetStarter.Structuremap](https://www.nuget.org/packages/DotNetStarter.Structuremap/) |  [![DotNetStarter.Structuremap](https://img.shields.io/nuget/v/DotNetStarter.Structuremap.svg?colorB=1081C1)](https://www.nuget.org/packages/DotNetStarter.Structuremap/) |
-[DotNetStarter.Extensions.Mvc](https://www.nuget.org/packages/DotNetStarter.Extensions.Mvc/) |  [![DotNetStarter.Extensions.Mvc](https://img.shields.io/nuget/v/DotNetStarter.Extensions.Mvc.svg?colorB=1081C1)](https://www.nuget.org/packages/DotNetStarter.Extensions.Mvc/) |
-[DotNetStarter.Extensions.WebApi](https://www.nuget.org/packages/DotNetStarter.Extensions.WebApi/) |  [![DotNetStarter.Extensions.WebApi](https://img.shields.io/nuget/v/DotNetStarter.Extensions.WebApi.svg?colorB=1081C1)](https://www.nuget.org/packages/DotNetStarter.Extensions.WebApi/) |
+[DotNetStarter](https://www.nuget.org/packages/DotNetStarter/) |  [![DotNetStarter](https://img.shields.io/nuget/v/DotNetStarter.svg?colorB=1081C1&maxAge=3600)](https://www.nuget.org/packages/DotNetStarter/) |
+[DotNetStarter.Abstractions](https://www.nuget.org/packages/DotNetStarter.Abstractions/) |  [![DotNetStarter.Abstractions](https://img.shields.io/nuget/v/DotNetStarter.Abstractions.svg?colorB=1081C1&maxAge=3600)](https://www.nuget.org/packages/DotNetStarter.Abstractions/) |
+[DotNetStarter.Web](https://www.nuget.org/packages/DotNetStarter.Web/) |  [![DotNetStarter.Web](https://img.shields.io/nuget/v/DotNetStarter.Web.svg?colorB=1081C1&maxAge=3600)](https://www.nuget.org/packages/DotNetStarter.Web/) |
+[DotNetStarter.DryIoc](https://www.nuget.org/packages/DotNetStarter.DryIoc/) |  [![NuGet](https://img.shields.io/nuget/v/DotNetStarter.DryIoc.svg?colorB=1081C1&maxAge=3600)](https://www.nuget.org/packages/DotNetStarter.DryIoc/) |
+[DotNetStarter.Structuremap](https://www.nuget.org/packages/DotNetStarter.Structuremap/) |  [![DotNetStarter.Structuremap](https://img.shields.io/nuget/v/DotNetStarter.Structuremap.svg?colorB=1081C1&maxAge=3600)](https://www.nuget.org/packages/DotNetStarter.Structuremap/) |
+[DotNetStarter.Extensions.Mvc](https://www.nuget.org/packages/DotNetStarter.Extensions.Mvc/) |  [![DotNetStarter.Extensions.Mvc](https://img.shields.io/nuget/v/DotNetStarter.Extensions.Mvc.svg?colorB=1081C1&maxAge=3600)](https://www.nuget.org/packages/DotNetStarter.Extensions.Mvc/) |
+[DotNetStarter.Extensions.WebApi](https://www.nuget.org/packages/DotNetStarter.Extensions.WebApi/) |  [![DotNetStarter.Extensions.WebApi](https://img.shields.io/nuget/v/DotNetStarter.Extensions.WebApi.svg?colorB=1081C1&maxAge=3600)](https://www.nuget.org/packages/DotNetStarter.Extensions.WebApi/) |
 
 ## Getting Started
 To kickoff the startup modules and configure the locator please execute the following early in the project startup, for example global.asax for web applications.
