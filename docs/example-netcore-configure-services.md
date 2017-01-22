@@ -16,7 +16,6 @@ Below are examples of how to configure the IServiceProvider in Configure Service
 ```cs
 using DotNetStarter;
 using DotNetStarter.Abstractions;
-using DotNetStarter.Internal;
 using DryIoc.Microsoft.DependencyInjection;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -35,7 +34,15 @@ namespace Example
         public Startup(IHostingEnvironment env)
         {
             // fix for known assembly loading issue
-            AssemblyLoader.SetAssemblyLoader(new WebAssemblyLoader());
+            Func<IEnumerable<Assembly>> assemblyLoader = () =>
+            {
+                var runtimeId = Microsoft.DotNet.PlatformAbstractions.RuntimeEnvironment.GetRuntimeIdentifier();
+                var libraries = Microsoft.Extensions.DependencyModel.DependencyContextExtensions.GetRuntimeAssemblyNames(Microsoft.Extensions.DependencyModel.DependencyContext.Default, runtimeId);
+
+                return libraries.Select(x => Assembly.Load(new AssemblyName(x.Name)));
+            };
+
+            DotNetStarter.ApplicationContext.Startup(assemblies: assemblyLoader());
 
             var builder = new ConfigurationBuilder()
                 .SetBasePath(env.ContentRootPath)
@@ -89,7 +96,6 @@ namespace Example
 ```cs
 using DotNetStarter;
 using DotNetStarter.Abstractions;
-using DotNetStarter.Internal;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -106,7 +112,15 @@ namespace Example
         public Startup(IHostingEnvironment env)
         {
             // fix for known issue
-            AssemblyLoader.SetAssemblyLoader(new WebAssemblyLoader());
+            Func<IEnumerable<Assembly>> assemblyLoader = () =>
+            {
+                var runtimeId = Microsoft.DotNet.PlatformAbstractions.RuntimeEnvironment.GetRuntimeIdentifier();
+                var libraries = Microsoft.Extensions.DependencyModel.DependencyContextExtensions.GetRuntimeAssemblyNames(Microsoft.Extensions.DependencyModel.DependencyContext.Default, runtimeId);
+
+                return libraries.Select(x => Assembly.Load(new AssemblyName(x.Name)));
+            };
+
+            DotNetStarter.ApplicationContext.Startup(assemblies: assemblyLoader());
 
             var builder = new ConfigurationBuilder()
                 .SetBasePath(env.ContentRootPath)
