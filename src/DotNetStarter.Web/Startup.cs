@@ -1,31 +1,23 @@
-﻿using System;
-using System.Web;
-using DotNetStarter.Web;
-
-[assembly: PreApplicationStartMethod(typeof(Startup), nameof(Startup.WebModules))]
+﻿using DotNetStarter.Abstractions;
 
 namespace DotNetStarter.Web
 {
     /// <summary>
-    /// Fires way before Application_Start in global.asax
+    /// Registers the HttpModule for starting up IHttpModules
     /// </summary>
-    public class Startup
+    [StartupModule]
+    public class Startup : IStartupModule
     {
-        /// <summary>
-        /// Registers module without need for web.config entry
-        /// </summary>
-        public static void WebModules()
-        {
-            RegisterModule(typeof(WebModuleStartup));
-        }
+        void IStartupModule.Shutdown(IStartupEngine engine) { }
 
-        private static void RegisterModule(Type moduleType)
+        void IStartupModule.Startup(IStartupEngine engine)
         {
+            var moduleType = typeof(WebModuleStartup);
 #if NET40
             // requires Microsoft.Web.Infrastructure package for .net 4.0
             Microsoft.Web.Infrastructure.DynamicModuleHelper.DynamicModuleUtility.RegisterModule(moduleType);
 #else
-            HttpApplication.RegisterModule(moduleType);
+            System.Web.HttpApplication.RegisterModule(moduleType);
 #endif
         }
     }
