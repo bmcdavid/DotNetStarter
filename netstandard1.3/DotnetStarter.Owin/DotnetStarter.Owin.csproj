@@ -35,6 +35,10 @@
     <WarningLevel>4</WarningLevel>
     <DocumentationFile>..\bin\Release\DotnetStarter.Owin.XML</DocumentationFile>
   </PropertyGroup>
+  <PropertyGroup>
+    <SignAssembly>true</SignAssembly>
+    <AssemblyOriginatorKeyFile>..\..\dotnetstarter.snk</AssemblyOriginatorKeyFile>
+  </PropertyGroup>
   <ItemGroup>
     <Compile Include="..\..\net45\DotnetStarter.Owin\Abstractions\IMiddlewareContext.cs" />
     <Compile Include="..\..\net45\DotnetStarter.Owin\Abstractions\IMiddlewareRequest.cs" />

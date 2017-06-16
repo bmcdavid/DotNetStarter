@@ -36,11 +36,16 @@
     <DocumentationFile>..\bin\Release\DotNetStarter.XML</DocumentationFile>
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
+  <PropertyGroup>
+    <SignAssembly>true</SignAssembly>
+    <AssemblyOriginatorKeyFile>..\..\dotnetstarter.snk</AssemblyOriginatorKeyFile>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="Microsoft.CSharp" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\..\src\DotNetStarter\NullLocatorException.cs" />
     <Compile Include="..\..\src\DotNetStarter\AssemblyFilter.cs" />
     <Compile Include="..\..\src\DotNetStarter\AssemblyScanner.cs" />
     <Compile Include="..\..\src\DotNetStarter\Internal\AssemblyLoader.cs" />

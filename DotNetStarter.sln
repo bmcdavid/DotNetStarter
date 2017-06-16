@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.26020.0
+VisualStudioVersion = 15.0.26430.13
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "net40", "net40", "{A012A1E6-E13E-4736-877B-D1C8DCC2AAC1}"
 EndProject
@@ -78,12 +78,14 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "docs", "docs", "{C36723A8-BC99-4F64-9ECA-854BAFF42C04}"
 	ProjectSection(SolutionItems) = preProject
 		docs\_config.yml = docs\_config.yml
+		docs\breaking-changes.md = docs\breaking-changes.md
 		docs\custom-locator.md = docs\custom-locator.md
 		docs\custom-objectfactory.md = docs\custom-objectfactory.md
 		docs\example-episerver-locator.md = docs\example-episerver-locator.md
 		docs\example-netcore-configure-services.md = docs\example-netcore-configure-services.md
 		docs\example-netframework-mvc.md = docs\example-netframework-mvc.md
 		docs\example-netframework-webapi.md = docs\example-netframework-webapi.md
+		docs\ilocator-setup.md = docs\ilocator-setup.md
 		docs\index.md = docs\index.md
 		docs\known-issues.md = docs\known-issues.md
 		docs\modules.md = docs\modules.md

@@ -1,6 +1,7 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using DotNetStarter.Abstractions;
 using System.Linq;
+using System;
 
 namespace DotNetStarter.Tests
 {
@@ -34,6 +35,22 @@ namespace DotNetStarter.Tests
             var filteredCount = DotNetStarter.ApplicationContext.Default.FilteredModuleTypes.Count();
 
             Assert.AreNotEqual(allCount, filteredCount);
+        }
+
+        [ExpectedException(typeof(NullLocatorException))]
+        [TestMethod]
+        public void ShouldThrowNullLocatorExceptionInDefaultHandler()
+        {
+            IStartupContext x;
+            new StartupHandler().Startup(DotNetStarter.ApplicationContext.Default.Configuration, new NullLocatorObjectFactory(), out x);
+        }
+    }
+
+    public class NullLocatorObjectFactory : StartupObjectFactory
+    {
+        public override ILocatorRegistry CreateRegistry(IStartupConfiguration config)
+        {
+            return null;
         }
     }
 

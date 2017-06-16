@@ -31,6 +31,10 @@
     <WarningLevel>4</WarningLevel>
     <DocumentationFile>bin\Release\DotNetStarter.Abstractions.xml</DocumentationFile>
   </PropertyGroup>
+  <PropertyGroup>
+    <SignAssembly>true</SignAssembly>
+    <AssemblyOriginatorKeyFile>..\..\dotnetstarter.snk</AssemblyOriginatorKeyFile>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
   </ItemGroup>

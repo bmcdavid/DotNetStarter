@@ -33,11 +33,16 @@
     <WarningLevel>4</WarningLevel>
     <DocumentationFile>..\bin\Release\DotNetStarter.XML</DocumentationFile>
   </PropertyGroup>
+  <PropertyGroup>
+    <SignAssembly>true</SignAssembly>
+    <AssemblyOriginatorKeyFile>..\..\dotnetstarter.snk</AssemblyOriginatorKeyFile>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="Microsoft.CSharp" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\..\src\DotNetStarter\NullLocatorException.cs" />
     <Compile Include="..\..\src\DotNetStarter\AssemblyFilter.cs" />
     <Compile Include="..\..\src\DotNetStarter\AssemblyScanner.cs" />
     <Compile Include="..\..\src\DotNetStarter\Internal\AssemblyLoader.cs" />
@@ -47,7 +52,7 @@
     <Compile Include="..\..\src\DotNetStarter\DependencyFinder.cs" />
     <Compile Include="..\..\src\DotNetStarter\DependencyNode.cs" />
     <Compile Include="..\..\src\DotNetStarter\DependencySorter.cs" />
-    <Compile Include="..\..\src\DotNetStarter\ApplicationContext.cs" />
+    <Compile Include="..\..\src\DotNetStarter\ApplicationContext.cs" />    
     <Compile Include="..\..\src\DotNetStarter\StartupObjectFactory.cs" />
     <Compile Include="..\..\src\DotNetStarter\StartupContext.cs" />
     <Compile Include="..\..\src\DotNetStarter\Internal\ObjectFactory.cs" />

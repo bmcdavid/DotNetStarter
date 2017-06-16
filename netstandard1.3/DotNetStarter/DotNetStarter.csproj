@@ -36,10 +36,15 @@
     <WarningLevel>4</WarningLevel>
     <DocumentationFile>..\bin\Release\DotNetStarter.XML</DocumentationFile>
   </PropertyGroup>
+  <PropertyGroup>
+    <SignAssembly>true</SignAssembly>
+    <AssemblyOriginatorKeyFile>..\..\dotnetstarter.snk</AssemblyOriginatorKeyFile>
+  </PropertyGroup>
   <ItemGroup>
     <None Include="project.json" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\..\src\DotNetStarter\NullLocatorException.cs" />
     <Compile Include="..\..\src\DotNetStarter\AssemblyFilter.cs" />
     <Compile Include="..\..\src\DotNetStarter\AssemblyScanner.cs" />
     <Compile Include="..\..\src\DotNetStarter\Internal\AssemblyLoader.cs" />

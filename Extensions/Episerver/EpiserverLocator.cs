@@ -65,7 +65,15 @@ namespace DotNetStarter.Extensions.Episerver
         /// <param name="constructorType"></param>
         public void Add(Type serviceType, Type serviceImplementation, string key = null, LifeTime lifeTime = LifeTime.Transient, ConstructorType constructorType = ConstructorType.Greediest)
         {
-            _Container.Configure(x => x.For(serviceType).LifecycleIs(ConvertLifeTime(lifeTime)).Use(serviceImplementation));
+            if (constructorType == ConstructorType.Empty)
+            {
+                var empty = serviceImplementation.GetConstructor(Type.EmptyTypes);
+                _Container.Configure(x => x.For(serviceType).LifecycleIs(ConvertLifeTime(lifeTime)).Use(serviceImplementation).Constructor = empty);
+            }
+            else
+            {
+                _Container.Configure(x => x.For(serviceType).LifecycleIs(ConvertLifeTime(lifeTime)).Use(serviceImplementation));
+            }
         }
 
         /// <summary>

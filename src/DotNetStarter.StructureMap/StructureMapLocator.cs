@@ -78,7 +78,20 @@ namespace DotNetStarter
         /// <param name="constructorType"></param>
         public void Add(Type serviceType, Type serviceImplementation, string key = null, LifeTime lifeTime = LifeTime.Transient, ConstructorType constructorType = ConstructorType.Greediest)
         {
-            _Container.Configure(x => x.For(serviceType).LifecycleIs(ConvertLifeTime(lifeTime)).Use(serviceImplementation));
+            if (constructorType == ConstructorType.Empty)
+            {
+#if NET35
+                System.Diagnostics.Debug.WriteLine($"{typeof(StructureMapLocator).FullName} only supports greediest constructor types, if support is needed, please create a custom locator implementation!");
+                _Container.Configure(x => x.For(serviceType).LifecycleIs(ConvertLifeTime(lifeTime)).Use(serviceImplementation));
+#else
+                var empty = serviceImplementation.Constructors().FirstOrDefault(x => x.GetParameters().Length == 0);
+                _Container.Configure(x => x.For(serviceType).LifecycleIs(ConvertLifeTime(lifeTime)).Use(serviceImplementation).Constructor = empty);
+#endif
+            }
+            else
+            {
+                _Container.Configure(x => x.For(serviceType).LifecycleIs(ConvertLifeTime(lifeTime)).Use(serviceImplementation));
+            }
         }
 
         /// <summary>

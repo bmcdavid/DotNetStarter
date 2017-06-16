@@ -107,21 +107,21 @@
             {
                 var registry = Locator as ILocatorRegistry;
 
-                if (registry != null)
+                if (registry == null)
+                    throw new NullLocatorException();
+
+                var setDefaults = objectFactory.CreateContainerDefaults();
+
+                if (setDefaults == null)
+                    throw new NotSupportedException("Unable to set container defaults, the object factory returned a null service for it!");
+
+                objectFactory.CreateContainerDefaults().Configure(registry, filteredModules, config, objectFactory);
+                //modules = registry.GetAll<IStartupModule>();
+                var locatorRegistries = registry.GetAll<ILocatorConfigure>();// modules.OfType<ILocatorConfigure>();
+
+                foreach (var map in locatorRegistries ?? Enumerable.Empty<ILocatorConfigure>())
                 {
-                    var setDefaults = objectFactory.CreateContainerDefaults();
-
-                    if (setDefaults == null)
-                        throw new NotSupportedException("Unable to set container defaults, the object factory returned a null service for it!");
-
-                    objectFactory.CreateContainerDefaults().Configure(registry, filteredModules, config, objectFactory);
-                    //modules = registry.GetAll<IStartupModule>();
-                    var locatorRegistries = registry.GetAll<ILocatorConfigure>();// modules.OfType<ILocatorConfigure>();
-
-                    foreach (var map in locatorRegistries)
-                    {
-                        map.Configure(registry, this);
-                    }
+                    map.Configure(registry, this);
                 }
 
                 tempContext = objectFactory.CreateStartupContext(registry, filteredModules, sortedModules, config);
@@ -141,8 +141,7 @@
             // assign the context(s) after running tasks
             _Context = context = tempContext;
 
-            // run startup calls, allows for container to be null
-            Startup(modules ?? filteredModules.Select(x => Activator.CreateInstance(x.Node as Type)).OfType<IStartupModule>());
+            Startup(modules);
             OnStartupComplete?.Invoke();
 
             return true;
