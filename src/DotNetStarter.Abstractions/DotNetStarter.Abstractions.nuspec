@@ -8,7 +8,7 @@
     <projectUrl>https://bmcdavid.github.io/DotNetStarter/</projectUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>Abstractions for startup system with optional support for DI/IOC.</description>
-    <releaseNotes>Initial release</releaseNotes>
+    <releaseNotes>Signed version.</releaseNotes>
     <copyright>Copyright $year$</copyright>
     <tags>Startup Modules Abstractions</tags>
     <dependencies>

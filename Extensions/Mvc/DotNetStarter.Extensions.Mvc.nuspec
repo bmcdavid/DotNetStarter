@@ -9,7 +9,7 @@
     <projectUrl>https://bmcdavid.github.io/DotNetStarter/</projectUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>DotNetStarter</description>
-    <releaseNotes>Initial release</releaseNotes>
+    <releaseNotes>Signed version.</releaseNotes>
     <copyright>Copyright $year$</copyright>
     <tags>Startup Modules</tags>
     <dependencies>
