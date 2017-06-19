@@ -14,7 +14,7 @@
     <tags>Startup Modules Episerver</tags>
     <dependencies>
       <group targetFramework="net45">
-        <dependency id="DotNetStarter.Extensions.Mvc" version="[0,1)" />
+        <dependency id="DotNetStarter.Extensions.Mvc" version="[1,2)" />
         <dependency id="Episerver.Framework" version="[9,11)" />
       </group>
     </dependencies>

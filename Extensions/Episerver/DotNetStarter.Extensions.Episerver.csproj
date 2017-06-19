@@ -31,6 +31,10 @@
     <WarningLevel>4</WarningLevel>
     <DocumentationFile>bin\Release\DotNetStarter.Extensions.Episerver.xml</DocumentationFile>
   </PropertyGroup>
+  <PropertyGroup>
+    <SignAssembly>true</SignAssembly>
+    <AssemblyOriginatorKeyFile>..\..\dotnetstarter.snk</AssemblyOriginatorKeyFile>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="EPiServer.ApplicationModules, Version=9.0.1.0, Culture=neutral, PublicKeyToken=8fe83dea738b45b7, processorArchitecture=MSIL">
       <HintPath>..\..\packages\EPiServer.Framework.9.0.1\lib\net45\EPiServer.ApplicationModules.dll</HintPath>

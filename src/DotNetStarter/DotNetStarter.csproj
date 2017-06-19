@@ -77,9 +77,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="readme.txt" />
-    <None Include="gulpfile.js" />
     <None Include="DotNetStarter.nuspec" />
-    <None Include="package.json" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\DotNetStarter.Abstractions\DotNetStarter.Abstractions.csproj">
