@@ -128,15 +128,16 @@
 
                 // register context once its created
                 registry?.Add(typeof(IStartupContext), tempContext);
+
+                OnLocatorStartupComplete?.Invoke();
+
                 modules = registry?.GetAll<IStartupModule>(); // resolve all startup modules for DI
             };
 
             // execute tasks in order
             config.TimedTaskManager.Execute(scanSetup);
             config.TimedTaskManager.Execute(moduleSortSetup);
-            config.TimedTaskManager.Execute(containerSetup);
-
-            OnLocatorStartupComplete?.Invoke();
+            config.TimedTaskManager.Execute(containerSetup);            
 
             // assign the context(s) after running tasks
             _Context = context = tempContext;
