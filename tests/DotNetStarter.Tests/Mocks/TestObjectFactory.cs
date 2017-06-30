@@ -28,13 +28,15 @@ namespace DotNetStarter.Tests.Mocks
     {
         private List<Type> modules = new List<Type>();
 
+        private IEnumerable<Type> allowedTypes = new Type[] { typeof(IStartupModule), typeof(ILocatorConfigure), typeof(IReflectionHelper) };
+
         public object InternalContainer => null;
 
         public string DebugInfo => null;
 
         public void Add(Type serviceType, Type serviceImplementation, string key = null, LifeTime lifeTime = LifeTime.Transient, ConstructorType constructorType = ConstructorType.Greediest)
         {
-            if (serviceType == typeof(IStartupModule))
+            if (allowedTypes.Contains(serviceType))
                 modules.Add(serviceImplementation);
 
         }
@@ -76,14 +78,21 @@ namespace DotNetStarter.Tests.Mocks
 
         public T Get<T>(string key = null)
         {
+            if (allowedTypes.Contains(typeof(T)))
+            {
+                var startupModules = modules.Select(x => Activator.CreateInstance(x)).OfType<T>();
+
+                return startupModules.Last();
+            }
+
             return default(T);
         }
 
         public IEnumerable<T> GetAll<T>(string key = null)
         {
-            if (typeof(T) == typeof(IStartupModule))
+            if (allowedTypes.Contains(typeof(T)))
             {
-                var startupModules =  modules.Select(x => Activator.CreateInstance(x)).OfType<T>();
+                var startupModules = modules.Select(x => Activator.CreateInstance(x)).OfType<T>().ToList();
 
                 return startupModules;
             }

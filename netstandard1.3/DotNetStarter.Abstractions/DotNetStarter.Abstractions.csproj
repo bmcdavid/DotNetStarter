@@ -51,6 +51,7 @@
     <Compile Include="..\..\src\DotNetStarter.Abstractions\IAssemblyFilter.cs" />
     <Compile Include="..\..\src\DotNetStarter.Abstractions\IAssemblyLoader.cs" />
     <Compile Include="..\..\src\DotNetStarter.Abstractions\IAssemblyScanner.cs" />
+    <Compile Include="..\..\src\DotNetStarter.Abstractions\IAssemblyScanTypeMatcher.cs" />
     <Compile Include="..\..\src\DotNetStarter.Abstractions\IDependencyFinder.cs" />
     <Compile Include="..\..\src\DotNetStarter.Abstractions\IDependencyNode.cs" />
     <Compile Include="..\..\src\DotNetStarter.Abstractions\IDependencySorter.cs" />

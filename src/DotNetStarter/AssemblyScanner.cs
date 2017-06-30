@@ -8,11 +8,34 @@
     using System.Reflection;
 
     /// <summary>
-    /// Scans given assemblies and stores them in a static registry for later retrieval
+    /// Scans given assemblies and stores them in a scan registry for later retrieval
     /// </summary>
     public class AssemblyScanner : IAssemblyScanner
     {
-        private static Dictionary<Type, HashSet<Type>> ScannedRegistry = new Dictionary<Type, HashSet<Type>>();
+        private readonly Dictionary<Type, HashSet<Type>> ScannedRegistry;
+
+        private readonly IEnumerable<IAssemblyScanTypeMatcher> _TypeMatchers;
+
+        /// <summary>
+        /// Default constructor
+        /// </summary>
+        public AssemblyScanner() : this(null) { }
+
+        /// <summary>
+        /// Injectable Constructor
+        /// </summary>
+        /// <param name="typeMatchers"></param>
+        public AssemblyScanner(IEnumerable<IAssemblyScanTypeMatcher> typeMatchers)
+        {
+            ScannedRegistry = new Dictionary<Type, HashSet<Type>>();
+            _TypeMatchers = typeMatchers ?? new IAssemblyScanTypeMatcher[]
+            {
+                new AssemblyScanAttributeMatcher(),
+                new AssemblyScanInterfaceMatcher(),
+                new AssemblyScanGenericInterfaceMatcher(),
+                new AssemblyScanAssignableFromMatcher()
+            };
+        }
 
         /// <summary>
         /// Creates a new dictionary from scanned registry, not part of IAssemblyScanner
@@ -47,7 +70,7 @@
             var types = scanAssemblies.SelectMany(x => x.GetTypesCheck());
             var matches = from checkType in types
                           from registerType in forTypes
-                          where IsMatch(registerType, checkType)
+                          where _TypeMatchers.Any(x => x.IsMatch(registerType, checkType))
                           select new { registerType, checkType };
 
             foreach (var item in matches)
@@ -62,47 +85,6 @@
                 storedTypes.Add(item.checkType);
                 ScannedRegistry[item.registerType] = storedTypes;
             }
-
-            //foreach (var type in types)
-            //{
-            //    foreach (var item in forTypes)
-            //    {
-            //        if (IsMatch(item, type))
-            //        {
-            //            HashSet<Type> storedTypes;
-
-            //            if (!ScannedRegistry.TryGetValue(item, out storedTypes))
-            //            {
-            //                storedTypes = new HashSet<Type>();
-            //            }
-
-            //            storedTypes.Add(type);
-            //            ScannedRegistry[item] = storedTypes;
-            //        }
-            //    }
-            //}
-        }
-
-        static Type _AttrType = typeof(Attribute);
-
-        static bool IsMatch(Type registeredType, Type checkType)
-        {
-            bool isMatch = false;
-
-            if (_AttrType.IsAssignableFromCheck(registeredType))
-            {
-                isMatch = checkType.CustomAttribute(registeredType, false).Any();
-            }
-            else if (registeredType.IsInterface())
-            {
-                isMatch = checkType.HasInterface(registeredType);
-            }
-            else
-            {
-                isMatch = registeredType.IsAssignableFromCheck(checkType);
-            }
-
-            return isMatch;
         }
     }
 }

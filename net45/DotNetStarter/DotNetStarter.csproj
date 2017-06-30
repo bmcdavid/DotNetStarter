@@ -47,6 +47,10 @@
   <ItemGroup>
     <Compile Include="..\..\src\DotNetStarter\NullLocatorException.cs" />
     <Compile Include="..\..\src\DotNetStarter\AssemblyFilter.cs" />
+    <Compile Include="..\..\src\DotNetStarter\AssemblyScanAssignableFromMatcher.cs" />
+    <Compile Include="..\..\src\DotNetStarter\AssemblyScanAttributeMatcher.cs" />
+    <Compile Include="..\..\src\DotNetStarter\AssemblyScanGenericInterfaceMatcher.cs" />
+    <Compile Include="..\..\src\DotNetStarter\AssemblyScanInterfaceMatcher.cs" />
     <Compile Include="..\..\src\DotNetStarter\AssemblyScanner.cs" />
     <Compile Include="..\..\src\DotNetStarter\Internal\AssemblyLoader.cs" />
     <Compile Include="..\..\src\DotNetStarter\Internal\ContainerDefaults.cs" />

@@ -46,6 +46,7 @@
     <Compile Include="IAssemblyFilter.cs" />
     <Compile Include="IAssemblyLoader.cs" />
     <Compile Include="IAssemblyScanner.cs" />
+    <Compile Include="IAssemblyScanTypeMatcher.cs" />
     <Compile Include="IDependencyFinder.cs" />
     <Compile Include="IDependencyNode.cs" />
     <Compile Include="IDependencySorter.cs" />

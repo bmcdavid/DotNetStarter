@@ -12,6 +12,8 @@ namespace DotNetStarter.Internal
     /// </summary>
     public class AssemblyLoader : IAssemblyLoader
     {
+        //todo: remove static parts since assemblies can be passed to startup
+
         /// <summary>
         /// Default instance, can be changed via SetAssemblyLoader which must be done before Context is used.
         /// </summary>

@@ -44,6 +44,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AssemblyFilter.cs" />
+    <Compile Include="AssemblyScanAssignableFromMatcher.cs" />
+    <Compile Include="AssemblyScanAttributeMatcher.cs" />
+    <Compile Include="AssemblyScanGenericInterfaceMatcher.cs" />
+    <Compile Include="AssemblyScanInterfaceMatcher.cs" />
     <Compile Include="AssemblyScanner.cs" />
     <Compile Include="Internal\AssemblyLoader.cs" />
     <Compile Include="Internal\ContainerDefaults.cs" />
