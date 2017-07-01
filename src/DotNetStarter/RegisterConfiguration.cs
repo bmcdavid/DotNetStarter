@@ -1,9 +1,8 @@
 ﻿namespace DotNetStarter
 {
     using Abstractions;
-    using Internal;
+    using DotNetStarter.Abstractions.Internal;
     using System;
-    using System.Collections.Generic;
     using System.Linq;
 
     /// <summary>

@@ -6,7 +6,7 @@ namespace DotNetStarter.Abstractions.Internal
     using System.Linq;
     using System.Reflection;
 
-    internal static class TypeExtensions
+    public static class TypeExtensions
     {
         public static Assembly Assembly(this Type type)
         {

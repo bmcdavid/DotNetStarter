@@ -56,7 +56,6 @@
     <Compile Include="DependencyNode.cs" />
     <Compile Include="DependencySorter.cs" />
     <Compile Include="ApplicationContext.cs" />
-    <Compile Include="Internal\TypeExtensions.cs" />
     <Compile Include="NullLocatorException.cs" />
     <Compile Include="ServiceProvider.cs" />
     <Compile Include="ServiceScope.cs" />

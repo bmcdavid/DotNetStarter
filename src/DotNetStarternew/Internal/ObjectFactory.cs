@@ -1,7 +1,7 @@
 ﻿namespace DotNetStarter
 {
     using Abstractions;
-    using Internal;
+    using DotNetStarter.Abstractions.Internal;
     using System;
     using System.Collections.Generic;
     using System.Linq;
@@ -24,7 +24,7 @@
                     if (_Default == null)
                     {
                         //todo: refactor away static parts of assembly loading, this can just be a new AssemblyLoader().GetAssemblies() if assemblies are null
-                        Assemblies = assemblies ?? AssemblyLoader.Default.GetAssemblies();
+                        Assemblies = assemblies ?? Internal.AssemblyLoader.Default.GetAssemblies();
                         _Default = defaultFactory;
 
                         if (_Default == null)

@@ -1,5 +1,5 @@
 ﻿using DotNetStarter.Abstractions;
-using DotNetStarter.Internal;
+using DotNetStarter.Abstractions.Internal;
 using StructureMap;
 using StructureMap.Pipeline;
 using System;

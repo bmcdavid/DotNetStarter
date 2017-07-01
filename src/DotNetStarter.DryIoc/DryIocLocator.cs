@@ -3,7 +3,7 @@
 namespace DotNetStarter
 {
     using DotNetStarter.Abstractions;
-    using DotNetStarter.Internal;
+    using DotNetStarter.Abstractions.Internal;
     using DryIoc;
     using System;
     using System.Collections.Generic;

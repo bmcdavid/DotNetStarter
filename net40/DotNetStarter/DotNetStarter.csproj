@@ -51,12 +51,11 @@
     <Compile Include="..\..\src\DotNetStarter\AssemblyScanner.cs" />
     <Compile Include="..\..\src\DotNetStarter\Internal\AssemblyLoader.cs" />
     <Compile Include="..\..\src\DotNetStarter\Internal\ContainerDefaults.cs" />
-    <Compile Include="..\..\src\DotNetStarter\Internal\TypeExtensions.cs" />
     <Compile Include="..\..\src\DotNetStarter\DependencyComparer.cs" />
     <Compile Include="..\..\src\DotNetStarter\DependencyFinder.cs" />
     <Compile Include="..\..\src\DotNetStarter\DependencyNode.cs" />
     <Compile Include="..\..\src\DotNetStarter\DependencySorter.cs" />
-    <Compile Include="..\..\src\DotNetStarter\ApplicationContext.cs" />    
+    <Compile Include="..\..\src\DotNetStarter\ApplicationContext.cs" />
     <Compile Include="..\..\src\DotNetStarter\StartupObjectFactory.cs" />
     <Compile Include="..\..\src\DotNetStarter\StartupContext.cs" />
     <Compile Include="..\..\src\DotNetStarter\Internal\ObjectFactory.cs" />

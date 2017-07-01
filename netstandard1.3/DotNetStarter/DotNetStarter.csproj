@@ -49,11 +49,10 @@
     <Compile Include="..\..\src\DotNetStarter\AssemblyScanAssignableFromMatcher.cs" />
     <Compile Include="..\..\src\DotNetStarter\AssemblyScanAttributeMatcher.cs" />
     <Compile Include="..\..\src\DotNetStarter\AssemblyScanGenericInterfaceMatcher.cs" />
-    <Compile Include="..\..\src\DotNetStarter\AssemblyScanInterfaceMatcher.cs" />    
+    <Compile Include="..\..\src\DotNetStarter\AssemblyScanInterfaceMatcher.cs" />
     <Compile Include="..\..\src\DotNetStarter\AssemblyScanner.cs" />
     <Compile Include="..\..\src\DotNetStarter\Internal\AssemblyLoader.cs" />
     <Compile Include="..\..\src\DotNetStarter\Internal\ContainerDefaults.cs" />
-    <Compile Include="..\..\src\DotNetStarter\Internal\TypeExtensions.cs" />
     <Compile Include="..\..\src\DotNetStarter\DependencyComparer.cs" />
     <Compile Include="..\..\src\DotNetStarter\DependencyFinder.cs" />
     <Compile Include="..\..\src\DotNetStarter\DependencyNode.cs" />
