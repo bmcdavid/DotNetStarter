@@ -19,7 +19,8 @@
         /// <param name="engine"></param>
         public void Configure(ILocatorRegistry container, IStartupEngine engine)
         {
-            var configuration = container.Get<IStartupConfiguration>() ?? engine.Configuration;
+            //var configuration = container.Get<IStartupConfiguration>() ?? engine.Configuration;
+            var configuration = engine.Configuration;
             var serviceType = typeof(RegisterAttribute);
             var services = configuration.AssemblyScanner.GetTypesFor(serviceType);
             var servicesSorted = configuration.DependencySorter.Sort<RegisterAttribute>(services.OfType<object>()).ToList();

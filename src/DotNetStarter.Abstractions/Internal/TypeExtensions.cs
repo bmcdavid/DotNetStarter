@@ -125,7 +125,7 @@ namespace DotNetStarter.Abstractions.Internal
 #endif
         }
 
-        public static IEnumerable<PropertyInfo> GetPropertiesCheck(Type type)
+        public static IEnumerable<PropertyInfo> GetPropertiesCheck(this Type type)
         {
 #if NETSTANDARD1_0 || NETSTANDARD1_1
             return type.GetTypeInfo().DeclaredProperties;
@@ -158,7 +158,7 @@ namespace DotNetStarter.Abstractions.Internal
             return t.GetInterfaces().Any(i => i == interfaceType);
 #endif            
         }
-        public static IEnumerable<Type> Interfaces(Type type)
+        public static IEnumerable<Type> Interfaces(this Type type)
         {
 #if NETSTANDARD1_0 || NETSTANDARD1_1
             return type.GetTypeInfo().ImplementedInterfaces;
