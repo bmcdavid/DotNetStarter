@@ -6,4 +6,9 @@ namespace DotNetStarter.Abstractions
     {
         IEnumerable<ILocatorConfigure> ResolveConfigureModules(IEnumerable<IDependencyNode> filteredModules);
     }
+
+    public interface ILocatorVerification
+    {
+        void Verify();
+    }
 }

@@ -11,40 +11,40 @@ namespace DotNetStarter
     using System.Collections.Generic;
     using System.Linq;
 
-    /// <summary>
-    /// Verifies container when complete
-    /// </summary>
-    [StartupModule]
-    public class SimpleInjectorVerification : ILocatorConfigure
+    internal class ContainerRegistration
     {
-        /// <summary>
-        /// Verifies container when complete
-        /// </summary>
-        /// <param name="container"></param>
-        /// <param name="engine"></param>
-        public void Configure(ILocatorRegistry container, IStartupEngine engine)
+        public Type ServiceType { get; set; }
+
+        public Type ServiceImplementation { get; set; }
+
+        public object ServiceInstance { get; set; }
+
+        public LifeTime LifeTime { get; set; }
+
+        public Func<ILocator, object> ServiceFactory { get; set; }
+
+
+    }
+
+    internal class ContainerRegistrations : Dictionary<Type, HashSet<ContainerRegistration>>
+    {
+        public string DebugInformation()
         {
-            engine.OnLocatorStartupComplete += () =>
-            {
-                var x = (container as SimpleInjectorLocator).InternalContainer;
-                //(x as Container).Verify(); // todo: fix so verfication works
-            };
+            return string.Join(",", this.Select(x => x.Key));//todo, build better output
         }
     }
 
     /// <summary>
     /// Creates a locator based on DryIoc.dll
     /// </summary>
-    public class SimpleInjectorLocator : ILocatorRegistry, ILocatorSetContainer, ILocatorResolveConfigureModules
+    public class SimpleInjectorLocator : ILocatorRegistry, ILocatorSetContainer, ILocatorResolveConfigureModules, ILocatorVerification
     {
         /// <summary>
         /// Raw container reference
         /// </summary>
         protected Container _Container;
 
-        static HashSet<Type> _StoredTypes = new HashSet<Type>();
-
-        static HashSet<Type> _RemovedTypes = new HashSet<Type>();
+        static ContainerRegistrations _Registrations = new ContainerRegistrations();
 
         /// <summary>
         /// Constructor
@@ -58,7 +58,7 @@ namespace DotNetStarter
         /// <summary>
         /// Provides debug information about the container
         /// </summary>
-        public string DebugInfo => null; //todo: how do i provide debug info?
+        public string DebugInfo => _Registrations.DebugInformation();
 
         /// <summary>
         /// Allows access to wrapped container
@@ -75,22 +75,21 @@ namespace DotNetStarter
         /// <param name="constructorType"></param>
         public virtual void Add(Type serviceType, Type serviceImplementation, string key = null, LifeTime lifetime = LifeTime.Transient, ConstructorType constructorType = ConstructorType.Greediest)
         {
-            //todo: how to handle enumerables
-            //container.RegisterCollection(typeof(ILogger), assemblies);
+            HashSet<ContainerRegistration> storedTypes;
 
-            //container.AppendToCollection(typeof(ILogger), typeof(ExtraLogger));
-            // Registration
-            if (_StoredTypes.Contains(serviceType))
+            if (!_Registrations.TryGetValue(serviceType, out storedTypes))
             {
-                _Container.AppendToCollection(serviceType, serviceImplementation);
-            }
-            else
-            {
-                _Container.RegisterCollection(serviceType, new Type[] { serviceImplementation });
-                _StoredTypes.Add(serviceType);
+                storedTypes = new HashSet<ContainerRegistration>();
             }
 
-            _Container.Register(serviceType, serviceImplementation, ConvertLifeTime(lifetime));
+            storedTypes.Add(new ContainerRegistration()
+            {
+                LifeTime = lifetime,
+                ServiceType = serviceType,
+                ServiceImplementation = serviceImplementation
+            });
+
+            _Registrations[serviceType] = storedTypes;
         }
 
         /// <summary>
@@ -115,7 +114,23 @@ namespace DotNetStarter
         /// <param name="lifeTime"></param>
         public virtual void Add(Type serviceType, Func<ILocator, object> implementationFactory, LifeTime lifeTime)
         {
-            _Container.Register(serviceType, () => implementationFactory(this), ConvertLifeTime(lifeTime));
+            HashSet<ContainerRegistration> storedTypes;
+
+            if (!_Registrations.TryGetValue(serviceType, out storedTypes))
+            {
+                storedTypes = new HashSet<ContainerRegistration>();
+            }
+
+            storedTypes.Add(new ContainerRegistration()
+            {
+                LifeTime = lifeTime,
+                ServiceType = serviceType,
+                ServiceFactory = implementationFactory
+            });
+
+            _Registrations[serviceType] = storedTypes;
+
+            // _Container.Register(serviceType, () => implementationFactory(this), ConvertLifeTime(lifeTime));
         }
 
         /// <summary>
@@ -125,7 +140,21 @@ namespace DotNetStarter
         /// <param name="serviceInstance"></param>
         public void Add(Type serviceType, object serviceInstance)
         {
-            _Container.Register(serviceType, () => serviceInstance, ConvertLifeTime(LifeTime.Singleton));
+            HashSet<ContainerRegistration> storedTypes;
+
+            if (!_Registrations.TryGetValue(serviceType, out storedTypes))
+            {
+                storedTypes = new HashSet<ContainerRegistration>();
+            }
+
+            storedTypes.Add(new ContainerRegistration()
+            {
+                LifeTime = LifeTime.Singleton,
+                ServiceType = serviceType,
+                ServiceInstance = serviceInstance
+            });
+
+            _Registrations[serviceType] = storedTypes;
         }
 
         /// <summary>
@@ -201,10 +230,11 @@ namespace DotNetStarter
         /// <returns></returns>
         public virtual object Get(Type service, string key = null)
         {
-            if (!IsRemoved(service))
+            try
             {
                 return _Container.GetInstance(service);
             }
+            catch { }
 
             return null;
         }
@@ -227,8 +257,7 @@ namespace DotNetStarter
         {
             try
             {
-                if (!IsRemoved(serviceType))
-                    return _Container.GetAllInstances(serviceType);
+                return _Container.GetAllInstances(serviceType);
             }
             catch
             {
@@ -255,6 +284,7 @@ namespace DotNetStarter
         public ILocator OpenScope(object scopeName = null, object scopeContext = null)
         {
             // https://github.com/simpleinjector/SimpleInjector/issues/18
+            // todo: how will this handle adding scoped registrations from Web package
             return new SimpleInjectorLocator(_Container); // Simple Injector has implicit scoping??
         }
 
@@ -266,8 +296,7 @@ namespace DotNetStarter
         /// <param name="serviceImplementation"></param>
         public virtual void Remove(Type serviceType, string key = null, Type serviceImplementation = null)
         {
-            _RemovedTypes.Add(serviceType);
-            // throw new NotImplementedException(); // can anything be done here?
+            _Registrations.Remove(serviceType);
         }
 
         /// <summary>
@@ -280,9 +309,20 @@ namespace DotNetStarter
             _Container = tempContainer ?? throw new ArgumentException($"{container} doesn't implement {typeof(Container).FullName}!");
         }
 
-        private static bool IsRemoved(Type t)
+        private Registration ConvertToRegistration(Type service, Type serviceImpl, LifeTime lifetime)
         {
-            return _RemovedTypes.Contains(t);
+            switch (lifetime)
+            {
+                case LifeTime.Singleton:
+                    return Lifestyle.Singleton.CreateRegistration(serviceImpl, _Container);
+                case LifeTime.Scoped:
+                    return Lifestyle.Scoped.CreateRegistration(serviceImpl, _Container);
+                case LifeTime.Transient:
+                case LifeTime.AlwaysUnique:
+                default:
+                    return Lifestyle.Transient.CreateRegistration(serviceImpl, _Container);
+
+            }
         }
 
         private static Lifestyle ConvertLifeTime(LifeTime lifetime)
@@ -314,6 +354,56 @@ namespace DotNetStarter
                 if (configureModuleType.IsAssignableFromCheck(module))
                     yield return (ILocatorConfigure)Activator.CreateInstance(module);
             }
+        }
+
+        public void Verify()
+        {
+            foreach (var item in _Registrations)
+            {
+                //var registrationItems = _Registrations.SelectMany(x => x.Value).Select(y => ConvertToRegistration(y.ServiceType, y.ServiceImplementation, y.LifeTime));
+                //_Container.RegisterCollection(registrationItems);
+
+                if (item.Value.Any(x => x.ServiceImplementation != null))
+                {
+                    _Container.RegisterCollection(item.Value.Select(x => ConvertToRegistration(x.ServiceType, x.ServiceImplementation, x.LifeTime)));
+                    //_Container.RegisterCollection(item.Key, item.Value.Select(x => x.ServiceImplementation));
+                }
+
+                var registration = item.Value.Last();
+
+                if (registration.ServiceInstance != null)
+                {
+                    _Container.Register(registration.ServiceType, () => registration.ServiceInstance, ConvertLifeTime(registration.LifeTime));
+                }
+                else if (registration.ServiceFactory != null)
+                {
+                    _Container.Register(registration.ServiceType, () => registration.ServiceFactory(this), ConvertLifeTime(registration.LifeTime));
+                }
+                else
+                {
+                    _Container.Register(registration.ServiceType, registration.ServiceImplementation, ConvertLifeTime(registration.LifeTime));
+                }
+
+            }
+            //todo: iterate registrations
+            //todo: how to handle enumerables
+            //container.RegisterCollection(typeof(ILogger), assemblies);
+
+            //container.AppendToCollection(typeof(ILogger), typeof(ExtraLogger));
+            //// Registration
+            //if (_StoredTypes.Contains(serviceType))
+            //{
+            //    _Container.AppendToCollection(serviceType, serviceImplementation);
+            //}
+            //else
+            //{
+            //    _Container.RegisterCollection(serviceType, new Type[] { serviceImplementation });
+            //    _StoredTypes.Add(serviceType);
+            //}
+
+            //_Container.Register(serviceType, serviceImplementation, ConvertLifeTime(lifetime));
+            //_Container.Register()
+            // _Container.Verify();
         }
     }
 

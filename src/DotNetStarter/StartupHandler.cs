@@ -129,6 +129,7 @@
                 // register context once its created
                 registry?.Add(typeof(IStartupContext), tempContext);
 
+                (registry as ILocatorVerification)?.Verify();
                 OnLocatorStartupComplete?.Invoke();
 
                 modules = registry?.GetAll<IStartupModule>(); // resolve all startup modules for DI
