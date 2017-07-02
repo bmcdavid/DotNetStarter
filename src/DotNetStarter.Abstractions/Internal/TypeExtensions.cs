@@ -210,6 +210,15 @@ namespace DotNetStarter.Abstractions.Internal
 #endif
         }
 
+        public static bool IsGenericTypeDefinitionCheck(this Type t)
+        {
+#if NETSTANDARD1_0 || NETSTANDARD1_1
+            return t.GetTypeInfo().IsGenericTypeDefinition;
+#else
+            return t.IsGenericTypeDefinition;
+#endif
+        }
+
         public static bool IsInterface(this Type type)
         {
 #if NETSTANDARD1_0 || NETSTANDARD1_1

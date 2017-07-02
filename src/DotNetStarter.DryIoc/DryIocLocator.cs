@@ -106,9 +106,7 @@ namespace DotNetStarter
             }
             catch (Exception e)
             {
-                var ce = e as ContainerException;
-
-                if (ce != null)
+                if (e is ContainerException ce)
                     throw new StartupContainerException(ce.Error, ce.Message, ce.InnerException);
 
                 throw new StartupContainerException(-100, e.Message, e.InnerException);
@@ -207,11 +205,7 @@ namespace DotNetStarter
         public void SetContainer(object container)
         {
             var tempContainer = container as IContainer;
-
-            if (tempContainer == null)
-                throw new ArgumentException($"{container} doesn't implement {typeof(IContainer).FullName}!");
-
-            _Container = tempContainer;
+            _Container = tempContainer ?? throw new ArgumentException($"{container} doesn't implement {typeof(IContainer).FullName}!");
         }
 
         private static IReuse ConvertLifeTime(LifeTime lifetime)

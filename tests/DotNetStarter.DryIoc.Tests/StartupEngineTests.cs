@@ -1,4 +1,5 @@
-﻿using DotNetStarter.Abstractions;
+﻿using System;
+using DotNetStarter.Abstractions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace DotNetStarter.Tests
@@ -17,16 +18,6 @@ namespace DotNetStarter.Tests
         {
             internal static bool _ContainerInitCompleteCalled = false;
 
-            public void Startup(IStartupEngine engine)
-            {
-
-            }
-
-            public void Shutdown(IStartupEngine engine)
-            {
-
-            }
-
             public void Configure(ILocatorRegistry container, IStartupEngine engine)
             {
                 engine.OnLocatorStartupComplete += Engine_OnContainerStarted;
@@ -35,6 +26,19 @@ namespace DotNetStarter.Tests
             private void Engine_OnContainerStarted()
             {
                 _ContainerInitCompleteCalled = true;
+            }
+        }
+
+        [StartupModule]
+        public class StartupTest : IStartupModule
+        {
+            public void Shutdown(IStartupEngine engine)
+            {
+            }
+
+            public void Startup(IStartupEngine engine)
+            {
+                System.Diagnostics.Debug.Write("Ran startup");
             }
         }
     }

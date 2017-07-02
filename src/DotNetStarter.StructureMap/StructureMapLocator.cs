@@ -284,11 +284,7 @@ namespace DotNetStarter
         public void SetContainer(object container)
         {
             var tempContainer = container as IContainer;
-
-            if(tempContainer == null)
-                throw new ArgumentException($"{container} doesn't implement {typeof(IContainer).FullName}!");
-
-            _Container = tempContainer;
+            _Container = tempContainer ?? throw new ArgumentException($"{container} doesn't implement {typeof(IContainer).FullName}!");
         }
     }
 }

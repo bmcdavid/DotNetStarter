@@ -116,7 +116,7 @@
                     throw new NotSupportedException("Unable to set container defaults, the object factory returned a null service for it!");
 
                 objectFactory.CreateContainerDefaults().Configure(registry, filteredModules, config, objectFactory);
-                var locatorRegistries = (registry as ILocatorResolveConfigureModules)?.ResolveConfigureModules(filteredModules)
+                var locatorRegistries = (registry as ILocatorResolveConfigureModules)?.ResolveConfigureModules(filteredModules, config)
                                             ?? registry.GetAll<ILocatorConfigure>();
 
                 foreach (var map in locatorRegistries ?? Enumerable.Empty<ILocatorConfigure>())

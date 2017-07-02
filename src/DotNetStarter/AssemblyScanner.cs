@@ -50,8 +50,7 @@
         /// <returns></returns>
         public virtual IEnumerable<Type> GetTypesFor(Type scannedType)
         {
-            HashSet<Type> foundTypes;
-            ScannedRegistry.TryGetValue(scannedType, out foundTypes);
+            ScannedRegistry.TryGetValue(scannedType, out HashSet<Type> foundTypes);
 
             return foundTypes ?? Enumerable.Empty<Type>();
         }
@@ -75,9 +74,7 @@
 
             foreach (var item in matches)
             {
-                HashSet<Type> storedTypes;
-
-                if (!ScannedRegistry.TryGetValue(item.registerType, out storedTypes))
+                if (!ScannedRegistry.TryGetValue(item.registerType, out HashSet<Type> storedTypes))
                 {
                     storedTypes = new HashSet<Type>();
                 }

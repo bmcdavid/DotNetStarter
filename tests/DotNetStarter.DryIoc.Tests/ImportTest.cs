@@ -23,7 +23,6 @@ namespace DotNetStarter.Tests
         [TestMethod]
         public void ShouldImportAllServices()
         {
-
             Assert.IsTrue(Foo.AllServices.Count() > 1);
         }
 

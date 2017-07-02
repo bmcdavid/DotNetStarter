@@ -28,13 +28,13 @@ namespace DotNetStarter.Tests.Mocks
         public string Hello => "Hello, World!";
     }
 
-    [Register(typeof(IFoo), LifeTime.Transient)]
+    [Register(typeof(IFoo), LifeTime.Singleton)]
     public class FooServiceTwo : IFoo
     {
         public string Hello => "Hello, World part two!";
     }
 
-    [Register(typeof(IFoo))]
+    [Register(typeof(IFoo), LifeTime.Singleton)]
     public class FooServiceThree : IFoo
     {
         public string Hello => "Hello, World part three!";
