@@ -8,13 +8,9 @@ using System.Reflection;
 #endif
 
 [assembly: AssemblyTitle("DotNetStarter")]
-[assembly: AssemblyDescription("")]
-[assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
+[assembly: AssemblyDescription(".NET startup system with dependency injection.")]
 [assembly: AssemblyProduct("DotNetStarter")]
 [assembly: AssemblyCopyright("Copyright © {year}")]
-[assembly: AssemblyTrademark("")]
-[assembly: AssemblyCulture("")]
 [assembly: AssemblyVersion("1.1.0")]
 [assembly: AssemblyFileVersion("1.1.0")]
 [assembly: AssemblyInformationalVersion("1.1.0 Build: {build} Commit Hash: {commit}")]

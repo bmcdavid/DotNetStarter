@@ -8,13 +8,9 @@
 #endif
 
 [assembly: AssemblyTitle("DotNetStarter.Abstractions")]
-[assembly: AssemblyDescription("")]
-[assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
+[assembly: AssemblyDescription(".NET startup system abstractions with dependency injection.")]
 [assembly: AssemblyProduct("DotNetStarter.Abstractions")]
 [assembly: AssemblyCopyright("Copyright © {year}")]
-[assembly: AssemblyTrademark("")]
-[assembly: AssemblyCulture("")]
 [assembly: AssemblyVersion("1.1.0")]
 [assembly: AssemblyFileVersion("1.1.0")]
 [assembly: AssemblyInformationalVersion("1.1.0 Build: {build} Commit Hash: {commit}")]

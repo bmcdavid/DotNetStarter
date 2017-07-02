@@ -1,14 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
 using DotNetStarter.Abstractions;
-
-#if NET35 || NET40 || NET45
-
-using System.IO;
-using System.Linq;
-
-#endif
 
 namespace DotNetStarter.Internal
 {
@@ -20,9 +14,6 @@ namespace DotNetStarter.Internal
         private static HashSet<Assembly> _LoadedAssemblies = new HashSet<Assembly>();
 
         private static readonly object _Lock = new object();
-
-        private static volatile bool _Loaded = false;
-
         
 #if NET35 || NET40 || NET45
         /// <summary>
@@ -40,9 +31,9 @@ namespace DotNetStarter.Internal
                 searchPaths = searchPaths.Concat(info.PrivateBinPath.Split(';')).ToList();
             }
 
-            var assembliesPath = Path.Combine(info.ApplicationBase, searchPaths.FirstOrDefault() ?? string.Empty);
+            var assembliesPath = System.IO.Path.Combine(info.ApplicationBase, searchPaths.FirstOrDefault() ?? string.Empty);
 
-            if (!Directory.Exists(assembliesPath))
+            if (!System.IO.Directory.Exists(assembliesPath))
             {
                 throw new Exception("Cannot determine assembly folder!");
             }
@@ -59,8 +50,8 @@ namespace DotNetStarter.Internal
         protected virtual IEnumerable<string> GetAssemblyFiles()
         {
             var assemblyPath = GetAssemblyDir();
-            IEnumerable<string> files = Directory.GetFiles(assemblyPath, "*.dll")
-                                                 .Concat(Directory.GetFiles(assemblyPath, "*.exe"));
+            IEnumerable<string> files = System.IO.Directory.GetFiles(assemblyPath, "*.dll")
+                                                 .Concat(System.IO.Directory.GetFiles(assemblyPath, "*.exe"));
 
             return files;
         }
@@ -72,8 +63,8 @@ namespace DotNetStarter.Internal
         protected virtual IEnumerable<string> GetAssemblyFiles()
         {
             var assemblyPath = GetAssemblyDir();
-            IEnumerable<string> files = Directory.EnumerateFiles(assemblyPath, "*.dll")
-                                                 .Concat(Directory.EnumerateFiles(assemblyPath, "*.exe"));
+            IEnumerable<string> files = System.IO.Directory.EnumerateFiles(assemblyPath, "*.dll")
+                                                 .Concat(System.IO.Directory.EnumerateFiles(assemblyPath, "*.exe"));
 
             return files;
         }
@@ -99,13 +90,12 @@ namespace DotNetStarter.Internal
         /// <returns></returns>
         public virtual IEnumerable<Assembly> GetAssemblies()
         {
-            if (!_Loaded)
+            if (_LoadedAssemblies.Count == 0)
             {
                 lock (_Lock)
                 {
-                    if (!_Loaded)
+                    if (_LoadedAssemblies.Count == 0)
                     {
-                        _Loaded = true;
                         var files = GetAssemblyFiles();
 
                         foreach (var file in files)
@@ -114,10 +104,9 @@ namespace DotNetStarter.Internal
 
                             try
                             {
-                                var fileInfo = new FileInfo(file);
+                                var fileInfo = new System.IO.FileInfo(file);
                                 //assembly = Assembly.Load(AssemblyName.GetAssemblyName(file));
-                                assembly = Assembly.Load(
-                                    new AssemblyName(fileInfo.Name.Replace(fileInfo.Extension, string.Empty)));
+                                assembly = Assembly.Load(new AssemblyName(fileInfo.Name.Replace(fileInfo.Extension, string.Empty)));
 
                                 _LoadedAssemblies.Add(assembly);
                             }

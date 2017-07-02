@@ -8,7 +8,7 @@
     <projectUrl>https://bmcdavid.github.io/DotNetStarter/</projectUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>Enables support for DI/IOC in startup.</description>
-    <releaseNotes>Uses signed version.</releaseNotes>
+    <releaseNotes>Support for netstandard1.0!</releaseNotes>
     <copyright>Copyright $year$</copyright>
     <tags>Startup Modules</tags>
     <dependencies>
@@ -27,13 +27,11 @@
       <group targetFramework="netstandard1.0">
         <dependency id="DotNetStarter" version="[1,2)" />
         <dependency id="DryIoc.dll" version="[2.7,3)" />
-        <!--<dependency id="System.AppContext" version="4.1.0" />-->
         <dependency id="System.Collections" version="4.0.11" />
         <dependency id="System.Diagnostics.Debug" version="4.0.11" />
         <dependency id="System.Diagnostics.Tools" version="4.0.1" />
         <dependency id="System.Linq" version="4.1.0" />
         <dependency id="System.Linq.Expressions" version="4.1.0" />
-        <!--<dependency id="System.IO.FileSystem" version="4.0.1" />-->
         <dependency id="System.Reflection" version="4.1.0" />
         <dependency id="System.Reflection.Extensions" version="4.0.1" />
         <dependency id="System.Runtime" version="4.1.0" />
