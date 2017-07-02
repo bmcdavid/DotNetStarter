@@ -9,7 +9,7 @@
 
 #if NET45 || NET40 || NET35
     /// <summary>
-    /// Serive provider that throws exceptions if type cannot be found
+    /// Service provider that throws exceptions if type cannot be found
     /// </summary>
     public interface ISupportRequiredService
     {

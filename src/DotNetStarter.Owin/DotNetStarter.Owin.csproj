@@ -17,4 +17,9 @@
     <PackageReference Include="Owin" Version="1.0.0" />
   </ItemGroup>
 
+  <ItemGroup Condition="'$(TargetFramework)' == 'netstandard1.3'">
+    <PackageReference Include="Microsoft.AspNetCore.Http.Abstractions" Version="[1,2)" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="[1,2)" />
+  </ItemGroup>
+
 </Project>

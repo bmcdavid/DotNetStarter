@@ -37,7 +37,7 @@
         <dependency id="System.Runtime.Extensions" version="4.1.0" />
         <!--<dependency id="System.Runtime.InteropServices" version="4.1.0" />-->
         <dependency id="System.Threading" version="4.0.11" />
-        <!--<dependency id="Microsoft.Extensions.DependencyInjection.Abstractions" version="[1,2)" />-->
+        <dependency id="Microsoft.Extensions.DependencyInjection.Abstractions" version="[1,2)" />
       </group>
       <group targetFramework="netstandard1.1">
         <dependency id="DotNetStarter.Abstractions" version="[1,2)" />
@@ -52,6 +52,7 @@
         <dependency id="System.Runtime.Extensions" version="4.1.0" />
         <dependency id="System.Runtime.InteropServices" version="4.1.0" />
         <dependency id="System.Threading" version="4.0.11" />
+        <dependency id="Microsoft.Extensions.DependencyInjection.Abstractions" version="[1,2)" />
       </group>
     </dependencies>
   </metadata>
