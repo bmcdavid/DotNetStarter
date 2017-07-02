@@ -2,7 +2,8 @@
 <package>
   <metadata>
     <id>DotNetStarter.StructureMap</id>
-    <version>$version$</version><!-- overridden by "NuGet pack -Version" flag -->
+    <version>$version$</version>
+    <!-- overridden by "NuGet pack -Version" flag -->
     <authors>Brad McDavid</authors>
     <owners>Brad McDavid</owners>
     <projectUrl>https://bmcdavid.github.io/DotNetStarter/</projectUrl>
@@ -45,22 +46,22 @@
   </metadata>
   <files>
     <!--https://docs.nuget.org/ndocs/schema/target-frameworks-->
-    <file src="bin\Release\DotNetStarter.StructureMap.dll" target="lib\net35" />
-    <file src="bin\Release\DotNetStarter.StructureMap.pdb" target="lib\net35" />
-    <file src="bin\Release\DotNetStarter.StructureMap.xml" target="lib\net35" />
-    
-    <file src="..\..\net40\bin\Release\DotNetStarter.StructureMap.dll" target="lib\net40" />
-    <file src="..\..\net40\bin\Release\DotNetStarter.StructureMap.pdb" target="lib\net40" />
-    <file src="..\..\net40\bin\Release\DotNetStarter.StructureMap.xml" target="lib\net40" />
-    
-    <file src="..\..\net45\bin\Release\DotNetStarter.StructureMap.dll" target="lib\net45" />
-    <file src="..\..\net45\bin\Release\DotNetStarter.StructureMap.pdb" target="lib\net45" />
-    <file src="..\..\net45\bin\Release\DotNetStarter.StructureMap.xml" target="lib\net45" />
-    
-    <file src="..\..\netstandard1.3\bin\Release\DotNetStarter.StructureMap.dll" target="lib\netstandard1.3" />
-    <file src="..\..\netstandard1.3\bin\Release\DotNetStarter.StructureMap.pdb" target="lib\netstandard1.3" />
-    <file src="..\..\netstandard1.3\bin\Release\DotNetStarter.StructureMap.xml" target="lib\netstandard1.3" />
-    
+    <file src="bin\Release\net35\DotNetStarter.StructureMap.dll" target="lib\net35" />
+    <file src="bin\Release\net35\DotNetStarter.StructureMap.pdb" target="lib\net35" />
+    <file src="bin\Release\net35\DotNetStarter.StructureMap.xml" target="lib\net35" />
+
+    <file src="bin\Release\net40\DotNetStarter.StructureMap.dll" target="lib\net40" />
+    <file src="bin\Release\net40\DotNetStarter.StructureMap.pdb" target="lib\net40" />
+    <file src="bin\Release\net40\DotNetStarter.StructureMap.xml" target="lib\net40" />
+
+    <file src="bin\Release\net45\DotNetStarter.StructureMap.dll" target="lib\net45" />
+    <file src="bin\Release\net45\DotNetStarter.StructureMap.pdb" target="lib\net45" />
+    <file src="bin\Release\net45\DotNetStarter.StructureMap.xml" target="lib\net45" />
+
+    <file src="bin\Release\netstandard1.3\DotNetStarter.StructureMap.dll" target="lib\netstandard1.3" />
+    <file src="bin\Release\netstandard1.3\DotNetStarter.StructureMap.pdb" target="lib\netstandard1.3" />
+    <file src="bin\Release\netstandard1.3\DotNetStarter.StructureMap.xml" target="lib\netstandard1.3" />
+
     <file src="readme.txt" target="readme.txt" />
   </files>
 </package>

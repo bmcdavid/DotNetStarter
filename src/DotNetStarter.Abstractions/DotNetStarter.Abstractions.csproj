@@ -1,93 +1,13 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
   <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{F01C1501-B8F5-4B3D-B2A1-0975731992E6}</ProjectGuid>
-    <OutputType>Library</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>DotNetStarter.Abstractions</RootNamespace>
-    <AssemblyName>DotNetStarter.Abstractions</AssemblyName>
-    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
-    <FileAlignment>512</FileAlignment>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>TRACE;DEBUG;NET35</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <DocumentationFile>bin\Debug\DotNetStarter.Abstractions.xml</DocumentationFile>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE;NET35</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <DocumentationFile>bin\Release\DotNetStarter.Abstractions.xml</DocumentationFile>
-  </PropertyGroup>
-  <PropertyGroup>
-    <SignAssembly>true</SignAssembly>
+    <TargetFrameworks>net35;net40;net45;netstandard1.0;netstandard1.1</TargetFrameworks>
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+    <DocumentationFile>bin\$(Configuration)\$(TargetFramework)\DotNetStarter.Abstractions.xml</DocumentationFile>
+    <SignAssembly>True</SignAssembly>
     <AssemblyOriginatorKeyFile>..\..\dotnetstarter.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
-  <ItemGroup>
-    <Reference Include="System" />
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="AssemblyDependentBaseAttribute.cs" />
-    <Compile Include="AssemblyFactoryBaseAttribute.cs" />
-    <Compile Include="ContructorType.cs" />
-    <Compile Include="DependencyBaseAttribute.cs" />
-    <Compile Include="IAssemblyFilter.cs" />
-    <Compile Include="IAssemblyLoader.cs" />
-    <Compile Include="IAssemblyScanner.cs" />
-    <Compile Include="IAssemblyScanTypeMatcher.cs" />
-    <Compile Include="IDependencyFinder.cs" />
-    <Compile Include="IDependencyNode.cs" />
-    <Compile Include="IDependencySorter.cs" />
-    <Compile Include="ILocator.cs" />
-    <Compile Include="ILocatorConfigure.cs" />
-    <Compile Include="ILocatorDefaultRegistrations.cs" />
-    <Compile Include="ILocatorRegistry.cs" />
-    <Compile Include="ILocatorRegistryFactory.cs" />
-    <Compile Include="ILocatorSetContainer.cs" />
-    <Compile Include="Import.cs" />
-    <Compile Include="Internal\TypeExtensions.cs" />
-    <Compile Include="IReflectionHelper.cs" />
-    <Compile Include="IRequestSettingsProvider.cs" />
-    <Compile Include="IShutdownHandler.cs" />
-    <Compile Include="IStartupConfiguration.cs" />
-    <Compile Include="IStartupContext.cs" />
-    <Compile Include="IStartupHandler.cs" />
-    <Compile Include="IStartupLogger.cs" />
-    <Compile Include="IStartupModule.cs" />
-    <Compile Include="IStartupModuleFilter.cs" />
-    <Compile Include="IStartupObjectFactory.cs" />
-    <Compile Include="ITimedTask.cs" />
-    <Compile Include="ITimedTaskManager.cs" />
-    <Compile Include="LifeTime.cs" />
-    <Compile Include="LocatorRegistryFactoryAttribute.cs" />
-    <Compile Include="LogLevel.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="RegisterAttribute.cs" />
-    <Compile Include="ScanTypeRegistryAttribute.cs" />
-    <Compile Include="StartupContainerException.cs" />
-    <Compile Include="StartupModuleAttribute.cs" />
-    <Compile Include="StartupObjectFactoryAttribute.cs" />
-    <Compile Include="TimedActionScope.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="DotNetStarter.Abstractions.nuspec">
-      <SubType>Designer</SubType>
-    </None>
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="readme.txt" />
-  </ItemGroup>
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+
+  <!--<DefineConstants>-->
+
 </Project>

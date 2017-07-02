@@ -8,14 +8,19 @@
     <projectUrl>https://bmcdavid.github.io/DotNetStarter/</projectUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>Abstractions for startup system with optional support for DI/IOC.</description>
-    <releaseNotes>Signed version.</releaseNotes>
+    <releaseNotes>Now supporting netstandard1.0! Added IAssemblyScanTypeMatcher.</releaseNotes>
     <copyright>Copyright $year$</copyright>
     <tags>Startup Modules Abstractions</tags>
     <dependencies>
       <group targetFramework="net35"></group>
       <group targetFramework="net40"></group>
       <group targetFramework="net45"></group>
-      <group targetFramework="netstandard1.3">
+      <group targetFramework="netstandard1.0">
+        <dependency id="System.Collections" version="4.0.11" />
+        <dependency id="System.Reflection" version="4.1.0" />
+        <dependency id="System.Reflection.Extensions" version="4.0.1" />
+      </group>
+      <group targetFramework="netstandard1.1">
         <dependency id="System.Collections" version="4.0.11" />
         <dependency id="System.Reflection" version="4.1.0" />
         <dependency id="System.Reflection.Extensions" version="4.0.1" />
@@ -24,21 +29,25 @@
   </metadata>
   <files>
     <!--https://docs.nuget.org/ndocs/schema/target-frameworks-->
-    <file src="bin\Release\DotNetStarter.Abstractions.dll" target="lib\net35" />
-    <file src="bin\Release\DotNetStarter.Abstractions.pdb" target="lib\net35" />
-    <file src="bin\Release\DotNetStarter.Abstractions.xml" target="lib\net35" />
+    <file src="bin\Release\net35\DotNetStarter.Abstractions.dll" target="lib\net35" />
+    <file src="bin\Release\net35\DotNetStarter.Abstractions.pdb" target="lib\net35" />
+    <file src="bin\Release\net35\DotNetStarter.Abstractions.xml" target="lib\net35" />
     
-    <file src="..\..\net40\bin\Release\DotNetStarter.Abstractions.dll" target="lib\net40" />
-    <file src="..\..\net40\bin\Release\DotNetStarter.Abstractions.pdb" target="lib\net40" />
-    <file src="..\..\net40\bin\Release\DotNetStarter.Abstractions.xml" target="lib\net40" />
+    <file src="bin\Release\net40\DotNetStarter.Abstractions.dll" target="lib\net40" />
+    <file src="bin\Release\net40\DotNetStarter.Abstractions.pdb" target="lib\net40" />
+    <file src="bin\Release\net40\DotNetStarter.Abstractions.xml" target="lib\net40" />
     
-    <file src="..\..\net45\bin\Release\DotNetStarter.Abstractions.dll" target="lib\net45" />
-    <file src="..\..\net45\bin\Release\DotNetStarter.Abstractions.pdb" target="lib\net45" />
-    <file src="..\..\net45\bin\Release\DotNetStarter.Abstractions.xml" target="lib\net45" />
+    <file src="bin\Release\net45\DotNetStarter.Abstractions.dll" target="lib\net45" />
+    <file src="bin\Release\net45\DotNetStarter.Abstractions.pdb" target="lib\net45" />
+    <file src="bin\Release\net45\DotNetStarter.Abstractions.xml" target="lib\net45" />
     
-    <file src="..\..\netstandard1.3\bin\Release\DotNetStarter.Abstractions.dll" target="lib\netstandard1.3" />
-    <file src="..\..\netstandard1.3\bin\Release\DotNetStarter.Abstractions.pdb" target="lib\netstandard1.3" />
-    <file src="..\..\netstandard1.3\bin\Release\DotNetStarter.Abstractions.xml" target="lib\netstandard1.3" />
+    <file src="bin\Release\netstandard1.0\DotNetStarter.Abstractions.dll" target="lib\netstandard1.0" />
+    <file src="bin\Release\netstandard1.0\DotNetStarter.Abstractions.pdb" target="lib\netstandard1.0" />
+    <file src="bin\Release\netstandard1.0\DotNetStarter.Abstractions.xml" target="lib\netstandard1.0" />
+
+    <file src="bin\Release\netstandard1.1\DotNetStarter.Abstractions.dll" target="lib\netstandard1.1" />
+    <file src="bin\Release\netstandard1.1\DotNetStarter.Abstractions.pdb" target="lib\netstandard1.1" />
+    <file src="bin\Release\netstandard1.1\DotNetStarter.Abstractions.xml" target="lib\netstandard1.1" />
     
     <file src="readme.txt" target="readme.txt" />
   </files>

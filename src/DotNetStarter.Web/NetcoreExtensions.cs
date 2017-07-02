@@ -1,4 +1,6 @@
-﻿using DotNetStarter.Abstractions;
+﻿#if NETSTANDARD1_3
+
+using DotNetStarter.Abstractions;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using System;
@@ -81,3 +83,4 @@ namespace DotNetStarter.Web
         }
     }
 }
+#endif

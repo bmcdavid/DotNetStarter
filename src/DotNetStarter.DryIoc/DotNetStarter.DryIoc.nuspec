@@ -24,16 +24,16 @@
         <dependency id="DotNetStarter" version="[1,2)" />
         <dependency id="DryIoc.dll" version="[2.7,3)" />
       </group>
-      <group targetFramework="netstandard1.3">
+      <group targetFramework="netstandard1.0">
         <dependency id="DotNetStarter" version="[1,2)" />
         <dependency id="DryIoc.dll" version="[2.7,3)" />
-        <dependency id="System.AppContext" version="4.1.0" />
+        <!--<dependency id="System.AppContext" version="4.1.0" />-->
         <dependency id="System.Collections" version="4.0.11" />
         <dependency id="System.Diagnostics.Debug" version="4.0.11" />
         <dependency id="System.Diagnostics.Tools" version="4.0.1" />
         <dependency id="System.Linq" version="4.1.0" />
         <dependency id="System.Linq.Expressions" version="4.1.0" />
-        <dependency id="System.IO.FileSystem" version="4.0.1" />
+        <!--<dependency id="System.IO.FileSystem" version="4.0.1" />-->
         <dependency id="System.Reflection" version="4.1.0" />
         <dependency id="System.Reflection.Extensions" version="4.0.1" />
         <dependency id="System.Runtime" version="4.1.0" />
@@ -45,21 +45,21 @@
   </metadata>
   <files>
     <!--https://docs.nuget.org/ndocs/schema/target-frameworks-->
-    <file src="bin\Release\DotNetStarter.DryIoc.dll" target="lib\net35" />
-    <file src="bin\Release\DotNetStarter.DryIoc.pdb" target="lib\net35" />
-    <file src="bin\Release\DotNetStarter.DryIoc.xml" target="lib\net35" />
+    <file src="bin\Release\net35\DotNetStarter.DryIoc.dll" target="lib\net35" />
+    <file src="bin\Release\net35\DotNetStarter.DryIoc.pdb" target="lib\net35" />
+    <file src="bin\Release\net35\DotNetStarter.DryIoc.xml" target="lib\net35" />
     
-    <file src="..\..\net40\bin\Release\DotNetStarter.DryIoc.dll" target="lib\net40" />
-    <file src="..\..\net40\bin\Release\DotNetStarter.DryIoc.pdb" target="lib\net40" />
-    <file src="..\..\net40\bin\Release\DotNetStarter.DryIoc.xml" target="lib\net40" />
+    <file src="bin\Release\net40\DotNetStarter.DryIoc.dll" target="lib\net40" />
+    <file src="bin\Release\net40\DotNetStarter.DryIoc.pdb" target="lib\net40" />
+    <file src="bin\Release\net40\DotNetStarter.DryIoc.xml" target="lib\net40" />
     
-    <file src="..\..\net45\bin\Release\DotNetStarter.DryIoc.dll" target="lib\net45" />
-    <file src="..\..\net45\bin\Release\DotNetStarter.DryIoc.pdb" target="lib\net45" />
-    <file src="..\..\net45\bin\Release\DotNetStarter.DryIoc.xml" target="lib\net45" />
+    <file src="bin\Release\net45\DotNetStarter.DryIoc.dll" target="lib\net45" />
+    <file src="bin\Release\net45\DotNetStarter.DryIoc.pdb" target="lib\net45" />
+    <file src="bin\Release\net45\DotNetStarter.DryIoc.xml" target="lib\net45" />
     
-    <file src="..\..\netstandard1.3\bin\Release\DotNetStarter.DryIoc.dll" target="lib\netstandard1.3" />
-    <file src="..\..\netstandard1.3\bin\Release\DotNetStarter.DryIoc.pdb" target="lib\netstandard1.3" />
-    <file src="..\..\netstandard1.3\bin\Release\DotNetStarter.DryIoc.xml" target="lib\netstandard1.3" />
+    <file src="bin\Release\netstandard1.0\DotNetStarter.DryIoc.dll" target="lib\netstandard1.0" />
+    <file src="bin\Release\netstandard1.0\DotNetStarter.DryIoc.pdb" target="lib\netstandard1.0" />
+    <file src="bin\Release\netstandard1.0\DotNetStarter.DryIoc.xml" target="lib\netstandard1.0" />
     
     <file src="readme.txt" target="readme.txt" />
   </files>

@@ -1,0 +1,38 @@
+<?xml version="1.0"?>
+<package>
+  <metadata>
+    <id>DotNetStarter.Owin</id>
+    <version>$version$</version><!-- overridden by "NuGet pack -Version" flag -->
+    <authors>Brad McDavid</authors>
+    <owners>Brad McDavid</owners>
+    <projectUrl>https://bmcdavid.github.io/DotNetStarter/</projectUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>Owin Startup system with optional support for DI/IOC.</description>
+    <releaseNotes>Signed version.</releaseNotes>
+    <copyright>Copyright $year$</copyright>
+    <tags>Startup Owin</tags>
+    <dependencies>
+      <!--todo: review these dependencies-->
+      <group targetFramework="net45">
+        <dependency id="DotNetStarter" version="[1,2)" />
+      </group>
+      <group targetFramework="netstandard1.3">
+        <dependency id="DotNetStarter" version="[1,2)" />
+        <!--<dependency id="Microsoft.AspNetCore.Http.Abstractions" version="[1,2)" />-->
+        <!--<dependency id="Microsoft.Extensions.DependencyInjection" version="[1,2)" />-->
+      </group>
+    </dependencies>
+  </metadata>
+  <files>
+    <!--https://docs.nuget.org/ndocs/schema/target-frameworks-->
+    <file src="bin\Release\net45\DotNetStarter.Owin.dll" target="lib\net45" />
+    <file src="bin\Release\net45\DotNetStarter.Owin.pdb" target="lib\net45" />
+    <file src="bin\Release\net45\DotNetStarter.Owin.xml" target="lib\net45" />
+    
+    <file src="bin\Release\netstandard1.3\DotNetStarter.Owin.dll" target="lib\netstandard1.3" />
+    <file src="bin\Release\netstandard1.3\DotNetStarter.Owin.pdb" target="lib\netstandard1.3" />
+    <file src="bin\Release\netstandard1.3\DotNetStarter.Owin.xml" target="lib\netstandard1.3" />
+    
+    <file src="readme.txt" target="readme.txt" />
+  </files>
+</package>

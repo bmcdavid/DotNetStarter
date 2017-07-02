@@ -64,16 +64,16 @@
     <Compile Include="..\DotNetStarter.DryIoc.Tests\_TestSetup.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\net40\DotNetStarter.Abstractions\DotNetStarter.Abstractions.csproj">
-      <Project>{cb1afdb1-73b4-4ec2-a375-7130e1591b59}</Project>
+    <ProjectReference Include="..\..\src\DotNetStarter.Abstractions\DotNetStarter.Abstractions.csproj">
+      <Project>{e7196a51-5932-47ea-be3a-f65567c9cd8b}</Project>
       <Name>DotNetStarter.Abstractions</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\net40\DotNetStarter.StructureMap\DotNetStarter.StructureMap.csproj">
-      <Project>{3a259846-848f-40c9-9443-d2a4817ca6e2}</Project>
-      <Name>DotNetStarter.StructureMap</Name>
+    <ProjectReference Include="..\..\src\DotNetStarter.Structuremap\DotNetStarter.Structuremap.csproj">
+      <Project>{b13148ea-1643-4f33-9381-87d1c042d5f5}</Project>
+      <Name>DotNetStarter.Structuremap</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\net40\DotNetStarter\DotNetStarter.csproj">
-      <Project>{e4771522-237a-47cd-8548-ba9579cc4f55}</Project>
+    <ProjectReference Include="..\..\src\DotNetStarter\DotNetStarter.csproj">
+      <Project>{f75a648e-8412-41fe-8c4d-d1f3178ac718}</Project>
       <Name>DotNetStarter</Name>
     </ProjectReference>
   </ItemGroup>

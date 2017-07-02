@@ -39,6 +39,9 @@
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="DryIoc, Version=2.7.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\DryIoc.dll.2.7.0\lib\net35\DryIoc.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
@@ -67,17 +70,20 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\src\DotNetStarter.Abstractions\DotNetStarter.Abstractions.csproj">
-      <Project>{f01c1501-b8f5-4b3d-b2a1-0975731992e6}</Project>
+      <Project>{e7196a51-5932-47ea-be3a-f65567c9cd8b}</Project>
       <Name>DotNetStarter.Abstractions</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\src\DotNetStarter.DryIoc\DotNetStarter.DryIoc.csproj">
-      <Project>{5a668531-c45d-45f6-8bbc-c2c924a8b237}</Project>
+      <Project>{544b1924-3071-4261-b4ba-151ab6af1d43}</Project>
       <Name>DotNetStarter.DryIoc</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\src\DotNetStarter\DotNetStarter.csproj">
-      <Project>{ba813dc5-d696-461d-8e62-f04fcd669adb}</Project>
+      <Project>{f75a648e-8412-41fe-8c4d-d1f3178ac718}</Project>
       <Name>DotNetStarter</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
   </ItemGroup>
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">

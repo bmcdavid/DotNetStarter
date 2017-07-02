@@ -9,7 +9,7 @@
     <projectUrl>https://bmcdavid.github.io/DotNetStarter/</projectUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>Startup system with optional support for DI/IOC.</description>
-    <releaseNotes>Signed version.</releaseNotes>
+    <releaseNotes>Now supporting netstandard1.0! Refactored assembly scanner and loading.</releaseNotes>
     <copyright>Copyright $year$</copyright>
     <tags>Startup Modules</tags>
     <dependencies>
@@ -22,42 +22,60 @@
       <group targetFramework="net45">
         <dependency id="DotNetStarter.Abstractions" version="[1,2)" />
       </group>
-      <group targetFramework="netstandard1.3">
+      <group targetFramework="netstandard1.0">
         <dependency id="DotNetStarter.Abstractions" version="[1,2)" />
-        <dependency id="System.AppContext" version="4.1.0" />
+        <!--<dependency id="System.AppContext" version="4.1.0" />-->
         <dependency id="System.Collections" version="4.0.11" />
         <dependency id="System.Diagnostics.Debug" version="4.0.11" />
         <dependency id="System.Diagnostics.Tools" version="4.0.1" />
         <dependency id="System.Linq" version="4.1.0" />
         <dependency id="System.Linq.Expressions" version="4.1.0" />
-        <dependency id="System.IO.FileSystem" version="4.0.1" />
+        <!--<dependency id="System.IO.FileSystem" version="4.0.1" />-->
+        <dependency id="System.Reflection" version="4.1.0" />
+        <dependency id="System.Reflection.Extensions" version="4.0.1" />
+        <dependency id="System.Runtime" version="4.1.0" />
+        <dependency id="System.Runtime.Extensions" version="4.1.0" />
+        <!--<dependency id="System.Runtime.InteropServices" version="4.1.0" />-->
+        <dependency id="System.Threading" version="4.0.11" />
+        <!--<dependency id="Microsoft.Extensions.DependencyInjection.Abstractions" version="[1,2)" />-->
+      </group>
+      <group targetFramework="netstandard1.1">
+        <dependency id="DotNetStarter.Abstractions" version="[1,2)" />
+        <dependency id="System.Collections" version="4.0.11" />
+        <dependency id="System.Diagnostics.Debug" version="4.0.11" />
+        <dependency id="System.Diagnostics.Tools" version="4.0.1" />
+        <dependency id="System.Linq" version="4.1.0" />
+        <dependency id="System.Linq.Expressions" version="4.1.0" />
         <dependency id="System.Reflection" version="4.1.0" />
         <dependency id="System.Reflection.Extensions" version="4.0.1" />
         <dependency id="System.Runtime" version="4.1.0" />
         <dependency id="System.Runtime.Extensions" version="4.1.0" />
         <dependency id="System.Runtime.InteropServices" version="4.1.0" />
         <dependency id="System.Threading" version="4.0.11" />
-        <dependency id="Microsoft.Extensions.DependencyInjection.Abstractions" version="[1,2)" />
       </group>
     </dependencies>
   </metadata>
   <files>
     <!--https://docs.nuget.org/ndocs/schema/target-frameworks-->
-    <file src="bin\Release\DotNetStarter.dll" target="lib\net35" />
-    <file src="bin\Release\DotNetStarter.pdb" target="lib\net35" />
-    <file src="bin\Release\DotNetStarter.xml" target="lib\net35" />
+    <file src="bin\Release\net35\DotNetStarter.dll" target="lib\net35" />
+    <file src="bin\Release\net35\DotNetStarter.pdb" target="lib\net35" />
+    <file src="bin\Release\net35\DotNetStarter.xml" target="lib\net35" />
 
-    <file src="..\..\net40\bin\Release\DotNetStarter.dll" target="lib\net40" />
-    <file src="..\..\net40\bin\Release\DotNetStarter.pdb" target="lib\net40" />
-    <file src="..\..\net40\bin\Release\DotNetStarter.xml" target="lib\net40" />
+    <file src="bin\Release\net40\DotNetStarter.dll" target="lib\net40" />
+    <file src="bin\Release\net40\DotNetStarter.pdb" target="lib\net40" />
+    <file src="bin\Release\net40\DotNetStarter.xml" target="lib\net40" />
 
-    <file src="..\..\net45\bin\Release\DotNetStarter.dll" target="lib\net45" />
-    <file src="..\..\net45\bin\Release\DotNetStarter.pdb" target="lib\net45" />
-    <file src="..\..\net45\bin\Release\DotNetStarter.xml" target="lib\net45" />
+    <file src="bin\Release\net45\DotNetStarter.dll" target="lib\net45" />
+    <file src="bin\Release\net45\DotNetStarter.pdb" target="lib\net45" />
+    <file src="bin\Release\net45\DotNetStarter.xml" target="lib\net45" />
 
-    <file src="..\..\netstandard1.3\bin\Release\DotNetStarter.dll" target="lib\netstandard1.3" />
-    <file src="..\..\netstandard1.3\bin\Release\DotNetStarter.pdb" target="lib\netstandard1.3" />
-    <file src="..\..\netstandard1.3\bin\Release\DotNetStarter.xml" target="lib\netstandard1.3" />
+    <file src="bin\Release\netstandard1.0\DotNetStarter.dll" target="lib\netstandard1.0" />
+    <file src="bin\Release\netstandard1.0\DotNetStarter.pdb" target="lib\netstandard1.0" />
+    <file src="bin\Release\netstandard1.0\DotNetStarter.xml" target="lib\netstandard1.0" />
+
+    <file src="bin\Release\netstandard1.1\DotNetStarter.dll" target="lib\netstandard1.1" />
+    <file src="bin\Release\netstandard1.1\DotNetStarter.pdb" target="lib\netstandard1.1" />
+    <file src="bin\Release\netstandard1.1\DotNetStarter.xml" target="lib\netstandard1.1" />
 
     <file src="readme.txt" target="readme.txt" />
   </files>

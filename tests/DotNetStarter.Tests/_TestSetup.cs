@@ -1,8 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Reflection;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using DotNetStarter.Internal;
-using DotNetStarter.Abstractions;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 
 namespace DotNetStarter.Tests
@@ -13,15 +9,7 @@ namespace DotNetStarter.Tests
         [AssemblyInitialize]
         public static void Setup(TestContext context)
         {
-            AssemblyLoader.SetAssemblyLoader(new TestAssemblyLoader());
-            ApplicationContext.Startup();
+            ApplicationContext.Startup(assemblies: AppDomain.CurrentDomain.GetAssemblies());
         }
     }
-
-    public class TestAssemblyLoader : AssemblyLoader
-    {
-        public override IEnumerable<Assembly> GetAssemblies() => base.GetAssemblies();
-    }
-
-    
 }

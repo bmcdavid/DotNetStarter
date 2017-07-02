@@ -1,9 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
-using System.Linq;
 using System.Reflection;
 using DotNetStarter.Abstractions;
+
+#if NET35 || NET40 || NET45
+
+using System.IO;
+using System.Linq;
+
+#endif
 
 namespace DotNetStarter.Internal
 {
@@ -12,70 +17,14 @@ namespace DotNetStarter.Internal
     /// </summary>
     public class AssemblyLoader : IAssemblyLoader
     {
-        //todo: remove static parts since assemblies can be passed to startup
-
-        /// <summary>
-        /// Default instance, can be changed via SetAssemblyLoader which must be done before Context is used.
-        /// </summary>
-        public static IAssemblyLoader Default => _Default;
-
-        private static IAssemblyLoader _Default = null;
-
         private static HashSet<Assembly> _LoadedAssemblies = new HashSet<Assembly>();
 
         private static readonly object _Lock = new object();
 
         private static volatile bool _Loaded = false;
 
-        static AssemblyLoader()
-        {
-            if (_Default == null)
-            {
-                lock (_Lock)
-                {
-                    if (_Default == null)
-                    {
-                        _Default = new AssemblyLoader();
-                    }
-                }
-            }
-        }
-
-        /// <summary>
-        /// Allows assembly loader to be swapped, IMPORTANT: needs to be executed before Context.Startup()!
-        /// </summary>
-        /// <param name="assemblyLoader"></param>
-        public static void SetAssemblyLoader(IAssemblyLoader assemblyLoader)
-        {
-            lock (_Lock)
-            {
-                _Default = assemblyLoader;
-            }
-        }
-
-#if NETSTANDARD  
-        /// <summary>
-        /// Gets assembly dll folder
-        /// </summary>
-        /// <returns></returns>      
-        protected virtual string GetAssemblyDir()
-        {
-            var dir = AppContext.BaseDirectory;
-            var dirWithBin = dir + "bin";
-
-            if (Directory.Exists(dirWithBin))
-                dir = dirWithBin;
-
-            var assembliesPath = dir;
-
-            if (!Directory.Exists(assembliesPath))
-            {
-                throw new Exception("Cannot determine assembly folder!");
-            }
-
-            return assembliesPath;
-        }
-#else
+        
+#if NET35 || NET40 || NET45
         /// <summary>
         /// Gets assembly dll folder
         /// </summary>
@@ -115,7 +64,7 @@ namespace DotNetStarter.Internal
 
             return files;
         }
-#else
+#elif NET40 || NET45
         /// <summary>
         /// Gets assembly files
         /// </summary>
@@ -130,10 +79,14 @@ namespace DotNetStarter.Internal
         }
 #endif
 
-#if NETSTANDARD_VNEXT
+#if NETSTANDARD1_0 || NETSTANDARD1_1
+        /// <summary>
+        /// Assembly loader not implemented for netstandard
+        /// </summary>
+        /// <returns></returns>
         public virtual IEnumerable<Assembly> GetAssemblies()
         {
-            throw new NotImplementedException();
+            throw new NotImplementedException($"Please pass assemblies to {typeof(ApplicationContext).FullName}.{nameof(ApplicationContext.Startup)}!");
             //var runtimeId = Microsoft.DotNet.PlatformAbstractions.RuntimeEnvironment.GetRuntimeIdentifier();
             //var libraries = Microsoft.Extensions.DependencyModel.DependencyContextExtensions.GetRuntimeAssemblyNames(Microsoft.Extensions.DependencyModel.DependencyContext.Default, runtimeId);
 

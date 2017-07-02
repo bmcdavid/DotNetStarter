@@ -58,7 +58,6 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
-    <Compile Include="AssemblyLoaderTests.cs" />
     <Compile Include="ContextTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ScanTests.cs" />
@@ -69,11 +68,11 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\src\DotNetStarter.Abstractions\DotNetStarter.Abstractions.csproj">
-      <Project>{f01c1501-b8f5-4b3d-b2a1-0975731992e6}</Project>
+      <Project>{e7196a51-5932-47ea-be3a-f65567c9cd8b}</Project>
       <Name>DotNetStarter.Abstractions</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\src\DotNetStarter\DotNetStarter.csproj">
-      <Project>{ba813dc5-d696-461d-8e62-f04fcd669adb}</Project>
+      <Project>{f75a648e-8412-41fe-8c4d-d1f3178ac718}</Project>
       <Name>DotNetStarter</Name>
     </ProjectReference>
   </ItemGroup>

@@ -1,7 +1,7 @@
 ﻿using System;
 using DotNetStarter.Abstractions;
 
-#if NETSTANDARD
+#if NETSTANDARD1_0 || NETSTANDARD1_1
 using Microsoft.Extensions.DependencyInjection;
 #endif
 

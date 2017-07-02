@@ -3,11 +3,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{B05360EE-2966-4271-9644-84F6EA97080C}</ProjectGuid>
+    <ProjectGuid>{9B472FA9-370E-426E-8828-AB5267D8BDA7}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>DotNetStarter.Tests</RootNamespace>
-    <AssemblyName>DotNetStarter.StructureMap.Tests.NetStandard13</AssemblyName>
+    <AssemblyName>DotNetStarter.DryIoc.Tests.NetStandard1.3</AssemblyName>
     <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{3AC096D0-A1C2-E12C-1390-A8335801FDAB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
@@ -16,14 +16,14 @@
     <ReferencePath>$(ProgramFiles)\Common Files\microsoft shared\VSTT\$(VisualStudioVersion)\UITestExtensionPackages</ReferencePath>
     <IsCodedUITest>False</IsCodedUITest>
     <TestProjectType>UnitTest</TestProjectType>
-    <ReferringTargetFrameworkForProjectReferences>netstandard1.3</ReferringTargetFrameworkForProjectReferences>
+    <ReferringTargetFrameworkForProjectReferences>netstandard1.1</ReferringTargetFrameworkForProjectReferences>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
     <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>TRACE;DEBUG;MAPNETSTANDARD</DefineConstants>
+    <DefineConstants>TRACE;DEBUG;DRYNETSTANDARD</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
@@ -31,19 +31,19 @@
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE;MAPNETSTANDARD</DefineConstants>
+    <DefineConstants>TRACE;DRYNETSTANDARD</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="DryIoc, Version=2.7.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\DryIoc.dll.2.7.0\lib\net45\DryIoc.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.Extensions.DependencyInjection.Abstractions, Version=1.1.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
       <HintPath>..\..\packages\Microsoft.Extensions.DependencyInjection.Abstractions.1.1.0\lib\netstandard1.0\Microsoft.Extensions.DependencyInjection.Abstractions.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.Win32.Primitives, Version=4.0.2.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>..\..\packages\Microsoft.Win32.Primitives.4.3.0\lib\net46\Microsoft.Win32.Primitives.dll</HintPath>
-    </Reference>
-    <Reference Include="StructureMap, Version=4.3.0.449, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\StructureMap.4.4.0\lib\net45\StructureMap.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.AppContext, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
@@ -133,9 +133,9 @@
       <Project>{e7196a51-5932-47ea-be3a-f65567c9cd8b}</Project>
       <Name>DotNetStarter.Abstractions</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\src\DotNetStarter.Structuremap\DotNetStarter.Structuremap.csproj">
-      <Project>{b13148ea-1643-4f33-9381-87d1c042d5f5}</Project>
-      <Name>DotNetStarter.Structuremap</Name>
+    <ProjectReference Include="..\..\src\DotNetStarter.DryIoc\DotNetStarter.DryIoc.csproj">
+      <Project>{544b1924-3071-4261-b4ba-151ab6af1d43}</Project>
+      <Name>DotNetStarter.DryIoc</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\src\DotNetStarter\DotNetStarter.csproj">
       <Project>{f75a648e-8412-41fe-8c4d-d1f3178ac718}</Project>

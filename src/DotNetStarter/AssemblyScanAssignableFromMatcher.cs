@@ -1,7 +1,7 @@
 ﻿namespace DotNetStarter
 {
     using Abstractions;
-    using Abstractions.Internal;
+    using DotNetStarter.Abstractions.Internal;
     using System;
 
     /// <summary>

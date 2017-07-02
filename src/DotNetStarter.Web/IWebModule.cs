@@ -1,4 +1,6 @@
-﻿using DotNetStarter.Abstractions;
+﻿#if !NETSTANDARD1_3
+
+using DotNetStarter.Abstractions;
 using System.Web;
 
 namespace DotNetStarter.Web.Abstractions
@@ -10,3 +12,4 @@ namespace DotNetStarter.Web.Abstractions
     {
     }
 }
+#endif

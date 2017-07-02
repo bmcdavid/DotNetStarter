@@ -71,7 +71,7 @@
         /// <returns></returns>
         public virtual ITimedTask Get(string name)
         {
-            ITimedTask t = _ApplicationTasks.Where(x => string.Compare(x.Name, name, true) == 0).FirstOrDefault();
+            ITimedTask t = _ApplicationTasks.FirstOrDefault(x => Internal.CrossPlatformHelpers.StringCompareIgnoreCase(x.Name,name));
 
             if (t != null)
                 return t;

@@ -1,4 +1,5 @@
-﻿namespace DotNetStarter.Web
+﻿#if !NETSTANDARD1_3
+namespace DotNetStarter.Web
 {
     using DotNetStarter.Abstractions;
     using System.Web;
@@ -30,3 +31,4 @@
         }
     }
 }
+#endif

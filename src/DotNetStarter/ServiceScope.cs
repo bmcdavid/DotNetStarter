@@ -1,6 +1,6 @@
 ﻿using System;
 
-#if NETSTANDARD
+#if NETSTANDARD1_0 || NETSTANDARD1_1
     using Microsoft.Extensions.DependencyInjection;
 #endif
 

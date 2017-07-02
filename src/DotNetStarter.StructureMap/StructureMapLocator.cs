@@ -107,7 +107,7 @@ namespace DotNetStarter
             Add(typeof(TService), typeof(TImpl), key, lifetime, ConstructorType.Empty);
         }
 
-#if NET40 || NET45 || NETSTANDARD
+#if NET40 || NET45 || NETSTANDARD1_3
         private ILifecycle ConvertLifeTime(LifeTime lifetime)
         {
             switch (lifetime)

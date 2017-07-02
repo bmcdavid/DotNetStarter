@@ -1,4 +1,4 @@
-﻿#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
+﻿#pragma warning disable CS1591 // Missing XML comment for publicly visible type || member
 namespace DotNetStarter.Abstractions.Internal
 {
     using System;
@@ -10,7 +10,7 @@ namespace DotNetStarter.Abstractions.Internal
     {
         public static Assembly Assembly(this Type type)
         {
-#if NETSTANDARD
+#if NETSTANDARD1_0 || NETSTANDARD1_1
             return type.GetTypeInfo().Assembly;
 #else
             return type.Assembly;
@@ -19,7 +19,7 @@ namespace DotNetStarter.Abstractions.Internal
 
         public static Type BaseType(Type type)
         {
-#if NETSTANDARD
+#if NETSTANDARD1_0 || NETSTANDARD1_1
             return type.GetTypeInfo().BaseType;
 #else
             return type.BaseType;
@@ -28,7 +28,7 @@ namespace DotNetStarter.Abstractions.Internal
 
         public static IEnumerable<ConstructorInfo> Constructors(this Type t)
         {
-#if NETSTANDARD
+#if NETSTANDARD1_0 || NETSTANDARD1_1
             return t.GetTypeInfo().DeclaredConstructors;
 #else
             return t.GetConstructors();
@@ -37,7 +37,7 @@ namespace DotNetStarter.Abstractions.Internal
 
         public static IEnumerable<Attribute> CustomAttribute(Type type, bool inherit)
         {
-#if NETSTANDARD
+#if NETSTANDARD1_0 || NETSTANDARD1_1
             return type.GetTypeInfo().GetCustomAttributes(inherit);
 #else
             return type.GetCustomAttributes(inherit).OfType<Attribute>();
@@ -46,7 +46,7 @@ namespace DotNetStarter.Abstractions.Internal
 
         public static IEnumerable<Attribute> CustomAttribute(this Type t, Type attrType, bool inherit)
         {
-#if NETSTANDARD
+#if NETSTANDARD1_0 || NETSTANDARD1_1
             return t.GetTypeInfo().GetCustomAttributes(attrType, inherit).OfType<Attribute>();
 #else
             return t.GetCustomAttributes(attrType, inherit).OfType<Attribute>();
@@ -54,7 +54,7 @@ namespace DotNetStarter.Abstractions.Internal
         }
         public static IEnumerable<Attribute> CustomAttribute(this Assembly assembly, Type attrType, bool inherit)
         {
-#if NETSTANDARD
+#if NETSTANDARD1_0 || NETSTANDARD1_1
             return assembly.GetCustomAttributes(attrType).OfType<Attribute>();
 #else
             return assembly.GetCustomAttributes(attrType, inherit).OfType<Attribute>();
@@ -69,12 +69,12 @@ namespace DotNetStarter.Abstractions.Internal
             if (o is Type)
                 return CustomAttribute(o as Type, attrType, inherit);
 
-            throw new NotSupportedException("Object can only be Assembly or Type");
+            throw new NotSupportedException("Object can only be Assembly || Type");
         }
 
         public static IEnumerable<Attribute> CustomAttributes(Assembly assembly, bool inherit)
         {
-#if NETSTANDARD
+#if NETSTANDARD1_0 || NETSTANDARD1_1
             return assembly.GetCustomAttributes();
 #else
             return assembly.GetCustomAttributes(inherit).OfType<Attribute>();
@@ -91,7 +91,7 @@ namespace DotNetStarter.Abstractions.Internal
 
         public static IEnumerable<EventInfo> GetEventsCheck(Type type)
         {
-#if NETSTANDARD
+#if NETSTANDARD1_0 || NETSTANDARD1_1
             return type.GetTypeInfo().DeclaredEvents;
 #else
             return type.GetEvents();
@@ -100,7 +100,7 @@ namespace DotNetStarter.Abstractions.Internal
 
         public static IEnumerable<FieldInfo> GetFieldsCheck(Type type)
         {
-#if NETSTANDARD
+#if NETSTANDARD1_0 || NETSTANDARD1_1
             return type.GetTypeInfo().DeclaredFields;
 #else
             return type.GetFields();
@@ -109,7 +109,7 @@ namespace DotNetStarter.Abstractions.Internal
 
         public static IEnumerable<MemberInfo> GetMembersCheck(Type type)
         {
-#if NETSTANDARD
+#if NETSTANDARD1_0 || NETSTANDARD1_1
             return type.GetTypeInfo().DeclaredMembers;
 #else
             return type.GetMembers();
@@ -118,7 +118,7 @@ namespace DotNetStarter.Abstractions.Internal
 
         public static IEnumerable<MethodInfo> GetMethodsCheck(Type type)
         {
-#if NETSTANDARD
+#if NETSTANDARD1_0 || NETSTANDARD1_1
             return type.GetTypeInfo().DeclaredMethods;
 #else
             return type.GetMethods();
@@ -127,7 +127,7 @@ namespace DotNetStarter.Abstractions.Internal
 
         public static IEnumerable<PropertyInfo> GetPropertiesCheck(Type type)
         {
-#if NETSTANDARD
+#if NETSTANDARD1_0 || NETSTANDARD1_1
             return type.GetTypeInfo().DeclaredProperties;
 #else
             return type.GetProperties();
@@ -138,7 +138,7 @@ namespace DotNetStarter.Abstractions.Internal
 
         public static IEnumerable<Type> GetTypesCheck(this Assembly assembly, bool exportedOnly = false)
         {
-#if NETSTANDARD
+#if NETSTANDARD1_0 || NETSTANDARD1_1
             if (exportedOnly)
                 return assembly.ExportedTypes;
 
@@ -152,7 +152,7 @@ namespace DotNetStarter.Abstractions.Internal
         }
         public static bool HasInterface(this Type t, Type interfaceType)
         {
-#if NETSTANDARD
+#if NETSTANDARD1_0 || NETSTANDARD1_1
             return t.GetTypeInfo().ImplementedInterfaces.Any(i => i == interfaceType);
 #else
             return t.GetInterfaces().Any(i => i == interfaceType);
@@ -160,7 +160,7 @@ namespace DotNetStarter.Abstractions.Internal
         }
         public static IEnumerable<Type> Interfaces(Type type)
         {
-#if NETSTANDARD
+#if NETSTANDARD1_0 || NETSTANDARD1_1
             return type.GetTypeInfo().ImplementedInterfaces;
 #else
             return type.GetInterfaces();
@@ -169,7 +169,7 @@ namespace DotNetStarter.Abstractions.Internal
 
         public static bool IsAbstract(this Type type)
         {
-#if NETSTANDARD
+#if NETSTANDARD1_0 || NETSTANDARD1_1
             return type.GetTypeInfo().IsAbstract;
 #else
             return type.IsAbstract;
@@ -177,7 +177,7 @@ namespace DotNetStarter.Abstractions.Internal
         }
         public static bool IsAssignableFromCheck(this Type type, Type check)
         {
-#if NETSTANDARD
+#if NETSTANDARD1_0 || NETSTANDARD1_1
             return type.GetTypeInfo().IsAssignableFrom(check.GetTypeInfo());
 #else
             return type.IsAssignableFrom(check);
@@ -185,7 +185,7 @@ namespace DotNetStarter.Abstractions.Internal
         }
         public static bool IsEnumCheck(Type type)
         {
-#if NETSTANDARD
+#if NETSTANDARD1_0 || NETSTANDARD1_1
             return type.GetTypeInfo().IsEnum;
 #else
             return type.IsEnum;
@@ -194,7 +194,7 @@ namespace DotNetStarter.Abstractions.Internal
 
         public static bool IsGenericInterface(this Type t, Type checkType)
         {
-#if NETSTANDARD
+#if NETSTANDARD1_0 || NETSTANDARD1_1
             return t.GetTypeInfo().ImplementedInterfaces.Any(i => i.GetTypeInfo().IsGenericType && i.GetGenericTypeDefinition() == checkType);
 #else
             return t.GetInterfaces().Any(i => i.IsGenericType && i.GetGenericTypeDefinition() == checkType);
@@ -203,7 +203,7 @@ namespace DotNetStarter.Abstractions.Internal
 
         public static bool IsGenericType(this Type t)
         {
-#if NETSTANDARD
+#if NETSTANDARD1_0 || NETSTANDARD1_1
             return t.GetTypeInfo().IsGenericType;
 #else
             return t.IsGenericType;
@@ -212,7 +212,7 @@ namespace DotNetStarter.Abstractions.Internal
 
         public static bool IsInterface(this Type type)
         {
-#if NETSTANDARD
+#if NETSTANDARD1_0 || NETSTANDARD1_1
             return type.GetTypeInfo().IsInterface;
 #else
             return type.IsInterface;
@@ -223,7 +223,7 @@ namespace DotNetStarter.Abstractions.Internal
             if (type == null)
                 return false;
 
-#if NETSTANDARD
+#if NETSTANDARD1_0 || NETSTANDARD1_1
             return type.GetTypeInfo().IsGenericType && type.GetGenericTypeDefinition().Equals(typeof(Nullable<>));
 #else
             return type.IsGenericType && type.GetGenericTypeDefinition().Equals(typeof(Nullable<>));
@@ -233,7 +233,7 @@ namespace DotNetStarter.Abstractions.Internal
 
         public static bool IsValueType(this Type type)
         {
-#if NETSTANDARD
+#if NETSTANDARD1_0 || NETSTANDARD1_1
             return type.GetTypeInfo().IsValueType;
 #else
             return type.IsValueType;

@@ -23,8 +23,7 @@
                 {
                     if (_Default == null)
                     {
-                        //todo: refactor away static parts of assembly loading, this can just be a new AssemblyLoader().GetAssemblies() if assemblies are null
-                        Assemblies = assemblies ?? Internal.AssemblyLoader.Default.GetAssemblies();
+                        Assemblies = assemblies ?? new Internal.AssemblyLoader().GetAssemblies();
                         _Default = defaultFactory;
 
                         if (_Default == null)
