@@ -64,7 +64,7 @@
         public virtual void Scan(IEnumerable<Assembly> scanAssemblies, IEnumerable<Type> forTypes, Func<Assembly, bool> assemblyFilter = null)
         {
             if (assemblyFilter != null)
-                scanAssemblies = scanAssemblies.Where(assemblyFilter);
+                scanAssemblies = scanAssemblies.Where(x => !assemblyFilter(x));
 
             var types = scanAssemblies.SelectMany(x => x.GetTypesCheck());
             var matches = from checkType in types

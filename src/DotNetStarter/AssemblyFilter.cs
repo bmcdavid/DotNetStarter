@@ -16,7 +16,7 @@
         public virtual bool FilterAssembly(Assembly assembly)
         {
 #if NET35 || NET40 || NET45
-            if (assembly.GlobalAssemblyCache) return false;
+            if (assembly.GlobalAssemblyCache) return true;
 #endif
 
 #if NET40 || NET45 || NETSTANDARD
@@ -30,10 +30,10 @@
                 case "mscorlib":
                 case "system":
                 case "microsoft":
-                    return false;
+                    return true;
             }
 
-            return true;
+            return false;
         }
     }
 }
