@@ -1,5 +1,7 @@
 ﻿namespace DotNetStarter.Abstractions
 {
+    // todo: migrate to interface
+
     /// <summary>
     /// Container service lifetimes
     /// </summary>
@@ -16,6 +18,7 @@
         /// <summary>
         /// Single instance per http request
         /// </summary>
+        [System.Obsolete("Use Scoped instead, will throw exception on next breaking change.", false)]
         HttpRequest = 2,
         /// <summary>
         /// Single instance per scope
@@ -24,6 +27,7 @@
         /// <summary>
         /// Always creates a new instance
         /// </summary>
+        [System.Obsolete("Specific to structuremap, will throw exception on next breaking change.", false)]
         AlwaysUnique = 5
     }
 }

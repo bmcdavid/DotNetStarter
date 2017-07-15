@@ -17,7 +17,7 @@ namespace DotNetStarter.Abstractions.Internal
 #endif
         }
 
-        public static Type BaseType(Type type)
+        public static Type BaseType(this Type type)
         {
 #if NETSTANDARD1_0 || NETSTANDARD1_1
             return type.GetTypeInfo().BaseType;
@@ -35,7 +35,7 @@ namespace DotNetStarter.Abstractions.Internal
 #endif
         }
 
-        public static IEnumerable<Attribute> CustomAttribute(Type type, bool inherit)
+        public static IEnumerable<Attribute> CustomAttribute(this Type type, bool inherit)
         {
 #if NETSTANDARD1_0 || NETSTANDARD1_1
             return type.GetTypeInfo().GetCustomAttributes(inherit);
@@ -72,7 +72,7 @@ namespace DotNetStarter.Abstractions.Internal
             throw new NotSupportedException("Object can only be Assembly || Type");
         }
 
-        public static IEnumerable<Attribute> CustomAttributes(Assembly assembly, bool inherit)
+        public static IEnumerable<Attribute> CustomAttributes(this Assembly assembly, bool inherit)
         {
 #if NETSTANDARD1_0 || NETSTANDARD1_1
             return assembly.GetCustomAttributes();
@@ -89,7 +89,7 @@ namespace DotNetStarter.Abstractions.Internal
                 .Concat(BaseType(type).GetBaseTypes())
                 .Distinct();
 
-        public static IEnumerable<EventInfo> GetEventsCheck(Type type)
+        public static IEnumerable<EventInfo> GetEventsCheck(this Type type)
         {
 #if NETSTANDARD1_0 || NETSTANDARD1_1
             return type.GetTypeInfo().DeclaredEvents;
@@ -98,7 +98,7 @@ namespace DotNetStarter.Abstractions.Internal
 #endif
         }
 
-        public static IEnumerable<FieldInfo> GetFieldsCheck(Type type)
+        public static IEnumerable<FieldInfo> GetFieldsCheck(this Type type)
         {
 #if NETSTANDARD1_0 || NETSTANDARD1_1
             return type.GetTypeInfo().DeclaredFields;
@@ -107,7 +107,7 @@ namespace DotNetStarter.Abstractions.Internal
 #endif
         }
 
-        public static IEnumerable<MemberInfo> GetMembersCheck(Type type)
+        public static IEnumerable<MemberInfo> GetMembersCheck(this Type type)
         {
 #if NETSTANDARD1_0 || NETSTANDARD1_1
             return type.GetTypeInfo().DeclaredMembers;
@@ -116,7 +116,7 @@ namespace DotNetStarter.Abstractions.Internal
 #endif
         }
 
-        public static IEnumerable<MethodInfo> GetMethodsCheck(Type type)
+        public static IEnumerable<MethodInfo> GetMethodsCheck(this Type type)
         {
 #if NETSTANDARD1_0 || NETSTANDARD1_1
             return type.GetTypeInfo().DeclaredMethods;
@@ -183,7 +183,7 @@ namespace DotNetStarter.Abstractions.Internal
             return type.IsAssignableFrom(check);
 #endif
         }
-        public static bool IsEnumCheck(Type type)
+        public static bool IsEnumCheck(this Type type)
         {
 #if NETSTANDARD1_0 || NETSTANDARD1_1
             return type.GetTypeInfo().IsEnum;
