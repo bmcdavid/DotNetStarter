@@ -239,7 +239,7 @@ namespace DotNetStarter
                 return FactoryMethod.ConstructorWithResolvableArguments;
             }
 
-            var allConstructors = implementationType.Constructors().OrderBy(x => x.GetParameters().Count());
+            var allConstructors = implementationType.Constructors().Where(x => !x.IsStatic && !x.IsPrivate).OrderBy(x => x.GetParameters().Count());
 
             if (constructor == ConstructorType.Greediest)
                 allConstructors.Reverse();
