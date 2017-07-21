@@ -19,7 +19,7 @@
         internal static IStartupEngine _Engine;
 
         /// <summary>
-        /// Fires after IContainerConfigure.Configure has completed in all executing modules
+        /// Fires after ILocatorConfigure.Configure has completed in all executing modules
         /// </summary>
         public event Action OnLocatorStartupComplete;
 
@@ -156,7 +156,7 @@
         {
             if (_StartupModules != null)
             {
-                foreach (var module in _StartupModules) //todo: should the order be reversed so ones with more dependencies shutdown before ones that have none
+                foreach (var module in _StartupModules)
                 {
                     try
                     {

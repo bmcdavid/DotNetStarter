@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.26430.14
+VisualStudioVersion = 15.0.26430.16
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".Solution Items", ".Solution Items", "{90F6AC8D-CCBC-4EB1-A448-6C931901B985}"
 	ProjectSection(SolutionItems) = preProject
@@ -85,12 +85,6 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotNetStarter.Tests.Netstandard1.0", "tests\DotNetStarter.Tests.Netstandard1.0\DotNetStarter.Tests.Netstandard1.0.csproj", "{0C2F75DB-7CC7-48DD-9389-1B1F8D3119D2}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotNetStarter.DryIoc.Tests.Netstandard1.1", "tests\DotNetStarter.DryIocTests.Netstandard1.1\DotNetStarter.DryIoc.Tests.Netstandard1.1.csproj", "{9B472FA9-370E-426E-8828-AB5267D8BDA7}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DotNetStarter.SimpleInjector", "src\DotNetStarter.SimpleInjector\DotNetStarter.SimpleInjector.csproj", "{129A17F4-6AF1-45BD-B407-4F1B34D6BF1C}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotNetStarter.SimpleInjector.Tests.Net45", "tests\DotNetStarter.SimpleInjector.Tests.Net45\DotNetStarter.SimpleInjector.Tests.Net45.csproj", "{90169ED4-1F1D-4832-874A-D3CBD36E895A}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotNetStarter.Grace", "src\DotNetStarter.Grace\DotNetStarter.Grace.csproj", "{9775D561-901B-4766-B5CE-2696C8D4229B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -186,18 +180,6 @@ Global
 		{9B472FA9-370E-426E-8828-AB5267D8BDA7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9B472FA9-370E-426E-8828-AB5267D8BDA7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9B472FA9-370E-426E-8828-AB5267D8BDA7}.Release|Any CPU.Build.0 = Release|Any CPU
-		{129A17F4-6AF1-45BD-B407-4F1B34D6BF1C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{129A17F4-6AF1-45BD-B407-4F1B34D6BF1C}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{129A17F4-6AF1-45BD-B407-4F1B34D6BF1C}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{129A17F4-6AF1-45BD-B407-4F1B34D6BF1C}.Release|Any CPU.Build.0 = Release|Any CPU
-		{90169ED4-1F1D-4832-874A-D3CBD36E895A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{90169ED4-1F1D-4832-874A-D3CBD36E895A}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{90169ED4-1F1D-4832-874A-D3CBD36E895A}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{90169ED4-1F1D-4832-874A-D3CBD36E895A}.Release|Any CPU.Build.0 = Release|Any CPU
-		{9775D561-901B-4766-B5CE-2696C8D4229B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{9775D561-901B-4766-B5CE-2696C8D4229B}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{9775D561-901B-4766-B5CE-2696C8D4229B}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{9775D561-901B-4766-B5CE-2696C8D4229B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -219,6 +201,5 @@ Global
 		{A27975D6-5EEC-4AC9-9EB8-E09AE03CCF11} = {0E2C2FB2-59F2-41B6-88E5-BA65ACD0A29A}
 		{0C2F75DB-7CC7-48DD-9389-1B1F8D3119D2} = {8A8DF2AE-D820-4CDB-BB3F-0A41C982FB53}
 		{9B472FA9-370E-426E-8828-AB5267D8BDA7} = {8A8DF2AE-D820-4CDB-BB3F-0A41C982FB53}
-		{90169ED4-1F1D-4832-874A-D3CBD36E895A} = {8A8DF2AE-D820-4CDB-BB3F-0A41C982FB53}
 	EndGlobalSection
 EndGlobal
