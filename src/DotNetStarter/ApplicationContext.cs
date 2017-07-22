@@ -6,7 +6,8 @@
     using System.Reflection;
 
     /// <summary>
-    /// Default hook into startup process, preferred to access using Import&lt;T> which call this.
+    /// Default hook into startup process, execute DotNetStarter.ApplicationContext.Startup to invoke
+    /// <para>preferred to access using Import&lt;T> instead of DotNetStarter.ApplicationContext.Default.Locator</para>
     /// </summary>
     public class ApplicationContext
     {

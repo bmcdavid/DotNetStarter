@@ -6,8 +6,8 @@ title: DotNetStarter - Customizing the Locator
 The ILocator and ILocatorRegistry system is a wrapper for any container that can implement the interfaces.
 The following are the currently supported container implementations:
 
-* DotNetStarter.DryIoc - support for net35+ and netstandard1.3+
-* DotNetStarter.Structuremap - support for net35+ and netstandard1.3+, net35 doesn't support container/locator scoping.
+* DotNetStarter.DryIoc - support for net35+ and netstandard 1.0+
+* DotNetStarter.Structuremap - support for net35+ and netstandard 1.3+, net35 doesn't support container/locator scoping.
 
 ## Example Custom Locator with factory
 
@@ -32,4 +32,3 @@ namespace Example
     }
 }
 ```
-

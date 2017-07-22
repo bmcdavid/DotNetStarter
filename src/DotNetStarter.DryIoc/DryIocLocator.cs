@@ -223,10 +223,6 @@ namespace DotNetStarter
                 // web scoping takes special context which is setup in a special IContainerRegistry setup in the DotNetStarter.Web package
                 case LifeTime.HttpRequest:
                     return Reuse.InWebRequest;
-                //case LifeTime.Thread:
-                //    return Reuse.InThread;
-                case LifeTime.AlwaysUnique:
-                    return Reuse.Transient;
             }
 
             return Reuse.Transient;
@@ -257,7 +253,7 @@ namespace DotNetStarter
 
         private static void RegisterSimple(DryIoc.IContainer register, Type service, Type implementation, IReuse reuse = null, ConstructorType constructor = ConstructorType.Empty, string key = null)
         {
-            //todo: evaluate how these can be better, example in netcore has issue
+            //note: evaluate how these can be better, example in netcore has issue
             //   Microsoft.AspNetCore.Server.Kestrel.Internal.KestrelServerOptionsSetup cannot be converted to Microsoft.Extensions.Options.IConfigureOptions`1[[Microsoft.AspNetCore.Server.Kestrel.KestrelServerOptions, Microsoft.AspNetCore.Server.Kestrel, Version=1.0.1.0, Culture=neutral, PublicKeyToken=adb9793829ddae60]]!
 
             if (!service.IsAssignableFromCheck(implementation))

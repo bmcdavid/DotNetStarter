@@ -26,7 +26,7 @@ title: DotNetStarter - Known Issues
     }
 ```
 
-#### netcoreapps require a custom IAssemblyLoader noted below:
+#### netcoreapps require custom assembly loading noted below:
 ```cs
 // Add the following lines in the Startup class constructor, for netcore assembly loading
 Func<IEnumerable<Assembly>> assemblyLoader = () =>

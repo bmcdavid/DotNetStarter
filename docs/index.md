@@ -5,7 +5,7 @@ title: DotNetStarter
 
 [![Build status](https://ci.appveyor.com/api/projects/status/a907wfniy73sk5de?svg=true)](https://ci.appveyor.com/project/bmcdavid/dotnetstarter)
 
-The goal of this project is to create a startup and IoC/DI framework for netframeworks 3.5+ and netstandard 1.3+
+The goal of this project is to create a startup and IoC/DI framework for netframeworks 3.5+ and netstandard 1.0+
  which allows packages to support container registrations with a container specified at runtime.
 
 Package  | Version 

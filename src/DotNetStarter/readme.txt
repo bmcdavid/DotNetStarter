@@ -1,6 +1,6 @@
 # DotNetStarter Read Me
 
-This package supports native .netframeworks 3.5, 4.0, and 4.5.
+This package supports native .netframeworks 3.5, 4.0, and 4.5 and netstandard 1.0.
 
 The goal of this package to create a startup framework for any dotnet project where everything is swappable via Inversion Of Control (IoC) or object factories (AssemblyFactoryBaseAttribute).
 
@@ -31,23 +31,20 @@ The goal of this package to create a startup framework for any dotnet project wh
     }
 ```
 
-* netcoreapps require a custom IAssemblyLoader noted below:
-```
-    /// <summary>
-    /// Assigned by AssemblyLoader.SetAssemblyLoader(new WebAssemblyLoader()); as first line in Program.cs
-    /// </summary>
-    public class WebAssemblyLoader : IAssemblyLoader
-    {
-        public IEnumerable<Assembly> GetAssemblies()
-        {
-            var runtimeId = Microsoft.DotNet.PlatformAbstractions.RuntimeEnvironment.GetRuntimeIdentifier();
-            var libraries = Microsoft.Extensions.DependencyModel.DependencyContextExtensions.GetRuntimeAssemblyNames(Microsoft.Extensions.DependencyModel.DependencyContext.Default, runtimeId);
+* netcoreapps require custom assembly loading noted below:
+```cs
+// Add the following lines in the Startup class constructor, for netcore assembly loading
+Func<IEnumerable<Assembly>> assemblyLoader = () =>
+{
+    var runtimeId = Microsoft.DotNet.PlatformAbstractions.RuntimeEnvironment.GetRuntimeIdentifier();
+    var libraries = Microsoft.Extensions.DependencyModel.DependencyContextExtensions.GetRuntimeAssemblyNames(Microsoft.Extensions.DependencyModel.DependencyContext.Default, runtimeId);
 
-            return libraries.Select(x => Assembly.Load(new AssemblyName(x.Name)));
-        }
-    }
+    return libraries.Select(x => Assembly.Load(new AssemblyName(x.Name)));
+};
 
+DotNetStarter.ApplicationContext.Startup(assemblies: assemblyLoader());
 ```
+
 ## Abstractions
 
 All attributes, baseclasses and interfaces reside in the DotNetStarter.Abstractions namespace. Documentation is provided in the intellisense.
