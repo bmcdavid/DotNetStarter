@@ -69,9 +69,11 @@ namespace DotNetStarter.Web
                 {
                     var scopedLocator = locator.OpenScope();
                     var scopedRegistry = scopedLocator as ILocatorRegistry;
-                    scopedRegistry?.Add(typeof(ILocator), scopedLocator); // override ILocator resolves to use scoped version
-                    scopedRegistry?.Add(typeof(HttpContextBase), new HttpContextWrapper(context));
-                    scopedRegistry?.Add<IServiceProvider, ServiceProvider>(lifetime: LifeTime.Scoped);
+
+                    // note: removed scoped registrations, as DryIoc kept adding them to main container
+                    //scopedRegistry?.Add(typeof(ILocator), scopedLocator); // override ILocator resolves to use scoped version
+                    //scopedRegistry?.Add(typeof(HttpContextBase), new HttpContextWrapper(context));
+                    //scopedRegistry?.Add<IServiceProvider, ServiceProvider>(lifetime: LifeTime.Scoped);
 
                     context.Items.Add(ScopedLocatorKeyInContext, scopedLocator);
                 }

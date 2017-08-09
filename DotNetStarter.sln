@@ -86,6 +86,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotNetStarter.Tests.Netstan
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotNetStarter.DryIoc.Tests.Netstandard1.1", "tests\DotNetStarter.DryIocTests.Netstandard1.1\DotNetStarter.DryIoc.Tests.Netstandard1.1.csproj", "{9B472FA9-370E-426E-8828-AB5267D8BDA7}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotNetStarter.Web.Tests", "tests\DotNetStarter.Web.Tests\DotNetStarter.Web.Tests.csproj", "{49A112FD-D79C-4CFF-8728-F426C7B1AF6A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -180,6 +182,10 @@ Global
 		{9B472FA9-370E-426E-8828-AB5267D8BDA7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9B472FA9-370E-426E-8828-AB5267D8BDA7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9B472FA9-370E-426E-8828-AB5267D8BDA7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{49A112FD-D79C-4CFF-8728-F426C7B1AF6A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{49A112FD-D79C-4CFF-8728-F426C7B1AF6A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{49A112FD-D79C-4CFF-8728-F426C7B1AF6A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{49A112FD-D79C-4CFF-8728-F426C7B1AF6A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -201,5 +207,6 @@ Global
 		{A27975D6-5EEC-4AC9-9EB8-E09AE03CCF11} = {0E2C2FB2-59F2-41B6-88E5-BA65ACD0A29A}
 		{0C2F75DB-7CC7-48DD-9389-1B1F8D3119D2} = {8A8DF2AE-D820-4CDB-BB3F-0A41C982FB53}
 		{9B472FA9-370E-426E-8828-AB5267D8BDA7} = {8A8DF2AE-D820-4CDB-BB3F-0A41C982FB53}
+		{49A112FD-D79C-4CFF-8728-F426C7B1AF6A} = {8A8DF2AE-D820-4CDB-BB3F-0A41C982FB53}
 	EndGlobalSection
 EndGlobal

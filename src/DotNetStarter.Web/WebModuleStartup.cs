@@ -14,6 +14,8 @@ namespace DotNetStarter.Web
     {
         private IEnumerable<IHttpModule> StartupModules;
 
+        private IWebModuleStartupHandler _ModuleHandler;
+
         Import<IWebModuleStartupHandler> StartupWebModuleHandler;
 
         /// <summary>
@@ -25,9 +27,11 @@ namespace DotNetStarter.Web
         /// Mockable constructor
         /// </summary>
         /// <param name="httpModules"></param>
-        public WebModuleStartup(IEnumerable<IHttpModule> httpModules)
+        /// <param name="moduleHandler"></param>
+        public WebModuleStartup(IEnumerable<IHttpModule> httpModules, IWebModuleStartupHandler moduleHandler)
         {
             StartupModules = httpModules;
+            _ModuleHandler = moduleHandler ?? StartupWebModuleHandler.Service;
         }
 
         /// <summary>
@@ -41,16 +45,14 @@ namespace DotNetStarter.Web
         /// <param name="application"></param>
         public void Init(HttpApplication application)
         {
-            var handler = StartupWebModuleHandler.Service;
-
-            if (handler == null)
+            if (_ModuleHandler == null)
                 throw new ArgumentNullException();
 
-            if (handler.ScopeEnabled())
-                handler.OpenLocatorScope(application);
+            if (_ModuleHandler.ScopeEnabled())
+                _ModuleHandler.OpenLocatorScope(application);
 
-            if (handler.StartupEnabled())
-                handler.Startup(application, StartupModules);
+            if (_ModuleHandler.StartupEnabled())
+                _ModuleHandler.Startup(application, StartupModules);
 
         }
     }
