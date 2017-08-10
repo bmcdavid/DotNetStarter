@@ -13,7 +13,7 @@ Below is an example of how to create an ILocator with Episerver's structuremap c
 
 ```cs
 using DotNetStarter.Abstractions;
-using DotNetStarter.Internal;
+using DotNetStarter.Abstractions.Internal;
 using DotNetStarter.Web;
 using EPiServer.Framework;
 using EPiServer.Framework.Initialization;
@@ -56,26 +56,43 @@ namespace Example
     /// Requires DotNetStarter.Web to create a scoped locator in the HttpContext.Items
     /// </summary>
     public class EpiserverLocatorDependencyResolver : IDependencyResolver
-    {
-        private ILocator Locator;
+    {        
+        ILocator _Locator;
 
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="locator"></param>
         public EpiserverLocatorDependencyResolver(ILocator locator)
         {
-            Locator = locator;
+            _Locator = locator;
         }
 
+        /// <summary>
+        /// Gets service from scoped locator if available
+        /// </summary>
+        /// <param name="serviceType"></param>
+        /// <returns></returns>
         public object GetService(Type serviceType)
         {
-            var temp = HttpContext.Current?.GetScopedLocator() ?? Locator;
+            var locator = ResolveLocator();
 
-            return temp.Get(serviceType);
+            return locator.Get(serviceType);
         }
 
+        /// <summary>
+        /// Gets services from scoped locator if available
+        /// </summary>
+        /// <param name="serviceType"></param>
+        /// <returns></returns>
         public IEnumerable<object> GetServices(Type serviceType)
         {
-            var temp = HttpContext.Current?.GetScopedLocator() ?? Locator;
+            return ResolveLocator().GetAll(serviceType);
+        }
 
-            return temp.GetAll(serviceType);
+        private ILocator ResolveLocator()
+        {
+            return HttpContext.Current?.GetScopedLocator() ?? _Locator;
         }
     }
 

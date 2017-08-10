@@ -5,9 +5,6 @@ using System.Collections.Generic;
 using System.Web;
 using System.Web.Mvc;
 
-// adds controller implementations to the assembly scanner
-[assembly: ScanTypeRegistry(typeof(IController))]
-
 namespace DotNetStarter.Extensions.Mvc
 {
     /// <summary>
@@ -33,7 +30,7 @@ namespace DotNetStarter.Extensions.Mvc
         /// <returns></returns>
         public object GetService(Type serviceType)
         {
-            return (HttpContext.Current?.GetScopedLocator() ?? _Locator).Get(serviceType);
+            return ResolveLocator().Get(serviceType);
         }
 
         /// <summary>
@@ -43,7 +40,12 @@ namespace DotNetStarter.Extensions.Mvc
         /// <returns></returns>
         public IEnumerable<object> GetServices(Type serviceType)
         {
-            return (HttpContext.Current?.GetScopedLocator() ?? _Locator).GetAll(serviceType);
+            return ResolveLocator().GetAll(serviceType);
+        }
+
+        private ILocator ResolveLocator()
+        {
+            return HttpContext.Current?.GetScopedLocator() ?? _Locator;
         }
     }
 }

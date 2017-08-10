@@ -12,8 +12,8 @@ namespace DotNetStarter.Extensions.WebApi
     /// </summary>
     public class WebApiDependencyResolver : IDependencyResolver
     {
+        static readonly Type _LocatorType = typeof(ILocator);
         ILocator _Locator;
-
         Import<IPipelineScope> PipelineScope;
 
         /// <summary>
@@ -49,10 +49,7 @@ namespace DotNetStarter.Extensions.WebApi
         /// <returns></returns>
         public object GetService(Type serviceType)
         {
-            if (PipelineScope.Service?.Enabled == true)
-                return (HttpContext.Current?.GetScopedLocator() ?? _Locator).Get(serviceType);
-
-            return _Locator.Get(serviceType);
+            return ResolveLocator().Get(serviceType);
         }
 
         /// <summary>
@@ -62,10 +59,12 @@ namespace DotNetStarter.Extensions.WebApi
         /// <returns></returns>
         public IEnumerable<object> GetServices(Type serviceType)
         {
-            if (PipelineScope.Service?.Enabled == true)
-                return (HttpContext.Current?.GetScopedLocator() ?? _Locator).GetAll(serviceType);
+            return ResolveLocator().GetAll(serviceType);
+        }
 
-            return _Locator.GetAll(serviceType);
+        private ILocator ResolveLocator()
+        {
+            return PipelineScope.Service?.Enabled == true ? (HttpContext.Current?.GetScopedLocator() ?? _Locator) : _Locator;
         }
     }
 }
