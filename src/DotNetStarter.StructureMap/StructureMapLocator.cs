@@ -6,22 +6,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-[assembly: LocatorRegistryFactory(typeof(DotNetStarter.StructureMapFactory))]
-
 namespace DotNetStarter
 {
-    /// <summary>
-    /// Locator with Structuremap Container 
-    /// </summary>
-    public class StructureMapFactory : ILocatorRegistryFactory
-    {
-        /// <summary>
-        /// Creates Structuremap Locator
-        /// </summary>
-        /// <returns></returns>
-        public ILocatorRegistry CreateRegistry() => new StructureMapLocator();
-    }
-
     /// <summary>
     /// Structuremap Locator
     /// </summary>

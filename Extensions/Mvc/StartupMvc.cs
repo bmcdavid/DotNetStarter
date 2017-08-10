@@ -15,18 +15,14 @@ namespace DotNetStarter.Extensions.Mvc
     [StartupModule]
     public class StartupMvc : IStartupModule
     {
-        ILocator _Locator;
-
         IControllerRegistrationSetup _ControllerRegistrationSetup;
 
         /// <summary>
         /// Constructor
         /// </summary>
-        /// <param name="locator"></param>
         /// <param name="controllerRegistrationSetup"></param>
-        public StartupMvc(ILocator locator, IControllerRegistrationSetup controllerRegistrationSetup)
-        {
-            _Locator = locator;
+        public StartupMvc(IControllerRegistrationSetup controllerRegistrationSetup)
+        {            
             _ControllerRegistrationSetup = controllerRegistrationSetup;
         }
 

@@ -12,7 +12,6 @@ namespace DotNetStarter.Extensions.Mvc
     /// </summary>
     public class ScopedDependencyResolver : IDependencyResolver
     {
-        static readonly Type _LocatorType = typeof(ILocator);
         ILocator _Locator;
 
         /// <summary>
@@ -31,14 +30,7 @@ namespace DotNetStarter.Extensions.Mvc
         /// <returns></returns>
         public object GetService(Type serviceType)
         {
-            var locator = ResolveLocator();
-
-            if (serviceType == _LocatorType)
-            {
-                return _Locator; // use scoped locator if requested for injection
-            }
-
-            return locator.Get(serviceType);
+            return ResolveLocator().Get(serviceType);
         }
 
         /// <summary>

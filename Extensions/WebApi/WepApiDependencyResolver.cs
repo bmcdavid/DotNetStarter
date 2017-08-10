@@ -49,14 +49,7 @@ namespace DotNetStarter.Extensions.WebApi
         /// <returns></returns>
         public object GetService(Type serviceType)
         {
-            var locator = ResolveLocator();
-
-            if (_LocatorType == serviceType)
-            {
-                return _Locator; // use scoped locator if requested for injection
-            }
-
-            return _Locator.Get(serviceType);
+            return ResolveLocator().Get(serviceType);
         }
 
         /// <summary>
