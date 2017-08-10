@@ -1,5 +1,4 @@
-﻿#if !NETCOREAPP1_1
-using DotNetStarter.Abstractions;
+﻿using DotNetStarter.Abstractions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using DotNetStarter.Web.Tests.Mocks;
 using System.Web;
@@ -45,5 +44,3 @@ namespace DotNetStarter.Web.Tests
         }
     }
 }
-
-#endif

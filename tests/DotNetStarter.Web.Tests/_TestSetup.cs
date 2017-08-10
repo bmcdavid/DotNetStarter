@@ -1,5 +1,4 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System.Linq;
 using System.Reflection;
 using System.Collections.Generic;
 
@@ -13,20 +12,13 @@ namespace DotNetStarter.Web.Tests
         {
             IEnumerable<Assembly> assemblies = new Assembly[]
             {
-                            typeof(DotNetStarter.ApplicationContext).GetTypeInfo().Assembly,
-                            typeof(DotNetStarter.Abstractions.IAssemblyFilter).GetTypeInfo().Assembly,                            
-                            typeof(DotNetStarter.DryIocLocator).GetTypeInfo().Assembly,
+                typeof(DotNetStarter.ApplicationContext).Assembly,
+                typeof(DotNetStarter.Abstractions.IAssemblyFilter).Assembly,
+                typeof(DotNetStarter.DryIocLocator).Assembly,
+                typeof(DotNetStarter.Web.IHttpContextProvider).Assembly,
+                typeof(Mocks.MockHttpContextProvider).Assembly,
             };
 
-#if NETCOREAPP1_1
-            assemblies = assemblies.Union(new Assembly[] { typeof(DotNetStarter.Web.NetcoreExtensions).GetTypeInfo().Assembly });
-#else
-            assemblies = assemblies.Union(new Assembly[] 
-                {
-                    typeof(DotNetStarter.Web.IHttpContextProvider).GetTypeInfo().Assembly,
-                    typeof(Mocks.MockHttpContextProvider).GetTypeInfo().Assembly,
-                });
-#endif
             ApplicationContext.Startup(assemblies: assemblies);
         }
     }
