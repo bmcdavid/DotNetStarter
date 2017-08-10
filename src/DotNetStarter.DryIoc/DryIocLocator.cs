@@ -1,6 +1,4 @@
-﻿[assembly: DotNetStarter.Abstractions.LocatorRegistryFactory(typeof(DotNetStarter.DryIocLocatorFactory))]
-
-namespace DotNetStarter
+﻿namespace DotNetStarter
 {
     using DotNetStarter.Abstractions;
     using DotNetStarter.Abstractions.Internal;
@@ -177,7 +175,12 @@ namespace DotNetStarter
             if (typedContext != null)
                 container = container.With(scopeContext: typedContext);
 
-            return new DryIocLocator(container.OpenScope(scopeName));
+            return new DryIocLocator
+            (
+                container
+                    .CreateFacade() // allows registrations to only exist in the instance
+                    .OpenScope(scopeName)
+            );
         }
 
         /// <summary>
@@ -280,17 +283,5 @@ namespace DotNetStarter
 
             throw ex;
         }
-    }
-
-    /// <summary>
-    /// Locator with DryIoc Container 
-    /// </summary>
-    public class DryIocLocatorFactory : ILocatorRegistryFactory
-    {
-        /// <summary>
-        /// Creates DryIoc Locator
-        /// </summary>
-        /// <returns></returns>
-        public ILocatorRegistry CreateRegistry() => new DryIocLocator();
     }
 }

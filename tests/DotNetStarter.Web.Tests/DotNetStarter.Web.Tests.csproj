@@ -1,7 +1,8 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>net46;net45;net451;netcoreapp1.1</TargetFrameworks>
+    <TargetFramework>net46</TargetFramework>
+    <!--<TargetFrameworks>net46;net45;net451;netcoreapp1.1</TargetFrameworks>-->
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
     <ReferringTargetFrameworkForProjectReferences Condition="'$(TargetFramework)' == 'netcoreapp1.1'">netstandard1.3</ReferringTargetFrameworkForProjectReferences>
     <ReferringTargetFrameworkForProjectReferences Condition="'$(TargetFramework)' == 'net46'">net45</ReferringTargetFrameworkForProjectReferences>
@@ -10,7 +11,7 @@
       Using net35 results in below using the command: dotnet test
       C:\Program Files\dotnet\sdk\1.0.4\Microsoft.Common.CurrentVersion.targets(1111,5): error MSB3644: The reference assemblies for framework ".NETFramework,Version=v3.5" were not found. To resolve this, install the SDK or Targeting Pack for this framework version or retarget your application to a version of the framework for which you have the SDK or Targeting Pack installed. Note that assemblies will be resolved from the Global Assembly Cache (GAC) and will be used in place of reference assemblies. Therefore your assembly may not be correctly targeted for the framework you intend. [C:\_Web\projects\DotNetStarter.Framework\src\DotNetStarter.Framework\DotNetStarter.Framework.csproj]
     -->
-    <ReferringTargetFrameworkForProjectReferences Condition="'$(TargetFramework)' == 'net45'">net35</ReferringTargetFrameworkForProjectReferences>
+    <!--<ReferringTargetFrameworkForProjectReferences Condition="'$(TargetFramework)' == 'net45'">net35</ReferringTargetFrameworkForProjectReferences>-->
     <OutDir>bin\$(Configuration)\$(ReferringTargetFrameworkForProjectReferences)</OutDir>
   </PropertyGroup>
 
