@@ -6,7 +6,7 @@ namespace DotNetStarter.Web
     using System;
     using System.Collections.Generic;
     using System.Web;
-    
+
     /// <summary>
     /// Main startup module
     /// </summary>
@@ -21,7 +21,7 @@ namespace DotNetStarter.Web
         /// <summary>
         /// Constructor
         /// </summary>
-        public WebModuleStartup() { }
+        public WebModuleStartup() : this(null, null) { }
 
         /// <summary>
         /// Mockable constructor

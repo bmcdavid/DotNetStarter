@@ -42,5 +42,14 @@ namespace DotNetStarter.Web.Tests
             Assert.IsFalse(handler.StartupEnabled());
             Assert.IsFalse(Mocks.MockHttpModule.InitCalled);
         }
+
+        [TestMethod]
+        public void ShouldStartupModuleWithEmptyConstructor()
+        {
+            Mocks.MockHttpModule.InitCalled = false; //reset
+            var appStartup = new DotNetStarter.Web.WebModuleStartup();
+
+            appStartup.Init(new System.Web.HttpApplication());            
+        }
     }
 }
