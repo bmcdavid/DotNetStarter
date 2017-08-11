@@ -14,11 +14,11 @@
         /// <summary>
         /// Assigns default instances to the locator
         /// </summary>
-        /// <param name="locator"></param>
+        /// <param name="registry"></param>
         /// <param name="filteredModules"></param>
         /// <param name="configuration"></param>
         /// <param name="objectFactory"></param>
-        public virtual void Configure(ILocatorRegistry locator, IEnumerable<IDependencyNode> filteredModules, IStartupConfiguration configuration, IStartupObjectFactory objectFactory)
+        public virtual void Configure(ILocatorRegistry registry, IEnumerable<IDependencyNode> filteredModules, IStartupConfiguration configuration, IStartupObjectFactory objectFactory)
         {
             Type initModuleType = typeof(IStartupModule);
             Type configureModuleType = typeof(ILocatorConfigure);
@@ -27,25 +27,20 @@
             foreach (var module in modules)
             {
                 if (initModuleType.IsAssignableFromCheck(module))
-                    locator.Add(initModuleType, module, null, LifeTime.Singleton, ConstructorType.Greediest);
+                    registry.Add(initModuleType, module, null, LifeTime.Singleton, ConstructorType.Greediest);
 
                 if (configureModuleType.IsAssignableFromCheck(module))
-                    locator.Add(configureModuleType, module, null, LifeTime.Singleton, ConstructorType.Greediest);
+                    registry.Add(configureModuleType, module, null, LifeTime.Singleton, ConstructorType.Greediest);
             }
 
-            var readOnlyLocator = new ReadOnlyLocator(locator);
-
             // add default instances    
-            locator.Add(typeof(ILocator), readOnlyLocator);
-            locator.Add(typeof(IStartupConfiguration), configuration);
-            locator.Add(typeof(IStartupObjectFactory), objectFactory);
-            locator.Add(typeof(IStartupLogger), configuration.Logger);
-            locator.Add(typeof(IAssemblyScanner), configuration.AssemblyScanner);
-            locator.Add(typeof(IDependencyFinder), configuration.DependencyFinder);
-            locator.Add(typeof(IDependencySorter), configuration.DependencySorter);
-            locator.Add<ITimedTask, TimedTask>(lifetime: LifeTime.Transient, constructorType: ConstructorType.Greediest);
-
-            ImportHelper.OnEnsureLocator += (() => readOnlyLocator); // configure import<T> locator
+            registry.Add(typeof(IStartupConfiguration), configuration);
+            registry.Add(typeof(IStartupObjectFactory), objectFactory);
+            registry.Add(typeof(IStartupLogger), configuration.Logger);
+            registry.Add(typeof(IAssemblyScanner), configuration.AssemblyScanner);
+            registry.Add(typeof(IDependencyFinder), configuration.DependencyFinder);
+            registry.Add(typeof(IDependencySorter), configuration.DependencySorter);
+            registry.Add<ITimedTask, TimedTask>(lifetime: LifeTime.Transient, constructorType: ConstructorType.Greediest);    
         }
     }
 }

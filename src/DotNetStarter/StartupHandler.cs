@@ -124,10 +124,13 @@
                     map.Configure(registry, this);
                 }
 
-                tempContext = objectFactory.CreateStartupContext(new Internal.ReadOnlyLocator(registry), filteredModules, sortedModules, config);
+                var readOnlyLocator = new Internal.ReadOnlyLocator(registry);
+                tempContext = objectFactory.CreateStartupContext(readOnlyLocator, filteredModules, sortedModules, config);
                 
                 // register context once its created
                 registry.Add(typeof(IStartupContext), tempContext);
+                registry.Add(typeof(ILocator), readOnlyLocator);
+                ImportHelper.OnEnsureLocator += (() => readOnlyLocator); // configure import<T> locator
 
                 OnLocatorStartupComplete?.Invoke(); //execute locator complete before verification since last minute additions can occur here.
                 (registry as ILocatorVerification)?.Verify();

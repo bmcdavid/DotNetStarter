@@ -52,9 +52,9 @@ namespace DotNetStarter.Tests
         {
             using (var scoped = Context.Service.Locator.OpenScope())
             {
-                (scoped as ILocatorRegistry).Add(typeof(IReadOnlyLocator), new Internal.ReadOnlyLocator(scoped));
+                (scoped as ILocatorRegistry).Add(typeof(LocatorLockedException), new LocatorLockedException());
 
-                Assert.IsNotNull(scoped.Get<IReadOnlyLocator>());
+                Assert.IsNotNull(scoped.Get<LocatorLockedException>());
             }
         }
 

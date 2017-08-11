@@ -6,7 +6,7 @@ using System.Collections.Generic;
 
 namespace DotNetStarter.Internal
 {
-    public class ReadOnlyLocator : IReadOnlyLocator
+    public sealed class ReadOnlyLocator : IReadOnlyLocator
     {
         ILocator _ConfiguredLocator;
 
@@ -74,8 +74,8 @@ namespace DotNetStarter.Internal
         public void SetContainer(object container)
         {
             ThrowIfLocked();
-            (_ConfiguredLocator as ILocatorSetContainer)?.SetContainer(container);
             EnsureLocked();
+            (_ConfiguredLocator as ILocatorSetContainer)?.SetContainer(container);
         }
 
         private void ThrowIfLocked()
