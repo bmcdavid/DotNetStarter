@@ -33,8 +33,10 @@
                     locator.Add(configureModuleType, module, null, LifeTime.Singleton, ConstructorType.Greediest);
             }
 
+            var readOnlyLocator = new ReadOnlyLocator(locator);
+
             // add default instances    
-            locator.Add(typeof(ILocator), locator);
+            locator.Add(typeof(ILocator), readOnlyLocator);
             locator.Add(typeof(IStartupConfiguration), configuration);
             locator.Add(typeof(IStartupObjectFactory), objectFactory);
             locator.Add(typeof(IStartupLogger), configuration.Logger);
@@ -43,7 +45,7 @@
             locator.Add(typeof(IDependencySorter), configuration.DependencySorter);
             locator.Add<ITimedTask, TimedTask>(lifetime: LifeTime.Transient, constructorType: ConstructorType.Greediest);
 
-            ImportHelper.OnEnsureLocator += (() => locator); // configure import<T> locator
+            ImportHelper.OnEnsureLocator += (() => readOnlyLocator); // configure import<T> locator
         }
     }
 }

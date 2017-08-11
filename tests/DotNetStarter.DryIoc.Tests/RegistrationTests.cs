@@ -1,6 +1,5 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using DotNetStarter.Abstractions;
-using System.Diagnostics;
 using System.Linq;
 using System.Collections.Generic;
 
@@ -23,6 +22,28 @@ namespace DotNetStarter.Tests
             var task = Context.Service.Locator.Get<ITimedTask>();
 
             Assert.IsNotNull(task);
+        }
+
+        [ExpectedException(typeof(LocatorLockedException))]
+        [TestMethod]
+        public void ShouldThrowLockedLocatorException()
+        {
+            var locator = Context.Service.Locator;
+            var temp = Context.Service.Locator.InternalContainer;
+            var lockedPreSet = (locator as IReadOnlyLocator).IsLocked;
+            (locator as ILocatorSetContainer).SetContainer(temp);
+            var lockedPostSet = (locator as IReadOnlyLocator).IsLocked;
+
+            Assert.IsFalse(lockedPreSet);
+            Assert.IsTrue(lockedPostSet);
+            Assert.IsNotNull(Context.Service.Locator.InternalContainer); // triggers exception
+
+        }
+
+        [TestMethod]
+        public void ShouldBeReadOnlyLocatorInAppContext()
+        {
+            Assert.IsInstanceOfType(ApplicationContext.Default.Locator, typeof(IReadOnlyLocator));
         }
 
         [TestMethod]

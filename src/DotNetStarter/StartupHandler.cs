@@ -124,15 +124,15 @@
                     map.Configure(registry, this);
                 }
 
-                tempContext = objectFactory.CreateStartupContext(registry, filteredModules, sortedModules, config);
-
+                tempContext = objectFactory.CreateStartupContext(new Internal.ReadOnlyLocator(registry), filteredModules, sortedModules, config);
+                
                 // register context once its created
-                registry?.Add(typeof(IStartupContext), tempContext);
+                registry.Add(typeof(IStartupContext), tempContext);
 
                 (registry as ILocatorVerification)?.Verify();
                 OnLocatorStartupComplete?.Invoke();
 
-                modules = registry?.GetAll<IStartupModule>(); // resolve all startup modules for DI
+                modules = registry.GetAll<IStartupModule>(); // resolve all startup modules for DI
             };
 
             // execute tasks in order
