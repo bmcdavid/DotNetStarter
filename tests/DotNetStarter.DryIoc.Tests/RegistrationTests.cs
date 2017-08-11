@@ -40,6 +40,24 @@ namespace DotNetStarter.Tests
 
         }
 
+#if STRUCTUREMAPNET35
+        [ExpectedException(typeof(System.NotImplementedException))]
+        [TestMethod]
+        public void ShouldNotAllowScopedRegistrations()
+#else
+        [TestMethod]
+        public void ShouldAllowScopedRegistrations()
+
+#endif
+        {
+            using (var scoped = Context.Service.Locator.OpenScope())
+            {
+                (scoped as ILocatorRegistry).Add(typeof(IReadOnlyLocator), new Internal.ReadOnlyLocator(scoped));
+
+                Assert.IsNotNull(scoped.Get<IReadOnlyLocator>());
+            }
+        }
+
         [TestMethod]
         public void ShouldBeReadOnlyLocatorInAppContext()
         {
