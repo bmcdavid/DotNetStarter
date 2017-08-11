@@ -3,15 +3,15 @@
     using Abstractions;
     using DotNetStarter.Abstractions;
     using System;
+    using System.Collections;
     using System.Collections.Generic;
+    using System.Linq;
     using System.Threading.Tasks;
     using AppFunc = System.Func<System.Collections.Generic.IDictionary<string, object>, System.Threading.Tasks.Task>;
     using static DotNetStarter.ApplicationContext;
 
 #if NET45
     using global::Owin;
-    using System.Linq;
-    using System.Collections;
 #endif
 
     /// <summary>
