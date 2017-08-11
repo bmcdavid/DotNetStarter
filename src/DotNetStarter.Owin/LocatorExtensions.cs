@@ -112,15 +112,14 @@
                 var hasScopedLocator = scoped != null;
                 scoped = scoped ?? locator.OpenScope(scopeName, scopeContext); // create a new scope if not found.
 
-                //// register items
+                // register items
                 var registry = scoped as ILocatorRegistry;
                 registry?.Add(typeof(IDictionary<string, object>), context);
                 registry?.Add(typeof(IMiddlewareContext), new MiddlewareContext(context));
                 addToScope?.Invoke(registry);
 
-                var serviceProvider = new ServiceProvider(scoped);
-                context[ScopedProviderKeyInContext] = serviceProvider;
                 context[ScopedLocatorKeyInContext] = scoped;
+                context[ScopedProviderKeyInContext] = new ServiceProvider(scoped);
 
                 // perform remaining tasks
                 await next.Invoke(context);
