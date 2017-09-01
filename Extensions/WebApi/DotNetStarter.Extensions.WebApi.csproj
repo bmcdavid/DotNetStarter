@@ -60,6 +60,7 @@
     <Compile Include="NullableWebApiDependencyResolver.cs" />
     <Compile Include="PipelineScope.cs" />
     <Compile Include="StartupWebApi.cs" />
+    <Compile Include="StartupWebApiConfigure.cs" />
     <Compile Include="WepApiDependencyResolver.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

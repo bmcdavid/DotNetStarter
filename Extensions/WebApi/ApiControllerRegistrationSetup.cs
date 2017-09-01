@@ -5,7 +5,6 @@ namespace DotNetStarter.Extensions.WebApi
     /// <summary>
     /// Default registration values
     /// </summary>
-    [Register(typeof(IApiControllerRegistrationSetup))]
     public class ApiControllerRegistrationSetup : IApiControllerRegistrationSetup
     {
         /// <summary>

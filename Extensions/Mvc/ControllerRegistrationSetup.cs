@@ -5,7 +5,6 @@ namespace DotNetStarter.Extensions.Mvc
     /// <summary>
     /// Default controller registration setup
     /// </summary>
-    [Register(typeof(IControllerRegistrationSetup))]
     public class ControllerRegistrationSetup : IControllerRegistrationSetup
     {
         /// <summary>
@@ -16,6 +15,6 @@ namespace DotNetStarter.Extensions.Mvc
         /// <summary>
         /// Default is to register controllers
         /// </summary>
-        public bool EnableControllerRegisterations => true;
+        public virtual bool EnableControllerRegisterations => true;
     }
 }
