@@ -8,6 +8,10 @@
     <AssemblyOriginatorKeyFile>..\..\dotnetstarter.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
 
+  <!--<PropertyGroup Condition="'$(TargetFramework)' == 'netstandard1.1' OR '$(TargetFramework)' == 'netstandard1.0'">
+    <DefineConstants>$(DefineConstants);NETSTANDARD1_x;"</DefineConstants>
+  </PropertyGroup>-->
+
   <ItemGroup>
     <Compile Remove="NetcoreExtensions.cs" />
   </ItemGroup>

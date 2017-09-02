@@ -19,8 +19,8 @@
             if (assembly.GlobalAssemblyCache) return true;
 #endif
 
-#if NET40 || NET45 || NETSTANDARD
-            if (assembly.IsDynamic) return false;
+#if NET40 || NET45 || NETSTANDARD1_0 || NETSTANDARD1_1
+            if (assembly.IsDynamic) return true;
 #endif
 
             var name = assembly.GetName().Name.Split('.');

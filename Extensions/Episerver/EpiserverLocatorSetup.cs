@@ -1,10 +1,9 @@
 ﻿using DotNetStarter.Abstractions;
-using DotNetStarter.Extensions.Mvc;
 using EPiServer.Framework;
 using EPiServer.Framework.Initialization;
 using EPiServer.ServiceLocation;
 using StructureMap;
-using System.Web.Mvc;
+using System;
 
 // instructs DotNetStarter to use this to create ILocatorRegistry
 [assembly: LocatorRegistryFactory(typeof(DotNetStarter.Extensions.Episerver.EpiserverLocatorSetup))]
@@ -20,12 +19,19 @@ namespace DotNetStarter.Extensions.Episerver
         static IContainer _Container; // must be static to share between instances
 
         /// <summary>
+        /// Invokable action to startup DotNetStarter when the Episerver container is set.
+        /// </summary>
+        public static Action<IContainer> ContainerSet = null;
+
+        /// <summary>
         /// Constructor
         /// </summary>
         /// <param name="context"></param>
         public void ConfigureContainer(ServiceConfigurationContext context)
         {
-            _Container = context.Container; // store the containr for use in CreateRegistry            
+            var container = context.Container;
+            _Container = container; // store the containr for use in CreateRegistry  
+            ContainerSet?.Invoke(container);
         }
 
         /// <summary>
@@ -41,10 +47,10 @@ namespace DotNetStarter.Extensions.Episerver
         public void Initialize(InitializationEngine context)
         {
             // try to ensure the scoped dependency resolver is used by waiting til initcomplete to set it.
-            context.InitComplete += (sender, _) =>
-            {
-                DependencyResolver.SetResolver(new ScopedDependencyResolver(DotNetStarter.ApplicationContext.Default.Locator));
-            };
+            //context.InitComplete += (sender, _) =>
+            //{
+            //    DependencyResolver.SetResolver(new NullableMvcDependencyResolver(ApplicationContext.Default.Locator));
+            //};
         }
 
         /// <summary>

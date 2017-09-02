@@ -7,7 +7,5 @@
     <SignAssembly>True</SignAssembly>
     <AssemblyOriginatorKeyFile>..\..\dotnetstarter.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
-
-  <!--<DefineConstants>-->
-
+  
 </Project>
