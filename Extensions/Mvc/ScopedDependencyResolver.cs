@@ -10,6 +10,7 @@ namespace DotNetStarter.Extensions.Mvc
     /// <summary>
     /// Requires DotNetStarter.Web and Microsoft.AspNet.Mvc packages
     /// </summary>
+    [Obsolete("Please use NullableMvcDependencyResolver instead!")]
     public class ScopedDependencyResolver : IDependencyResolver
     {
         ILocator _Locator;
