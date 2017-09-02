@@ -133,7 +133,7 @@
         /// <param name="service"></param>
         /// <param name="key"></param>
         /// <returns></returns>
-        public virtual object Get(Type service, string key = null) => _Container.Resolve(service, key, IfUnresolved.ReturnDefault);
+        public virtual object Get(Type service, string key = null) => _Container.Resolve(service, key, IfUnresolved.Throw);
 
         /// <summary>
         /// Gets service instance given type and optional key for generics

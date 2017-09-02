@@ -57,6 +57,7 @@
     <Compile Include="ApiControllerRegistrationSetup.cs" />
     <Compile Include="IApiControllerRegistrationSetup.cs" />
     <Compile Include="IPipelineScope.cs" />
+    <Compile Include="NullableWebApiDependencyResolver.cs" />
     <Compile Include="PipelineScope.cs" />
     <Compile Include="StartupWebApi.cs" />
     <Compile Include="WepApiDependencyResolver.cs" />

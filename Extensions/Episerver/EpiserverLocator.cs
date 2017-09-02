@@ -131,11 +131,7 @@ namespace DotNetStarter.Extensions.Episerver
         /// <returns></returns>
         public object Get(Type serviceType, string key = null)
         {
-            try
-            {
-                return _Container.GetInstance(serviceType);
-            }
-            catch { return null; }
+            return _Container.GetInstance(serviceType);
         }
 
         /// <summary>
@@ -146,11 +142,7 @@ namespace DotNetStarter.Extensions.Episerver
         /// <returns></returns>
         public T Get<T>(string key = null)
         {
-            try
-            {
-                return _Container.GetInstance<T>();
-            }
-            catch { return default(T); }
+            return _Container.GetInstance<T>();
         }
 
         /// <summary>

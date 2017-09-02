@@ -1,8 +1,8 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using DotNetStarter.Abstractions;
-using System.Diagnostics;
 using System.Linq;
 using System.Collections.Generic;
+using System;
 
 namespace DotNetStarter.Tests
 {
@@ -46,12 +46,14 @@ namespace DotNetStarter.Tests
         }
 
         [TestMethod]
+        [ExpectedException(typeof(Exception), AllowDerivedTypes = true)]
         public void ShouldRemoveService()
         {
             Assert.IsNull(DotNetStarter.ApplicationContext.Default.Locator.Get<IRemove>());
         }
 
         [TestMethod]
+        [ExpectedException(typeof(Exception), AllowDerivedTypes = true)]
         public void ShouldRemoveImport()
         {
             Assert.IsNull(Remove.Service);

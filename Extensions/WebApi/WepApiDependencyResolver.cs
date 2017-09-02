@@ -10,19 +10,22 @@ namespace DotNetStarter.Extensions.WebApi
     /// <summary>
     /// Dependency Resolver for WebApi
     /// </summary>
+    [Obsolete("Please use NullableWebApiDependencyResolver instead!")]
     public class WebApiDependencyResolver : IDependencyResolver
     {
         static readonly Type _LocatorType = typeof(ILocator);
         ILocator _Locator;
-        Import<IPipelineScope> PipelineScope;
+        IPipelineScope _PipelineScope;
 
         /// <summary>
         /// Constructor
         /// </summary>
         /// <param name="locator"></param>
-        public WebApiDependencyResolver(ILocator locator)
+        /// <param name="pipelineScope">Optional: if null, retrieved from locator</param>
+        public WebApiDependencyResolver(ILocator locator, IPipelineScope pipelineScope = null)
         {
             _Locator = locator;
+            _PipelineScope = pipelineScope;
         }
 
         /// <summary>
@@ -64,7 +67,7 @@ namespace DotNetStarter.Extensions.WebApi
 
         private ILocator ResolveLocator()
         {
-            return PipelineScope.Service?.Enabled == true ? (HttpContext.Current?.GetScopedLocator() ?? _Locator) : _Locator;
+            return _PipelineScope.Enabled == true ? (HttpContext.Current?.GetScopedLocator() ?? _Locator) : _Locator;
         }
     }
 }

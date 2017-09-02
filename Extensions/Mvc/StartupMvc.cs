@@ -41,7 +41,7 @@ namespace DotNetStarter.Extensions.Mvc
             if (_ControllerRegistrationSetup?.EnableControllerRegisterations == true)
                 RegisterMvcControllers(engine.Locator, _ControllerRegistrationSetup.ControllerLifeTime);
 
-            DependencyResolver.SetResolver(new ScopedDependencyResolver(engine.Locator));
+            DependencyResolver.SetResolver(new NullableMvcDependencyResolver(engine.Locator));
         }
 
         static void RegisterMvcControllers(ILocator locator, LifeTime controllerLifetime)

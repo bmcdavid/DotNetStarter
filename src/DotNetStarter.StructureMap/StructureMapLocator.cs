@@ -139,15 +139,9 @@ namespace DotNetStarter
         /// <returns></returns>
         public bool BuildUp(object target)
         {
-            try
-            {
-                _Container.BuildUp(target);
-                return true;
-            }
-            catch
-            {
-                return false;
-            }
+            _Container.BuildUp(target);
+
+            return true;
         }
 
         /// <summary>
@@ -180,11 +174,8 @@ namespace DotNetStarter
         /// <returns></returns>
         public object Get(Type serviceType, string key = null)
         {
-            try
-            {
-                return _Container.GetInstance(serviceType);
-            }
-            catch { return null; }
+            return _Container.GetInstance(serviceType);
+
         }
 
         /// <summary>
@@ -195,11 +186,7 @@ namespace DotNetStarter
         /// <returns></returns>
         public T Get<T>(string key = null)
         {
-            try
-            {
-                return _Container.GetInstance<T>();
-            }
-            catch { return default(T); }
+            return _Container.GetInstance<T>();
         }
 
         /// <summary>
