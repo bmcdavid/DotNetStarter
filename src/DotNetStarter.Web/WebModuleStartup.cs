@@ -16,7 +16,10 @@ namespace DotNetStarter.Web
 
         private IWebModuleStartupHandler _ModuleHandler;
 
-        Import<IWebModuleStartupHandler> StartupWebModuleHandler;
+        /// <summary>
+        /// IWebModuleStartupHandler fallback instance
+        /// </summary>
+        public Import<IWebModuleStartupHandler> StartupWebModuleHandler { get; set; }
 
         /// <summary>
         /// Constructor

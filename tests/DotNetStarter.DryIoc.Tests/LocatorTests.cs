@@ -6,7 +6,7 @@ namespace DotNetStarter.Tests
     [TestClass]
     public class LocatorTests
     {
-        private Import<IStartupContext> _Context;
+        public Import<IStartupContext> _Context { get; set; }
 
         [TestMethod]
         public void ShouldImportContext()

@@ -8,11 +8,11 @@ namespace DotNetStarter.Tests
     [TestClass]
     public class ImportTest
     {
-        private Import<IFoo> Foo;
+        public Import<IFoo> Foo { get; set; }
 
-        private Import<ILocator> Locator;
+        public Import<ILocator> Locator;
 
-        Import<ITransient> Transient;
+        public Import<ITransient> Transient;
 
         [TestMethod]
         public void ShouldImportDifferentInstances()

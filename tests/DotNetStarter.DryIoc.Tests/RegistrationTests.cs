@@ -9,13 +9,13 @@ namespace DotNetStarter.Tests
     [TestClass]
     public class RegistrationTests
     {
-        Import<IStartupContext> Context;
+        public Import<IStartupContext> Context;
 
-        Import<IRemove> Remove;
+        internal Import<IRemove> Remove;
 
-        Import<IFooTwo> FooTwo;
+        public Import<IFooTwo> FooTwo;
 
-        Import<IReflectionHelper> ReflectionHelper;
+        public Import<IReflectionHelper> ReflectionHelper;
 
         [TestMethod]
         public void ShouldCreateTimedTaskFromContainer()
