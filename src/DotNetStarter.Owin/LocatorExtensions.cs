@@ -3,14 +3,15 @@
     using Abstractions;
     using DotNetStarter.Abstractions;
     using System;
+    using System.Collections;
     using System.Collections.Generic;
+    using System.Linq;
     using System.Threading.Tasks;
     using AppFunc = System.Func<System.Collections.Generic.IDictionary<string, object>, System.Threading.Tasks.Task>;
     using static DotNetStarter.ApplicationContext;
 
 #if NET45
     using global::Owin;
-    using System.Linq;
 #endif
 
     /// <summary>
@@ -71,6 +72,29 @@
             return items;
         }
 
+        /// <summary>
+        /// Tries to get already scoped locator from HttpContextBase.Items dictionary
+        /// </summary>
+        /// <param name="environment"></param>
+        /// <param name="rootLocator"></param>
+        /// <returns></returns>
+        internal static ILocator TryGetHttpScopedLocator(IDictionary<string, object> environment, ILocator rootLocator)
+        {
+            var reflectionHelper = rootLocator.Get<IReflectionHelper>();
+            var httpContext = environment.Get<IServiceProvider>("System.Web.HttpContextBase", null);
+            var httpContextItemProperty = httpContext == null ? null :
+                    reflectionHelper.GetProperties(httpContext.GetType()).FirstOrDefault(x => string.CompareOrdinal(x.Name, "Items") == 0);
+
+            var contextItemDict = httpContextItemProperty?.GetValue(httpContext) as IDictionary;
+
+            if (contextItemDict != null)
+            {
+                return contextItemDict[ScopedLocatorKeyInContext] as ILocator;
+            }
+
+            return null;
+        }
+
 #if NET45
         /// <summary>
         /// Opens scope for OWIN pipeline as an IServiceProvider, scopename and scopecontext are for DryIoc containers.
@@ -84,21 +108,27 @@
         {
             app.Use(new Func<AppFunc, AppFunc>(next => (async context =>
             {
-                //todo: figure out how to handle if scope opened in IHttpModule
-                using (var scope = locator.OpenScope(scopeName, scopeContext))
-                {
-                    var registry = scope as ILocatorRegistry;
-                    registry?.Add(typeof(IDictionary<string, object>), context);
-                    registry?.Add(typeof(IMiddlewareContext), new MiddlewareContext(context));
-                    addToScope?.Invoke(registry);
+                var scoped = TryGetHttpScopedLocator(context, locator);
+                var hasScopedLocator = scoped != null;
+                scoped = scoped ?? locator.OpenScope(scopeName, scopeContext); // create a new scope if not found.
 
-                    var serviceProvider = new ServiceProvider(scope);
-                    context[ScopedProviderKeyInContext] = serviceProvider;
+                // register items
+                var registry = scoped as ILocatorRegistry;
+                registry?.Add(typeof(IDictionary<string, object>), context);
+                registry?.Add(typeof(IMiddlewareContext), new MiddlewareContext(context));
+                addToScope?.Invoke(registry);
 
-                    await next.Invoke(context);
-                }
+                context[ScopedLocatorKeyInContext] = scoped;
+                context[ScopedProviderKeyInContext] = new ServiceProvider(scoped);
+
+                // perform remaining tasks
+                await next.Invoke(context);
+
+                if (!hasScopedLocator)
+                    scoped?.Dispose();
+
             })));
-        }        
+        }
 #endif
         internal sealed class MiddlewareWrapper<TServiceMiddleware> where TServiceMiddleware : IOwinMiddleware
         {
