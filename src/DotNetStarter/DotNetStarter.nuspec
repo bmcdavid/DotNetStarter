@@ -8,7 +8,7 @@
     <owners>Brad McDavid</owners>
     <projectUrl>https://bmcdavid.github.io/DotNetStarter/</projectUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
-    <description>Startup system with optional support for DI/IOC.</description>
+    <description>Startup system and service registration for a DI container.</description>
     <releaseNotes>Now supporting netstandard1.0! Refactored assembly scanner and loading.</releaseNotes>
     <copyright>Copyright $year$</copyright>
     <tags>Startup Modules</tags>

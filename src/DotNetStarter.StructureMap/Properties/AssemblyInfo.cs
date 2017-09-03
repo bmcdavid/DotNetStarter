@@ -12,3 +12,5 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyVersion("1.0.1")]
 [assembly: AssemblyFileVersion("1.0.1")]
 [assembly: AssemblyInformationalVersion("1.0.1 Build: {build} Commit Hash: {commit}")]
+
+[assembly: DotNetStarter.Abstractions.DotNetStarterScannableAssembly]

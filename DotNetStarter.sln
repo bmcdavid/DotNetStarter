@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.26430.16
+VisualStudioVersion = 15.0.26730.12
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".Solution Items", ".Solution Items", "{90F6AC8D-CCBC-4EB1-A448-6C931901B985}"
 	ProjectSection(SolutionItems) = preProject
@@ -80,7 +80,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DotNetStarter.DryIoc", "src
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DotNetStarter.Owin", "src\DotNetStarter.Owin\DotNetStarter.Owin.csproj", "{725B781E-838A-483F-802E-C0AEAEA217CE}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DotNetStarter.Structuremap", "src\DotNetStarter.Structuremap\DotNetStarter.Structuremap.csproj", "{B13148EA-1643-4F33-9381-87D1C042D5F5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DotNetStarter.StructureMap", "src\DotNetStarter.Structuremap\DotNetStarter.StructureMap.csproj", "{B13148EA-1643-4F33-9381-87D1C042D5F5}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotNetStarter.Tests.Netstandard1.0", "tests\DotNetStarter.Tests.Netstandard1.0\DotNetStarter.Tests.Netstandard1.0.csproj", "{0C2F75DB-7CC7-48DD-9389-1B1F8D3119D2}"
 EndProject
@@ -222,5 +222,8 @@ Global
 		{DDEDAEA6-FE6A-4118-AF0D-407654E1AF10} = {8A8DF2AE-D820-4CDB-BB3F-0A41C982FB53}
 		{BEADCD6D-37A6-49B0-B955-332FC2DA2C70} = {8A8DF2AE-D820-4CDB-BB3F-0A41C982FB53}
 		{BEADCD6D-37A6-49B0-B955-332FC2DA2C71} = {8A8DF2AE-D820-4CDB-BB3F-0A41C982FB53}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {FF3D216A-6303-4C08-8210-9B458DAC339C}
 	EndGlobalSection
 EndGlobal
