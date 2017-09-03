@@ -3,6 +3,7 @@ using DotNetStarter.Web;
 using System;
 using System.Collections.Generic;
 using System.Web;
+using System.Web.Compilation;
 using System.Web.Mvc;
 using System.Web.Mvc.Async;
 
@@ -13,6 +14,8 @@ namespace DotNetStarter.Extensions.Mvc
     /// </summary>
     public class NullableMvcDependencyResolver : NullableDependencyResolverBase, IDependencyResolver
     {
+        private Func<string, Type> _TypeFromStringResolver;
+
         /// <summary>
         /// Constructor
         /// </summary>
@@ -20,13 +23,17 @@ namespace DotNetStarter.Extensions.Mvc
         /// <param name="reflection"></param>
         /// <param name="allowableNullForGetService"></param>
         /// <param name="allowableNullForGetServices"></param>
+        /// <param name="typeFromStringResolver"></param>
         public NullableMvcDependencyResolver(
             ILocator locator,
             IReflectionHelper reflection = null,
             IEnumerable<Type> allowableNullForGetService = null,
-            IEnumerable<Type> allowableNullForGetServices = null) :
+            IEnumerable<Type> allowableNullForGetServices = null,
+            Func<string, Type> typeFromStringResolver = null) :
             base(locator, reflection, allowableNullForGetService, allowableNullForGetServices)
-        { }
+        {
+            _TypeFromStringResolver = typeFromStringResolver ?? DefaultTypeFromStringResolver;
+        }
 
         /// <summary>
         /// Tries to get a service instance for given type from ILocator, if locator cannot find it, an exception is thrown unless defined as nullable
@@ -69,7 +76,7 @@ namespace DotNetStarter.Extensions.Mvc
 
             foreach (string type in unavailableTypesInMvc4)
             {
-                Type t = System.Web.Compilation.BuildManager.GetType(type, false, false);
+                Type t = _TypeFromStringResolver(type);
 
                 if (t != null)
                 {
@@ -91,6 +98,16 @@ namespace DotNetStarter.Extensions.Mvc
                     typeof(IFilterProvider),
                     typeof(IViewEngine)
                 };
+        }
+
+        /// <summary>
+        /// Defaults to BuildManager.GetType for resolving types from strings
+        /// </summary>
+        /// <param name="typeString"></param>
+        /// <returns></returns>
+        protected virtual Type DefaultTypeFromStringResolver(string typeString)
+        {
+            return BuildManager.GetType(typeString, false, false);
         }
 
         /// <summary>

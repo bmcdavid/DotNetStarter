@@ -58,6 +58,7 @@
   <ItemGroup>
     <Compile Include="..\DotNetStarter.Tests\ContextTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="..\DotNetStarter.Tests\ImportTests.cs" />
     <Compile Include="..\DotNetStarter.Tests\ScanTests.cs" />
     <Compile Include="..\DotNetStarter.Tests\StartupTests.cs" />
     <Compile Include="..\DotNetStarter.Tests\Mocks\TestObjectFactory.cs" />

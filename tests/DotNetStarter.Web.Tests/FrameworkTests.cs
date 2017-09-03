@@ -1,6 +1,5 @@
 ﻿using DotNetStarter.Abstractions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using DotNetStarter.Web.Tests.Mocks;
 using System.Web;
 
 namespace DotNetStarter.Web.Tests
@@ -34,7 +33,8 @@ namespace DotNetStarter.Web.Tests
         public void ShouldNotInitMockModuleWithWebModuleHandler()
         {
             Mocks.MockHttpModule.InitCalled = false; //reset
-            var handler = new Mocks.DisabledWebModuleHandler(DotNetStarter.ApplicationContext.Default);
+            var locator = DotNetStarter.ApplicationContext.Default.Locator;
+            var handler = new Mocks.DisabledWebModuleHandler(locator, locator.GetAll<IStartupModule>());
             
             if(handler.StartupEnabled())
                 handler.Startup(new System.Web.HttpApplication(), new IHttpModule[] { new Mocks.MockHttpModule() });

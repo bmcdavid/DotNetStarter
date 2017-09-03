@@ -1,41 +1,19 @@
 ﻿namespace DotNetStarter.Abstractions
 {
-    using System;
     using System.Collections.Generic;
 
     /// <summary>
-    /// Provides access to set an ILocator for Import&lt;T> calls
-    /// </summary>
-    public static class ImportHelper
-    {
-        /// <summary>
-        /// Event to set a locator
-        /// </summary>
-        public static event Func<ILocator> OnEnsureLocator;
-
-        static ILocator _Locator;
-
-        internal static ILocator Locator => EnsureLocator();
-
-        static ILocator EnsureLocator()
-        {
-            if (_Locator != null) return _Locator;
-
-            _Locator = OnEnsureLocator?.Invoke();
-
-            if (_Locator == null)
-                throw new NullReferenceException($"A {typeof(ILocator)} was not set for Import<T>, please attach event to {nameof(OnEnsureLocator)}!");
-
-            return _Locator;
-        }
-    }
-
-    /// <summary>
     /// Provides access to locator services
+    /// <para>Important: Import&lt;T> should only be used when constructor injection is not an option. Import also does not support scoped services.</para>
     /// </summary>
     /// <typeparam name="TService"></typeparam>
     public struct Import<TService> where TService : class
     {
+        /// <summary>
+        /// The accessor allows for services to be set with a locator.
+        /// </summary>
+        public ImportAccessor<TService> Accessor { get; set; }
+
         /// <summary>
         /// Access to a single service
         /// </summary>
@@ -43,6 +21,9 @@
         {
             get
             {
+                if (Accessor != null)
+                    return Accessor.Service;
+
                 return ImportHelper.Locator.Get<TService>();
             }
         }
@@ -54,6 +35,9 @@
         {
             get
             {
+                if (Accessor != null)
+                    return Accessor.AllServices;
+
                 return ImportHelper.Locator.GetAll<TService>();
             }
         }

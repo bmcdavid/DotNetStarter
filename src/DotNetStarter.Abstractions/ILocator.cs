@@ -13,6 +13,8 @@
         /// </summary>
         object InternalContainer { get; }
 
+        //todo: v2 change this signature to no parameters, and returns an ILocatorRegistry
+
         /// <summary>
         /// Creates a scoped locator
         /// </summary>

@@ -5,6 +5,8 @@
     using System.Collections.Generic;
     using System.Reflection;
 
+    //todo: v2, swap nuget dependency to netstandard package instead of individual packages
+
     /// <summary>
     /// Default hook into startup process, execute DotNetStarter.ApplicationContext.Startup to invoke
     /// <para>preferred to access using Import&lt;T> instead of DotNetStarter.ApplicationContext.Default.Locator</para>
@@ -41,6 +43,8 @@
         }
 
         private ApplicationContext() { }
+
+        //todo: v2, add parameter to Startup of IStartupEnvironment
 
         /// <summary>
         /// Startup kickoff, to customize the IAssemblyLoader please execute AssemblyLoader.SetAssemblyLoader(IAssemblyLoader loader) before using Context!

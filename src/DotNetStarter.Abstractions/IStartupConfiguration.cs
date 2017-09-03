@@ -3,6 +3,8 @@
     using System.Collections.Generic;
     using System.Reflection;
 
+    //todo: v2, add reference to IStartupEnvironment
+
     /// <summary>
     /// startup Configuration
     /// </summary>

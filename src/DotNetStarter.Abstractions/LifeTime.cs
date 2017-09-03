@@ -24,7 +24,7 @@
         /// <summary>
         /// Always creates a new instance
         /// </summary>
-        //todo: remove on breaking change
+        //todo: v2 remove AlwaysUnique
         [System.Obsolete("Specific to structuremap, will be removed on next breaking change.", false)]
         AlwaysUnique = 5
     }
