@@ -16,9 +16,15 @@
         /// <summary>
         /// Construcor
         /// </summary>
-        public TimedTaskManager()
+        public TimedTaskManager() : this(ObjectFactory.Default.CreateRequestSettingsProvider) { }
+
+        /// <summary>
+        /// DI Constructor
+        /// </summary>
+        /// <param name="requestSettingsProviderFactory"></param>
+        public TimedTaskManager(Func<IRequestSettingsProvider> requestSettingsProviderFactory)
         {
-            RequestSettingsProvider = ObjectFactory.Default.CreateRequestSettingsProvider();
+            RequestSettingsProvider = requestSettingsProviderFactory() ?? throw new ArgumentNullException(nameof(requestSettingsProviderFactory));
         }
 
         /// <summary>

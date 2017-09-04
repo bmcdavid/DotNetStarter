@@ -90,7 +90,7 @@ namespace DotNetStarter
         /// <param name="constructorType"></param>
         public void Add<TService, TImpl>(string key = null, LifeTime lifetime = LifeTime.Transient, ConstructorType constructorType = ConstructorType.Greediest) where TImpl : TService
         {
-            Add(typeof(TService), typeof(TImpl), key, lifetime, ConstructorType.Empty);
+            Add(typeof(TService), typeof(TImpl), key, lifetime, constructorType);
         }
 
 #if NET40 || NET45 || NETSTANDARD1_3

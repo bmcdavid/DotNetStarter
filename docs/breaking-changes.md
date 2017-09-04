@@ -5,12 +5,12 @@ title: DotNetStarter - Breaking Changes
 
 This page is used to note each versions breaking changes and list future breaking changes.
 
+## Important Note
+The read-only locator was introduced in 1.x since registrations after OnLocatorStartupComplete required casting as ILocatorRegistry.
+
 ## 1.x - 2.x (proposed)
-* Change NuGet dependencies to use NETStandard.Library instead of individual package references.
 * Change ILocator.OpenScope signature to return ILocatorRegistry and take no parameters
-* Add IReadOnlyLocator which locks container once SetContainer is called, or EnsureLocked() is executed.
 * Add IStartupEnvironment to IStartupConfiguration, and set with similar mechanism to ILocatoryRegistryFactory.
-* Remove always unique lifetime.
  
 ## 0.x - 1.x breaking changes
 

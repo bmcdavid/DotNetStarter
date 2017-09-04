@@ -10,10 +10,28 @@
     /// </summary>
     public class DependencySorter : IDependencySorter
     {
+        private Func<object, Type, IDependencyNode> _DependencyFactory;
+
+        /// <summary>
+        /// Default constructor
+        /// </summary>
+        public DependencySorter() : this(ObjectFactory.Default.CreateDependencyNode) { }
+
+        /// <summary>
+        /// DI constructor
+        /// </summary>
+        /// <param name="dependencyFactory"></param>
+        /// <param name="dependencyComparer"></param>
+        public DependencySorter(Func<object,Type,IDependencyNode> dependencyFactory, IComparer<IDependencyNode> dependencyComparer = null)
+        {
+            _DependencyFactory = dependencyFactory ?? throw new ArgumentNullException(nameof(dependencyFactory));
+            DependencyComparer = dependencyComparer ?? new DependencyComparer();
+        }
+
         /// <summary>
         /// Default comparer, swappable by changing DependencySorter in IStartupConfiguration
         /// </summary>
-        protected virtual IComparer<IDependencyNode> DependencyComparer => new DependencyComparer();
+        protected virtual IComparer<IDependencyNode> DependencyComparer { get; }
 
         /// <summary>
         /// Default sorter or Types or Assemblies
@@ -63,13 +81,13 @@
         /// <param name="attr"></param>
         /// <param name="comparer"></param>
         /// <returns></returns>
-        protected static IList<IDependencyNode> StartupNodes(IEnumerable<object> nodes, Type attr, IComparer<IDependencyNode> comparer)
+        protected virtual IList<IDependencyNode> StartupNodes(IEnumerable<object> nodes, Type attr, IComparer<IDependencyNode> comparer)
         {
             List<IDependencyNode> list = new List<IDependencyNode>(100);
 
             foreach (object node in nodes)
             {
-                list.Add(ObjectFactory.Default.CreateDependencyNode(node, attr));
+                list.Add(_DependencyFactory(node, attr));
             }
 
             list.Sort(comparer);

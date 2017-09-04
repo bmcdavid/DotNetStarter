@@ -16,7 +16,7 @@
         /// <param name="lifeTime"></param>
         /// <param name="constructorType"></param>
         /// <param name="dependencies"></param>
-        [Obsolete("Please use the constructor without constructor type.")]
+        [Obsolete("Please use the constructor without constructor type.", false)]
         public RegisterAttribute
         (
             Type serviceType,
@@ -52,6 +52,9 @@
         /// Service constructor type
         /// </summary>
         [EditorBrowsable(EditorBrowsableState.Never)]
+#if !NETSTANDARD1_0 && !NETSTANDARD1_1
+        [Browsable(false)]
+#endif
         public ConstructorType ConstructorType { get; }
 
         /// <summary>
