@@ -72,7 +72,12 @@
                 {
                     if (!_Started)
                     {
-                        ObjectFactory.EnsureDefaultObjectFactory(assemblies, objectFactory);
+                        if (configuration?.Assemblies != null && assemblies != null)
+                        {
+                            throw new ArgumentException($"{nameof(configuration)} and {nameof(assemblies)} were both set, please pass configuration only in these cases.");
+                        }
+
+                        ObjectFactory.EnsureDefaultObjectFactory(configuration?.Assemblies ?? assemblies, objectFactory);
                         var factory = objectFactory ?? ObjectFactory.Default;
                         _Handler = factory.CreateStartupHandler();
                         _Configuration = configuration ?? factory.CreateStartupConfiguration(assemblies ?? ObjectFactory.Assemblies);
