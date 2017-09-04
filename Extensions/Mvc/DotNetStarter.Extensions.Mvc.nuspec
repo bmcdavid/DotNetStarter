@@ -14,17 +14,18 @@
     <tags>Startup Modules MVC</tags>
     <dependencies>
       <group targetFramework="net45">
-        <dependency id="DotNetStarter.Web" version="[1,2)" />
+        <dependency id="DotNetStarter.Web" version="[1.2,2)" />
         <dependency id="Microsoft.AspNet.Mvc" version="[4,)" />
       </group>
     </dependencies>
   </metadata>
   <files>
+    <file src="**\*.cs" target="src" exclude="obj\**\*.cs" />
+    <file src="readme.txt" target="readme.txt" />
+
     <!--https://docs.nuget.org/ndocs/schema/target-frameworks-->
     <file src="bin\Release\DotNetStarter.Extensions.Mvc.dll" target="lib\net45" />
     <file src="bin\Release\DotNetStarter.Extensions.Mvc.pdb" target="lib\net45" />
     <file src="bin\Release\DotNetStarter.Extensions.Mvc.xml" target="lib\net45" />
-
-    <file src="readme.txt" target="readme.txt" />
   </files>
 </package>

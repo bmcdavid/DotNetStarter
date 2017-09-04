@@ -14,21 +14,23 @@
     <tags>Startup Modules DI IOC</tags>
     <dependencies>
       <group targetFramework="net35">
-        <dependency id="DotNetStarter" version="[1,2)" />
+        <dependency id="DotNetStarter" version="[1.2,2)" />
         <dependency id="StructureMap" version="[2.6,3)" />
       </group>
       <group targetFramework="net40">
-        <dependency id="DotNetStarter" version="[1,2)" />
+        <dependency id="DotNetStarter" version="[1.2,2)" />
         <dependency id="StructureMap" version="[4,5)" />
       </group>
       <group targetFramework="net45">
-        <dependency id="DotNetStarter" version="[1,2)" />
+        <dependency id="DotNetStarter" version="[1.2,2)" />
         <dependency id="StructureMap" version="[4.4,5)" />
       </group>
       <group targetFramework="netstandard1.3">
-        <dependency id="DotNetStarter" version="[1,2)" />
+        <dependency id="DotNetStarter" version="[1.2,2)" />
         <dependency id="StructureMap" version="[4.4,5)" />
-        <dependency id="System.AppContext" version="4.1.0" />
+        <dependency id="NETStandard.Library" version="[2,)" />
+
+        <!--<dependency id="System.AppContext" version="4.1.0" />
         <dependency id="System.Collections" version="4.0.11" />
         <dependency id="System.Diagnostics.Debug" version="4.0.11" />
         <dependency id="System.Diagnostics.Tools" version="4.0.1" />
@@ -40,11 +42,14 @@
         <dependency id="System.Runtime" version="4.1.0" />
         <dependency id="System.Runtime.Extensions" version="4.1.0" />
         <dependency id="System.Runtime.InteropServices" version="4.1.0" />
-        <dependency id="System.Threading" version="4.0.11" />
+        <dependency id="System.Threading" version="4.0.11" />-->
       </group>
     </dependencies>
   </metadata>
   <files>
+    <file src="**\*.cs" target="src" exclude="obj\**\*.cs" />
+    <file src="readme.txt" target="readme.txt" />
+
     <!--https://docs.nuget.org/ndocs/schema/target-frameworks-->
     <file src="bin\Release\net35\DotNetStarter.StructureMap.dll" target="lib\net35" />
     <file src="bin\Release\net35\DotNetStarter.StructureMap.pdb" target="lib\net35" />
@@ -61,7 +66,5 @@
     <file src="bin\Release\netstandard1.3\DotNetStarter.StructureMap.dll" target="lib\netstandard1.3" />
     <file src="bin\Release\netstandard1.3\DotNetStarter.StructureMap.pdb" target="lib\netstandard1.3" />
     <file src="bin\Release\netstandard1.3\DotNetStarter.StructureMap.xml" target="lib\netstandard1.3" />
-
-    <file src="readme.txt" target="readme.txt" />
   </files>
 </package>

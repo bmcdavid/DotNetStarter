@@ -1,6 +1,4 @@
-﻿using DotNetStarter.Abstractions;
-
-namespace DotNetStarter.Web
+﻿namespace DotNetStarter.Abstractions
 {
     /// <summary>
     /// Information about current web environment

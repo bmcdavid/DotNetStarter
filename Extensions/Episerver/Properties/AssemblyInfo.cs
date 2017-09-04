@@ -8,8 +8,8 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyDescription(".NET startup system for Episerver CMS.")]
 [assembly: AssemblyProduct("DotNetStarter.Extensions.Episerver")]
 [assembly: AssemblyCopyright("Copyright © {year}")]
-[assembly: AssemblyVersion("1.0.1")]
-[assembly: AssemblyFileVersion("1.0.1")]
-[assembly: AssemblyInformationalVersion("1.0.1 Build: {build} Commit Hash: {commit}")]
+[assembly: AssemblyVersion("1.1.0")]
+[assembly: AssemblyFileVersion("1.1.0")]
+[assembly: AssemblyInformationalVersion("1.1.0 Build: {build} Commit Hash: {commit}")]
 
 [assembly: DotNetStarter.Abstractions.DotNetStarterScannableAssembly]

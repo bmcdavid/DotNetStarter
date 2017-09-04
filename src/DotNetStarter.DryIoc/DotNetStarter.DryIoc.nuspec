@@ -2,7 +2,8 @@
 <package>
   <metadata>
     <id>DotNetStarter.DryIoc</id>
-    <version>$version$</version><!-- overridden by "NuGet pack -Version" flag -->
+    <version>$version$</version>
+    <!-- overridden by "NuGet pack -Version" flag -->
     <authors>Brad McDavid</authors>
     <owners>Brad McDavid</owners>
     <projectUrl>https://bmcdavid.github.io/DotNetStarter/</projectUrl>
@@ -13,21 +14,23 @@
     <tags>Startup Modules DI IOC</tags>
     <dependencies>
       <group targetFramework="net35">
-        <dependency id="DotNetStarter" version="[1,2)" />
+        <dependency id="DotNetStarter" version="[1.2,2)" />
         <dependency id="DryIoc.dll" version="[2.7,3)" />
       </group>
       <group targetFramework="net40">
-        <dependency id="DotNetStarter" version="[1,2)" />
+        <dependency id="DotNetStarter" version="[1.2,2)" />
         <dependency id="DryIoc.dll" version="[2.7,3)" />
       </group>
       <group targetFramework="net45">
-        <dependency id="DotNetStarter" version="[1,2)" />
+        <dependency id="DotNetStarter" version="[1.2,2)" />
         <dependency id="DryIoc.dll" version="[2.7,3)" />
       </group>
       <group targetFramework="netstandard1.0">
-        <dependency id="DotNetStarter" version="[1,2)" />
+        <dependency id="DotNetStarter" version="[1.2,2)" />
         <dependency id="DryIoc.dll" version="[2.7,3)" />
-        <dependency id="System.Collections" version="4.0.11" />
+        <dependency id="NETStandard.Library" version="[2,)" />
+
+        <!--<dependency id="System.Collections" version="4.0.11" />
         <dependency id="System.Diagnostics.Debug" version="4.0.11" />
         <dependency id="System.Diagnostics.Tools" version="4.0.1" />
         <dependency id="System.Linq" version="4.1.0" />
@@ -37,28 +40,29 @@
         <dependency id="System.Runtime" version="4.1.0" />
         <dependency id="System.Runtime.Extensions" version="4.1.0" />
         <dependency id="System.Runtime.InteropServices" version="4.1.0" />
-        <dependency id="System.Threading" version="4.0.11" />
+        <dependency id="System.Threading" version="4.0.11" />-->
       </group>
     </dependencies>
   </metadata>
   <files>
+    <file src="**\*.cs" target="src" exclude="obj\**\*.cs" />
+    <file src="readme.txt" target="readme.txt" />
+
     <!--https://docs.nuget.org/ndocs/schema/target-frameworks-->
     <file src="bin\Release\net35\DotNetStarter.DryIoc.dll" target="lib\net35" />
     <file src="bin\Release\net35\DotNetStarter.DryIoc.pdb" target="lib\net35" />
     <file src="bin\Release\net35\DotNetStarter.DryIoc.xml" target="lib\net35" />
-    
+
     <file src="bin\Release\net40\DotNetStarter.DryIoc.dll" target="lib\net40" />
     <file src="bin\Release\net40\DotNetStarter.DryIoc.pdb" target="lib\net40" />
     <file src="bin\Release\net40\DotNetStarter.DryIoc.xml" target="lib\net40" />
-    
+
     <file src="bin\Release\net45\DotNetStarter.DryIoc.dll" target="lib\net45" />
     <file src="bin\Release\net45\DotNetStarter.DryIoc.pdb" target="lib\net45" />
     <file src="bin\Release\net45\DotNetStarter.DryIoc.xml" target="lib\net45" />
-    
+
     <file src="bin\Release\netstandard1.0\DotNetStarter.DryIoc.dll" target="lib\netstandard1.0" />
     <file src="bin\Release\netstandard1.0\DotNetStarter.DryIoc.pdb" target="lib\netstandard1.0" />
     <file src="bin\Release\netstandard1.0\DotNetStarter.DryIoc.xml" target="lib\netstandard1.0" />
-    
-    <file src="readme.txt" target="readme.txt" />
   </files>
 </package>

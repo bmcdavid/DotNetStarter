@@ -11,8 +11,8 @@ using System.Reflection;
 [assembly: AssemblyDescription(".NET DI implementation using DryIoc.")]
 [assembly: AssemblyProduct("DotNetStarter.DryIoc")]
 [assembly: AssemblyCopyright("Copyright © {year}")]
-[assembly: AssemblyVersion("1.1.1")]
-[assembly: AssemblyFileVersion("1.1.1")]
-[assembly: AssemblyInformationalVersion("1.1.1 Build: {build} Commit Hash: {commit}")]
+[assembly: AssemblyVersion("1.1.2")]
+[assembly: AssemblyFileVersion("1.1.2")]
+[assembly: AssemblyInformationalVersion("1.1.2 Build: {build} Commit Hash: {commit}")]
 
 [assembly: DotNetStarter.Abstractions.DotNetStarterScannableAssembly]

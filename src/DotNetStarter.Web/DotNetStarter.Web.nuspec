@@ -2,7 +2,8 @@
 <package>
   <metadata>
     <id>DotNetStarter.Web</id>
-    <version>$version$</version><!-- overridden by "NuGet pack -Version" flag -->
+    <version>$version$</version>
+    <!-- overridden by "NuGet pack -Version" flag -->
     <authors>Brad McDavid</authors>
     <owners>Brad McDavid</owners>
     <projectUrl>https://bmcdavid.github.io/DotNetStarter/</projectUrl>
@@ -13,31 +14,34 @@
     <tags>Startup Modules System.Web</tags>
     <dependencies>
       <group targetFramework="net35">
-        <dependency id="DotNetStarter" version="[1,2)" />
+        <dependency id="DotNetStarter" version="[1.2,2)" />
       </group>
       <group targetFramework="net40">
-        <dependency id="DotNetStarter" version="[1,2)" />
-        <dependency id="Microsoft.Web.Infrastructure" version="[1,2)" />
+        <dependency id="DotNetStarter" version="[1.2,2)" />
+        <dependency id="Microsoft.Web.Infrastructure" version="[1.2,2)" />
       </group>
       <group targetFramework="net45">
-        <dependency id="DotNetStarter" version="[1,2)" />
+        <dependency id="DotNetStarter" version="[1.2,2)" />
       </group>
       <group targetFramework="netstandard1.3">
-        <dependency id="DotNetStarter" version="[1,2)" />
+        <dependency id="DotNetStarter" version="[1.2,2)" />
         <dependency id="Microsoft.AspNetCore.Http.Abstractions" version="[1,2)" />
       </group>
     </dependencies>
   </metadata>
   <files>
+    <file src="**\*.cs" target="src" exclude="obj\**\*.cs" />
+    <file src="readme.txt" target="readme.txt" />
+
     <!--https://docs.nuget.org/ndocs/schema/target-frameworks-->
     <file src="bin\Release\net35\DotNetStarter.Web.dll" target="lib\net35" />
     <file src="bin\Release\net35\DotNetStarter.Web.pdb" target="lib\net35" />
     <file src="bin\Release\net35\DotNetStarter.Web.xml" target="lib\net35" />
-    
+
     <file src="bin\Release\net40\DotNetStarter.Web.dll" target="lib\net40" />
     <file src="bin\Release\net40\DotNetStarter.Web.pdb" target="lib\net40" />
     <file src="bin\Release\net40\DotNetStarter.Web.xml" target="lib\net40" />
-    
+
     <file src="bin\Release\net45\DotNetStarter.Web.dll" target="lib\net45" />
     <file src="bin\Release\net45\DotNetStarter.Web.pdb" target="lib\net45" />
     <file src="bin\Release\net45\DotNetStarter.Web.xml" target="lib\net45" />
@@ -45,7 +49,5 @@
     <file src="bin\Release\netstandard1.3\DotNetStarter.Web.dll" target="lib\netstandard1.3" />
     <file src="bin\Release\netstandard1.3\DotNetStarter.Web.pdb" target="lib\netstandard1.3" />
     <file src="bin\Release\netstandard1.3\DotNetStarter.Web.xml" target="lib\netstandard1.3" />
-    
-    <file src="readme.txt" target="readme.txt" />
   </files>
 </package>

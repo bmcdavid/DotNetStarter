@@ -5,6 +5,8 @@
 
     /// <summary>
     /// Defines service location operations
+    /// <para>Important: Try to avoid calling getting services directly from the locator, in favor of constructor injection.
+    /// If a new transient is needed in an implementation, inject a Func&lt;T> where T is a registered transient service.</para>
     /// </summary>
     public interface ILocator : IDisposable
     {
@@ -21,6 +23,7 @@
         /// <param name="scopeName"></param>
         /// <param name="scopeContext"></param>
         /// <returns></returns>
+        [Obsolete("Signature will change with version 2.")]
         ILocator OpenScope(object scopeName = null, object scopeContext = null);
 
         /// <summary>

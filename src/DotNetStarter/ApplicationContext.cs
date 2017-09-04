@@ -5,8 +5,6 @@
     using System.Collections.Generic;
     using System.Reflection;
 
-    //todo: v2, swap nuget dependency to netstandard package instead of individual packages
-
     /// <summary>
     /// Default hook into startup process, execute DotNetStarter.ApplicationContext.Startup to invoke
     /// <para>preferred to access using Import&lt;T> instead of DotNetStarter.ApplicationContext.Default.Locator</para>
