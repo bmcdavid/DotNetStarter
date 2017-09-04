@@ -29,10 +29,22 @@
         bool IsEnvironment(string environment);
 
         /// <summary>
+        /// Determines if environment name is 'Local', typically used for a developer's local machine.
+        /// </summary>
+        /// <returns></returns>
+        bool IsLocal();
+
+        /// <summary>
         /// Determines if environment name is 'Production'
         /// </summary>
         /// <returns></returns>
         bool IsProduction();
+
+        /// <summary>
+        /// Determines if environment name is 'QualityAssurance'
+        /// </summary>
+        /// <returns></returns>
+        bool IsQualityAssurance();
 
         /// <summary>
         /// Determines if environment name is 'Staging'
@@ -41,9 +53,15 @@
         bool IsStaging();
 
         /// <summary>
-        /// Determines if environment name is 'Test'
+        /// Determines if environment name is 'Testing'
         /// </summary>
         /// <returns></returns>
-        bool IsTest();
+        bool IsTesting();
+
+        /// <summary>
+        /// Determines if environment name is 'UserAcceptanceTesting'
+        /// </summary>
+        /// <returns></returns>
+        bool IsUserAcceptanceTesting();
     }
 }

@@ -1,4 +1,6 @@
 # DotNetStarter.Extensions.Episerver Read Me
 
-This file also requires DotNetStarter.Extensions.Mvc to setup the dependency resolver.
- Also please remove existing dependency resolver if setup in an initialization module.
+This package requires DotNetStarter.Extensions.Mvc to setup a controller builder.
+
+A static action 'ContainerSet' has been added to DotNetStarter.Extensions.Episerver.EpiserverLocatorSetup to allow developers a place to 
+invoke a customized DotNetStarter.ApplicationContext.Startup().

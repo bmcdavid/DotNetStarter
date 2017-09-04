@@ -38,7 +38,17 @@ namespace DotNetStarter.Extensions.Episerver
         /// Create locator registry
         /// </summary>
         /// <returns></returns>
-        public ILocatorRegistry CreateRegistry() => new EpiserverStructuremapLocator(_Container);
+        public ILocatorRegistry CreateRegistry()
+        {
+            if (_Container == null)
+            {
+                throw new NullReferenceException($"{typeof(ApplicationContext).FullName}.{nameof(ApplicationContext.Startup)}" +
+                    $" was invoked before Episerver initialization. Please assign an action to {typeof(EpiserverLocatorSetup).FullName}.{nameof(ContainerSet)}" +
+                    " to invoke startup when the container reference is set in the global.asax class constructor.");
+            }
+
+            return new EpiserverStructuremapLocator(_Container);
+        }
 
         /// <summary>
         /// Intialize
@@ -46,11 +56,11 @@ namespace DotNetStarter.Extensions.Episerver
         /// <param name="context"></param>
         public void Initialize(InitializationEngine context)
         {
-            // try to ensure the scoped dependency resolver is used by waiting til initcomplete to set it.
-            //context.InitComplete += (sender, _) =>
-            //{
-            //    DependencyResolver.SetResolver(new NullableMvcDependencyResolver(ApplicationContext.Default.Locator));
-            //};
+            // ensure DotNetStarter has started
+            context.InitComplete += (sender, _) =>
+            {
+                ApplicationContext.Startup(); // defaut startup call, but can be changed with ContainerSet action
+            };
         }
 
         /// <summary>
