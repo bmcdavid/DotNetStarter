@@ -13,13 +13,21 @@
     <copyright>Copyright $year$</copyright>
     <tags>Startup Modules Abstractions</tags>
     <dependencies>
-      <group targetFramework="net35"></group>
-      <group targetFramework="net40"></group>
-      <group targetFramework="net45"></group>
+      <group targetFramework="net35">
+        <dependency id="DotNetStarter.RegistrationAbstractions" version="[1,)" />
+      </group>
+      <group targetFramework="net40">
+        <dependency id="DotNetStarter.RegistrationAbstractions" version="[1,)" />
+      </group>
+      <group targetFramework="net45">
+        <dependency id="DotNetStarter.RegistrationAbstractions" version="[1,)" />
+      </group>
       <group targetFramework="netstandard1.0">
+        <dependency id="DotNetStarter.RegistrationAbstractions" version="[1,)" />
         <dependency id="NETStandard.Library" version="[2,)" />
       </group>
       <group targetFramework="netstandard1.1">
+        <dependency id="DotNetStarter.RegistrationAbstractions" version="[1,)" />
         <dependency id="NETStandard.Library" version="[2,)" />
         <!--<dependency id="System.Collections" version="4.0.11" />
         <dependency id="System.Reflection" version="4.1.0" />

@@ -22,7 +22,7 @@ namespace DotNetStarter.Tests.Mocks
         }
     }
 
-    [Register(typeof(IFoo), LifeTime.Singleton, ConstructorType.Greediest, typeof(FooServiceTwo))]
+    [Register(typeof(IFoo), LifeTime.Singleton, typeof(FooServiceTwo))]
     public class FooService : IFoo
     {
         public string Hello => "Hello, World!";

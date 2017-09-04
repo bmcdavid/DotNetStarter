@@ -69,6 +69,10 @@
       <Project>{e7196a51-5932-47ea-be3a-f65567c9cd8b}</Project>
       <Name>DotNetStarter.Abstractions</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\src\DotNetStarter.RegistrationAbstractions\DotNetStarter.RegistrationAbstractions.csproj">
+      <Project>{c68c2f9d-a735-4ae7-9811-f108fa104ce7}</Project>
+      <Name>DotNetStarter.RegistrationAbstractions</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\src\DotNetStarter.Web\DotNetStarter.Web.csproj">
       <Project>{7e4f532b-75c1-4fad-9081-61886e29562d}</Project>
       <Name>DotNetStarter.Web</Name>

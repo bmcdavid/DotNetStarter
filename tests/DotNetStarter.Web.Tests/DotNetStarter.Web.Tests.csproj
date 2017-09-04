@@ -109,6 +109,10 @@
       <Project>{544b1924-3071-4261-b4ba-151ab6af1d43}</Project>
       <Name>DotNetStarter.DryIoc</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\src\DotNetStarter.RegistrationAbstractions\DotNetStarter.RegistrationAbstractions.csproj">
+      <Project>{c68c2f9d-a735-4ae7-9811-f108fa104ce7}</Project>
+      <Name>DotNetStarter.RegistrationAbstractions</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\src\DotNetStarter.Web\DotNetStarter.Web.csproj">
       <Project>{7e4f532b-75c1-4fad-9081-61886e29562d}</Project>
       <Name>DotNetStarter.Web</Name>
