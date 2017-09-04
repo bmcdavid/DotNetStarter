@@ -1,7 +1,6 @@
 ﻿namespace DotNetStarter.Abstractions
 {
     using System;
-    using System.Collections.Generic;
 
     /// <summary>
     /// Provides access to container setup tasks, such as add, remove, contains

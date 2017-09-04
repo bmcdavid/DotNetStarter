@@ -2,7 +2,8 @@
 <package>
   <metadata>
     <id>DotNetStarter.Abstractions</id>
-    <version>$version$</version><!-- overridden by "NuGet pack -Version" flag -->
+    <version>$version$</version>
+    <!-- overridden by "NuGet pack -Version" flag -->
     <authors>Brad McDavid</authors>
     <owners>Brad McDavid</owners>
     <projectUrl>https://bmcdavid.github.io/DotNetStarter/</projectUrl>
@@ -16,31 +17,33 @@
       <group targetFramework="net40"></group>
       <group targetFramework="net45"></group>
       <group targetFramework="netstandard1.0">
-        <dependency id="System.Collections" version="4.0.11" />
-        <dependency id="System.Reflection" version="4.1.0" />
-        <dependency id="System.Reflection.Extensions" version="4.0.1" />
+        <dependency id="NETStandard.Library" version="[2,)" />
       </group>
       <group targetFramework="netstandard1.1">
-        <dependency id="System.Collections" version="4.0.11" />
+        <dependency id="NETStandard.Library" version="[2,)" />
+        <!--<dependency id="System.Collections" version="4.0.11" />
         <dependency id="System.Reflection" version="4.1.0" />
-        <dependency id="System.Reflection.Extensions" version="4.0.1" />
+        <dependency id="System.Reflection.Extensions" version="4.0.1" />-->
       </group>
     </dependencies>
   </metadata>
   <files>
+    <file src="**\*.cs" target="src" exclude="obj\**\*.cs" />
+    <file src="readme.txt" target="readme.txt" />
+
     <!--https://docs.nuget.org/ndocs/schema/target-frameworks-->
     <file src="bin\Release\net35\DotNetStarter.Abstractions.dll" target="lib\net35" />
     <file src="bin\Release\net35\DotNetStarter.Abstractions.pdb" target="lib\net35" />
     <file src="bin\Release\net35\DotNetStarter.Abstractions.xml" target="lib\net35" />
-    
+
     <file src="bin\Release\net40\DotNetStarter.Abstractions.dll" target="lib\net40" />
     <file src="bin\Release\net40\DotNetStarter.Abstractions.pdb" target="lib\net40" />
     <file src="bin\Release\net40\DotNetStarter.Abstractions.xml" target="lib\net40" />
-    
+
     <file src="bin\Release\net45\DotNetStarter.Abstractions.dll" target="lib\net45" />
     <file src="bin\Release\net45\DotNetStarter.Abstractions.pdb" target="lib\net45" />
     <file src="bin\Release\net45\DotNetStarter.Abstractions.xml" target="lib\net45" />
-    
+
     <file src="bin\Release\netstandard1.0\DotNetStarter.Abstractions.dll" target="lib\netstandard1.0" />
     <file src="bin\Release\netstandard1.0\DotNetStarter.Abstractions.pdb" target="lib\netstandard1.0" />
     <file src="bin\Release\netstandard1.0\DotNetStarter.Abstractions.xml" target="lib\netstandard1.0" />
@@ -48,7 +51,5 @@
     <file src="bin\Release\netstandard1.1\DotNetStarter.Abstractions.dll" target="lib\netstandard1.1" />
     <file src="bin\Release\netstandard1.1\DotNetStarter.Abstractions.pdb" target="lib\netstandard1.1" />
     <file src="bin\Release\netstandard1.1\DotNetStarter.Abstractions.xml" target="lib\netstandard1.1" />
-    
-    <file src="readme.txt" target="readme.txt" />
   </files>
 </package>

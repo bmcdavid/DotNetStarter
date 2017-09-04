@@ -44,8 +44,6 @@
 
         private ApplicationContext() { }
 
-        //todo: v2, add parameter to Startup of IStartupEnvironment
-
         /// <summary>
         /// Startup kickoff, to customize the IAssemblyLoader please execute AssemblyLoader.SetAssemblyLoader(IAssemblyLoader loader) before using Context!
         /// </summary>

@@ -14,7 +14,7 @@ namespace DotNetStarter.Internal
         private static HashSet<Assembly> _LoadedAssemblies = new HashSet<Assembly>();
 
         private static readonly object _Lock = new object();
-        
+
 #if NET35 || NET40 || NET45
         /// <summary>
         /// Gets assembly dll folder
@@ -70,7 +70,7 @@ namespace DotNetStarter.Internal
         }
 #endif
 
-#if NETSTANDARD1_0 || NETSTANDARD1_1
+#if NETSTANDARD1_0 || NETSTANDARD1_1 || NETSTANDARD2_0
         /// <summary>
         /// Assembly loader not implemented for netstandard
         /// </summary>

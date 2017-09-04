@@ -22,8 +22,10 @@ namespace DotNetStarter.Tests
         [TestMethod]
         public void ShouldSetServiceFromImportAccessor()
         {
-            var i = new Import<object>();
-            i.Accessor = new ImportAccessor<object>(new StringBuilder(), null);
+            var i = new Import<object>
+            {
+                Accessor = new ImportAccessor<object>(new StringBuilder(), null)
+            };
 
             Assert.IsNotNull(i.Service);
             Assert.IsTrue(i.Service.GetType() == typeof(StringBuilder));
@@ -36,8 +38,10 @@ namespace DotNetStarter.Tests
             Assert.IsNull(new MockClass().Test.Accessor);
 
             var x = new MockClass();
-            var i = new Import<object>();
-            i.Accessor = new ImportAccessor<object>(new StringBuilder(), null);
+            var i = new Import<object>
+            {
+                Accessor = new ImportAccessor<object>(new StringBuilder(), null)
+            };
             x.Test = i;
 
             Assert.IsNotNull(x.Test.Accessor);

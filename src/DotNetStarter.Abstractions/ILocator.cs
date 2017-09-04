@@ -37,6 +37,7 @@
 
         /// <summary>
         /// Gets item from container
+        /// <para>Important: Throwing exceptions instead of returning null when a type cannot resolve in the container is strongly encouraged. </para>
         /// </summary>
         /// <param name="serviceType"></param>
         /// <param name="key"></param>
@@ -45,6 +46,7 @@
 
         /// <summary>
         /// Get item from container
+        /// <para>Important: Throwing exceptions instead of returning null when a type cannot resolve in the container is strongly encouraged. </para>
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="key"></param>
@@ -53,6 +55,7 @@
 
         /// <summary>
         /// Get all items from container
+        /// <para>Important: Throwing exceptions instead of returning null when a type cannot resolve in the container is strongly encouraged. </para>
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="key"></param>
@@ -61,6 +64,7 @@
 
         /// <summary>
         /// Gets all services of container
+        /// <para>Important: Throwing exceptions instead of returning null when a type cannot resolve in the container is strongly encouraged. </para>
         /// </summary>
         /// <param name="serviceType"></param>
         /// <param name="key"></param>

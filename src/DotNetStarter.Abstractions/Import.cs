@@ -4,7 +4,8 @@
 
     /// <summary>
     /// Provides access to locator services
-    /// <para>Important: Import&lt;T> should only be used when constructor injection is not an option; when used it should be public to disclose the dependency to consumers. Import also does not support scoped services.</para>
+    /// <para>Important: Import&lt;T> should only be used when constructor injection is not an option; 
+    /// when used it should be public to disclose the dependency to consumers. Import also does not support scoped services.</para>
     /// </summary>
     /// <typeparam name="TService"></typeparam>
     public struct Import<TService> where TService : class
