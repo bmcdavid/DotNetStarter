@@ -20,6 +20,6 @@
         /// <summary>
         /// Startup environment reference
         /// </summary>
-        IStartupConfiguration Environment { get; }
+        IStartupEnvironment Environment { get; }
     }
 }

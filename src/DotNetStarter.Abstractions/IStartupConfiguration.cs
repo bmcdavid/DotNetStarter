@@ -11,7 +11,7 @@
     public interface IStartupConfiguration
     {
         /// <summary>
-        /// Application References
+        /// Application References for startup
         /// </summary>
         IEnumerable<Assembly> Assemblies { get; }
 

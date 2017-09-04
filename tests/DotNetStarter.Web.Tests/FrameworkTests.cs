@@ -12,6 +12,24 @@ namespace DotNetStarter.Web.Tests
         Import<IWebModuleStartupHandler> _WebModuleHandler;
 
         [TestMethod]
+        public void ShouldCreateStartupEnvironmentWeb()
+        {
+            var x = new StartupConfigurationWithWebEnvironment(
+                System.AppDomain.CurrentDomain.GetAssemblies(),
+                new StartupEnvironmentWeb("UnitTest"),
+                new AssemblyFilter(),
+                new AssemblyScanner(),
+                new DependencyFinder(),
+                new DependencySorter(),
+                new StringLogger(),
+                new StartupModuleFilter(),
+                new TimedTaskManager()
+            );
+
+            Assert.AreSame(x.Environment.EnvironmentName, "UnitTest");
+        }
+
+        [TestMethod]
         public void ShouldLocateHttpProviderContext()
         {
             var sut = _HttpContextProvider.Service.CurrentContext;

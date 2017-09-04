@@ -10,7 +10,7 @@
     /// </summary>
     public class DependencySorter : IDependencySorter
     {
-        private Func<object, Type, IDependencyNode> _DependencyFactory;
+        private Func<object, Type, IDependencyNode> _DependencyNodeFactory;
 
         /// <summary>
         /// Default constructor
@@ -20,18 +20,18 @@
         /// <summary>
         /// DI constructor
         /// </summary>
-        /// <param name="dependencyFactory"></param>
+        /// <param name="dependencyNodeFactory"></param>
         /// <param name="dependencyComparer"></param>
-        public DependencySorter(Func<object,Type,IDependencyNode> dependencyFactory, IComparer<IDependencyNode> dependencyComparer = null)
+        public DependencySorter(Func<object,Type,IDependencyNode> dependencyNodeFactory, IComparer<IDependencyNode> dependencyComparer = null)
         {
-            _DependencyFactory = dependencyFactory ?? throw new ArgumentNullException(nameof(dependencyFactory));
+            _DependencyNodeFactory = dependencyNodeFactory ?? throw new ArgumentNullException(nameof(dependencyNodeFactory));
             DependencyComparer = dependencyComparer ?? new DependencyComparer();
         }
 
         /// <summary>
         /// Default comparer, swappable by changing DependencySorter in IStartupConfiguration
         /// </summary>
-        protected virtual IComparer<IDependencyNode> DependencyComparer { get; }
+        protected virtual IComparer<IDependencyNode> DependencyComparer { get; set; }
 
         /// <summary>
         /// Default sorter or Types or Assemblies
@@ -87,7 +87,7 @@
 
             foreach (object node in nodes)
             {
-                list.Add(_DependencyFactory(node, attr));
+                list.Add(_DependencyNodeFactory(node, attr));
             }
 
             list.Sort(comparer);
