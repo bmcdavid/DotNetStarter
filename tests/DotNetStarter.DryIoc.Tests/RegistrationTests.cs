@@ -25,6 +25,46 @@ namespace DotNetStarter.Tests
             Assert.IsNotNull(task);
         }
 
+        [ExpectedException(typeof(LocatorLockedException))]
+        [TestMethod]
+        public void ShouldThrowLockedLocatorException()
+        {
+            var locator = Context.Service.Locator;
+            var temp = Context.Service.Locator.InternalContainer;
+            var lockedPreSet = (locator as IReadOnlyLocator).IsLocked;
+            (locator as ILocatorSetContainer).SetContainer(temp);
+            var lockedPostSet = (locator as IReadOnlyLocator).IsLocked;
+
+            Assert.IsFalse(lockedPreSet);
+            Assert.IsTrue(lockedPostSet);
+            Assert.IsNotNull(Context.Service.Locator.InternalContainer); // triggers exception
+
+        }
+
+#if STRUCTUREMAPNET35
+        [ExpectedException(typeof(System.NotImplementedException))]
+        [TestMethod]
+        public void ShouldNotAllowScopedRegistrations()
+#else
+        [TestMethod]
+        public void ShouldAllowScopedRegistrations()
+
+#endif
+        {
+            using (var scoped = Context.Service.Locator.OpenScope())
+            {
+                (scoped as ILocatorRegistry).Add(typeof(LocatorLockedException), new LocatorLockedException());
+
+                Assert.IsNotNull(scoped.Get<LocatorLockedException>());
+            }
+        }
+
+        [TestMethod]
+        public void ShouldBeReadOnlyLocatorInAppContext()
+        {
+            Assert.IsInstanceOfType(ApplicationContext.Default.Locator, typeof(IReadOnlyLocator));
+        }
+
         [TestMethod]
         public void ShouldImportReflectionHelper()
         {
