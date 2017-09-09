@@ -3,6 +3,7 @@
     using Abstractions;
     using System;
     using System.Collections.Generic;
+    using System.Linq;
     using System.Reflection;
 
     /// <summary>
@@ -41,6 +42,22 @@
         }
 
         private ApplicationContext() { }
+
+        /// <summary>
+        /// Filters a list of assemblies for DotNetStarterScannableAssemblyAttribute.
+        /// </summary>
+        /// <param name="assemblies">If null, calls internal assembly loader</param>
+        /// <param name="attributeChecker"></param>
+        /// <returns></returns>
+        public static IList<Assembly> GetScannableAssemblies(IEnumerable<Assembly> assemblies = null, Func<Type, IEnumerable<Attribute>> attributeChecker = null)
+        {
+            Func<Type, IEnumerable<Attribute>> defaultChecker = (t) => Abstractions.Internal.TypeExtensions.CustomAttribute(t, false);
+            attributeChecker = attributeChecker ?? defaultChecker;
+            assemblies = assemblies ?? new Internal.AssemblyLoader().GetAssemblies();
+            var filteredAssemblies = assemblies.Where(x => attributeChecker(typeof(DotNetStarterScannableAssemblyAttribute)).Any());
+
+            return filteredAssemblies.ToList();
+        }
 
         /// <summary>
         /// Entry point for startup process

@@ -2,7 +2,9 @@
 using DotNetStarter.Abstractions.Internal;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
+using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 
 namespace DotNetStarter.Tests
 {
@@ -18,6 +20,30 @@ namespace DotNetStarter.Tests
     public class StartupModuleTests
     {
         [TestMethod]
+        public void ShouldFilterGivenAssembliesForScannableAttribute()
+        {
+            IEnumerable<Assembly> assemblies = new List<Assembly>
+            {
+                TypeExtensions.Assembly(typeof(StartupModuleTests))
+            };
+
+            var filter = ApplicationContext.GetScannableAssemblies(assemblies: assemblies);
+
+            Assert.IsTrue(filter.Count() == 1);
+        }
+
+#if NETSTANDARD
+        [ExpectedException(typeof(Exception), AllowDerivedTypes = true)]
+#endif
+        [TestMethod]
+        public void ShouldFilterAssembliesForScannableAttributeGivenNullExceptForNetstandard()
+        { 
+            var filter = ApplicationContext.GetScannableAssemblies(assemblies: null);
+
+            Assert.IsTrue(filter.Any());
+        }
+
+        [TestMethod]
         public void ShouldCallInitCompleteEvent()
         {
             Assert.IsTrue(StartupTest._InitCompleteCalled);
@@ -26,8 +52,8 @@ namespace DotNetStarter.Tests
         [TestMethod]
         public void ShouldRemoveInitModule()
         {
-            var allCount = DotNetStarter.ApplicationContext.Default.AllModuleTypes.Count();
-            var filteredCount = DotNetStarter.ApplicationContext.Default.FilteredModuleTypes.Count();
+            var allCount = ApplicationContext.Default.AllModuleTypes.Count();
+            var filteredCount = ApplicationContext.Default.FilteredModuleTypes.Count();
 
             Assert.AreNotEqual(allCount, filteredCount);
         }
@@ -43,10 +69,10 @@ namespace DotNetStarter.Tests
                 return type.IsAbstract();
             };
 
-            var prev = LocatorRegistryFactoryAttribute.FactoryIsAbstract;
-            LocatorRegistryFactoryAttribute.FactoryIsAbstract = sut;
+            var prev = AssemblyFactoryBaseAttribute.FactoryIsAbstract;
+            AssemblyFactoryBaseAttribute.FactoryIsAbstract = sut;
             var check = new LocatorRegistryFactoryAttribute(typeof(MockFactory));
-            LocatorRegistryFactoryAttribute.FactoryIsAbstract = prev;
+            AssemblyFactoryBaseAttribute.FactoryIsAbstract = prev;
 
             Assert.IsTrue(test);
         }
@@ -77,7 +103,7 @@ namespace DotNetStarter.Tests
         public void ShouldThrowNullLocatorExceptionInDefaultHandler()
         {
             IStartupContext x;
-            new StartupHandler().Startup(DotNetStarter.ApplicationContext.Default.Configuration, new NullLocatorObjectFactory(), out x);
+            new StartupHandler().Startup(ApplicationContext.Default.Configuration, new NullLocatorObjectFactory(), out x);
         }
 
         internal class MockFactory : ILocatorRegistryFactory
