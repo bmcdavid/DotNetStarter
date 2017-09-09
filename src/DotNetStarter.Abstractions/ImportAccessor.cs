@@ -3,7 +3,7 @@
 namespace DotNetStarter.Abstractions
 {
     /// <summary>
-    /// The import accessor allows for Imports to have services assigned with a locator.
+    /// The import accessor allows for Imports to have services assigned bypassing the locator.
     /// </summary>
     /// <typeparam name="TService"></typeparam>
     public class ImportAccessor<TService> where TService : class
@@ -25,8 +25,8 @@ namespace DotNetStarter.Abstractions
         /// <param name="allServices"></param>
         public ImportAccessor(TService service, IEnumerable<TService> allServices)
         {
-            Service = service;
-            AllServices = allServices;
+            Service = service ?? throw new System.ArgumentNullException(nameof(service));
+            AllServices = allServices ?? throw new System.ArgumentNullException(nameof(allServices));
         }
     }
 }

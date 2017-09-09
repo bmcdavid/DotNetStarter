@@ -4,8 +4,8 @@
     using System.Collections.Generic;
 
     /// <summary>
-    /// Defines service location operations
-    /// <para>Important: Try to avoid calling getting services directly from the locator, in favor of constructor injection.
+    /// Defines container resolving operations to a conforming container defined at <see cref="!:http://blog.ploeh.dk/2014/05/19/conforming-container/">here</see>
+    /// <para>Important: The best practice is to avoid getting services directly from the locator, in favor of constructor injection.
     /// If a new transient is needed in an implementation, inject a Func&lt;T> where T is a registered transient service.</para>
     /// </summary>
     public interface ILocator : IDisposable
@@ -16,6 +16,7 @@
         object InternalContainer { get; }
 
         //todo: v2 change this signature to no parameters, and returns an ILocatorRegistry
+        //notes: could this take an ILocatorScope for different options?, how then could extend an action for application before return
 
         /// <summary>
         /// Creates a scoped locator

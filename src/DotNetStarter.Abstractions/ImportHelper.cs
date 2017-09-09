@@ -22,7 +22,7 @@
             _Locator = OnEnsureLocator?.Invoke();
 
             if (_Locator == null)
-                throw new NullReferenceException($"A {typeof(ILocator)} was not set for Import<T>, please attach event to {nameof(OnEnsureLocator)}!");
+                throw new NullReferenceException($"A {typeof(ILocator)} was not set for Import<T>, please attach event to {typeof(ImportHelper).FullName}.{nameof(OnEnsureLocator)}!");
 
             return _Locator;
         }

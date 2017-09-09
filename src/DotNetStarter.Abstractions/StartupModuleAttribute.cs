@@ -3,7 +3,7 @@
     using System;
 
     /// <summary>
-    /// Sets a dependency for startup modules
+    /// Required for IStartupModule and ILocatorConfigure implementations to execute, and optionally define dependencies
     /// </summary>    
     public class StartupModuleAttribute : DependencyBaseAttribute
     {

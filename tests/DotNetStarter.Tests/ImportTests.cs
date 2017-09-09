@@ -24,7 +24,7 @@ namespace DotNetStarter.Tests
         {
             var i = new Import<object>
             {
-                Accessor = new ImportAccessor<object>(new StringBuilder(), null)
+                Accessor = new ImportAccessor<object>(new StringBuilder(), new object[] { })
             };
 
             Assert.IsNotNull(i.Service);
@@ -40,11 +40,25 @@ namespace DotNetStarter.Tests
             var x = new MockClass();
             var i = new Import<object>
             {
-                Accessor = new ImportAccessor<object>(new StringBuilder(), null)
+                Accessor = new ImportAccessor<object>(new StringBuilder(), new object[] { })
             };
             x.Test = i;
 
             Assert.IsNotNull(x.Test.Accessor);
+        }
+
+        [ExpectedException(typeof(ArgumentNullException))]
+        [TestMethod]
+        public void ShouldGuardImportAccessorNullService()
+        {
+            var sut = new ImportAccessor<object>(null, new object[] { });
+        }
+
+        [ExpectedException(typeof(ArgumentNullException))]
+        [TestMethod]
+        public void ShouldGuardImportAccessorNullForAllServices()
+        {
+            var sut = new ImportAccessor<object>(new StringBuilder(), null);
         }
     }
 }

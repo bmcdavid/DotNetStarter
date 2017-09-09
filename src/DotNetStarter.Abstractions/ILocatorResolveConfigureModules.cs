@@ -3,12 +3,12 @@
 namespace DotNetStarter.Abstractions
 {
     /// <summary>
-    /// Allows locator to select how ILocatorConfigure objects are creates
+    /// Allows locator implementation to select how ILocatorConfigure objects are created
     /// </summary>
     public interface ILocatorResolveConfigureModules
     {
         /// <summary>
-        /// Allows locator to select how ILocatorConfigure objects are creates
+        /// Allows locator implementation to select how ILocatorConfigure objects are created
         /// </summary>
         /// <param name="filteredModules"></param>
         /// <param name="startupConfiguration"></param>

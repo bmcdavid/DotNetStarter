@@ -2,7 +2,7 @@
 {
     /// <summary>
     /// Init module that configures the container object.
-    /// <para>IMPORTANT: All implementations require an empty constructor!</para>
+    /// <para>IMPORTANT: All implementations require an empty constructor and require [StartupModuleAttribute]!</para>
     /// </summary>
     public interface ILocatorConfigure
     {

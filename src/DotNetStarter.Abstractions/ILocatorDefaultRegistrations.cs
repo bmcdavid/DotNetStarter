@@ -10,10 +10,10 @@
         /// <summary>
         /// Registers default services and instances
         /// </summary>
-        /// <param name="container"></param>
+        /// <param name="locator"></param>
         /// <param name="filteredModules"></param>
         /// <param name="configuration"></param>
         /// <param name="objectFactory"></param>
-        void Configure(ILocatorRegistry container, IEnumerable<IDependencyNode> filteredModules, IStartupConfiguration configuration, IStartupObjectFactory objectFactory);
+        void Configure(ILocatorRegistry locator, IEnumerable<IDependencyNode> filteredModules, IStartupConfiguration configuration, IStartupObjectFactory objectFactory);
     }
 }
