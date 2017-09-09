@@ -6,7 +6,7 @@
     using System.Reflection;
 
     /// <summary>
-    /// Default hook into startup process, execute DotNetStarter.ApplicationContext.Startup to invoke
+    /// Default hook into startup process, execute DotNetStarter.ApplicationContext.Startup to invoke startup.
     /// <para>preferred to access using Import&lt;T> instead of DotNetStarter.ApplicationContext.Default.Locator</para>
     /// </summary>
     public class ApplicationContext
@@ -43,8 +43,11 @@
         private ApplicationContext() { }
 
         /// <summary>
-        /// Startup kickoff, to customize the IAssemblyLoader please execute AssemblyLoader.SetAssemblyLoader(IAssemblyLoader loader) before using Context!
+        /// Entry point for startup process
         /// </summary>
+        /// <param name="configuration"></param>
+        /// <param name="objectFactory"></param>
+        /// <param name="assemblies">Please do not pass assemblies if also passing a IStartupConfiguration.</param>
         public static void Startup(IStartupConfiguration configuration = null, IStartupObjectFactory objectFactory = null, IEnumerable<Assembly> assemblies = null)
         {
             EnsureStartup(configuration, objectFactory, assemblies);
