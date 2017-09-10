@@ -1,7 +1,5 @@
 ﻿using System;
 
-[assembly: DotNetStarter.Abstractions.DotNetStarterScannableAssembly]
-
 namespace DotNetStarter.Abstractions
 {
     /// <summary>

@@ -12,9 +12,8 @@
     /// </summary>
     public class AssemblyScanner : IAssemblyScanner
     {
-        private readonly Dictionary<Type, HashSet<Type>> ScannedRegistry;
-
         private readonly IEnumerable<IAssemblyScanTypeMatcher> _TypeMatchers;
+        private readonly Dictionary<Type, HashSet<Type>> ScannedRegistry;
 
         /// <summary>
         /// Default constructor
@@ -66,7 +65,7 @@
             if (assemblyFilter != null)
                 scanAssemblies = scanAssemblies.Where(x => !assemblyFilter(x));
 
-            var types = scanAssemblies.SelectMany(x => x.GetTypesCheck());
+            var types = scanAssemblies.SelectMany(x => AssemblyTypes(x));
             var matches = from checkType in types
                           from registerType in forTypes
                           where _TypeMatchers.Any(x => x.IsMatch(registerType, checkType))
@@ -83,5 +82,12 @@
                 ScannedRegistry[item.registerType] = storedTypes;
             }
         }
+
+        /// <summary>
+        /// Determines how assembly types are selected, default is all types in assembly instead of exports
+        /// </summary>
+        /// <param name="assembly"></param>
+        /// <returns></returns>
+        protected virtual IEnumerable<Type> AssemblyTypes(Assembly assembly) => TypeExtensions.GetTypesCheck(assembly);
     }
 }

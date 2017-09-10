@@ -49,12 +49,12 @@
         /// <param name="assemblies">If null, calls internal assembly loader</param>
         /// <param name="attributeChecker"></param>
         /// <returns></returns>
-        public static IList<Assembly> GetScannableAssemblies(IEnumerable<Assembly> assemblies = null, Func<Type, IEnumerable<Attribute>> attributeChecker = null)
+        public static IList<Assembly> GetScannableAssemblies(IEnumerable<Assembly> assemblies = null, Func<Assembly, Type, IEnumerable<Attribute>> attributeChecker = null)
         {
-            Func<Type, IEnumerable<Attribute>> defaultChecker = (t) => Abstractions.Internal.TypeExtensions.CustomAttribute(t, false);
+            Func<Assembly, Type, IEnumerable<Attribute>> defaultChecker = (assembly, type) => Abstractions.Internal.TypeExtensions.CustomAttribute(assembly, type, false);
             attributeChecker = attributeChecker ?? defaultChecker;
             assemblies = assemblies ?? new Internal.AssemblyLoader().GetAssemblies();
-            var filteredAssemblies = assemblies.Where(x => attributeChecker(typeof(DotNetStarterScannableAssemblyAttribute)).Any());
+            var filteredAssemblies = assemblies.Where(x => attributeChecker(x, typeof(DotNetStarterScannableAssemblyAttribute)).Any());
 
             return filteredAssemblies.ToList();
         }
