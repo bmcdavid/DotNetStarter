@@ -11,7 +11,7 @@ namespace DotNetStarter.Extensions.Episerver
     /// <summary>
     /// Locator wrapping Episerver _Container
     /// </summary>
-    public class EpiserverStructuremapLocator : ILocatorRegistry
+    public class EpiserverStructuremapLocator : ILocatorRegistry, ILocatorCreateScope
     {
         IContainer _Container;
 
@@ -32,7 +32,7 @@ namespace DotNetStarter.Extensions.Episerver
         /// <summary>
         /// Container access
         /// </summary>
-        public object InternalContainer => _Container;
+        public virtual object InternalContainer => _Container;
 
         /// <summary>
         /// Add instance
@@ -113,6 +113,11 @@ namespace DotNetStarter.Extensions.Episerver
                 return _Container.TryGetInstance(serviceType) != null;
 
             return _Container.TryGetInstance(serviceType, key) != null;
+        }
+
+        public ILocatorScoped CreateScope(IScopeKind scopeKind)
+        {
+            return new EpiserverLocatorScoped(_Container.CreateChildContainer());
         }
 
         /// <summary>

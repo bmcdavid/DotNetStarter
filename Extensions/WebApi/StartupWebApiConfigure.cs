@@ -1,6 +1,7 @@
 ﻿using DotNetStarter.Abstractions;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Web.Http;
 
 // adds controller implementations to the assembly scanner
@@ -29,7 +30,7 @@ namespace DotNetStarter.Extensions.WebApi
                 {
                     IEnumerable<Type> controllerTypes = engine.Configuration.AssemblyScanner.GetTypesFor(typeof(ApiController));
 
-                    foreach (var controller in controllerTypes)
+                    foreach (var controller in controllerTypes.Where(x => x.IsAbstract == false))
                     {
                         registry?.Add(controller, controller, lifeTime: controllerRegistrationSetup.ApiControllerLifeTime);
                     }

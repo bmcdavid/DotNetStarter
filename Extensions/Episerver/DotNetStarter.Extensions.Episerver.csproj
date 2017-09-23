@@ -95,6 +95,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="EpiserverLocator.cs" />
+    <Compile Include="EpiserverLocatorScoped.cs" />
     <Compile Include="EpiserverLocatorSetup.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

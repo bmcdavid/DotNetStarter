@@ -30,6 +30,14 @@ namespace DotNetStarter.Web.Tests
         }
 
         [TestMethod]
+        public void ShouldResolveExpirmentalFeatureAsFalseByDefault()
+        {
+            var sut = DotNetStarter.ApplicationContext.Default.Locator.Get<Internal.Features.ExperimentalScopedLocator>();
+
+            Assert.IsFalse(sut.Enabled);
+        }
+
+        [TestMethod]
         public void ShouldLocateHttpProviderContext()
         {
             var sut = _HttpContextProvider.Service.CurrentContext;

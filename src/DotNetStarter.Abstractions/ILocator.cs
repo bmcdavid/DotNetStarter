@@ -15,16 +15,13 @@
         /// </summary>
         object InternalContainer { get; }
 
-        //todo: v2 change this signature to no parameters, and returns an ILocatorRegistry
-        //notes: could this take an ILocatorScope for different options?, how then could extend an action for application before return
-
         /// <summary>
         /// Creates a scoped locator
         /// </summary>
         /// <param name="scopeName"></param>
         /// <param name="scopeContext"></param>
         /// <returns></returns>
-        [Obsolete("Signature will change with version 2.")]
+        [Obsolete("OpenScope will be removed from ILocator in version 2.")]
         ILocator OpenScope(object scopeName = null, object scopeContext = null);
 
         /// <summary>

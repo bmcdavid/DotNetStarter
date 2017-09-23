@@ -8,9 +8,8 @@ namespace DotNetStarter.Internal
 {
     public sealed class ReadOnlyLocator : IReadOnlyLocator
     {
-        ILocator _ConfiguredLocator;
-
         static bool _IsLocked = false;
+        ILocator _ConfiguredLocator;
 
         public ReadOnlyLocator(ILocator configuredLocator)
         {
@@ -34,6 +33,16 @@ namespace DotNetStarter.Internal
         public bool BuildUp(object target)
         {
             return _ConfiguredLocator.BuildUp(target);
+        }
+
+        public ILocatorScoped CreateScope(IScopeKind scopeKind)
+        {
+            var scopedCreator = _ConfiguredLocator as ILocatorCreateScope;
+
+            if (scopedCreator == null)
+                throw new NullReferenceException($"{_ConfiguredLocator.GetType().FullName} doesn't support {typeof(ILocatorCreateScope).FullName}!");
+
+            return (_ConfiguredLocator as ILocatorCreateScope).CreateScope(scopeKind);
         }
 
         public void Dispose()

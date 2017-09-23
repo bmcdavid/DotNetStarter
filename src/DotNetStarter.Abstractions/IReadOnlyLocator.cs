@@ -4,7 +4,7 @@
     /// A read only locator has completed the locator configure process
     /// <para> And internal container may only be set one more time, or never if EnsureLocked is called</para>
     /// </summary>
-    public interface IReadOnlyLocator : ILocator, ILocatorSetContainer
+    public interface IReadOnlyLocator : ILocator, ILocatorSetContainer, ILocatorCreateScope
     {
         /// <summary>
         /// Locks container if not locked, safe to call multiple times
