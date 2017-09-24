@@ -102,8 +102,7 @@ namespace DotNetStarter.Tests
         [TestMethod]
         public void ShouldThrowNullLocatorExceptionInDefaultHandler()
         {
-            IStartupContext x;
-            new StartupHandler().Startup(ApplicationContext.Default.Configuration, new NullLocatorObjectFactory(), out x);
+            new StartupHandler().Startup(ApplicationContext.Default.Configuration, new NullLocatorObjectFactory(), out IStartupContext x);
         }
 
         internal class MockFactory : ILocatorRegistryFactory

@@ -79,7 +79,7 @@ namespace DotNetStarter.Web
                 var x = sender as HttpApplication;
                 var context = x.Context;
 
-                // todo: this is temporary until feature is complete and removed
+                // todo: v2, temporary until feature is complete and old scope removed
                 if (_ExperimentalScopedLocator?.Enabled == true)
                 {
                     var scopeCreator = _Locator as ILocatorCreateScope;

@@ -8,14 +8,14 @@ namespace DotNetStarter.Web.Internal.Features
     /// </summary>
     [Register(typeof(IStartupFeature), LifeTime.Singleton)]
     [Register(typeof(ExperimentalScopedLocator), LifeTime.Singleton)]
-    public sealed class ExperimentalScopedLocator : IStartupFeature
+    public class ExperimentalScopedLocator : IStartupFeature
     {
         static Type _Type = typeof(ExperimentalScopedLocator);
 
         /// <summary>
-        /// For netframework, set app setting for 'DotNetStarter.Web.Internal.Features.ExperimentalScopedLocator' = true
+        /// Default for netframework, set app setting for 'DotNetStarter.Web.Internal.Features.ExperimentalScopedLocator' = true
         /// </summary>
-        public bool Enabled
+        public virtual bool Enabled
         {
             get
             {

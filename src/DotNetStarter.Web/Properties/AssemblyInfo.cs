@@ -12,4 +12,4 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyFileVersion("1.2.0")]
 [assembly: AssemblyInformationalVersion("1.2.0 Build: {build} Commit Hash: {commit}")]
 
-[assembly: DotNetStarter.Abstractions.DotNetStarterScannableAssembly]
+[assembly: DotNetStarter.Abstractions.DiscoverableAssembly]

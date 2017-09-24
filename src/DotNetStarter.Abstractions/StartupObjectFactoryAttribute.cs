@@ -8,10 +8,7 @@
     [AttributeUsage(AttributeTargets.Assembly, AllowMultiple = true, Inherited = false)]
     public class StartupObjectFactoryAttribute : AssemblyFactoryBaseAttribute
     {
-        private StartupObjectFactoryAttribute() : this(null)
-        {
-
-        }
+        private StartupObjectFactoryAttribute() : this(null) { }
 
         /// <summary>
         /// Constructor

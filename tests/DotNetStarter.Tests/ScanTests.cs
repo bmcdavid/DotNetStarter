@@ -3,7 +3,11 @@ using System.Linq;
 using DotNetStarter.Abstractions;
 using DotNetStarter.Tests;
 
-[assembly: ScanTypeRegistry(typeof(MockBaseClass), typeof(IMock), typeof(IGenericeMock<>), typeof(IGenericeMock<object>))]
+// this is left until removed to ensure startup handler supports both
+[assembly: ScanTypeRegistry(typeof(MockBaseClass))]
+
+// todo: v2, move typeof(MockBaseClass)
+[assembly: DiscoverTypes(typeof(IMock), typeof(IGenericeMock<>), typeof(IGenericeMock<object>))]
 
 namespace DotNetStarter.Tests
 {

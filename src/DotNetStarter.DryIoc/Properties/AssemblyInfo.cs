@@ -15,4 +15,4 @@ using System.Reflection;
 [assembly: AssemblyFileVersion("1.1.2")]
 [assembly: AssemblyInformationalVersion("1.1.2 Build: {build} Commit Hash: {commit}")]
 
-[assembly: DotNetStarter.Abstractions.DotNetStarterScannableAssembly]
+[assembly: DotNetStarter.Abstractions.DiscoverableAssembly]

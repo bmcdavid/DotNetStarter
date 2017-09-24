@@ -1,7 +1,7 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 
-[assembly: DotNetStarter.Abstractions.DotNetStarterScannableAssembly]
+[assembly: DotNetStarter.Abstractions.DiscoverableAssembly]
 
 namespace DotNetStarter.Tests
 {

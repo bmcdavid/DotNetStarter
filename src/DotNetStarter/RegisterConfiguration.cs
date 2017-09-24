@@ -6,13 +6,13 @@
     using System.Linq;
 
     /// <summary>
-    /// Registers all types that use RegisterAttribute to container.
+    /// Registers all types that use RegisterAttribute to the locator.
     /// </summary>
     [StartupModule]
     public class RegisterConfiguration : ILocatorConfigure
     {
         /// <summary>
-        /// Registers all types that use RegisterAttribute to container.
+        /// Registers all types that use RegisterAttribute to the locator.
         /// </summary>
         /// <param name="container"></param>
         /// <param name="engine"></param>

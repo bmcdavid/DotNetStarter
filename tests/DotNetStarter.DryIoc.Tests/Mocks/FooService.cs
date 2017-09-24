@@ -13,7 +13,10 @@ namespace DotNetStarter.Tests.Mocks
         string Test();
     }
 
-    [Register(typeof(ITransient), LifeTime.Transient)]
+    /// <summary>
+    /// Uses registration instead to ensure both types are working
+    /// </summary>
+    [Registration(typeof(ITransient), Lifecycle.Transient)]
     public class TransientTest : ITransient
     {
         public string Test()

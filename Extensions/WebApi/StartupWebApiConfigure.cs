@@ -5,7 +5,7 @@ using System.Linq;
 using System.Web.Http;
 
 // adds controller implementations to the assembly scanner
-[assembly: ScanTypeRegistry(typeof(ApiController))]
+[assembly: DiscoverTypes(typeof(ApiController))]
 
 namespace DotNetStarter.Extensions.WebApi
 {

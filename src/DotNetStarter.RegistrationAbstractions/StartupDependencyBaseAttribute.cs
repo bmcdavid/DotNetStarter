@@ -7,7 +7,7 @@
     /// <para>This base class supports Type sorting, but not Assembly</para>
     /// </summary>
     [AttributeUsage(AttributeTargets.Class, AllowMultiple = false, Inherited = true)]
-    public abstract class DependencyBaseAttribute : Attribute
+    public abstract class StartupDependencyBaseAttribute : Attribute
     {
         /// <summary>
         /// Dependent types
@@ -20,16 +20,13 @@
         public bool IsAssemblyDependency { get; protected set; }
 
         [Obsolete("Please use the params Type[] constructor", true)]
-        private DependencyBaseAttribute()
-        {
-
-        }
+        private StartupDependencyBaseAttribute() { }
 
         /// <summary>
         /// Constructor
         /// </summary>
         /// <param name="dependencies"></param>
-        public DependencyBaseAttribute(params Type[] dependencies)
+        public StartupDependencyBaseAttribute(params Type[] dependencies)
         {
             Dependencies = dependencies;
             IsAssemblyDependency = false;

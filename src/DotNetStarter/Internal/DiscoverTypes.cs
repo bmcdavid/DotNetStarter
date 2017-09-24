@@ -1,10 +1,9 @@
 ﻿using DotNetStarter.Abstractions;
 
-/*
- * This is how to assign types to get scanned on startup
- */
+// Look for implementations/usages of these types
 
-[assembly: ScanTypeRegistry(
+[assembly: DiscoverTypes(
+    typeof(RegistrationAttribute),
     typeof(IStartupModule),
     typeof(StartupModuleAttribute),
     typeof(RegisterAttribute)

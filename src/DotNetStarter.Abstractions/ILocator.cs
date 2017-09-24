@@ -15,6 +15,8 @@
         /// </summary>
         object InternalContainer { get; }
 
+        //todo: v2, remove OpenScope from ILocator
+
         /// <summary>
         /// Creates a scoped locator
         /// </summary>

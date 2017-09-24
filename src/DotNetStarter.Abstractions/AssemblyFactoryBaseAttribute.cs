@@ -3,6 +3,8 @@
     using Internal;
     using System;
 
+    //todo: v2, replace base class with StartupAssemblyDependencyBaseAttribute
+
     /// <summary>
     /// Base attribute for creating assembly factories
     /// </summary>

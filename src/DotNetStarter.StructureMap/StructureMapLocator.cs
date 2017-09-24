@@ -1,37 +1,21 @@
-﻿using DotNetStarter.Abstractions;
-using DotNetStarter.Abstractions.Internal;
-using StructureMap;
-using StructureMap.Pipeline;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-
-namespace DotNetStarter
+﻿namespace DotNetStarter
 {
+    using DotNetStarter.Abstractions;
+    using DotNetStarter.Abstractions.Internal;
+    using StructureMap;
+    using StructureMap.Pipeline;
+    using System;
+    using System.Linq;
+
     /// <summary>
     /// Structuremap Locator
     /// </summary>
-    public class StructureMapLocator : ILocatorRegistry, ILocatorSetContainer, ILocatorCreateScope
+    public class StructureMapLocator : StructureMapLocatorBase, ILocatorRegistry, ILocatorSetContainer, ILocatorCreateScope
     {
-        private IContainer _Container;
-
         /// <summary>
         /// Constructor
         /// </summary>
-        public StructureMapLocator(IContainer container = null)
-        {
-            _Container = container ?? new Container();              
-        }
-
-        /// <summary>
-        /// Debug Information
-        /// </summary>
-        public string DebugInfo => _Container.WhatDoIHave();
-
-        /// <summary>
-        /// Raw structuremap container
-        /// </summary>
-        public virtual object InternalContainer => _Container;
+        public StructureMapLocator(IContainer container = null) : base(container) { }
 
         /// <summary>
         /// Add object instance
@@ -133,18 +117,6 @@ namespace DotNetStarter
 #endif
 
         /// <summary>
-        /// Build up objects properties 
-        /// </summary>
-        /// <param name="target"></param>
-        /// <returns></returns>
-        public bool BuildUp(object target)
-        {
-            _Container.BuildUp(target);
-
-            return true;
-        }
-
-        /// <summary>
         /// Checks if service is registered
         /// </summary>
         /// <param name="serviceType"></param>
@@ -156,59 +128,6 @@ namespace DotNetStarter
                 return _Container.TryGetInstance(serviceType) != null;
 
             return _Container.TryGetInstance(serviceType, key) != null;
-        }
-
-        /// <summary>
-        /// Dispose
-        /// </summary>
-        public void Dispose()
-        {
-            _Container?.Dispose();
-        }
-
-        /// <summary>
-        /// Get item
-        /// </summary>
-        /// <param name="serviceType"></param>
-        /// <param name="key"></param>
-        /// <returns></returns>
-        public object Get(Type serviceType, string key = null)
-        {
-            return _Container.GetInstance(serviceType);
-
-        }
-
-        /// <summary>
-        /// Get typed item
-        /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="key"></param>
-        /// <returns></returns>
-        public T Get<T>(string key = null)
-        {
-            return _Container.GetInstance<T>();
-        }
-
-        /// <summary>
-        /// Get all registered
-        /// </summary>
-        /// <param name="serviceType"></param>
-        /// <param name="key"></param>
-        /// <returns></returns>
-        public IEnumerable<object> GetAll(Type serviceType, string key = null)
-        {
-            return _Container.GetAllInstances(serviceType).OfType<object>();
-        }
-
-        /// <summary>
-        /// Get all registered as type
-        /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="key"></param>
-        /// <returns></returns>
-        public IEnumerable<T> GetAll<T>(string key = null)
-        {
-            return _Container.GetAllInstances<T>();
         }
 
         /// <summary>
@@ -233,21 +152,6 @@ namespace DotNetStarter
                     return serviceImplementation.IsAssignableFromCheck(type);
                 });
             }
-        }
-
-        /// <summary>
-        /// Creates a scoped container
-        /// </summary>
-        /// <param name="scopeName"></param>
-        /// <param name="scopeContext"></param>
-        /// <returns></returns>
-        public ILocator OpenScope(object scopeName = null, object scopeContext = null)
-        {
-#if NET35
-            throw new NotImplementedException();
-#else
-            return new StructureMapLocator(_Container.CreateChildContainer());
-#endif
         }
 
         /// <summary>

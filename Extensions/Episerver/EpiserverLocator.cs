@@ -1,45 +1,28 @@
-﻿using DotNetStarter.Abstractions;
-using DotNetStarter.Abstractions.Internal;
-using StructureMap;
-using StructureMap.Pipeline;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-
-namespace DotNetStarter.Extensions.Episerver
+﻿namespace DotNetStarter.Extensions.Episerver
 {
+    using DotNetStarter.Abstractions;
+    using DotNetStarter.Abstractions.Internal;
+    using StructureMap;
+    using StructureMap.Pipeline;
+    using System;
+
     /// <summary>
     /// Locator wrapping Episerver _Container
     /// </summary>
-    public class EpiserverStructuremapLocator : ILocatorRegistry, ILocatorCreateScope
+    public class EpiserverStructuremapLocator : EpiserverStructuremapLocatorBase, ILocatorRegistry, ILocatorCreateScope
     {
-        IContainer _Container;
-
         /// <summary>
         /// Locator wrapping Episerver's structuremap container
         /// </summary>
         /// <param name="container"></param>
-        public EpiserverStructuremapLocator(IContainer container)
-        {
-            _Container = container;
-        }
-
-        /// <summary>
-        /// Debug Information
-        /// </summary>
-        public string DebugInfo => _Container.WhatDoIHave();
-
-        /// <summary>
-        /// Container access
-        /// </summary>
-        public virtual object InternalContainer => _Container;
+        public EpiserverStructuremapLocator(IContainer container) : base(container) { }
 
         /// <summary>
         /// Add instance
         /// </summary>
         /// <param name="serviceType"></param>
         /// <param name="serviceInstance"></param>
-        public void Add(Type serviceType, object serviceInstance)
+        public virtual void Add(Type serviceType, object serviceInstance)
         {
             _Container.Configure(x => x.For(serviceType).Singleton().Use(serviceInstance));
         }
@@ -50,7 +33,7 @@ namespace DotNetStarter.Extensions.Episerver
         /// <param name="serviceType"></param>
         /// <param name="implementationFactory"></param>
         /// <param name="lifeTime"></param>
-        public void Add(Type serviceType, Func<ILocator, object> implementationFactory, LifeTime lifeTime)
+        public virtual void Add(Type serviceType, Func<ILocator, object> implementationFactory, LifeTime lifeTime)
         {
             _Container.Configure(x => x.For(serviceType).LifecycleIs(ConvertLifeTime(lifeTime)).Use((context) => implementationFactory.Invoke(context.GetInstance<ILocator>())));
         }
@@ -63,7 +46,7 @@ namespace DotNetStarter.Extensions.Episerver
         /// <param name="key"></param>
         /// <param name="lifeTime"></param>
         /// <param name="constructorType"></param>
-        public void Add(Type serviceType, Type serviceImplementation, string key = null, LifeTime lifeTime = LifeTime.Transient, ConstructorType constructorType = ConstructorType.Greediest)
+        public virtual void Add(Type serviceType, Type serviceImplementation, string key = null, LifeTime lifeTime = LifeTime.Transient, ConstructorType constructorType = ConstructorType.Greediest)
         {
             if (constructorType == ConstructorType.Empty)
             {
@@ -84,21 +67,9 @@ namespace DotNetStarter.Extensions.Episerver
         /// <param name="key"></param>
         /// <param name="lifetime"></param>
         /// <param name="constructorType"></param>
-        public void Add<TService, TImpl>(string key = null, LifeTime lifetime = LifeTime.Transient, ConstructorType constructorType = ConstructorType.Greediest) where TImpl : TService
+        public virtual void Add<TService, TImpl>(string key = null, LifeTime lifetime = LifeTime.Transient, ConstructorType constructorType = ConstructorType.Greediest) where TImpl : TService
         {
             Add(typeof(TService), typeof(TImpl), key, lifetime, constructorType);
-        }
-
-        /// <summary>
-        /// Buildup object
-        /// </summary>
-        /// <param name="target"></param>
-        /// <returns></returns>
-        public bool BuildUp(object target)
-        {
-            _Container.BuildUp(target);
-
-            return true;
         }
 
         /// <summary>
@@ -107,7 +78,7 @@ namespace DotNetStarter.Extensions.Episerver
         /// <param name="serviceType"></param>
         /// <param name="key"></param>
         /// <returns></returns>
-        public bool ContainsService(Type serviceType, string key = null)
+        public virtual bool ContainsService(Type serviceType, string key = null)
         {
             if (key == null)
                 return _Container.TryGetInstance(serviceType) != null;
@@ -115,72 +86,14 @@ namespace DotNetStarter.Extensions.Episerver
             return _Container.TryGetInstance(serviceType, key) != null;
         }
 
-        public ILocatorScoped CreateScope(IScopeKind scopeKind)
+        /// <summary>
+        /// Create scoped locator
+        /// </summary>
+        /// <param name="scopeKind"></param>
+        /// <returns></returns>
+        public virtual ILocatorScoped CreateScope(IScopeKind scopeKind)
         {
             return new EpiserverLocatorScoped(_Container.CreateChildContainer());
-        }
-
-        /// <summary>
-        /// Cleanup container
-        /// </summary>
-        public void Dispose()
-        {
-            _Container?.Dispose();
-        }
-
-        /// <summary>
-        /// Get service
-        /// </summary>
-        /// <param name="serviceType"></param>
-        /// <param name="key"></param>
-        /// <returns></returns>
-        public object Get(Type serviceType, string key = null)
-        {
-            return _Container.GetInstance(serviceType);
-        }
-
-        /// <summary>
-        /// Get service generic
-        /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="key"></param>
-        /// <returns></returns>
-        public T Get<T>(string key = null)
-        {
-            return _Container.GetInstance<T>();
-        }
-
-        /// <summary>
-        /// Get all services
-        /// </summary>
-        /// <param name="serviceType"></param>
-        /// <param name="key"></param>
-        /// <returns></returns>
-        public IEnumerable<object> GetAll(Type serviceType, string key = null)
-        {
-            return _Container.GetAllInstances(serviceType).OfType<object>();
-        }
-
-        /// <summary>
-        /// Get all services generic
-        /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="key"></param>
-        /// <returns></returns>
-        public IEnumerable<T> GetAll<T>(string key = null)
-        {
-            return _Container.GetAllInstances<T>();
-        }
-
-        /// <summary>
-        /// Open container scope
-        /// </summary>
-        /// <param name="scopeName"></param>
-        /// <param name="scopeContext"></param>
-        /// <returns></returns>
-        public ILocator OpenScope(object scopeName = null, object scopeContext = null)
-        {
-            return new EpiserverStructuremapLocator(_Container.CreateChildContainer());
         }
 
         /// <summary>
@@ -189,7 +102,7 @@ namespace DotNetStarter.Extensions.Episerver
         /// <param name="serviceType"></param>
         /// <param name="key"></param>
         /// <param name="serviceImplementation"></param>
-        public void Remove(Type serviceType, string key = null, Type serviceImplementation = null)
+        public virtual void Remove(Type serviceType, string key = null, Type serviceImplementation = null)
         {
             if (serviceImplementation == null)
             {

@@ -9,6 +9,7 @@
     [AttributeUsage(AttributeTargets.Class, AllowMultiple = true, Inherited = false)]
     public class RegisterAttribute : DependencyBaseAttribute
     {
+        //todo: v2, remove this constructor
         /// <summary>
         /// Constructor
         /// </summary>

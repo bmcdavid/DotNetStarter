@@ -1,13 +1,18 @@
-﻿using DotNetStarter.Abstractions;
-using DryIoc;
-
-namespace DotNetStarter
+﻿namespace DotNetStarter
 {
+    using System;
+    using DotNetStarter.Abstractions;
+    using DryIoc;
+    using System.Collections.Generic;
+    using System.Linq;
+
     /// <summary>
     /// Scoped DryIoc locator
     /// </summary>
-    public class DryIocLocatorScoped : DryIocLocator, ILocatorScoped
+    public class DryIocLocatorScoped : DryIocLocatorBase, ILocatorScoped
     {
+        static readonly IEnumerable<Type> LocatorTypes = new Type[] { typeof(ILocator), typeof(ILocatorScoped) };
+
         /// <summary>
         /// Constructor
         /// </summary>
@@ -15,7 +20,33 @@ namespace DotNetStarter
         public DryIocLocatorScoped(IContainer container) : base(container)
         {
             IsActiveScope = true;
-            base.Add(typeof(ILocator), this);
+        }
+
+        /// <summary>
+        /// Looks from request for ILocator and replaces with this scoped instance
+        /// </summary>
+        /// <param name="service"></param>
+        /// <param name="key"></param>
+        /// <returns></returns>
+        public override object Get(Type service, string key = null)
+        {
+            if (LocatorTypes.Any(x => x == service))
+            {
+                return this;
+            }
+
+            return base.Get(service, key);
+        }
+
+        /// <summary>
+        /// Looks from request for ILocator and replaces with this scoped instance
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="key"></param>
+        /// <returns></returns>
+        public override T Get<T>(string key = null)
+        {
+            return (T)Get(typeof(T), key);
         }
 
         /// <summary>
