@@ -9,7 +9,7 @@
     /// <summary>
     /// Base Episerver Structuremap locator
     /// </summary>
-    public class EpiserverStructuremapLocatorBase : ILocator
+    public abstract class EpiserverStructuremapLocatorBase : ILocator
     {
         /// <summary>
         /// Structuremap container
