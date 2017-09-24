@@ -1,4 +1,5 @@
 ﻿using DotNetStarter.Abstractions;
+using DotNetStarter.Abstractions.Internal;
 using StructureMap;
 
 namespace DotNetStarter.Extensions.Episerver

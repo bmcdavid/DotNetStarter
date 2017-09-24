@@ -1,6 +1,7 @@
 ﻿using System;
 using DotNetStarter.Abstractions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using DotNetStarter.Abstractions.Internal;
 
 namespace DotNetStarter.Tests
 {

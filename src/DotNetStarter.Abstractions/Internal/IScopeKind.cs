@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace DotNetStarter.Abstractions
+namespace DotNetStarter.Abstractions.Internal
 {
     /// <summary>
     /// Provides create scope some information about create request

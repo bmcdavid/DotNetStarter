@@ -9,59 +9,61 @@ namespace DotNetStarter
     /// </summary>
     public static class NetcoreExtensions
     {
-        // todo: remove this for now, its not very helpful in DryIoc, not tested in Structuremap...
+        // todo: v2, create a package for netcore dependency injection
 
-        ///// <summary>
-        ///// Adds service collection items to locator
-        ///// </summary>
-        ///// <param name="services"></param>
-        ///// <param name="locator"></param>
-        //public static IServiceProvider AddServicesToLocator(this IServiceCollection services, ILocatorRegistry locator)
-        //{
-        //    if (locator == null)
-        //        throw new ArgumentNullException();
+        // todo: v2, figure out a way separate startup and locator setup
 
-        //    locator.Add<IServiceProvider, ServiceProvider>(lifetime: LifeTime.Scoped);
+        /// <summary>
+        /// Adds service collection items to locator
+        /// </summary>
+        /// <param name="services"></param>
+        /// <param name="locator"></param>
+        public static IServiceProvider AddServicesToLocator(this IServiceCollection services, ILocatorRegistry locator)
+        {
+            if (locator == null)
+                throw new ArgumentNullException();
 
-        //    // Scope factory should be scoped itself to enable nested scopes creation
-        //    locator.Add<IServiceScopeFactory, ServiceScopeFactory>(lifetime: LifeTime.Scoped);
+            locator.Add<IServiceProvider, ServiceProvider>(lifetime: LifeTime.Scoped);
 
-        //    // map .net services to locator
-        //    for (int i = 0; i < services.Count; i++)
-        //    {
-        //        var service = services[i];
-        //        var lifetime = ConvertLifeTime(service.Lifetime);
+            // Scope factory should be scoped itself to enable nested scopes creation
+            locator.Add<IServiceScopeFactory, ServiceScopeFactory>(lifetime: LifeTime.Scoped);
 
-        //        if (service.ImplementationType != null)
-        //        {
-        //            locator.Add(service.ServiceType, service.ImplementationType, lifeTime: lifetime);
-        //        }
-        //        else if (service.ImplementationFactory != null)
-        //        {
-        //            locator.Add(service.ServiceType, l => service.ImplementationFactory(l.Get<IServiceProvider>()), lifetime);
-        //        }
-        //        else
-        //        {
-        //            locator.Add(service.ServiceType, service.ImplementationInstance);
-        //        }
-        //    }
+            // map .net services to locator
+            for (int i = 0; i < services.Count; i++)
+            {
+                var service = services[i];
+                var lifetime = ConvertLifeTime(service.Lifetime);
 
-        //    return locator.Get<IServiceProvider>();
-        //}
+                if (service.ImplementationType != null)
+                {
+                    locator.Add(service.ServiceType, service.ImplementationType, lifeTime: lifetime);
+                }
+                else if (service.ImplementationFactory != null)
+                {
+                    locator.Add(service.ServiceType, l => service.ImplementationFactory(l.Get<IServiceProvider>()), lifetime);
+                }
+                else
+                {
+                    locator.Add(service.ServiceType, service.ImplementationInstance);
+                }
+            }
 
-        //private static LifeTime ConvertLifeTime(ServiceLifetime lifetime)
-        //{
-        //    switch (lifetime)
-        //    {
-        //        case ServiceLifetime.Scoped:
-        //            return LifeTime.Scoped;
-        //        case ServiceLifetime.Singleton:
-        //            return LifeTime.Singleton;
-        //        case ServiceLifetime.Transient:
-        //            return LifeTime.Transient;
-        //    }
+            return locator.Get<IServiceProvider>();
+        }
 
-        //    return LifeTime.Transient;
-        //}
+        private static LifeTime ConvertLifeTime(ServiceLifetime lifetime)
+        {
+            switch (lifetime)
+            {
+                case ServiceLifetime.Scoped:
+                    return LifeTime.Scoped;
+                case ServiceLifetime.Singleton:
+                    return LifeTime.Singleton;
+                case ServiceLifetime.Transient:
+                    return LifeTime.Transient;
+            }
+
+            return LifeTime.Transient;
+        }
     }
 }

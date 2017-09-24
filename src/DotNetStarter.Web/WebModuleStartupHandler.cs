@@ -3,6 +3,7 @@
 namespace DotNetStarter.Web
 {
     using DotNetStarter.Abstractions;
+    using DotNetStarter.Abstractions.Internal;
     using DotNetStarter.Web.Internal.Features;
     using System;
     using System.Collections.Generic;

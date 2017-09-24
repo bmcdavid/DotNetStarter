@@ -1,5 +1,7 @@
 ﻿namespace DotNetStarter
 {
+    //todo: v2, remove internal objectfactory and StartupObjectFactoryAttribute mechanisms
+
     using Abstractions;
     using DotNetStarter.Abstractions.Internal;
     using System;

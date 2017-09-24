@@ -1,12 +1,13 @@
 ﻿#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
 
 using DotNetStarter.Abstractions;
+using DotNetStarter.Abstractions.Internal;
 using System;
 using System.Collections.Generic;
 
 namespace DotNetStarter.Internal
 {
-    public sealed class ReadOnlyLocator : IReadOnlyLocator
+    public sealed class ReadOnlyLocator : IReadOnlyLocator, ILocatorSetContainer, ILocatorCreateScope
     {
         static bool _IsLocked = false;
         ILocator _ConfiguredLocator;

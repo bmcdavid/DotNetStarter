@@ -117,7 +117,7 @@
       <Project>{f75a648e-8412-41fe-8c4d-d1f3178ac718}</Project>
       <Name>DotNetStarter</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Mvc\DotNetStarter.Extensions.Mvc.csproj">
+    <ProjectReference Include="..\DotNetStarter.Extensions.Mvc\DotNetStarter.Extensions.Mvc.csproj">
       <Project>{5f0d3088-4b29-4ecd-8df0-c5f14366db5b}</Project>
       <Name>DotNetStarter.Extensions.Mvc</Name>
     </ProjectReference>
