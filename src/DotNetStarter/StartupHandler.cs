@@ -73,7 +73,6 @@
             IStartupContext tempContext = null;
             IEnumerable<IDependencyNode> sortedModules = null;
             IEnumerable<IDependencyNode> filteredModules = null;
-            IEnumerable<IStartupModule> modules = null;
             var timerNameBase = typeof(StartupHandler).FullName;
 
             // scan the assemblies for registered types for quick retrieval
@@ -100,7 +99,7 @@
                 var dependents = config.AssemblyScanner.GetTypesFor(typeof(StartupModuleAttribute)).OfType<object>();
                 sortedModules = config.DependencySorter.Sort<StartupModuleAttribute>(dependents);
                 var tempFiltered = config.ModuleFilter?.FilterModules(sortedModules) ?? sortedModules;
-                
+
                 // ensure module order wasn't tampered with
                 filteredModules = from i in sortedModules join o in tempFiltered on i.FullName equals o.FullName select o;
             };
@@ -131,7 +130,7 @@
 
                 var readOnlyLocator = new Internal.ReadOnlyLocator(registry);
                 tempContext = objectFactory.CreateStartupContext(readOnlyLocator, filteredModules, sortedModules, config);
-                
+
                 // register context once its created
                 registry.Add(typeof(IStartupContext), tempContext);
                 registry.Add(typeof(ILocator), readOnlyLocator);
@@ -139,20 +138,38 @@
 
                 OnLocatorStartupComplete?.Invoke(); //execute locator complete before verification since last minute additions can occur here.
                 (registry as ILocatorVerification)?.Verify();
+            };
 
-                modules = registry.GetAll<IStartupModule>(); // resolve all startup modules for DI
+            // startup modules
+            var startupModulesTask = objectFactory.CreateTimedTask();
+            startupModulesTask.Name = timerNameBase + ".StartupModules";
+            startupModulesTask.TimedAction = () =>
+            {
+                var modules = Locator.GetAll<IStartupModule>(); // resolve all startup modules for DI
+                Startup(modules);
+                OnStartupComplete?.Invoke();
             };
 
             // execute tasks in order
             config.TimedTaskManager.Execute(scanSetup);
             config.TimedTaskManager.Execute(moduleSortSetup);
-            config.TimedTaskManager.Execute(containerSetup);            
+            config.TimedTaskManager.Execute(containerSetup);
+
+            // optionally allows delaying startup until later, must be implemented on IStartupConfiguration instances
+            var delayedStart = config as IStartupDelayed;
+            Action startup = () => config.TimedTaskManager.Execute(startupModulesTask);
+
+            if (delayedStart?.EnableDelayedStartup == true)
+            {
+                delayedStart.DelayedStartup = startup;
+            }
+            else
+            {
+                startup();
+            }
 
             // assign the context(s) after running tasks
             _Context = context = tempContext;
-
-            Startup(modules);
-            OnStartupComplete?.Invoke();
 
             return true;
         }
