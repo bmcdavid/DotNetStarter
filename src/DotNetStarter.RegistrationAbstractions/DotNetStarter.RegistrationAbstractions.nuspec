@@ -17,10 +17,10 @@
       <group targetFramework="net40"></group>
       <group targetFramework="net45"></group>
       <group targetFramework="netstandard1.0">
-        <dependency id="NETStandard.Library" version="[2,)" />
+        <dependency id="NETStandard.Library" version="1.6.0" exclude="Build,Analyzers" />
       </group>
       <group targetFramework="netstandard1.1">
-        <dependency id="NETStandard.Library" version="[2,)" />
+        <dependency id="NETStandard.Library" version="1.6.0" exclude="Build,Analyzers" />
         <!--<dependency id="System.Collections" version="4.0.11" />
         <dependency id="System.Reflection" version="4.1.0" />
         <dependency id="System.Reflection.Extensions" version="4.0.1" />-->

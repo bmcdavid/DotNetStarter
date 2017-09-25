@@ -11,8 +11,8 @@ using System.Reflection;
 [assembly: AssemblyDescription(".NET startup system with dependency injection.")]
 [assembly: AssemblyProduct("DotNetStarter")]
 [assembly: AssemblyCopyright("Copyright © {year}")]
-[assembly: AssemblyVersion("1.2.0")]
-[assembly: AssemblyFileVersion("1.2.0")]
-[assembly: AssemblyInformationalVersion("1.2.0 Build: {build} Commit Hash: {commit}")]
+[assembly: AssemblyVersion("1.2.1")]
+[assembly: AssemblyFileVersion("1.2.1")]
+[assembly: AssemblyInformationalVersion("1.2.1 Build: {build} Commit Hash: {commit}")]
 
 [assembly: DotNetStarter.Abstractions.DiscoverableAssembly]

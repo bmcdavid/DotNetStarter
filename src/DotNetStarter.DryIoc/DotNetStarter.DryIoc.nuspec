@@ -28,8 +28,7 @@
       <group targetFramework="netstandard1.0">
         <dependency id="DotNetStarter" version="[1.2,2)" />
         <dependency id="DryIoc.dll" version="[2.7,3)" />
-        <dependency id="NETStandard.Library" version="[2,)" />
-
+        <dependency id="NETStandard.Library" version="1.6.0" exclude="Build,Analyzers" />
         <!--<dependency id="System.Collections" version="4.0.11" />
         <dependency id="System.Diagnostics.Debug" version="4.0.11" />
         <dependency id="System.Diagnostics.Tools" version="4.0.1" />
