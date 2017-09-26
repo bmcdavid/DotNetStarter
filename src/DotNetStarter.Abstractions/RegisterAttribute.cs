@@ -1,7 +1,6 @@
 ﻿namespace DotNetStarter.Abstractions
 {
     using System;
-    using System.ComponentModel;
 
     /// <summary>
     /// Provides simple service registration to IContainer
@@ -21,8 +20,8 @@
         public RegisterAttribute
         (
             Type serviceType,
-            LifeTime lifeTime = LifeTime.Transient,
-            ConstructorType constructorType = ConstructorType.Greediest,
+            LifeTime lifeTime,
+            ConstructorType constructorType,
             params Type[] dependencies
         ) : base(dependencies)
         {
@@ -40,7 +39,7 @@
         public RegisterAttribute
         (
             Type serviceType,
-            LifeTime lifeTime = LifeTime.Transient,
+            LifeTime lifeTime,
             params Type[] dependencies
         ) : base(dependencies)
         {
@@ -52,15 +51,12 @@
         /// <summary>
         /// Service constructor type
         /// </summary>
-        [EditorBrowsable(EditorBrowsableState.Never)]
-#if !NETSTANDARD1_0 && !NETSTANDARD1_1
-        [Browsable(false)]
-#endif
         public ConstructorType ConstructorType { get; }
 
         /// <summary>
-        /// Implementation of service
+        /// Implementation of service, not used by DotNetStarter
         /// </summary>
+        [Obsolete("No longer used in DotNetStarter!")]
         public Type ImplementationType { get; set; }
 
         /// <summary>

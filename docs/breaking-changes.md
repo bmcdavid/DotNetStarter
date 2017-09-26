@@ -9,8 +9,9 @@ This page is used to note each versions breaking changes and list future breakin
 The read-only locator was introduced in 1.x since registrations after OnLocatorStartupComplete required casting as ILocatorRegistry.
 
 ## 1.x - 2.x (proposed)
-* Change ILocator.OpenScope signature to return ILocatorRegistry and take no parameters
+* Remove ILocator.OpenScope, replace with ILocatorCreateScope which returns an ILocatorScoped instance.
 * Add IStartupEnvironment to IStartupConfiguration, and set with similar mechanism to ILocatoryRegistryFactory.
+* Remove obsolete methods
  
 ## 0.x - 1.x breaking changes
 

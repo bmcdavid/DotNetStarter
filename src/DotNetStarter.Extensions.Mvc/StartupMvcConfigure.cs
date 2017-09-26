@@ -22,8 +22,6 @@ namespace DotNetStarter.Extensions.Mvc
 
         void ILocatorConfigure.Configure(ILocatorRegistry registry, IStartupEngine engine)
         {
-            registry.Add<IControllerFactory, DotNetStarterMvcControllerFactory>();
-
             engine.OnLocatorStartupComplete += () =>
             {
                 IControllerRegistrationSetup controllerRegistrationSetup = GetControllerRegistrationSetup?.Invoke() ??

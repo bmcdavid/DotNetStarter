@@ -88,7 +88,14 @@
                 var registerdScanTypes = registeredScanAttrs.SelectMany(x => x.ScanTypes);
                 var combined = discoverTypes.Union(registerdScanTypes);
 
-                config.AssemblyScanner.Scan(assemblies, combined, config.AssemblyFilter.FilterAssembly);
+                // a custom config may set this to null
+                Func<Assembly, bool> assemblyFilter = null;
+                if (config.AssemblyFilter != null)
+                {
+                    assemblyFilter = config.AssemblyFilter.FilterAssembly;
+                }
+
+                config.AssemblyScanner.Scan(assemblies, combined, assemblyFilter);
             };
 
             // modules with attribute

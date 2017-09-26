@@ -36,7 +36,7 @@ namespace DotNetStarter
             Environment = environment;
             Assemblies = assemblies;
             AssemblyFilter = assemblyFilter;
-            AssemblyScanner = AssemblyScanner;
+            AssemblyScanner = assemblyScanner;
             DependencyFinder = dependencyFinder;
             DependencySorter = dependencySorter;
             Logger = startupLogger;

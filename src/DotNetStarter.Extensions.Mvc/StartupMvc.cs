@@ -9,22 +9,22 @@ namespace DotNetStarter.Extensions.Mvc
     [StartupModule]
     public class StartupMvc : IStartupModule
     {
-        private IControllerFactory _ControllerFactory;
-
-        /// <summary>
-        /// Constructor
-        /// </summary>
-        /// <param name="controllerFactory"></param>
-        public StartupMvc(IControllerFactory controllerFactory)
-        {
-            _ControllerFactory = controllerFactory;
-        }
-
         void IStartupModule.Shutdown(IStartupEngine engine) { }
         
         void IStartupModule.Startup(IStartupEngine engine)
         {
-            ControllerBuilder.Current.SetControllerFactory(_ControllerFactory);
-        }        
+            engine.OnLocatorStartupComplete += () => Engine_OnLocatorStartupComplete(engine.Locator);
+        }
+
+        private void Engine_OnLocatorStartupComplete(ILocator locator)
+        {
+            // sets a default controller factory
+            // cannot register an IControllerFactory and set like this, the following exception will be thrown
+            // An instance of IControllerFactory was found in the resolver as well as a custom registered provider in ControllerBuilder.GetControllerFactory. Please set only one or the other.
+            // ControllerBuilder.Current.SetControllerFactory(new DotNetStarterMvcControllerFactory(locator.Get<IStartupContext>()));
+
+            // sets a default dependency resolver
+            DependencyResolver.SetResolver(new NullableMvcDependencyResolver(locator));
+        }
     }
 }

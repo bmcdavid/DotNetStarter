@@ -2,6 +2,7 @@
 using DotNetStarter.Web;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Web;
 using System.Web.Http.Dependencies;
 
@@ -25,7 +26,7 @@ namespace DotNetStarter.Extensions.WebApi
         public WebApiDependencyResolver(ILocator locator, IPipelineScope pipelineScope = null)
         {
             _Locator = locator;
-            _PipelineScope = pipelineScope;
+            _PipelineScope = pipelineScope ?? _Locator.Get<IPipelineScope>();
         }
 
         /// <summary>
@@ -52,7 +53,14 @@ namespace DotNetStarter.Extensions.WebApi
         /// <returns></returns>
         public object GetService(Type serviceType)
         {
-            return ResolveLocator().Get(serviceType);
+            try
+            {
+                return ResolveLocator().Get(serviceType);
+            }
+            catch
+            {
+                return null;
+            }
         }
 
         /// <summary>
@@ -62,7 +70,14 @@ namespace DotNetStarter.Extensions.WebApi
         /// <returns></returns>
         public IEnumerable<object> GetServices(Type serviceType)
         {
-            return ResolveLocator().GetAll(serviceType);
+            try
+            {
+                return ResolveLocator().GetAll(serviceType);
+            }
+            catch
+            {
+                return Enumerable.Empty<object>();
+            }
         }
 
         private ILocator ResolveLocator()

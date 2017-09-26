@@ -5,7 +5,10 @@ title: DotNetStarter - WebApi for ASP.Net framework
 
 Below is an example of how to enable dependency injection in WebApi for ASP.Net.
 
-### Required Nuget packages
+## NuGet Package
+* Install DotNetStarter.Extensions.WebApi
+ 
+### Required Nuget packages [deprecated]
 
 * DotNetStarter
 * DotNetStarter.Web
@@ -21,7 +24,7 @@ using System.Web.Http;
 using System.Web.Http.Dependencies;
 
 // adds controller implementations to the assembly scanner
-[assembly: ScanTypeRegistry(typeof(ApiController))]
+[assembly: DiscoverTypes(typeof(ApiController))]
 
 namespace WebFrameworkApp.App_Start
 {

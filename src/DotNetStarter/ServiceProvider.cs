@@ -25,6 +25,7 @@
     /// <summary>
     /// Wraps ILocator in a service provider
     /// </summary>
+    [Register(typeof(IServiceProvider), LifeTime.Scoped)]
     public class ServiceProvider : IServiceProvider, IDisposable, ISupportRequiredService
     {
         /// <summary>

@@ -13,7 +13,7 @@ DotNetStarter module types:
 Startup modules will execute a Startup method when either DotNetStarter.ApplicationContext.Startup() is executed or DotNetStarter.ApplicationContext.Default.Locator is accessed. 
 This call should be placed early in the application, below are a few possible places to execute:
 
-* ASP.Net WebApp - use Application_Start in the global.asax
+* ASP.Net WebApp - use in constructor in the global.asax code class.
 * AspNetCore - use in the startup class ConfigureServices or constructor.
 * Console apps - use as first line in Main method.
 * Owin apps - use app.UseScopedLocator(DotNetStarter.ApplicationContext.Default.Locator) as first middleware.

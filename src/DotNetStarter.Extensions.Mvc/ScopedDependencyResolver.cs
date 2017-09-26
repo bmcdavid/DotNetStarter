@@ -2,6 +2,7 @@
 using DotNetStarter.Web;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 
@@ -31,7 +32,14 @@ namespace DotNetStarter.Extensions.Mvc
         /// <returns></returns>
         public object GetService(Type serviceType)
         {
-            return ResolveLocator().Get(serviceType);
+            try
+            {
+                return ResolveLocator().Get(serviceType);
+            }
+            catch
+            {
+                return null;
+            }
         }
 
         /// <summary>
@@ -41,7 +49,14 @@ namespace DotNetStarter.Extensions.Mvc
         /// <returns></returns>
         public IEnumerable<object> GetServices(Type serviceType)
         {
-            return ResolveLocator().GetAll(serviceType);
+            try
+            {
+                return ResolveLocator().GetAll(serviceType);
+            }
+            catch
+            {
+                return Enumerable.Empty<object>();
+            }
         }
 
         private ILocator ResolveLocator()

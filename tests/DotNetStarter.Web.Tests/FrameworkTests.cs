@@ -27,6 +27,15 @@ namespace DotNetStarter.Web.Tests
             );
 
             Assert.AreSame(x.Environment.EnvironmentName, "UnitTest");
+
+            Assert.IsNotNull(x.Assemblies);
+            Assert.IsNotNull(x.AssemblyFilter);
+            Assert.IsNotNull(x.AssemblyScanner);
+            Assert.IsNotNull(x.DependencyFinder);
+            Assert.IsNotNull(x.DependencySorter);
+            Assert.IsNotNull(x.Logger);
+            Assert.IsNotNull(x.ModuleFilter);
+            Assert.IsNotNull(x.TimedTaskManager);
         }
 
         [TestMethod]
@@ -35,6 +44,12 @@ namespace DotNetStarter.Web.Tests
             var sut = DotNetStarter.ApplicationContext.Default.Locator.Get<Internal.Features.ExperimentalScopedLocator>();
 
             Assert.IsFalse(sut.Enabled);
+        }
+
+        [TestMethod]
+        public void ShouldDefaultToRegisterHttpContextBase()
+        {
+            Assert.IsTrue(DotNetStarter.Web.WebConfiguration.RegisterScopedHttpContext);
         }
 
         [TestMethod]

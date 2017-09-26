@@ -78,6 +78,7 @@ namespace DotNetStarter.Extensions.WebApi
                     typeof(System.Web.Http.Metadata.ModelMetadataProvider),
                     typeof(System.Web.Http.Tracing.ITraceManager),
                     typeof(System.Web.Http.Tracing.ITraceWriter),
+                    typeof(System.Web.Http.Validation.IBodyModelValidator)
                 };
         }
 

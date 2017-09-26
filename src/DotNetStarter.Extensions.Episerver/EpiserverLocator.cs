@@ -93,7 +93,7 @@
         /// <returns></returns>
         public virtual ILocatorScoped CreateScope(IScopeKind scopeKind)
         {
-            return new EpiserverLocatorScoped(_Container.CreateChildContainer());
+            return new EpiserverLocatorScoped(_Container.CreateChildContainer(), scopeKind);
         }
 
         /// <summary>

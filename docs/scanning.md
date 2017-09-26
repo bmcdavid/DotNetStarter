@@ -4,14 +4,14 @@ title: DotNetStarter - Assembly Scanning
 # DotNetStarter - Assembly Scanning
 
 Assembly scanning occurs to discover IStartupModule and ILocatorConfigure modules,
- but can also be extended with the ScanTypeRegistryAttribute for assemblies. 
+ but can also be extended with the DiscoverTypesAttribute for assemblies. 
 
 #### Below is the default for DotNetStarter to discover its needed types:
 ```cs
  using DotNetStarter.Abstractions;
 
  // this scans for types that implement IStartupModule, StartupModuleAttribute, and RegisterAttribute usages
-[assembly: ScanTypeRegistry(
+[assembly: DiscoverTypes(
     typeof(IStartupModule),
     typeof(StartupModuleAttribute),
     typeof(RegisterAttribute)

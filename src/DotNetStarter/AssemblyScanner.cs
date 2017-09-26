@@ -43,7 +43,7 @@
 
         /// <summary>
         /// Get scanned types for given type, note: it doesn't filter interfaces or abstracts. 
-        /// <para>To register a type use the ScanTypeRegistryAttribute assembly attribute!</para>
+        /// <para>To register a type use the DiscoverTypesAttribute assembly attribute!</para>
         /// </summary>
         /// <param name="scannedType"></param>
         /// <returns></returns>
@@ -55,7 +55,7 @@
         }
 
         /// <summary>
-        /// Scan the given assemblies for types registered via ScanTypeRegistryAttribute, excludes controlled by the assemblyFilter.
+        /// Scan the given assemblies for types registered via DiscoverTypesAttribute, excludes controlled by the assemblyFilter.
         /// </summary>
         /// <param name="scanAssemblies"></param>
         /// <param name="forTypes"></param>

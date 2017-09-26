@@ -5,7 +5,10 @@ title: DotNetStarter - MVC for ASP.Net framework
 
 Below is an example of how to enable dependency injection in MVC for ASP.Net.
 
-### Required Nuget packages
+## NuGet Package
+* Install DotNetStarter.Extensions.Mvc
+
+### Required Nuget packages [deprecated]
 
 * DotNetStarter
 * DotNetStarter.Web
@@ -21,7 +24,7 @@ using System.Web;
 using System.Web.Mvc;
 
 // adds controller implementations to the assembly scanner
-[assembly: ScanTypeRegistry(typeof(IController))]
+[assembly: DiscoverTypes(typeof(IController))]
 
 namespace Example
 {

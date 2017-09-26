@@ -5,7 +5,7 @@
     /// <summary>
     /// Adds types to scan for during assembly scan step.
     /// </summary>
-    [Obsolete("Will be removed in version 2, use DotNetStarter.Abstractions.SearchForTypes")]
+    [Obsolete("Will be removed in version 2, use DotNetStarter.Abstractions.DiscoverTypesAttribute")]
     [AttributeUsage(AttributeTargets.Assembly, AllowMultiple = true, Inherited = false)]
     public class ScanTypeRegistryAttribute : Attribute
     {

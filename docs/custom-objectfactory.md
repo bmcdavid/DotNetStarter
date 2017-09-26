@@ -7,9 +7,12 @@ The object factory is responsible for creating objects before the Ioc/DI contain
 Implementations must use the IStartupObjectFactory interface, which is typically done by inheriting the default implentation
  and overriding the desired method to customize. 
 
+ ## Startup Assignment
+ To create a custom object factory, an implementation of IStartupObjectFactory can be passed to **DotNetStarter.ApplicationContext.Startup()**.
+
+### Example Custom Object Factory [deprecated]
 ***Important:*** Object factories use a sort order property, the highest value wins. The default factory has a value of 0.
 
-## Example Custom Object Factory
 
 ```cs
 // attribute to register 

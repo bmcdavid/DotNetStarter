@@ -98,10 +98,6 @@ namespace DotNetStarter.Web
                     var scopedLocator = _Locator.OpenScope();
                     var scopedRegistry = scopedLocator as ILocatorRegistry;
                     scopedRegistry?.Add(typeof(ILocator), scopedLocator); // override ILocator resolves to use scoped version
-
-                    // below now done in WebConfiguration.cs
-                    //scopedRegistry?.Add(typeof(HttpContextBase), new HttpContextWrapper(context));
-                    //scopedRegistry?.Add<IServiceProvider, ServiceProvider>(lifetime: LifeTime.Scoped);
                     context.Items.Add(ScopedLocatorKeyInContext, scopedLocator);
                 }
 

@@ -1,9 +1,11 @@
 ﻿using DotNetStarter.Abstractions;
+using DotNetStarter.Extensions.Mvc;
 using EPiServer.Framework;
 using EPiServer.Framework.Initialization;
 using EPiServer.ServiceLocation;
 using StructureMap;
 using System;
+using System.Web.Mvc;
 
 // instructs DotNetStarter to use this to create ILocatorRegistry
 [assembly: LocatorRegistryFactory(typeof(DotNetStarter.Extensions.Episerver.EpiserverLocatorSetup))]
@@ -19,7 +21,7 @@ namespace DotNetStarter.Extensions.Episerver
         static IContainer _Container; // must be static to share between instances
 
         /// <summary>
-        /// Invokable action to startup DotNetStarter when the Episerver container is set.
+        /// Invokable action to startup DotNetStarter when the Episerver container is set. Use a System.Web.PreApplicationStartMethod to assign a startup action;
         /// </summary>
         public static Action<IContainer> ContainerSet = null;
 
@@ -57,9 +59,9 @@ namespace DotNetStarter.Extensions.Episerver
         public void Initialize(InitializationEngine context)
         {
             // ensure DotNetStarter has started
-            context.InitComplete += (sender, _) =>
+            context.InitComplete += (sender, args) =>
             {
-                ApplicationContext.Startup(); // defaut startup call, but can be changed with ContainerSet action
+                DependencyResolver.SetResolver(new NullableMvcDependencyResolver(ApplicationContext.Default.Locator));
             };
         }
 

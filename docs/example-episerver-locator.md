@@ -5,7 +5,12 @@ title: DotNetStarter - Episerver locator and Depencency Resolver
 
 Below is an example of how to create an ILocator with Episerver's structuremap configured container.
 
-### Required Nuget packages
+### NuGet Package
+* Install DotNetStarter.Extensions.Episerver
+
+To customize the startup process, assign an action to **DotNetStarter.Extensions.Episerver.EpiserverLocatorSetup.ContainerSet** in a **System.Web.PreApplicationStartMethod** assembly attribute;
+
+### Required Nuget packages [deprecated]
 
 * DotNetStarter
 * DotNetStarter.Web

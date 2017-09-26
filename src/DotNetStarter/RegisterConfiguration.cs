@@ -32,8 +32,7 @@
                 {
                     foreach (var attr in attrs)
                     {
-                        attr.ImplementationType = t;
-                        container.Add(attr.ServiceType, attr.ImplementationType, null, attr.LifeTime, attr.ConstructorType);
+                        container.Add(attr.ServiceType, t, null, attr.LifeTime, attr.ConstructorType);
                     }
                 }
             }

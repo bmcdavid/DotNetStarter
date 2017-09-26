@@ -40,8 +40,8 @@ namespace DotNetStarter.Abstractions
         {
             _Locator = locator;
             _ReflectionHelper = reflectionHelper ?? _Locator.Get<IReflectionHelper>();
-            _AllowableNullForGetService = allowableNullForGetService ?? DefaultAllowableNullForGetService();
-            _AllowableNullForGetServices = allowableNullForGetServices ?? DefaultAllowableNullForGetServices();
+            _AllowableNullForGetService = allowableNullForGetService;
+            _AllowableNullForGetServices = allowableNullForGetServices;
         }
 
         /// <summary>
@@ -96,6 +96,8 @@ namespace DotNetStarter.Abstractions
         /// <returns></returns>
         protected virtual object TryGetService(Type serviceType)
         {
+            EnsureAllowableNulls();
+
             return TryGet
             (
                 () => ResolveLocator().Get(serviceType),
@@ -113,6 +115,8 @@ namespace DotNetStarter.Abstractions
         /// <returns></returns>
         protected virtual IEnumerable<object> TryGetServices(Type serviceType)
         {
+            EnsureAllowableNulls();
+
             return TryGet
             (
                 () => ResolveLocator().GetAll(serviceType),
@@ -121,6 +125,15 @@ namespace DotNetStarter.Abstractions
                 "Cannot create services for " + serviceType.FullName,
                 Enumerable.Empty<object>()
             );
+        }
+
+        /// <summary>
+        /// Cannot do in constructor as MVC requires dependencies in their default methods
+        /// </summary>
+        private void EnsureAllowableNulls()
+        {
+            _AllowableNullForGetService = _AllowableNullForGetService ?? DefaultAllowableNullForGetService();
+            _AllowableNullForGetServices = _AllowableNullForGetServices ?? DefaultAllowableNullForGetServices();
         }
     }
 }

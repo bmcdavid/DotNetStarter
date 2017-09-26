@@ -61,7 +61,7 @@
         /// <param name="serviceType"></param>
         /// <param name="key"></param>
         /// <returns></returns>
-        public object Get(Type serviceType, string key = null)
+        public virtual object Get(Type serviceType, string key = null)
         {
             return _Container.GetInstance(serviceType);
         }
@@ -72,7 +72,7 @@
         /// <typeparam name="T"></typeparam>
         /// <param name="key"></param>
         /// <returns></returns>
-        public T Get<T>(string key = null)
+        public virtual T Get<T>(string key = null)
         {
             return _Container.GetInstance<T>();
         }

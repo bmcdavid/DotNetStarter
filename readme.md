@@ -20,7 +20,7 @@ Package  | Version
 * [**Important:** Breaking Changes](https://bmcdavid.github.io/DotNetStarter/breaking-changes.html)
 * [Full Documentation](https://bmcdavid.github.io/DotNetStarter/)
 
-To kickoff the startup modules and configure the locator please execute the following early in the project startup, for example global.asax for web applications.
+To kickoff the startup modules and configure the locator please execute the following early in the project startup, for example global.asax class constructor for web applications.
 
 ```cs
 DotNetStarter.ApplicationContext.Startup():
