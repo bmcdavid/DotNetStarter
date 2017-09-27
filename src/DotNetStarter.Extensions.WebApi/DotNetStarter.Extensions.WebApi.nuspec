@@ -9,7 +9,7 @@
     <projectUrl>https://bmcdavid.github.io/DotNetStarter/</projectUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>DotNetStarter WebApi Setup</description>
-    <releaseNotes>Signed version.</releaseNotes>
+    <releaseNotes>Fixed missing ApiController registrations.</releaseNotes>
     <copyright>Copyright $year$</copyright>
     <tags>WebApi DotNetStarter Startup</tags>
     <dependencies>
