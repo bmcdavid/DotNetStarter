@@ -34,7 +34,7 @@ namespace DotNetStarter.Web
         public WebModuleStartup(IEnumerable<IHttpModule> httpModules, IWebModuleStartupHandler moduleHandler)
         {
             StartupModules = httpModules;
-            _ModuleHandler = moduleHandler ?? StartupWebModuleHandler.Service;
+            _ModuleHandler = moduleHandler;
         }
 
         /// <summary>
@@ -49,7 +49,7 @@ namespace DotNetStarter.Web
         public void Init(HttpApplication application)
         {
             if (_ModuleHandler == null)
-                throw new ArgumentNullException();
+                _ModuleHandler = StartupWebModuleHandler.Service;
 
             if (_ModuleHandler.ScopeEnabled())
                 _ModuleHandler.OpenLocatorScope(application);
