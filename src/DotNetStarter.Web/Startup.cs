@@ -10,9 +10,26 @@ namespace DotNetStarter.Web
     [StartupModule]
     public class Startup : IStartupModule
     {
+        /// <summary>
+        /// If set to true (default is false), then a 'PreApplicationStartMethodAttribute' assembly attribute (https://msdn.microsoft.com/en-us/library/system.web.preapplicationstartmethodattribute.aspx)
+        /// must be used to execute DotNetStarter.Web.Startup.RegisterWebModuleStartup
+        /// </summary>
+        public static bool DisableStartupModuleRegistration { get; set; }
+
         void IStartupModule.Shutdown(IStartupEngine engine) { }
 
         void IStartupModule.Startup(IStartupEngine engine)
+        {
+            if (DisableStartupModuleRegistration == false)
+            {
+                RegisterWebModuleStartup();
+            }
+        }
+
+        /// <summary>
+        /// Registers the main DotNetStarter WebModuleStartup for netframework
+        /// </summary>
+        public static void RegisterWebModuleStartup()
         {
             try
             {

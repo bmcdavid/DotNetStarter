@@ -71,6 +71,7 @@ namespace DotNetStarter.Extensions.Mvc
                     typeof(IControllerFactory),
                     typeof(ITempDataProvider),
                     typeof(IViewPageActivator),
+                    typeof(ModelMetadataProvider),
                     typeof(WebViewPage)
                 };
 

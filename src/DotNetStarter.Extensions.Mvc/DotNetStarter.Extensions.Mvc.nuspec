@@ -9,7 +9,7 @@
     <projectUrl>https://bmcdavid.github.io/DotNetStarter/</projectUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>DotNetStarter MVC extensions.</description>
-    <releaseNotes>Signed version.</releaseNotes>
+    <releaseNotes>Fixed bug that kept default dependency resolver from getting set.</releaseNotes>
     <copyright>Copyright $year$</copyright>
     <tags>Startup Modules MVC</tags>
     <dependencies>

@@ -13,10 +13,10 @@ namespace DotNetStarter.Extensions.Mvc
         
         void IStartupModule.Startup(IStartupEngine engine)
         {
-            engine.OnLocatorStartupComplete += () => Engine_OnLocatorStartupComplete(engine.Locator);
+            engine.OnStartupComplete += () => Engine_OnStartupComplete(engine.Locator);
         }
 
-        private void Engine_OnLocatorStartupComplete(ILocator locator)
+        private void Engine_OnStartupComplete(ILocator locator)
         {
             // sets a default controller factory
             // cannot register an IControllerFactory and set like this, the following exception will be thrown

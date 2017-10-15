@@ -9,7 +9,7 @@
     <projectUrl>https://bmcdavid.github.io/DotNetStarter/</projectUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>Startup system for web projects, including IHttpModule for netframework.</description>
-    <releaseNotes>Added IHttpContextProvider for netframework projects.</releaseNotes>
+    <releaseNotes>Added DotNetStarter.Web.Startup.RegisterWebModuleStartup and DotNetStarter.Web.Startup.DisableStartupModuleRegistration for more control on where startup can be executed.</releaseNotes>
     <copyright>Copyright $year$</copyright>
     <tags>Startup Modules System.Web</tags>
     <dependencies>
