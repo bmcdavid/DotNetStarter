@@ -7,12 +7,14 @@ using System.Reflection;
 
 #endif
 
+// todo: v2 freeze versions on major except for informational
+
 [assembly: AssemblyTitle("DotNetStarter")]
 [assembly: AssemblyDescription(".NET startup system with dependency injection.")]
 [assembly: AssemblyProduct("DotNetStarter")]
 [assembly: AssemblyCopyright("Copyright © {year}")]
-[assembly: AssemblyVersion("1.2.2")]
-[assembly: AssemblyFileVersion("1.2.2")]
-[assembly: AssemblyInformationalVersion("1.2.2 Build: {build} Commit Hash: {commit}")]
+[assembly: AssemblyVersion("1.2.3")]
+[assembly: AssemblyFileVersion("1.2.3")]
+[assembly: AssemblyInformationalVersion("1.2.3 Build: {build} Commit Hash: {commit}")]
 
 [assembly: DotNetStarter.Abstractions.DiscoverableAssembly]

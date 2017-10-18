@@ -3,6 +3,10 @@ using DotNetStarter.Abstractions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using DotNetStarter.Abstractions.Internal;
 
+#if DRYNETSTANDARD || MAPNETSTANDARD
+using Microsoft.Extensions.DependencyInjection;
+#endif
+
 namespace DotNetStarter.Tests
 {
     [TestClass]
@@ -32,6 +36,24 @@ namespace DotNetStarter.Tests
         public void ShouldImportContext()
         {
             Assert.AreEqual(_Context.Service, ApplicationContext.Default);
+        }
+
+
+#if STRUCTUREMAPNET35
+        [ExpectedException(typeof(System.Exception), AllowDerivedTypes = true)]
+#endif
+        [TestMethod]
+        public void ShouldOpenMultipleScopesFromFactor()
+        {
+            var factory = _Context.Service.Locator.Get<IServiceScopeFactory>();
+
+            var scope1 = factory.CreateScope();
+            Assert.IsNotNull(scope1);
+            scope1.Dispose();
+
+            var scope2 = factory.CreateScope();
+            Assert.IsNotNull(scope2);
+            scope2.Dispose();
         }
 
 #if STRUCTUREMAPNET35

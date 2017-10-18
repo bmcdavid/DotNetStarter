@@ -24,6 +24,7 @@ namespace DotNetStarter
     /// <summary>
     /// Creates a scoped service provider with injected locator
     /// </summary>
+    [Register(typeof(IServiceScopeFactory), LifeTime.Scoped)]
     public class ServiceScopeFactory : IServiceScopeFactory
     {
         ILocator Locator;
@@ -44,6 +45,7 @@ namespace DotNetStarter
         public IServiceScope CreateScope()
         {
             var scope = Locator.OpenScope();
+            (scope as ILocatorRegistry).Add(typeof(ILocator), scope);// add scope locator to be resolved so root container isn't disposed
 
             return new ServiceScope(scope.Get<IServiceProvider>());
         }

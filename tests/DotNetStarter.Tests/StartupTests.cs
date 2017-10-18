@@ -20,6 +20,23 @@ namespace DotNetStarter.Tests
     public class StartupModuleTests
     {
         [TestMethod]
+        public void ShouldCallInitCompleteEvent()
+        {
+            Assert.IsTrue(StartupTest._InitCompleteCalled);
+        }
+
+#if NETSTANDARD
+        [ExpectedException(typeof(Exception), AllowDerivedTypes = true)]
+#endif
+        [TestMethod]
+        public void ShouldFilterAssembliesForScannableAttributeGivenNullExceptForNetstandard()
+        {
+            var filter = ApplicationContext.GetScannableAssemblies(assemblies: null);
+
+            Assert.IsTrue(filter.Any());
+        }
+
+        [TestMethod]
         public void ShouldFilterGivenAssembliesForScannableAttribute()
         {
             IEnumerable<Assembly> assemblies = new List<Assembly>
@@ -32,21 +49,26 @@ namespace DotNetStarter.Tests
             Assert.IsTrue(filter.Count() == 1);
         }
 
-#if NETSTANDARD
-        [ExpectedException(typeof(Exception), AllowDerivedTypes = true)]
-#endif
         [TestMethod]
-        public void ShouldFilterAssembliesForScannableAttributeGivenNullExceptForNetstandard()
-        { 
-            var filter = ApplicationContext.GetScannableAssemblies(assemblies: null);
+        public void ShouldLogExceptionGreatherThanThreshold()
+        {
+            var sut = new StringLogger();
+            var e = new Exception("Testing");
+            sut.LogException("Test", e, typeof(StartupTest), LogLevel.Error);
+            Assert.IsFalse(string.IsNullOrEmpty(sut.ToString()));
 
-            Assert.IsTrue(filter.Any());
+            sut = new StringLogger();
+            sut.LogException("Test", e, typeof(StartupTest), LogLevel.Fatal);
+            Assert.IsFalse(string.IsNullOrEmpty(sut.ToString()));
         }
 
         [TestMethod]
-        public void ShouldCallInitCompleteEvent()
+        public void ShouldLogNoExceptionLessThanThreshold()
         {
-            Assert.IsTrue(StartupTest._InitCompleteCalled);
+            var sut = new StringLogger(LogLevel.Fatal);
+            var e = new Exception("Testing");
+            sut.LogException("Test", e, typeof(StartupTest), LogLevel.Error);
+            Assert.IsTrue(string.IsNullOrEmpty(sut.ToString()));
         }
 
         [TestMethod]
@@ -104,7 +126,6 @@ namespace DotNetStarter.Tests
         {
             new StartupHandler().Startup(ApplicationContext.Default.Configuration, new NullLocatorObjectFactory(), out IStartupContext x);
         }
-
         internal class MockFactory : ILocatorRegistryFactory
         {
             public ILocatorRegistry CreateRegistry()
