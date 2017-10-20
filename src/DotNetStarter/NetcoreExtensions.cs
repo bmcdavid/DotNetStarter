@@ -1,33 +1,45 @@
-﻿using DotNetStarter.Abstractions;
-using Microsoft.Extensions.DependencyInjection;
-using System;
+﻿#if NETSTANDARD1_0 || NETSTANDARD1_1
 
 namespace DotNetStarter
 {
+    using DotNetStarter.Abstractions;
+    using Microsoft.Extensions.DependencyInjection;
+    using System;
+
     /// <summary>
     /// Netcore extensions
     /// </summary>
     public static class NetcoreExtensions
     {
-        // todo: v2, create a package for netcore dependency injection
-
-        // todo: v2, figure out a way separate startup and locator setup
-
         /// <summary>
-        /// Adds service collection items to locator
+        /// Registers service collection with DotNetStarter
+        /// <para>IMPORTANT: This should be ran before executing DotNetStarter.ApplicationContext.Startup</para>
         /// </summary>
-        /// <param name="services"></param>
-        /// <param name="locator"></param>
-        public static IServiceProvider AddServicesToLocator(this IServiceCollection services, ILocatorRegistry locator)
+        /// <param name="serviceCollection"></param>
+        public static void WithDotNetStarter(this IServiceCollection serviceCollection)
         {
-            if (locator == null)
-                throw new ArgumentNullException();
+            RegisterServiceCollection.Services = serviceCollection;
+        }
+    }
 
-            locator.Add<IServiceProvider, ServiceProvider>(lifetime: LifeTime.Scoped);
+    /// <summary>
+    /// Adds service collection to the ILocator during locator configure
+    /// </summary>
+    [StartupModule(typeof(RegisterConfiguration), typeof(RegistrationConfiguration))]
+    public class RegisterServiceCollection : ILocatorConfigure
+    {
+        internal static IServiceCollection Services { get; set; }
 
-            // Scope factory should be scoped itself to enable nested scopes creation
-            locator.Add<IServiceScopeFactory, ServiceScopeFactory>(lifetime: LifeTime.Scoped);
+        void ILocatorConfigure.Configure(ILocatorRegistry registry, IStartupEngine engine)
+        {
+            if (Services != null)
+            {
+                AddServicesToLocator(Services, registry);
+            }
+        }
 
+        void AddServicesToLocator(IServiceCollection services, ILocatorRegistry locator)
+        {
             // map .net services to locator
             for (int i = 0; i < services.Count; i++)
             {
@@ -47,8 +59,6 @@ namespace DotNetStarter
                     locator.Add(service.ServiceType, service.ImplementationInstance);
                 }
             }
-
-            return locator.Get<IServiceProvider>();
         }
 
         private static LifeTime ConvertLifeTime(ServiceLifetime lifetime)
@@ -60,10 +70,10 @@ namespace DotNetStarter
                 case ServiceLifetime.Singleton:
                     return LifeTime.Singleton;
                 case ServiceLifetime.Transient:
+                default:
                     return LifeTime.Transient;
             }
-
-            return LifeTime.Transient;
         }
     }
 }
+#endif

@@ -66,6 +66,7 @@ namespace DotNetStarter.Tests
             var scopedLocator = (locator as ILocatorCreateScope).CreateScope(new TestScopeKind());
 
             var noScopeTest = locator.Get<ScopeTest>();
+            System.Threading.Thread.Sleep(1);
             var scopeTest = scopedLocator.Get<ScopeTest>();
             System.Threading.Thread.Sleep(1);
             var scopeTest2 = scopedLocator.Get<ScopeTest>();
@@ -79,6 +80,24 @@ namespace DotNetStarter.Tests
             scopedLocator.Dispose();
             var resolveTest = locator.Get<IAssemblyScanner>();
             Assert.IsNotNull(resolveTest);
+        }
+
+        [TestMethod]
+        public void ShouldResolveClassWithGreedyPrivateConstructor()
+        {
+            Assert.IsNotNull(_Context.Service.Locator.Get<Mocks.RegistrationTestGreedyPrivate>());
+        }
+
+        [TestMethod]
+        public void ShouldResolveClassWithGreedyInternalConstructor()
+        {
+            Assert.IsNotNull(_Context.Service.Locator.Get<Mocks.RegistrationTestGreedyInternal>());
+        }
+
+        [TestMethod]
+        public void ShouldResolveClassWithStaticConstructor()
+        {
+            Assert.IsNotNull(_Context.Service.Locator.Get<Mocks.RegistrationTestStatic>());
         }
     }
 }

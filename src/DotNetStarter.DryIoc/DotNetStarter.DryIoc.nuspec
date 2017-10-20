@@ -9,7 +9,7 @@
     <projectUrl>https://bmcdavid.github.io/DotNetStarter/</projectUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>Enables support for DI/IOC in startup.</description>
-    <releaseNotes>Fix for scoped locator registrations.</releaseNotes>
+    <releaseNotes>Fix for constructor selection.</releaseNotes>
     <copyright>Copyright $year$</copyright>
     <tags>Startup Modules DI IOC</tags>
     <dependencies>

@@ -22,6 +22,7 @@
         public DryIocLocatorBase(IContainer container = null)
         {
             var rules = Rules.Default
+                .WithoutThrowIfDependencyHasShorterReuseLifespan()
                 .WithFactorySelector(Rules.SelectLastRegisteredFactory())
                 .WithTrackingDisposableTransients() //used in transient delegate cases
                 .WithImplicitRootOpenScope()

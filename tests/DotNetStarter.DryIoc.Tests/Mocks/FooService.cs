@@ -13,6 +13,39 @@ namespace DotNetStarter.Tests.Mocks
         string Test();
     }
 
+    [Register(typeof(RegistrationTestGreedyPrivate), LifeTime.Transient)]
+    public class RegistrationTestGreedyPrivate
+    {
+        private RegistrationTestGreedyPrivate(string a, string b, bool c, ITransient d)
+        {
+
+        }
+
+        public RegistrationTestGreedyPrivate(ITransient d) { }
+    }
+
+    [Register(typeof(RegistrationTestGreedyInternal), LifeTime.Transient)]
+    public class RegistrationTestGreedyInternal
+    {
+        private RegistrationTestGreedyInternal(string a, string b, bool c, ITransient d)
+        {
+
+        }
+
+        public RegistrationTestGreedyInternal(ITransient d) { }
+    }
+
+    [Register(typeof(RegistrationTestStatic), LifeTime.Transient)]
+    public class RegistrationTestStatic
+    {
+        static RegistrationTestStatic()
+        {
+
+        }
+
+        public RegistrationTestStatic(ITransient d) { }
+    }
+
     /// <summary>
     /// Uses registration instead to ensure both types are working
     /// </summary>

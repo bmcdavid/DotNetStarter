@@ -47,7 +47,17 @@
         /// </summary>
         /// <param name="serviceType"></param>
         /// <returns></returns>
-        public virtual object GetService(Type serviceType) => Locator.Get(serviceType);
+        public virtual object GetService(Type serviceType)
+        {
+            try
+            {
+                return Locator.Get(serviceType);
+            }
+            catch
+            {
+                return null;
+            }
+            }
 
         /// <summary>
         /// Dispose
@@ -67,7 +77,7 @@
             var service = Locator.Get(serviceType);
 
             if (service == null)
-                throw new NullReferenceException();
+                throw new NullReferenceException($"{serviceType.FullName} cannot be null and couldn't be resolved!");
 
             return service;
         }

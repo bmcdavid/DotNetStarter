@@ -141,20 +141,26 @@
                 return FactoryMethod.ConstructorWithResolvableArguments;
             }
 
-            var allConstructors = implementationType.Constructors().Where(x => !x.IsStatic && !x.IsPrivate).OrderBy(x => x.GetParameters().Count());
+            var allConstructors = implementationType.Constructors()
+                                                    .Where(x => x.IsConstructor && x.IsPublic)
+                                                    .OrderByDescending(x => x.GetParameters().Count());
 
-            if (constructor == ConstructorType.Greediest)
-                allConstructors.Reverse();
-
-            // return the delegate Made.of for v2.x
-            return Made.Of(allConstructors.FirstOrDefault());
+            switch (constructor)
+            {
+                case ConstructorType.Empty:
+                    return Made.Of(allConstructors.LastOrDefault());
+                case ConstructorType.Greediest:
+                default:
+                    return Made.Of(allConstructors.FirstOrDefault());
+            }
         }
 
         private static void RegisterSimple<TInterface, TImplementation>(DryIoc.IContainer register, IReuse reuse = null, ConstructorType constructor = ConstructorType.Greediest, string key = null)
             where TImplementation : TInterface
         {
-            // for v2.x
-            register.Register<TInterface, TImplementation>(reuse: reuse, made: GetConstructorFor(register, typeof(TImplementation), constructor), serviceKey: key);
+            register.Register<TInterface, TImplementation>(reuse: reuse,
+                made: GetConstructorFor(register, typeof(TImplementation), constructor),
+                serviceKey: key);
         }
 
         private static void RegisterSimple(DryIoc.IContainer register, Type service, Type implementation, IReuse reuse = null, ConstructorType constructor = ConstructorType.Greediest, string key = null)
