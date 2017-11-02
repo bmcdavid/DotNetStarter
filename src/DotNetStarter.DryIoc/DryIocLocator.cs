@@ -9,7 +9,7 @@
     /// <summary>
     /// Creates a locator based on DryIoc.dll
     /// </summary>
-    public class DryIocLocator : DryIocLocatorBase, ILocatorRegistry, ILocatorSetContainer, ILocatorCreateScope
+    public class DryIocLocator : DryIocLocatorBase, ILocatorRegistry, ILocatorSetContainer
     {
         /// <summary>
         /// Constructor
@@ -71,20 +71,6 @@
         /// <param name="key"></param>
         /// <returns></returns>
         public virtual bool ContainsService(Type serviceType, string key = null) => _Container.IsRegistered(serviceType, key);
-
-        /// <summary>
-        /// Creates/opens locator scope
-        /// </summary>
-        /// <param name="scopeKind"></param>
-        /// <returns></returns>
-        public virtual ILocatorScoped CreateScope(IScopeKind scopeKind)
-        {
-            return new DryIocLocatorScoped(
-                _Container
-                .CreateFacade() // allows registrations to only exist in the instance
-                .OpenScope()
-            );
-        }
 
         /// <summary>
         /// Removes a service, note: not all containers support this.

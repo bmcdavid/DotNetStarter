@@ -1,6 +1,7 @@
 ﻿namespace DotNetStarter.Extensions.Episerver
 {
     using DotNetStarter.Abstractions;
+    using DotNetStarter.Abstractions.Internal;
     using StructureMap;
     using System;
     using System.Collections.Generic;
@@ -9,7 +10,7 @@
     /// <summary>
     /// Base Episerver Structuremap locator
     /// </summary>
-    public abstract class EpiserverStructuremapLocatorBase : ILocator
+    public abstract class EpiserverStructuremapLocatorBase : ILocator, ILocatorCreateScope
     {
         /// <summary>
         /// Structuremap container
@@ -108,6 +109,16 @@
         public ILocator OpenScope(object scopeName = null, object scopeContext = null)
         {
             return new EpiserverStructuremapLocator(_Container.CreateChildContainer());
+        }
+
+        /// <summary>
+        /// Create scoped locator
+        /// </summary>
+        /// <param name="scopeKind"></param>
+        /// <returns></returns>
+        public virtual ILocatorScoped CreateScope(IScopeKind scopeKind)
+        {
+            return new EpiserverLocatorScoped(_Container.CreateChildContainer(), scopeKind, this);
         }
     }
 }

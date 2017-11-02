@@ -1,5 +1,6 @@
 ﻿using System;
 using DotNetStarter.Abstractions;
+using DotNetStarter.Abstractions.Internal;
 
 #if NETSTANDARD1_0 || NETSTANDARD1_1 || NETSTANDARD2_0
 using Microsoft.Extensions.DependencyInjection;
@@ -27,7 +28,8 @@ namespace DotNetStarter
     [Register(typeof(IServiceScopeFactory), LifeTime.Scoped)]
     public class ServiceScopeFactory : IServiceScopeFactory
     {
-        ILocator Locator;
+        private readonly ILocator Locator;
+        private readonly ILocatorScopeFactory _LocatorScopeFactory;
 
         /// <summary>
         /// Constructor
@@ -36,6 +38,7 @@ namespace DotNetStarter
         public ServiceScopeFactory(ILocator locator)
         {
             Locator = locator;
+            //_LocatorScopeFactory = locatorScopeFactory;
         }
 
         /// <summary>
@@ -44,7 +47,13 @@ namespace DotNetStarter
         /// <returns></returns>
         public IServiceScope CreateScope()
         {
-            var scope = Locator.OpenScope();
+            ILocator scope = null;
+            //scope = _LocatorScopeFactory.CreateScope(null);
+            //var providerCreator = scope.Get<Func<ILocator, IServiceProvider>>();
+
+            //return new ServiceScope(providerCreator.Invoke(scope));
+
+            scope = Locator.OpenScope();
             (scope as ILocatorRegistry).Add(typeof(ILocator), scope);// add scope locator to be resolved so root container isn't disposed
 
             return new ServiceScope(scope.Get<IServiceProvider>());

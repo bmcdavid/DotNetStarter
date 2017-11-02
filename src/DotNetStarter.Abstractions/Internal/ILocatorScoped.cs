@@ -8,8 +8,13 @@ namespace DotNetStarter.Abstractions.Internal
     public interface ILocatorScoped : ILocator, IDisposable
     {
         /// <summary>
-        /// Should always be true in a scoped container
+        /// Null if direct child of unscoped
         /// </summary>
-        bool IsActiveScope { get; }
+        ILocatorScoped Parent { get; }
+
+        /// <summary>
+        /// Scope Kind
+        /// </summary>
+        IScopeKind ScopeKind { get; }
     }
 }

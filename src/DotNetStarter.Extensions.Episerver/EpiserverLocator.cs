@@ -9,7 +9,7 @@
     /// <summary>
     /// Locator wrapping Episerver _Container
     /// </summary>
-    public class EpiserverStructuremapLocator : EpiserverStructuremapLocatorBase, ILocatorRegistry, ILocatorCreateScope
+    public class EpiserverStructuremapLocator : EpiserverStructuremapLocatorBase, ILocatorRegistry
     {
         /// <summary>
         /// Locator wrapping Episerver's structuremap container
@@ -86,15 +86,7 @@
             return _Container.TryGetInstance(serviceType, key) != null;
         }
 
-        /// <summary>
-        /// Create scoped locator
-        /// </summary>
-        /// <param name="scopeKind"></param>
-        /// <returns></returns>
-        public virtual ILocatorScoped CreateScope(IScopeKind scopeKind)
-        {
-            return new EpiserverLocatorScoped(_Container.CreateChildContainer(), scopeKind);
-        }
+
 
         /// <summary>
         /// Remove a service

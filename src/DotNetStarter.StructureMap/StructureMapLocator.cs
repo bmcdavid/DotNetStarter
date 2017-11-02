@@ -10,7 +10,7 @@
     /// <summary>
     /// Structuremap Locator
     /// </summary>
-    public class StructureMapLocator : StructureMapLocatorBase, ILocatorRegistry, ILocatorSetContainer, ILocatorCreateScope
+    public class StructureMapLocator : StructureMapLocatorBase, ILocatorRegistry, ILocatorSetContainer
     {
         /// <summary>
         /// Constructor
@@ -162,20 +162,6 @@
         {
             var tempContainer = container as IContainer;
             _Container = tempContainer ?? throw new ArgumentException($"{container} doesn't implement {typeof(IContainer).FullName}!");
-        }
-
-        /// <summary>
-        /// Creates/opens locator scope
-        /// </summary>
-        /// <param name="scopeKind"></param>
-        /// <returns></returns>
-        public virtual ILocatorScoped CreateScope(IScopeKind scopeKind)
-        {
-#if NET35
-            throw new NotImplementedException();
-#else
-            return new StructureMapLocatorScoped(_Container.CreateChildContainer());
-#endif
         }
     }
 }

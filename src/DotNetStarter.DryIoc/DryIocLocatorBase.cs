@@ -1,6 +1,7 @@
 ﻿namespace DotNetStarter
 {
     using DotNetStarter.Abstractions;
+    using DotNetStarter.Abstractions.Internal;
     using DryIoc;
     using System;
     using System.Collections.Generic;
@@ -9,7 +10,7 @@
     /// <summary>
     /// Base DryIoc locator
     /// </summary>
-    public abstract class DryIocLocatorBase : ILocator
+    public abstract class DryIocLocatorBase : ILocator, ILocatorCreateScope
     {
         /// <summary>
         /// Raw container reference
@@ -125,6 +126,22 @@
                 container
                     .CreateFacade() // allows registrations to only exist in the instance
                     .OpenScope(scopeName)
+            );
+        }
+
+        /// <summary>
+        /// Creates/opens locator scope
+        /// </summary>
+        /// <param name="scopeKind"></param>
+        /// <returns></returns>
+        public virtual ILocatorScoped CreateScope(IScopeKind scopeKind)
+        {
+            return new DryIocLocatorScoped(
+                _Container
+                .CreateFacade() // allows registrations to only exist in the instance
+                .OpenScope(),
+                this,
+                scopeKind
             );
         }
     }

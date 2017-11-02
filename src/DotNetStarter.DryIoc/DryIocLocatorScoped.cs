@@ -3,51 +3,26 @@
     using DotNetStarter.Abstractions;
     using DotNetStarter.Abstractions.Internal;
     using DryIoc;
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
 
     /// <summary>
     /// Scoped DryIoc locator
     /// </summary>
-    public class DryIocLocatorScoped : DryIocLocatorBase, ILocatorScoped
+    public sealed class DryIocLocatorScoped : DryIocLocatorBase, ILocatorScoped
     {
-        static readonly IEnumerable<Type> LocatorTypes = new Type[] { typeof(ILocator), typeof(ILocatorScoped) };
-
         /// <summary>
         /// Constructor
         /// </summary>
         /// <param name="container"></param>
-        public DryIocLocatorScoped(IContainer container) : base(container)
+        /// <param name="locator"></param>
+        /// <param name="scopeKind"></param>
+        public DryIocLocatorScoped(IContainer container, ILocator locator, IScopeKind scopeKind) : base(container)
         {
-            IsActiveScope = true;
-        }
+            Parent = locator as ILocatorScoped;
+            ScopeKind = scopeKind;
 
-        /// <summary>
-        /// Looks from request for ILocator and replaces with this scoped instance
-        /// </summary>
-        /// <param name="service"></param>
-        /// <param name="key"></param>
-        /// <returns></returns>
-        public override object Get(Type service, string key = null)
-        {
-            if (LocatorTypes.Any(x => x == service))
-            {
-                return this;
-            }
-
-            return base.Get(service, key);
-        }
-
-        /// <summary>
-        /// Looks from request for ILocator and replaces with this scoped instance
-        /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="key"></param>
-        /// <returns></returns>
-        public override T Get<T>(string key = null)
-        {
-            return (T)Get(typeof(T), key);
+            // Critical component to replace application ILocator with scoped one
+            container.RegisterDelegate(typeof(ILocator), resolver => this, Reuse.Singleton);
+            container.RegisterDelegate(typeof(ILocatorScoped), resolver => this, Reuse.Singleton);
         }
 
         /// <summary>
@@ -56,8 +31,13 @@
         public override object InternalContainer => throw new LocatorLockedException();
 
         /// <summary>
-        /// Should always be true in scoped containers
+        /// Parent scope or null
         /// </summary>
-        public bool IsActiveScope { get; }
+        public ILocatorScoped Parent { get; }
+
+        /// <summary>
+        /// Scope kind
+        /// </summary>
+        public IScopeKind ScopeKind { get; }
     }
 }

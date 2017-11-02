@@ -1,28 +1,31 @@
 ﻿using DotNetStarter.Abstractions;
 using DotNetStarter.Abstractions.Internal;
 using StructureMap;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace DotNetStarter.Extensions.Episerver
 {
     /// <summary>
     /// Scoped Episerver locator
     /// </summary>
-    public class EpiserverLocatorScoped : EpiserverStructuremapLocatorBase, ILocatorScoped
+    public sealed class EpiserverLocatorScoped : EpiserverStructuremapLocatorBase, ILocatorScoped
     {
-        static readonly IEnumerable<Type> LocatorTypes = new Type[] { typeof(ILocator), typeof(ILocatorScoped) };
-
         /// <summary>
         /// Constructor
         /// </summary>
         /// <param name="container"></param>
         /// <param name="scopeKind"></param>
-        public EpiserverLocatorScoped(IContainer container, IScopeKind scopeKind) : base(container)
+        /// <param name="locator"></param>
+        public EpiserverLocatorScoped(IContainer container, IScopeKind scopeKind, ILocator locator) : base(container)
         {
-            IsActiveScope = true;
+            Parent = locator as ILocatorScoped;
             ScopeKind = scopeKind;
+
+            // Critical component to replace application ILocator with scoped one
+            container.Configure(x =>
+            {
+                x.For(typeof(ILocator)).Singleton().Use(this);
+                x.For(typeof(ILocatorScoped)).Singleton().Use(this);
+            });
         }
 
         /// <summary>
@@ -31,37 +34,9 @@ namespace DotNetStarter.Extensions.Episerver
         public override object InternalContainer => throw new LocatorLockedException();
 
         /// <summary>
-        /// Looks from request for ILocator and replaces with this scoped instance
+        /// Parent scope or null
         /// </summary>
-        /// <param name="service"></param>
-        /// <param name="key"></param>
-        /// <returns></returns>
-        public override object Get(Type service, string key = null)
-        {
-            if (LocatorTypes.Any(x => x == service))
-            {
-                return this;
-            }
-
-            return base.Get(service, key);
-        }
-
-        /// <summary>
-        /// Looks from request for ILocator and replaces with this scoped instance
-        /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="key"></param>
-        /// <returns></returns>
-        public override T Get<T>(string key = null)
-        {
-            return (T)Get(typeof(T), key);
-        }
-
-
-        /// <summary>
-        /// Should always be true in scope
-        /// </summary>
-        public bool IsActiveScope { get; }
+        public ILocatorScoped Parent { get; }
 
         /// <summary>
         /// ScopeKind request
