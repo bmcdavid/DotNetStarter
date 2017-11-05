@@ -8,6 +8,8 @@ using System.Web.Http.Dependencies;
 
 namespace DotNetStarter.Extensions.WebApi
 {
+    // todo: remove obsolete, and change try catch to only return null if type isn't in a scanned assembly
+
     /// <summary>
     /// Dependency Resolver for WebApi
     /// </summary>

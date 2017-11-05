@@ -8,6 +8,8 @@ using System.Web.Mvc;
 
 namespace DotNetStarter.Extensions.Mvc
 {
+    // todo: remove obsolete, and change try catch to only return null if type isn't in a scanned assembly
+
     /// <summary>
     /// Requires DotNetStarter.Web and Microsoft.AspNet.Mvc packages
     /// </summary>

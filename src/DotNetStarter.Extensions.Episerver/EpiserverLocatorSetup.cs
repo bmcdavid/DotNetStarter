@@ -20,6 +20,8 @@ namespace DotNetStarter.Extensions.Episerver
     {
         static IContainer _Container; // must be static to share between instances
 
+        // todo: for Epi11 remove ContainerSet, add a new static Func<ServiceConfigurationContext,ILocatorRegistry> CreateRegistry = null;
+
         /// <summary>
         /// Invokable action to startup DotNetStarter when the Episerver container is set. Use a System.Web.PreApplicationStartMethod to assign a startup action;
         /// </summary>
@@ -61,6 +63,7 @@ namespace DotNetStarter.Extensions.Episerver
             // ensure DotNetStarter has started
             context.InitComplete += (sender, args) =>
             {
+                //todo: remove this and just access ApplicationContext.Default.Locator
                 DependencyResolver.SetResolver(new NullableMvcDependencyResolver(ApplicationContext.Default.Locator));
             };
         }

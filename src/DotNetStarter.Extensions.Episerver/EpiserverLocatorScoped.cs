@@ -20,6 +20,8 @@ namespace DotNetStarter.Extensions.Episerver
             Parent = locator as ILocatorScoped;
             ScopeKind = scopeKind;
 
+            this.SetCurrentScopedLocator();
+
             // Critical component to replace application ILocator with scoped one
             container.Configure(x =>
             {

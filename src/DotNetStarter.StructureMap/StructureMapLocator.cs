@@ -7,6 +7,8 @@
     using System;
     using System.Linq;
 
+    // todo v2: remove net35 and net40 support to consolidate on single package version
+
     /// <summary>
     /// Structuremap Locator
     /// </summary>
