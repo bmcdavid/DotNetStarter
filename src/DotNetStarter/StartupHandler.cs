@@ -18,10 +18,29 @@
 
         internal static IStartupEngine _Engine;
 
+        private event Action _OnLocatorStartupComplete;
+
+        private bool _LocatorStartupInvoked = false;
+
         /// <summary>
         /// Fires after ILocatorConfigure.Configure has completed in all executing modules
         /// </summary>
-        public event Action OnLocatorStartupComplete;
+        public event Action OnLocatorStartupComplete
+        {
+            add
+            {
+                if (_LocatorStartupInvoked == true)
+                {
+                    throw new Exception($"Locator startup complete has already been invoked, try {nameof(OnStartupComplete)} instead!");
+                }
+
+                _OnLocatorStartupComplete += value;
+            }
+            remove
+            {
+                _OnLocatorStartupComplete -= value;
+            }
+        }
 
         /// <summary>
         /// Fires after IStartupModule.Startup has completed in all executing modules
@@ -135,7 +154,7 @@
                     map.Configure(registry, this);
                 }
 
-                var readOnlyLocator = new Internal.ReadOnlyLocator(registry);
+                var readOnlyLocator = Internal.ReadOnlyLocator.CreateReadOnlyLocator(registry);
                 tempContext = objectFactory.CreateStartupContext(readOnlyLocator, filteredModules, sortedModules, config);
 
                 // register context once its created
@@ -143,7 +162,8 @@
                 registry.Add(typeof(ILocator), readOnlyLocator);
                 ImportHelper.OnEnsureLocator += (() => readOnlyLocator); // configure import<T> locator
 
-                OnLocatorStartupComplete?.Invoke(); //execute locator complete before verification since last minute additions can occur here.
+                _OnLocatorStartupComplete?.Invoke(); //execute locator complete before verification since last minute additions can occur here.
+                _LocatorStartupInvoked = true;
                 (registry as ILocatorVerification)?.Verify();
             };
 

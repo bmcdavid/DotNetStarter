@@ -8,6 +8,8 @@
     /// </summary>
     public interface IStartupContext : IDisposable
     {
+        // todo: v2 change to IReadOnlyLocator
+
         /// <summary>
         /// Service Locator
         /// </summary>

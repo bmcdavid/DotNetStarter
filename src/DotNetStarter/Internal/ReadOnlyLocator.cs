@@ -12,7 +12,7 @@ namespace DotNetStarter.Internal
         static bool _IsLocked = false;
         ILocator _ConfiguredLocator;
 
-        public ReadOnlyLocator(ILocator configuredLocator)
+        private ReadOnlyLocator(ILocator configuredLocator)
         {
             _ConfiguredLocator = configuredLocator;
         }
@@ -31,6 +31,10 @@ namespace DotNetStarter.Internal
 
         public bool IsLocked => _IsLocked;
 
+        public static ReadOnlyLocator CreateReadOnlyLocator(ILocator configuredLocator)
+        {
+            return new ReadOnlyLocator(configuredLocator);
+        }
         public bool BuildUp(object target)
         {
             return _ConfiguredLocator.BuildUp(target);
