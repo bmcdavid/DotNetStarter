@@ -14,12 +14,9 @@ namespace DotNetStarter
         /// </summary>
         /// <param name="container"></param>
         /// <param name="locator"></param>
-        /// <param name="scopeKind"></param>
-        public StructureMapLocatorScoped(IContainer container, ILocator locator, IScopeKind scopeKind) : base(container)
+        public StructureMapLocatorScoped(IContainer container, ILocator locator) : base(container)
         {
             Parent = locator as ILocatorScoped;
-            ScopeKind = scopeKind;
-
             this.SetCurrentScopedLocator();
 
             // Critical component to replace application ILocator with scoped one
@@ -39,10 +36,5 @@ namespace DotNetStarter
         /// Parent scope or null
         /// </summary>
         public ILocatorScoped Parent { get; }
-
-        /// <summary>
-        /// Scope kind
-        /// </summary>
-        public IScopeKind ScopeKind { get; }
     }
 }

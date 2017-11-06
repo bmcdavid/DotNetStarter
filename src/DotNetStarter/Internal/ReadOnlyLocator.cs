@@ -40,14 +40,14 @@ namespace DotNetStarter.Internal
             return _ConfiguredLocator.BuildUp(target);
         }
 
-        public ILocatorScoped CreateScope(IScopeKind scopeKind)
+        public ILocatorScoped CreateScope()
         {
             var scopedCreator = _ConfiguredLocator as ILocatorCreateScope;
 
             if (scopedCreator == null)
                 throw new NullReferenceException($"{_ConfiguredLocator.GetType().FullName} doesn't support {typeof(ILocatorCreateScope).FullName}!");
 
-            return (_ConfiguredLocator as ILocatorCreateScope).CreateScope(scopeKind);
+            return (_ConfiguredLocator as ILocatorCreateScope).CreateScope();
         }
 
         public void Dispose()

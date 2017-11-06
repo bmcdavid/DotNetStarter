@@ -13,13 +13,10 @@ namespace DotNetStarter.Extensions.Episerver
         /// Constructor
         /// </summary>
         /// <param name="container"></param>
-        /// <param name="scopeKind"></param>
         /// <param name="locator"></param>
-        public EpiserverLocatorScoped(IContainer container, IScopeKind scopeKind, ILocator locator) : base(container)
+        public EpiserverLocatorScoped(IContainer container, ILocator locator) : base(container)
         {
             Parent = locator as ILocatorScoped;
-            ScopeKind = scopeKind;
-
             this.SetCurrentScopedLocator();
 
             // Critical component to replace application ILocator with scoped one
@@ -39,10 +36,5 @@ namespace DotNetStarter.Extensions.Episerver
         /// Parent scope or null
         /// </summary>
         public ILocatorScoped Parent { get; }
-
-        /// <summary>
-        /// ScopeKind request
-        /// </summary>
-        public IScopeKind ScopeKind { get; }
     }
 }

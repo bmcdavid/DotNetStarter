@@ -12,8 +12,6 @@ namespace DotNetStarter.Tests
     [TestClass]
     public class LocatorTests
     {
-        IScopeKind _TestScope = new TestScopeKind();
-
         public Import<IStartupContext> _Context { get; set; }
 
 #if !STRUCTUREMAPNET35   
@@ -22,7 +20,7 @@ namespace DotNetStarter.Tests
         public void ShouldCreateLocatorScope()
         {
             var locator = _Context.Service.Locator;
-            using (var scopedLocator = (locator as ILocatorCreateScope).CreateScope(_TestScope))
+            using (var scopedLocator = (locator as ILocatorCreateScope).CreateScope())
             {
                 var noScopeTest = locator.Get<ScopeTest>();
                 System.Threading.Thread.Sleep(1);
@@ -33,7 +31,7 @@ namespace DotNetStarter.Tests
                 Assert.IsTrue(scopedLocator.Parent == null);
                 Assert.IsTrue(scopedLocator.Get<ILocator>() is ILocatorScoped);
 
-                using (var nestedScope = (scopedLocator as ILocatorCreateScope).CreateScope(_TestScope))
+                using (var nestedScope = (scopedLocator as ILocatorCreateScope).CreateScope())
                 {
                     Assert.IsNotNull(nestedScope.Parent);
                     Assert.IsNull(nestedScope.Parent.Parent);
@@ -56,7 +54,7 @@ namespace DotNetStarter.Tests
             var noScopeTest = locator.Get<ScopeTest>();
             System.Threading.Thread.Sleep(1);
 
-            using (var scopedLocator = factory.CreateScope(_TestScope))
+            using (var scopedLocator = factory.CreateScope())
             {
                 var scopeTest = scopedLocator.Get<ScopeTest>();
                 System.Threading.Thread.Sleep(1);
@@ -79,7 +77,7 @@ namespace DotNetStarter.Tests
         public void ShouldGetLocatorScopedFromAccessor()
         {
             var factory = _Context.Service.Locator.Get<ILocatorScopeFactory>();
-            var scope1 = factory.CreateScope(_TestScope);
+            var scope1 = factory.CreateScope();
 
             Assert.IsNotNull(scope1.Get<ILocatorScopedAccessor>().CurrentScope);
             Assert.IsNull(_Context.Service.Locator.Get<ILocatorScopedAccessor>().CurrentScope);
@@ -123,7 +121,7 @@ namespace DotNetStarter.Tests
             var locator = _Context.Service.Locator;
             var factory = locator.Get<ILocatorScopeFactory>();
 
-            using (var scopedLocator = factory.CreateScope(_TestScope))
+            using (var scopedLocator = factory.CreateScope())
             {
                 var injectionTest = scopedLocator.Get<TestLocatorInjectionTransient>();
                 var injectionTest2 = scopedLocator.Get<TestLocatorInjectionScoped>();
@@ -133,9 +131,9 @@ namespace DotNetStarter.Tests
         [TestMethod]
         public void ShouldResolveComplexFuncCreator()
         {
-            var sut = _Context.Service.Locator.Get<Func<IScopeKind, TestFuncCreationComplex>>();
+            var sut = _Context.Service.Locator.Get<Func<IInjectable, TestFuncCreationComplex>>();
 
-            Assert.IsNotNull(sut(_TestScope));
+            Assert.IsNotNull(sut(new TestInjectable()));
         }
 
 #endif
@@ -178,7 +176,7 @@ namespace DotNetStarter.Tests
         [Register(typeof(TestFuncCreationComplex), LifeTime.Transient)]
         internal class TestFuncCreationComplex
         {
-            public TestFuncCreationComplex(IScopeKind scopeKind, IStartupConfiguration configuration, IShutdownHandler shutdownHandler)
+            public TestFuncCreationComplex(IInjectable injectionTest, IStartupConfiguration configuration, IShutdownHandler shutdownHandler)
             {
 
             }
@@ -211,11 +209,11 @@ namespace DotNetStarter.Tests
             }
         }
 
-        internal class TestScopeKind : IScopeKind
-        {
-            public string Name => ScopeType.FullName;
+        internal interface IInjectable { }
 
-            public Type ScopeType => typeof(TestScopeKind);
+        internal class TestInjectable : IInjectable
+        {
+
         }
     }
 }

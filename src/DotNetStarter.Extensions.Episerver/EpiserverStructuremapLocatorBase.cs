@@ -114,11 +114,10 @@
         /// <summary>
         /// Create scoped locator
         /// </summary>
-        /// <param name="scopeKind"></param>
         /// <returns></returns>
-        public virtual ILocatorScoped CreateScope(IScopeKind scopeKind)
+        public virtual ILocatorScoped CreateScope()
         {
-            return new EpiserverLocatorScoped(_Container.CreateChildContainer(), scopeKind, this);
+            return new EpiserverLocatorScoped(_Container.CreateChildContainer(), this);
         }
     }
 }

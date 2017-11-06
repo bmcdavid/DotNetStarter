@@ -27,27 +27,26 @@ namespace DotNetStarter.Internal
         /// <returns></returns>
         public ILocatorScoped CreateChildScope(ILocatorScoped locatorScoped)
         {
-            return _Create(locatorScoped?.ScopeKind, locatorScoped);
+            return _Create(locatorScoped);
         }
 
         /// <summary>
         /// Creates an initial scope
         /// </summary>
-        /// <param name="scopeKind"></param>
         /// <returns></returns>
-        public ILocatorScoped CreateScope(IScopeKind scopeKind)
+        public ILocatorScoped CreateScope()
         {
-            return _Create(scopeKind, _Locator);
+            return _Create(_Locator);
         }
 
-        private ILocatorScoped _Create(IScopeKind scopeKind, ILocator locator)
+        private ILocatorScoped _Create(ILocator locator)
         {
             var creator = locator as ILocatorCreateScope;
 
             if (creator == null)
                 throw new System.ArgumentException($"{locator.GetType().FullName} doesn't implement {typeof(ILocatorCreateScope).FullName}!");
 
-            return creator.CreateScope(scopeKind);
+            return creator.CreateScope();
         }
     }
 }

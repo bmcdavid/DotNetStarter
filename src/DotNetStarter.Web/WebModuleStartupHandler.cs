@@ -90,7 +90,7 @@ namespace DotNetStarter.Web
                         throw new Exception($"New scoped locator is enabled, but {_Locator.GetType().FullName} doesn't implement {typeof(ILocatorCreateScope).FullName}!");
                     }
 
-                    var scopedLocator = scopeCreator.CreateScope(HttpRequestScopeKind.HttpRequest);
+                    var scopedLocator = scopeCreator.CreateScope();
                     context.Items.Add(ScopedLocatorKeyInContext, scopedLocator);
                 }
                 else

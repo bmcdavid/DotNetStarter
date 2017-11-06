@@ -11,10 +11,5 @@ namespace DotNetStarter.Abstractions.Internal
         /// Null if direct child of unscoped
         /// </summary>
         ILocatorScoped Parent { get; }
-
-        /// <summary>
-        /// Scope Kind
-        /// </summary>
-        IScopeKind ScopeKind { get; }
     }
 }

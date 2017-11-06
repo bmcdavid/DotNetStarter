@@ -15,8 +15,7 @@
         /// <summary>
         /// Creates an initial scope
         /// </summary>
-        /// <param name="scopeKind"></param>
         /// <returns></returns>
-        ILocatorScoped CreateScope(IScopeKind scopeKind);
+        ILocatorScoped CreateScope();
     }
 }

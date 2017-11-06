@@ -116,15 +116,14 @@
 
         /// <summary>
         /// Creates/opens locator scope
-        /// </summary>
-        /// <param name="scopeKind"></param>
+        /// </summary>        
         /// <returns></returns>
-        public virtual ILocatorScoped CreateScope(IScopeKind scopeKind)
+        public virtual ILocatorScoped CreateScope()
         {
 #if NET35
             return ThrowStructuremapNet35Exception() as ILocatorScoped;
 #else
-            return new StructureMapLocatorScoped(_Container.CreateChildContainer(), this, scopeKind);
+            return new StructureMapLocatorScoped(_Container.CreateChildContainer(), this);
 #endif
         }
 

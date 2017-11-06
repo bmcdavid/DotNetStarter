@@ -131,17 +131,15 @@
 
         /// <summary>
         /// Creates/opens locator scope
-        /// </summary>
-        /// <param name="scopeKind"></param>
+        /// </summary>        
         /// <returns></returns>
-        public virtual ILocatorScoped CreateScope(IScopeKind scopeKind)
+        public virtual ILocatorScoped CreateScope()
         {
             return new DryIocLocatorScoped(
                 _Container
                 .CreateFacade() // allows registrations to only exist in the instance
                 .OpenScope(),
-                this,
-                scopeKind
+                this
             );
         }
     }
