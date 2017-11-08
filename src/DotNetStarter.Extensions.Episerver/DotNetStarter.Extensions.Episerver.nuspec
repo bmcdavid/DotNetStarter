@@ -9,7 +9,7 @@
     <projectUrl>https://bmcdavid.github.io/DotNetStarter/</projectUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>DotNetStarter compatible locator for Episerver CMS.</description>
-    <releaseNotes>Better scoping support.</releaseNotes>
+    <releaseNotes>Added action for custom starting of DotNetStarter.</releaseNotes>
     <copyright>Copyright $year$</copyright>
     <tags>Startup Modules Episerver</tags>
     <dependencies>

@@ -9,7 +9,7 @@
     <projectUrl>https://bmcdavid.github.io/DotNetStarter/</projectUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>DotNetStarter WebApi Setup</description>
-    <releaseNotes>Better scoping support.</releaseNotes>
+    <releaseNotes>Fixed dependency resolver bug.</releaseNotes>
     <copyright>Copyright $year$</copyright>
     <tags>WebApi DotNetStarter Startup</tags>
     <dependencies>

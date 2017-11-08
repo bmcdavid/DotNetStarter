@@ -9,7 +9,7 @@
     <projectUrl>https://bmcdavid.github.io/DotNetStarter/</projectUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>DotNetStarter MVC extensions.</description>
-    <releaseNotes>Better scoping support.</releaseNotes>
+    <releaseNotes>Fixed dependency resolver bug.</releaseNotes>
     <copyright>Copyright $year$</copyright>
     <tags>Startup Modules MVC</tags>
     <dependencies>

@@ -31,12 +31,18 @@ namespace DotNetStarter.Extensions.Episerver
         public static Func<ServiceConfigurationContext, ILocatorRegistry> CreateLocatorRegistry = null;
 
         /// <summary>
+        /// Assign a custom action to invoke DotNetStarter startup process
+        /// </summary>
+        public static Action InvokeDotNetStarter = null;
+
+        /// <summary>
         /// Constructor
         /// </summary>
         /// <param name="context"></param>
         public void ConfigureContainer(ServiceConfigurationContext context)
         {
             _LocatorRegistry = CreateLocatorRegistry?.Invoke(context);
+            InvokeDotNetStarter?.Invoke();
 
             // todo: remove lines below in Epi v11
             var container = context.Container;

@@ -1,6 +1,7 @@
 ﻿namespace DotNetStarter
 {
     using Abstractions;
+    using Abstractions.Internal;
     using System;
 
 #if NETSTANDARD1_0 || NETSTANDARD1_1 || NETSTANDARD2_0
@@ -75,7 +76,12 @@
                     throw;
                 }
 
-                return null;
+                if (serviceType.IsAbstract() || serviceType.IsInterface())
+                {
+                    return null;
+                }
+
+                return Activator.CreateInstance(serviceType);
             }
         }
 

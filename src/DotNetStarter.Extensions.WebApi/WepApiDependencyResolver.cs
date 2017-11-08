@@ -81,7 +81,12 @@ namespace DotNetStarter.Extensions.WebApi
                     throw;
                 }
 
-                return null;
+                if (serviceType.IsAbstract || serviceType.IsInterface)
+                {
+                    return null;
+                }
+
+                return Activator.CreateInstance(serviceType);
             }
         }
 

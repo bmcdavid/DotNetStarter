@@ -9,7 +9,7 @@
     <projectUrl>https://bmcdavid.github.io/DotNetStarter/</projectUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>Startup system and service registration for a DI container.</description>
-    <releaseNotes>Added better scoping support.</releaseNotes>
+    <releaseNotes>Added better scoping support, adjusted service provider to create instances if possible for unscanned types.</releaseNotes>
     <copyright>Copyright $year$</copyright>
     <tags>Startup Modules</tags>
     <dependencies>
