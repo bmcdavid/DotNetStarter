@@ -7,6 +7,8 @@ namespace DotNetStarter
     /// </summary>
     public class StartupEnvironment : IStartupEnvironment
     {
+        private bool? _IsLocal, _IsDev, _IsProd, _IsStage, _IsQA, _IsUAT, _IsTest;
+
         /// <summary>
         /// Constructor
         /// </summary>
@@ -32,7 +34,15 @@ namespace DotNetStarter
         /// Determines if environment name is 'Development'
         /// </summary>
         /// <returns></returns>
-        public virtual bool IsDevelopment() => IsEnvironment("Development");
+        public virtual bool IsDevelopment()
+        {
+            if (_IsDev == null)
+            {
+                _IsDev = IsEnvironment("Development");
+            }
+
+            return _IsDev.Value;
+        }
 
         /// <summary>
         /// Determines if given environment matches current environment.
@@ -45,36 +55,84 @@ namespace DotNetStarter
         /// Determines if environment name is 'Local', typically used for a developer's local machine.
         /// </summary>
         /// <returns></returns>
-        public virtual bool IsLocal() => IsEnvironment("Local");
+        public virtual bool IsLocal()
+        {
+            if (_IsLocal == null)
+            {
+                _IsLocal = IsEnvironment("Local");
+            }
+
+            return _IsLocal.Value;
+        }
 
         /// <summary>
         /// Determines if environment name is 'Production'
         /// </summary>
         /// <returns></returns>
-        public virtual bool IsProduction() => IsEnvironment("Production");
+        public virtual bool IsProduction()
+        {
+            if (_IsProd == null)
+            {
+                _IsProd = IsEnvironment("Production");
+            }
+
+            return _IsProd.Value;
+        }
 
         /// <summary>
         /// Determines if environment name is 'QualityAssurance'
         /// </summary>
         /// <returns></returns>
-        public virtual bool IsQualityAssurance() => IsEnvironment("QualityAssurance");
-        
+        public virtual bool IsQualityAssurance()
+        {
+            if (_IsQA == null)
+            {
+                _IsQA = IsEnvironment("QualityAssurance");
+            }
+
+            return _IsQA.Value;
+        }
+
         /// <summary>
         /// Determines if environment name is 'Staging'
         /// </summary>
         /// <returns></returns>
-        public virtual bool IsStaging() => IsEnvironment("Staging");
+        public virtual bool IsStaging()
+        {
+            if (_IsStage == null)
+            {
+                _IsStage = IsEnvironment("Staging");
+            }
+
+            return _IsStage.Value;
+        }
 
         /// <summary>
         /// Determines if environment name is 'Testing'
         /// </summary>
         /// <returns></returns>
-        public virtual bool IsTesting() => IsEnvironment("Testing");
+        public virtual bool IsTesting()
+        {
+            if (_IsTest == null)
+            {
+                _IsTest = IsEnvironment("Testing");
+            }
+
+            return _IsTest.Value;
+        }
 
         /// <summary>
         /// Determines if environment name is 'UserAcceptanceTesting'
         /// </summary>
         /// <returns></returns>
-        public virtual bool IsUserAcceptanceTesting() => IsEnvironment("UserAcceptanceTesting");
+        public virtual bool IsUserAcceptanceTesting()
+        {
+            if (_IsUAT == null)
+            {
+                _IsUAT = IsEnvironment("UserAcceptanceTesting");
+            }
+
+            return _IsUAT.Value;
+        }
     }
 }
