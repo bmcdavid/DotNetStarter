@@ -1,3 +1,4 @@
+using DotNetStarter.Abstractions;
 using System.Reflection;
 
 #if !NETSTANDARD1_0
@@ -13,8 +14,15 @@ using System.Reflection;
 [assembly: AssemblyDescription(".NET startup system with dependency injection.")]
 [assembly: AssemblyProduct("DotNetStarter")]
 [assembly: AssemblyCopyright("Copyright © {year}")]
-[assembly: AssemblyVersion("1.3.0")]
-[assembly: AssemblyFileVersion("1.3.0")]
-[assembly: AssemblyInformationalVersion("1.3.0 Build: {build} Commit Hash: {commit}")]
+[assembly: AssemblyVersion("1.4.0")]
+[assembly: AssemblyFileVersion("1.4.0")]
+[assembly: AssemblyInformationalVersion("1.4.0 Build: {build} Commit Hash: {commit}")]
 
-[assembly: DotNetStarter.Abstractions.DiscoverableAssembly]
+[assembly: DiscoverableAssembly]
+[assembly: DiscoverTypes
+(
+    typeof(RegisterAttribute),
+    typeof(RegistrationAttribute),
+    typeof(StartupModuleAttribute),
+    typeof(IStartupModule)
+)]

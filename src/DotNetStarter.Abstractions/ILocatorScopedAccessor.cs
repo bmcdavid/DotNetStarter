@@ -1,4 +1,4 @@
-﻿namespace DotNetStarter.Abstractions.Internal
+﻿namespace DotNetStarter.Abstractions
 {
     /// <summary>
     /// Provides access to current scoped locator, and should ONLY be injected in Scoped or Transient services

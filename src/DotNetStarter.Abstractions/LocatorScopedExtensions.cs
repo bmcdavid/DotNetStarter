@@ -1,4 +1,4 @@
-﻿namespace DotNetStarter.Abstractions.Internal
+﻿namespace DotNetStarter.Abstractions
 {
     /// <summary>
     /// Provides DRY for setting current scoped locator;

@@ -3,8 +3,6 @@
 namespace DotNetStarter.Web
 {
     using DotNetStarter.Abstractions;
-    using DotNetStarter.Abstractions.Internal;
-    using DotNetStarter.Web.Internal.Features;
     using System;
     using System.Collections.Generic;
     using System.Linq;
@@ -17,29 +15,26 @@ namespace DotNetStarter.Web
     [Register(typeof(IWebModuleStartupHandler), LifeTime.Singleton)]
     public class WebModuleStartupHandler : IWebModuleStartupHandler
     {
-        private ILocator _Locator;
+        private ILocatorScopedFactory _LocatorScopeFactory;
         private IEnumerable<IStartupModule> _StartupModules;
-        private readonly ExperimentalScopedLocator _ExperimentalScopedLocator;
 
         /// <summary>
         /// Deprecated constructor
         /// </summary>
         /// <param name="context"></param>
         [Obsolete]
-        public WebModuleStartupHandler(IStartupContext context) : this(context.Locator, context.Locator.GetAll<IStartupModule>(), context.Locator.Get<ExperimentalScopedLocator>())
+        public WebModuleStartupHandler(IStartupContext context) : this(context.Locator.Get<ILocatorScopedFactory>(), context.Locator.GetAll<IStartupModule>())
         { }
 
         /// <summary>
         /// Constructor
         /// </summary>
-        /// <param name="locator"></param>
-        /// <param name="startupModules"></param>
-        /// <param name="experimentalScopedLocator"></param>
-        public WebModuleStartupHandler(ILocator locator, IEnumerable<IStartupModule> startupModules, ExperimentalScopedLocator experimentalScopedLocator)
+        /// <param name="locatorScopeFactory"></param>
+        /// <param name="startupModules"></param>        
+        public WebModuleStartupHandler(ILocatorScopedFactory locatorScopeFactory, IEnumerable<IStartupModule> startupModules)
         {
-            _Locator = locator;
-            _StartupModules = startupModules;
-            _ExperimentalScopedLocator = experimentalScopedLocator;
+            _LocatorScopeFactory = locatorScopeFactory;
+            _StartupModules = startupModules;            
         }
 
         /// <summary>
@@ -79,28 +74,8 @@ namespace DotNetStarter.Web
             {
                 var x = sender as HttpApplication;
                 var context = x.Context;
-
-                // todo: v2, temporary until feature is complete and old scope removed
-                if (_ExperimentalScopedLocator?.Enabled == true)
-                {
-                    var scopeCreator = _Locator as ILocatorCreateScope;
-
-                    if (scopeCreator == null)
-                    {
-                        throw new Exception($"New scoped locator is enabled, but {_Locator.GetType().FullName} doesn't implement {typeof(ILocatorCreateScope).FullName}!");
-                    }
-
-                    var scopedLocator = scopeCreator.CreateScope();
-                    context.Items.Add(ScopedLocatorKeyInContext, scopedLocator);
-                }
-                else
-                {
-                    var scopedLocator = _Locator.OpenScope();
-                    var scopedRegistry = scopedLocator as ILocatorRegistry;
-                    scopedRegistry?.Add(typeof(ILocator), scopedLocator); // override ILocator resolves to use scoped version
-                    context.Items.Add(ScopedLocatorKeyInContext, scopedLocator);
-                }
-
+                var scopedLocator = _LocatorScopeFactory.CreateScope();
+                context.Items.Add(ScopedLocatorKeyInContext, scopedLocator);
             };
 
             applicationContext.EndRequest += (sender, args) =>

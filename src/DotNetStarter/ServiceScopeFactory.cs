@@ -1,6 +1,5 @@
 ﻿using System;
 using DotNetStarter.Abstractions;
-using DotNetStarter.Abstractions.Internal;
 
 #if NETSTANDARD1_0 || NETSTANDARD1_1 || NETSTANDARD2_0
 using Microsoft.Extensions.DependencyInjection;
@@ -29,16 +28,26 @@ namespace DotNetStarter
     public class ServiceScopeFactory : IServiceScopeFactory
     {
         private readonly ILocator Locator;
-        private readonly ILocatorScopeFactory _LocatorScopeFactory;
+        private readonly ILocatorScopedFactory _LocatorScopeFactory;
+
+        //todo: v2 remove first constructor, and only inject ILocatorScopedFactory
+
+        /// <summary>
+        /// Deprecated Constructor
+        /// </summary>
+        /// <param name="locator"></param>
+        [Obsolete]
+        public ServiceScopeFactory(ILocator locator) : this(locator, locator.Get<ILocatorScopedFactory>()) { }
 
         /// <summary>
         /// Constructor
         /// </summary>
         /// <param name="locator"></param>
-        public ServiceScopeFactory(ILocator locator)
+        /// <param name="locatorScopedFactory"></param>
+        public ServiceScopeFactory(ILocator locator, ILocatorScopedFactory locatorScopedFactory)
         {
             Locator = locator;
-            //_LocatorScopeFactory = locatorScopeFactory;
+            _LocatorScopeFactory = locatorScopedFactory;
         }
 
         /// <summary>
@@ -47,16 +56,9 @@ namespace DotNetStarter
         /// <returns></returns>
         public IServiceScope CreateScope()
         {
-            ILocator scope = null;
-            //scope = _LocatorScopeFactory.CreateScope(null);
-            //var providerCreator = scope.Get<Func<ILocator, IServiceProvider>>();
+            var scope = _LocatorScopeFactory.CreateScope();
 
-            //return new ServiceScope(providerCreator.Invoke(scope));
-
-            scope = Locator.OpenScope();
-            (scope as ILocatorRegistry).Add(typeof(ILocator), scope);// add scope locator to be resolved so root container isn't disposed
-
-            return new ServiceScope(scope.Get<IServiceProvider>());
+            return scope.Get<IServiceScope>();
         }
     }
 }

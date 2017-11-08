@@ -1,9 +1,9 @@
-﻿namespace DotNetStarter.Abstractions.Internal
+﻿namespace DotNetStarter.Abstractions
 {
     /// <summary>
     /// Creates scoped locators
     /// </summary>
-    public interface ILocatorScopeFactory
+    public interface ILocatorScopedFactory
     {
         /// <summary>
         /// Creates a child scope of given scoped locator

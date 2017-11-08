@@ -33,13 +33,28 @@
         /// </summary>
         public ILocator Locator { get; }
 
+        private readonly IServiceProviderTypeChecker _ServiceProviderTypeChecker;
+
+        //todo: v2 remove old constructors
+    
         /// <summary>
         /// Constructor
         /// </summary>
         /// <param name="locator"></param>
-        public ServiceProvider(ILocator locator)
+        [Obsolete]
+        public ServiceProvider(ILocator locator) : this(locator.Get<IServiceProviderTypeChecker>(), locator.Get<ILocatorScopedAccessor>())
         {
-            Locator = locator;
+        }
+
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="serviceProviderTypeChecker"></param>
+        /// <param name="locatorScopedAccessor"></param>
+        public ServiceProvider(IServiceProviderTypeChecker serviceProviderTypeChecker, ILocatorScopedAccessor locatorScopedAccessor)
+        {
+            Locator = locatorScopedAccessor.CurrentScope;
+            _ServiceProviderTypeChecker = serviceProviderTypeChecker;
         }
 
         /// <summary>
@@ -53,11 +68,16 @@
             {
                 return Locator.Get(serviceType);
             }
-            catch
+            catch (Exception e)
             {
+                if (_ServiceProviderTypeChecker.IsScannedAssembly(serviceType, e))
+                {
+                    throw;
+                }
+
                 return null;
             }
-            }
+        }
 
         /// <summary>
         /// Dispose

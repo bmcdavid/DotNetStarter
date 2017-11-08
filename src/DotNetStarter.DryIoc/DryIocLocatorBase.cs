@@ -1,7 +1,6 @@
 ﻿namespace DotNetStarter
 {
     using DotNetStarter.Abstractions;
-    using DotNetStarter.Abstractions.Internal;
     using DryIoc;
     using System;
     using System.Collections.Generic;
@@ -40,7 +39,7 @@
 
         /// <summary>
         /// Allows access to wrapped container
-        /// </summary>        
+        /// </summary>
         public virtual object InternalContainer => _Container;
 
         /// <summary>
@@ -131,7 +130,7 @@
 
         /// <summary>
         /// Creates/opens locator scope
-        /// </summary>        
+        /// </summary>
         /// <returns></returns>
         public virtual ILocatorScoped CreateScope()
         {

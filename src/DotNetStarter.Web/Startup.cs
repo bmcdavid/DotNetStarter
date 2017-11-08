@@ -1,6 +1,7 @@
 ﻿#if !NETSTANDARD1_3
 
 using DotNetStarter.Abstractions;
+using System;
 
 namespace DotNetStarter.Web
 {
@@ -14,16 +15,16 @@ namespace DotNetStarter.Web
         /// If set to true (default is false), then a 'PreApplicationStartMethodAttribute' assembly attribute (https://msdn.microsoft.com/en-us/library/system.web.preapplicationstartmethodattribute.aspx)
         /// must be used to execute DotNetStarter.Web.Startup.RegisterWebModuleStartup
         /// </summary>
+        [Obsolete("No longed required, will be removed in version 2.")]
         public static bool DisableStartupModuleRegistration { get; set; }
+
+        private static bool IsRegistered = false;
 
         void IStartupModule.Shutdown(IStartupEngine engine) { }
 
         void IStartupModule.Startup(IStartupEngine engine)
         {
-            if (DisableStartupModuleRegistration == false)
-            {
-                RegisterWebModuleStartup();
-            }
+            RegisterWebModuleStartup();
         }
 
         /// <summary>
@@ -31,6 +32,11 @@ namespace DotNetStarter.Web
         /// </summary>
         public static void RegisterWebModuleStartup()
         {
+            if (IsRegistered)
+            {
+                return;
+            }
+
             try
             {
                 var moduleType = typeof(WebModuleStartup);
@@ -47,6 +53,8 @@ namespace DotNetStarter.Web
                 throw new System.InvalidOperationException($"Please execute {typeof(ApplicationContext).FullName}.{nameof(ApplicationContext.Startup)} in a {typeof(System.Web.PreApplicationStartMethodAttribute)} startup method or the global asax constructor!");
 #endif
             }
+
+            IsRegistered = true;
         }
     }
 }

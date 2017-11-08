@@ -9,29 +9,26 @@
     <projectUrl>https://bmcdavid.github.io/DotNetStarter/</projectUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>Abstractions for a startup system and service registration for a DI container.</description>
-    <releaseNotes>Now supporting netstandard1.0! Added IAssemblyScanTypeMatcher.</releaseNotes>
+    <releaseNotes>Added better locator scoping support via ILocatorScopedFactory, ILocatorScoped, ILocatorScopedAccessor.</releaseNotes>
     <copyright>Copyright $year$</copyright>
     <tags>Startup Modules Abstractions</tags>
     <dependencies>
       <group targetFramework="net35">
-        <dependency id="DotNetStarter.RegistrationAbstractions" version="[1,)" />
+        <dependency id="DotNetStarter.RegistrationAbstractions" version="[1.0.1,)" />
       </group>
       <group targetFramework="net40">
-        <dependency id="DotNetStarter.RegistrationAbstractions" version="[1,)" />
+        <dependency id="DotNetStarter.RegistrationAbstractions" version="[1.0.1,)" />
       </group>
       <group targetFramework="net45">
-        <dependency id="DotNetStarter.RegistrationAbstractions" version="[1,)" />
+        <dependency id="DotNetStarter.RegistrationAbstractions" version="[1.0.1,)" />
       </group>
       <group targetFramework="netstandard1.0">
-        <dependency id="DotNetStarter.RegistrationAbstractions" version="[1,)" />
+        <dependency id="DotNetStarter.RegistrationAbstractions" version="[1.0.1,)" />
         <dependency id="NETStandard.Library" version="1.6.0" exclude="Build,Analyzers" />
       </group>
       <group targetFramework="netstandard1.1">
-        <dependency id="DotNetStarter.RegistrationAbstractions" version="[1,)" />
+        <dependency id="DotNetStarter.RegistrationAbstractions" version="[1.0.1,)" />
         <dependency id="NETStandard.Library" version="1.6.0" exclude="Build,Analyzers" />
-        <!--<dependency id="System.Collections" version="4.0.11" />
-        <dependency id="System.Reflection" version="4.1.0" />
-        <dependency id="System.Reflection.Extensions" version="4.0.1" />-->
       </group>
     </dependencies>
   </metadata>

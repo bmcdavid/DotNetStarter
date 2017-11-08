@@ -14,32 +14,21 @@
     <tags>Startup Modules DI IOC</tags>
     <dependencies>
       <group targetFramework="net35">
-        <dependency id="DotNetStarter" version="[1.2,2)" />
+        <dependency id="DotNetStarter" version="[1.4,2)" />
         <dependency id="DryIoc.dll" version="[2.7,3)" />
       </group>
       <group targetFramework="net40">
-        <dependency id="DotNetStarter" version="[1.2,2)" />
+        <dependency id="DotNetStarter" version="[1.4,2)" />
         <dependency id="DryIoc.dll" version="[2.7,3)" />
       </group>
       <group targetFramework="net45">
-        <dependency id="DotNetStarter" version="[1.2,2)" />
+        <dependency id="DotNetStarter" version="[1.4,2)" />
         <dependency id="DryIoc.dll" version="[2.7,3)" />
       </group>
       <group targetFramework="netstandard1.0">
-        <dependency id="DotNetStarter" version="[1.2,2)" />
+        <dependency id="DotNetStarter" version="[1.4,2)" />
         <dependency id="DryIoc.dll" version="[2.7,3)" />
         <dependency id="NETStandard.Library" version="1.6.0" exclude="Build,Analyzers" />
-        <!--<dependency id="System.Collections" version="4.0.11" />
-        <dependency id="System.Diagnostics.Debug" version="4.0.11" />
-        <dependency id="System.Diagnostics.Tools" version="4.0.1" />
-        <dependency id="System.Linq" version="4.1.0" />
-        <dependency id="System.Linq.Expressions" version="4.1.0" />
-        <dependency id="System.Reflection" version="4.1.0" />
-        <dependency id="System.Reflection.Extensions" version="4.0.1" />
-        <dependency id="System.Runtime" version="4.1.0" />
-        <dependency id="System.Runtime.Extensions" version="4.1.0" />
-        <dependency id="System.Runtime.InteropServices" version="4.1.0" />
-        <dependency id="System.Threading" version="4.0.11" />-->
       </group>
     </dependencies>
   </metadata>

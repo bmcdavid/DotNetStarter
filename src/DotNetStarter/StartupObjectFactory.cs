@@ -93,7 +93,7 @@ namespace DotNetStarter
         /// Creates default initalization logger.
         /// </summary>
         /// <returns></returns>
-        public virtual IStartupLogger CreateStartupLogger() => new StringLogger();
+        public virtual IStartupLogger CreateStartupLogger() => new StringLogger(LogLevel.Error, 1024000);
 
         /// <summary>
         /// Creates default initalization handler.

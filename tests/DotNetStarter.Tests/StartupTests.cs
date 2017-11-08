@@ -52,12 +52,12 @@ namespace DotNetStarter.Tests
         [TestMethod]
         public void ShouldLogExceptionGreatherThanThreshold()
         {
-            var sut = new StringLogger();
+            var sut = new StringLogger(LogLevel.Error, 10000);
             var e = new Exception("Testing");
             sut.LogException("Test", e, typeof(StartupTest), LogLevel.Error);
             Assert.IsFalse(string.IsNullOrEmpty(sut.ToString()));
 
-            sut = new StringLogger();
+            sut = new StringLogger(LogLevel.Error, 10000);
             sut.LogException("Test", e, typeof(StartupTest), LogLevel.Fatal);
             Assert.IsFalse(string.IsNullOrEmpty(sut.ToString()));
         }
@@ -65,10 +65,23 @@ namespace DotNetStarter.Tests
         [TestMethod]
         public void ShouldLogNoExceptionLessThanThreshold()
         {
-            var sut = new StringLogger(LogLevel.Fatal);
+            var sut = new StringLogger(LogLevel.Fatal, 10000);
             var e = new Exception("Testing");
             sut.LogException("Test", e, typeof(StartupTest), LogLevel.Error);
             Assert.IsTrue(string.IsNullOrEmpty(sut.ToString()));
+        }
+
+        [TestMethod]
+        public void ShouldClearLog()
+        {
+            var sut = new StringLogger(LogLevel.Debug, 10);
+            var e = new Exception("Testing");
+            sut.LogException("Testing Clear", e, typeof(StartupTest), LogLevel.Error);
+            Assert.IsFalse(string.IsNullOrEmpty(sut.ToString()));
+
+            sut.LogException("New log", e, typeof(StartupTest), LogLevel.Error);
+            Assert.IsFalse(sut.ToString().Contains("Testing Clear"));
+            Assert.IsTrue(sut.ToString().Contains("New log"));
         }
 
         [TestMethod]

@@ -3,28 +3,39 @@ using DotNetStarter.Web;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web;
 using System.Web.Mvc;
 
 namespace DotNetStarter.Extensions.Mvc
 {
-    // todo: remove obsolete, and change try catch to only return null if type isn't in a scanned assembly
-
     /// <summary>
     /// Requires DotNetStarter.Web and Microsoft.AspNet.Mvc packages
     /// </summary>
-    [Obsolete("Please use NullableMvcDependencyResolver instead!")]
     public class ScopedDependencyResolver : IDependencyResolver
     {
+        IHttpContextProvider _HttpContextProvider;
         ILocator _Locator;
+        IServiceProviderTypeChecker _ServiceProviderTypeChecker;
+
+        //todo: v2 remove obsolete constructor
 
         /// <summary>
         /// Constructor
         /// </summary>
         /// <param name="locator"></param>
-        public ScopedDependencyResolver(ILocator locator)
+        [Obsolete("Please use other constructor")]
+        public ScopedDependencyResolver(ILocator locator) : this(locator, null, null) { }
+
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="locator"></param>
+        /// <param name="serviceProviderTypeChecker"></param>
+        /// <param name="httpContextProvider"></param>
+        public ScopedDependencyResolver(ILocator locator, IServiceProviderTypeChecker serviceProviderTypeChecker, IHttpContextProvider httpContextProvider)
         {
             _Locator = locator;
+            _ServiceProviderTypeChecker = serviceProviderTypeChecker ?? locator.Get<IServiceProviderTypeChecker>();
+            _HttpContextProvider = httpContextProvider ?? locator.Get<IHttpContextProvider>();
         }
 
         /// <summary>
@@ -32,14 +43,19 @@ namespace DotNetStarter.Extensions.Mvc
         /// </summary>
         /// <param name="serviceType"></param>
         /// <returns></returns>
-        public object GetService(Type serviceType)
+        public virtual object GetService(Type serviceType)
         {
             try
             {
                 return ResolveLocator().Get(serviceType);
             }
-            catch
+            catch (Exception e)
             {
+                if (_ServiceProviderTypeChecker.IsScannedAssembly(serviceType, e))
+                {
+                    throw;
+                }
+
                 return null;
             }
         }
@@ -49,21 +65,31 @@ namespace DotNetStarter.Extensions.Mvc
         /// </summary>
         /// <param name="serviceType"></param>
         /// <returns></returns>
-        public IEnumerable<object> GetServices(Type serviceType)
+        public virtual IEnumerable<object> GetServices(Type serviceType)
         {
             try
             {
                 return ResolveLocator().GetAll(serviceType);
             }
-            catch
+            catch(Exception e)
             {
+                if (_ServiceProviderTypeChecker.IsScannedAssembly(serviceType, e))
+                {
+                    throw;
+                }
+
                 return Enumerable.Empty<object>();
             }
         }
 
-        private ILocator ResolveLocator()
+        /// <summary>
+        /// Tries to get the scoped locator from current HttpContext
+        /// </summary>
+        /// <returns></returns>
+        protected virtual ILocator ResolveLocator()
         {
-            return HttpContext.Current?.GetScopedLocator() ?? _Locator;
+            // todo: v2, throw exception if GetScopedLocator() is null instead of using _Locator, since it messes up scoped registrations
+            return _HttpContextProvider.CurrentContext?.GetScopedLocator() ?? _Locator;
         }
     }
 }

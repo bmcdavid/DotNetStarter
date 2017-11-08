@@ -129,7 +129,13 @@ namespace DotNetStarter.Tests.Mocks
         public override bool FilterAssembly(Assembly assembly) => base.FilterAssembly(assembly);
     }
 
-    internal class TestLogger : StringLogger { }
+    internal class TestLogger : StringLogger
+    {
+        public TestLogger() : base(LogLevel.Error, 100000)
+        {
+
+        }
+    }
 
     [StartupModule]
     public class ExcludeModule : IStartupModule

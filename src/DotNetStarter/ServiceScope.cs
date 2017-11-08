@@ -1,7 +1,8 @@
 ﻿using System;
+using DotNetStarter.Abstractions;
 
 #if NETSTANDARD1_0 || NETSTANDARD1_1 || NETSTANDARD2_0
-    using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection;
 #endif
 
 namespace DotNetStarter
@@ -22,6 +23,7 @@ namespace DotNetStarter
     /// <summary>
     /// Access to scoped service provider
     /// </summary>
+    [Register(typeof(IServiceScope), LifeTime.Scoped)]
     public class ServiceScope : IServiceScope
     {
         IServiceProvider Provider;

@@ -31,7 +31,7 @@ namespace DotNetStarter.Web.Tests.Mocks
 
     public class DisabledWebModuleHandler : DotNetStarter.Web.WebModuleStartupHandler
     {
-        public DisabledWebModuleHandler(ILocator locator, IEnumerable<IStartupModule> modules) : base(locator, modules, null)
+        public DisabledWebModuleHandler(ILocator locator, IEnumerable<IStartupModule> modules) : base(locator.Get<ILocatorScopedFactory>(), modules)
         {
 
         }

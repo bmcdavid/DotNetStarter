@@ -3,32 +3,47 @@ using DotNetStarter.Web;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web;
 using System.Web.Http.Dependencies;
 
 namespace DotNetStarter.Extensions.WebApi
 {
-    // todo: remove obsolete, and change try catch to only return null if type isn't in a scanned assembly
-
     /// <summary>
     /// Dependency Resolver for WebApi
     /// </summary>
-    [Obsolete("Please use NullableWebApiDependencyResolver instead!")]
     public class WebApiDependencyResolver : IDependencyResolver
     {
-        static readonly Type _LocatorType = typeof(ILocator);
         ILocator _Locator;
         IPipelineScope _PipelineScope;
+        private readonly IServiceProviderTypeChecker _ServiceProviderTypeChecker;
+        private readonly IHttpContextProvider _HttpContextProvider;
+        private readonly ILocatorScopedFactory _LocatorScopeFactory;
 
         /// <summary>
         /// Constructor
         /// </summary>
         /// <param name="locator"></param>
         /// <param name="pipelineScope">Optional: if null, retrieved from locator</param>
-        public WebApiDependencyResolver(ILocator locator, IPipelineScope pipelineScope = null)
+        public WebApiDependencyResolver(ILocator locator, IPipelineScope pipelineScope) : this(locator, pipelineScope, serviceProviderTypeChecker: null)
         {
             _Locator = locator;
             _PipelineScope = pipelineScope ?? _Locator.Get<IPipelineScope>();
+        }
+
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="locator"></param>
+        /// <param name="pipelineScope">Optional: if null, retrieved from locator</param>
+        /// <param name="serviceProviderTypeChecker"></param>
+        /// <param name="httpContextProvider"></param>
+        /// <param name="locatorScopeFactory"></param>
+        public WebApiDependencyResolver(ILocator locator, IPipelineScope pipelineScope = null, IServiceProviderTypeChecker serviceProviderTypeChecker = null, IHttpContextProvider httpContextProvider = null, ILocatorScopedFactory locatorScopeFactory = null)
+        {
+            _Locator = locator;
+            _PipelineScope = pipelineScope ?? _Locator.Get<IPipelineScope>();
+            _ServiceProviderTypeChecker = serviceProviderTypeChecker ?? locator.Get<IServiceProviderTypeChecker>();
+            _HttpContextProvider = httpContextProvider ?? locator.Get<IHttpContextProvider>();
+            _LocatorScopeFactory = locatorScopeFactory ?? locator.Get<ILocatorScopedFactory>();
         }
 
         /// <summary>
@@ -37,7 +52,7 @@ namespace DotNetStarter.Extensions.WebApi
         /// <returns></returns>
         public IDependencyScope BeginScope()
         {
-            return new WebApiDependencyResolver(_Locator.OpenScope());
+            return new WebApiDependencyResolver(_LocatorScopeFactory.CreateScope(), _PipelineScope, _ServiceProviderTypeChecker, _HttpContextProvider);
         }
 
         /// <summary>
@@ -59,8 +74,13 @@ namespace DotNetStarter.Extensions.WebApi
             {
                 return ResolveLocator().Get(serviceType);
             }
-            catch
+            catch (Exception e)
             {
+                if (_ServiceProviderTypeChecker.IsScannedAssembly(serviceType, e))
+                {
+                    throw;
+                }
+
                 return null;
             }
         }
@@ -76,15 +96,20 @@ namespace DotNetStarter.Extensions.WebApi
             {
                 return ResolveLocator().GetAll(serviceType);
             }
-            catch
+            catch (Exception e)
             {
+                if (_ServiceProviderTypeChecker.IsScannedAssembly(serviceType, e))
+                {
+                    throw;
+                }
+
                 return Enumerable.Empty<object>();
             }
         }
-
+        
         private ILocator ResolveLocator()
         {
-            return _PipelineScope.Enabled == true ? (HttpContext.Current?.GetScopedLocator() ?? _Locator) : _Locator;
+            return _PipelineScope.Enabled == true ? (_HttpContextProvider.CurrentContext?.GetScopedLocator() ?? _Locator) : _Locator;
         }
     }
 }

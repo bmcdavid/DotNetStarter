@@ -19,9 +19,11 @@
         /// </summary>
         public MiddlewareResponse()
         {
-            IDictionary<string, object> environment = new Dictionary<string, object>(StringComparer.Ordinal);
-            environment[MiddlewareOwinConstants.RequestHeaders] = new Dictionary<string, string[]>(StringComparer.OrdinalIgnoreCase);
-            environment[MiddlewareOwinConstants.ResponseHeaders] = new Dictionary<string, string[]>(StringComparer.OrdinalIgnoreCase);
+            IDictionary<string, object> environment = new Dictionary<string, object>(StringComparer.Ordinal)
+            {
+                [MiddlewareOwinConstants.RequestHeaders] = new Dictionary<string, string[]>(StringComparer.OrdinalIgnoreCase),
+                [MiddlewareOwinConstants.ResponseHeaders] = new Dictionary<string, string[]>(StringComparer.OrdinalIgnoreCase)
+            };
             Environment = environment;
         }
 
@@ -31,12 +33,7 @@
         /// <param name="environment">OWIN environment dictionary which stores state information about the request, response and relevant server state.</param>
         public MiddlewareResponse(IDictionary<string, object> environment)
         {
-            if (environment == null)
-            {
-                throw new ArgumentNullException(nameof(environment));
-            }
-
-            Environment = environment;
+            Environment = environment ?? throw new ArgumentNullException(nameof(environment));
         }
 
         /// <summary>
@@ -97,8 +94,7 @@
         {
             get
             {
-                long value;
-                if (long.TryParse(MiddlewareHelpers.GetHeader(RawHeaders, MiddlewareOwinConstants.Headers.ContentLength), out value))
+                if (long.TryParse(MiddlewareHelpers.GetHeader(RawHeaders, MiddlewareOwinConstants.Headers.ContentLength), out long value))
                 {
                     return value;
                 }
@@ -136,9 +132,8 @@
         {
             get
             {
-                DateTimeOffset value;
                 if (DateTimeOffset.TryParse(MiddlewareHelpers.GetHeader(RawHeaders, MiddlewareOwinConstants.Headers.Expires),
-                    CultureInfo.InvariantCulture, DateTimeStyles.AssumeUniversal, out value))
+                    CultureInfo.InvariantCulture, DateTimeStyles.AssumeUniversal, out DateTimeOffset value))
                 {
                     return value;
                 }
@@ -285,8 +280,7 @@
 
         private T Get<T>(string key, T fallback)
         {
-            object value;
-            return Environment.TryGetValue(key, out value) ? (T)value : fallback;
+            return Environment.TryGetValue(key, out object value) ? (T)value : fallback;
         }
 
         /// <summary>

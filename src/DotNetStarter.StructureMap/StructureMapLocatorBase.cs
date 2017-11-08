@@ -1,7 +1,6 @@
 ﻿namespace DotNetStarter
 {
     using DotNetStarter.Abstractions;
-    using DotNetStarter.Abstractions.Internal;
     using StructureMap;
     using System;
     using System.Collections.Generic;
@@ -36,7 +35,7 @@
         public virtual object InternalContainer => _Container;
 
         /// <summary>
-        /// Build up objects properties 
+        /// Build up objects properties
         /// </summary>
         /// <param name="target"></param>
         /// <returns></returns>
@@ -116,7 +115,7 @@
 
         /// <summary>
         /// Creates/opens locator scope
-        /// </summary>        
+        /// </summary>
         /// <returns></returns>
         public virtual ILocatorScoped CreateScope()
         {

@@ -1,7 +1,5 @@
-﻿namespace DotNetStarter.Abstractions.Internal
+﻿namespace DotNetStarter.Abstractions
 {
-    //todo: remove ILocatorCreateScope,ILocatorScoped,ILocatorScopedAccessor, ILocatorScopeFactory, ILocatorScopedSetter from internal
-
     /// <summary>
     /// Creates/Opens a locator scope
     /// </summary>

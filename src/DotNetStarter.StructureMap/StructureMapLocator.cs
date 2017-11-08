@@ -86,36 +86,43 @@
             {
                 case LifeTime.Transient:
                     return Lifecycles.Transient;
+
                 case LifeTime.Singleton:
                     return Lifecycles.Singleton;
+
                 case LifeTime.HttpRequest:
                 case LifeTime.Scoped:
                     return Lifecycles.Container;
+
                 case LifeTime.AlwaysUnique:
                     return Lifecycles.Unique;
-
             }
 
             return Lifecycles.Transient;
         }
 #else
+
         private InstanceScope ConvertLifeTime(LifeTime lifetime)
         {
             switch (lifetime)
             {
                 case LifeTime.Transient:
                     return InstanceScope.Transient;
+
                 case LifeTime.Scoped: // assumption here that this is for a web app.
                 case LifeTime.HttpRequest:
                     return InstanceScope.HttpContext;
+
                 case LifeTime.Singleton:
                     return InstanceScope.Singleton;
+
                 case LifeTime.AlwaysUnique:
                     return InstanceScope.Unique;
             }
 
             return InstanceScope.Transient;
         }
+
 #endif
 
         /// <summary>

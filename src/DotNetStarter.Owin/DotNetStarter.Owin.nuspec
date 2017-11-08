@@ -9,17 +9,17 @@
     <projectUrl>https://bmcdavid.github.io/DotNetStarter/</projectUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>Owin Startup system with optional support for DI/IOC.</description>
-    <releaseNotes>Signed version.</releaseNotes>
+    <releaseNotes>Breaking change: scoped locators can no longer register.</releaseNotes>
     <copyright>Copyright $year$</copyright>
     <tags>Startup Owin</tags>
     <dependencies>
       <!--todo: review these dependencies-->
       <group targetFramework="net45">
-        <dependency id="DotNetStarter" version="[1.2,2)" />
+        <dependency id="DotNetStarter" version="[1.4,)" />
         <dependency id="Owin" version="[1,)" />
       </group>
       <group targetFramework="netstandard1.3">
-        <dependency id="DotNetStarter" version="[1.2,2)" />
+        <dependency id="DotNetStarter" version="[1.4,)" />
         <dependency id="Microsoft.AspNetCore.Http.Abstractions" version="[1,2)" />
         <dependency id="Microsoft.Extensions.DependencyInjection" version="[1,2)" />
       </group>

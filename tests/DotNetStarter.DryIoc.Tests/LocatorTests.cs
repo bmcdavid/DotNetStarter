@@ -50,7 +50,7 @@ namespace DotNetStarter.Tests
         public void ShouldCreateScopeWithFactory()
         {
             var locator = _Context.Service.Locator;
-            var factory = locator.Get<ILocatorScopeFactory>();
+            var factory = locator.Get<ILocatorScopedFactory>();
             var noScopeTest = locator.Get<ScopeTest>();
             System.Threading.Thread.Sleep(1);
 
@@ -76,7 +76,7 @@ namespace DotNetStarter.Tests
         [TestMethod]
         public void ShouldGetLocatorScopedFromAccessor()
         {
-            var factory = _Context.Service.Locator.Get<ILocatorScopeFactory>();
+            var factory = _Context.Service.Locator.Get<ILocatorScopedFactory>();
             var scope1 = factory.CreateScope();
 
             Assert.IsNotNull(scope1.Get<ILocatorScopedAccessor>().CurrentScope);
@@ -119,7 +119,7 @@ namespace DotNetStarter.Tests
         public void ShouldResolveScopedTypeWithInjectedLocator()
         {
             var locator = _Context.Service.Locator;
-            var factory = locator.Get<ILocatorScopeFactory>();
+            var factory = locator.Get<ILocatorScopedFactory>();
 
             using (var scopedLocator = factory.CreateScope())
             {

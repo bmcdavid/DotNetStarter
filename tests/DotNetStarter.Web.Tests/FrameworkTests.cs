@@ -21,7 +21,7 @@ namespace DotNetStarter.Web.Tests
                 new AssemblyScanner(),
                 new DependencyFinder(),
                 new DependencySorter(),
-                new StringLogger(),
+                new StringLogger(LogLevel.Error, 10000),
                 new StartupModuleFilter(),
                 new TimedTaskManager()
             );
@@ -36,14 +36,6 @@ namespace DotNetStarter.Web.Tests
             Assert.IsNotNull(x.Logger);
             Assert.IsNotNull(x.ModuleFilter);
             Assert.IsNotNull(x.TimedTaskManager);
-        }
-
-        [TestMethod]
-        public void ShouldResolveExpirmentalFeatureAsFalseByDefault()
-        {
-            var sut = DotNetStarter.ApplicationContext.Default.Locator.Get<Internal.Features.ExperimentalScopedLocator>();
-
-            Assert.IsFalse(sut.Enabled);
         }
 
         [TestMethod]

@@ -1,7 +1,6 @@
 ﻿namespace DotNetStarter
 {
     using DotNetStarter.Abstractions;
-    using DotNetStarter.Abstractions.Internal;
     using DryIoc;
 
     /// <summary>

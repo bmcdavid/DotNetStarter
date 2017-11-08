@@ -1,13 +1,12 @@
 ﻿using DotNetStarter.Abstractions;
-using DotNetStarter.Abstractions.Internal;
 
-namespace DotNetStarter.Internal
+namespace DotNetStarter
 {
     /// <summary>
     /// Default ILocatorScopeFactory implementation
     /// </summary>
-    [Register(typeof(ILocatorScopeFactory), LifeTime.Singleton)]
-    public class LocatorScopeFactory : ILocatorScopeFactory
+    [Register(typeof(ILocatorScopedFactory), LifeTime.Singleton)]
+    public class LocatorScopeFactory : ILocatorScopedFactory
     {
         private readonly ILocator _Locator;
 
@@ -25,7 +24,7 @@ namespace DotNetStarter.Internal
         /// </summary>
         /// <param name="locatorScoped"></param>
         /// <returns></returns>
-        public ILocatorScoped CreateChildScope(ILocatorScoped locatorScoped)
+        public virtual ILocatorScoped CreateChildScope(ILocatorScoped locatorScoped)
         {
             return _Create(locatorScoped);
         }
@@ -34,7 +33,7 @@ namespace DotNetStarter.Internal
         /// Creates an initial scope
         /// </summary>
         /// <returns></returns>
-        public ILocatorScoped CreateScope()
+        public virtual ILocatorScoped CreateScope()
         {
             return _Create(_Locator);
         }

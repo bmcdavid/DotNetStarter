@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace DotNetStarter.Abstractions.Internal
+namespace DotNetStarter.Abstractions
 {
     /// <summary>
     /// Represents a locator which is scoped

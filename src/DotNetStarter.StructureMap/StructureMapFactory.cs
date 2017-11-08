@@ -5,7 +5,7 @@
 namespace DotNetStarter
 {
     /// <summary>
-    /// Locator with Structuremap Container 
+    /// Locator with Structuremap Container
     /// </summary>
     public class StructureMapFactory : ILocatorRegistryFactory
     {

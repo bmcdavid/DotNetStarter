@@ -5,7 +5,7 @@ namespace DotNetStarter
     using DotNetStarter.Abstractions;
 
     /// <summary>
-    /// Locator with DryIoc Container 
+    /// Locator with DryIoc Container
     /// </summary>
     public class DryIocLocatorFactory : ILocatorRegistryFactory
     {

@@ -1,11 +1,8 @@
 ﻿using DotNetStarter.Abstractions;
-using DotNetStarter.Extensions.Mvc;
 using EPiServer.Framework;
 using EPiServer.Framework.Initialization;
 using EPiServer.ServiceLocation;
-using StructureMap;
 using System;
-using System.Web.Mvc;
 
 // instructs DotNetStarter to use this to create ILocatorRegistry
 [assembly: LocatorRegistryFactory(typeof(DotNetStarter.Extensions.Episerver.EpiserverLocatorSetup))]
@@ -15,17 +12,23 @@ namespace DotNetStarter.Extensions.Episerver
     /// <summary>
     /// Creates a DotNetStarter ILocatorFactory using Episerver's structuremap instance
     /// </summary>
-    [ModuleDependency]
+    [ModuleDependency(typeof(ServiceContainerInitialization))]
     public class EpiserverLocatorSetup : IConfigurableModule, ILocatorRegistryFactory
     {
-        static IContainer _Container; // must be static to share between instances
+        static StructureMap.IContainer _Container; // must be static to share between instances
 
-        // todo: for Epi11 remove ContainerSet, add a new static Func<ServiceConfigurationContext,ILocatorRegistry> CreateRegistry = null;
+        static ILocatorRegistry _LocatorRegistry;
 
         /// <summary>
         /// Invokable action to startup DotNetStarter when the Episerver container is set. Use a System.Web.PreApplicationStartMethod to assign a startup action;
         /// </summary>
-        public static Action<IContainer> ContainerSet = null;
+        [Obsolete]
+        public static Action<StructureMap.IContainer> ContainerSet = null;
+
+        /// <summary>
+        /// Invoked to create a locator registry since Structuremap is now modular in Episerver. Use a System.Web.PreApplicationStartMethod to assign a startup func;
+        /// </summary>
+        public static Func<ServiceConfigurationContext, ILocatorRegistry> CreateLocatorRegistry = null;
 
         /// <summary>
         /// Constructor
@@ -33,8 +36,11 @@ namespace DotNetStarter.Extensions.Episerver
         /// <param name="context"></param>
         public void ConfigureContainer(ServiceConfigurationContext context)
         {
+            _LocatorRegistry = CreateLocatorRegistry?.Invoke(context);
+
+            // todo: remove lines below in Epi v11
             var container = context.Container;
-            _Container = container; // store the containr for use in CreateRegistry  
+            _Container = container; // store the containr for use in CreateRegistry
             ContainerSet?.Invoke(container);
         }
 
@@ -44,10 +50,15 @@ namespace DotNetStarter.Extensions.Episerver
         /// <returns></returns>
         public ILocatorRegistry CreateRegistry()
         {
+            if (_LocatorRegistry != null)
+                return _LocatorRegistry;
+
+            // todo: remove lines below in Epi v11
+
             if (_Container == null)
             {
                 throw new NullReferenceException($"{typeof(ApplicationContext).FullName}.{nameof(ApplicationContext.Startup)}" +
-                    $" was invoked before Episerver initialization. Please assign an action to {typeof(EpiserverLocatorSetup).FullName}.{nameof(ContainerSet)}" +
+                    $" was invoked before Episerver initialization. Please assign an action to {typeof(EpiserverLocatorSetup).FullName}.ContainerSet" +
                     " to invoke startup when the container reference is set in the global.asax class constructor.");
             }
 
@@ -63,8 +74,8 @@ namespace DotNetStarter.Extensions.Episerver
             // ensure DotNetStarter has started
             context.InitComplete += (sender, args) =>
             {
-                //todo: remove this and just access ApplicationContext.Default.Locator
-                DependencyResolver.SetResolver(new NullableMvcDependencyResolver(ApplicationContext.Default.Locator));
+                // ensures DotNetStarter has started
+                var locator = ApplicationContext.Default.Locator;
             };
         }
 

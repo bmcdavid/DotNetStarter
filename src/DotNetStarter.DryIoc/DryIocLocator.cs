@@ -17,7 +17,7 @@
         public DryIocLocator(IContainer container = null) : base(container) { }
 
         /// <summary>
-        /// Adds service type to container, given its implementation type. 
+        /// Adds service type to container, given its implementation type.
         /// </summary>
         /// <param name="serviceType"></param>
         /// <param name="serviceImplementation"></param>
@@ -30,7 +30,7 @@
         }
 
         /// <summary>
-        /// Adds service type to container, given its implementation type via generics. 
+        /// Adds service type to container, given its implementation type via generics.
         /// </summary>
         /// <typeparam name="TService"></typeparam>
         /// <typeparam name="TImpl"></typeparam>
@@ -107,6 +107,7 @@
                 //case LifeTime.Container: // in dryioc really not container scope, so just treat as a singleton in the container
                 case LifeTime.Singleton:
                     return Reuse.Singleton;
+
                 case LifeTime.Transient:
                     return Reuse.Transient;
                 // scoping via the container isn't supported in the locator by default, it takes an unwrapped container to utilize this via cast of IContainer as IContainerRegistry
@@ -135,6 +136,7 @@
             {
                 case ConstructorType.Empty:
                     return Made.Of(allConstructors.LastOrDefault());
+
                 case ConstructorType.Greediest:
                 default:
                     return Made.Of(allConstructors.FirstOrDefault());

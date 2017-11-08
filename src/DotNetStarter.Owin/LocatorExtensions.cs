@@ -85,9 +85,7 @@
             var httpContextItemProperty = httpContext == null ? null :
                     reflectionHelper.GetProperties(httpContext.GetType()).FirstOrDefault(x => string.CompareOrdinal(x.Name, "Items") == 0);
 
-            var contextItemDict = httpContextItemProperty?.GetValue(httpContext) as IDictionary;
-
-            if (contextItemDict != null)
+            if (httpContextItemProperty?.GetValue(httpContext) is IDictionary contextItemDict)
             {
                 return contextItemDict[ScopedLocatorKeyInContext] as ILocator;
             }
@@ -101,25 +99,25 @@
         /// </summary>
         /// <param name="app"></param>
         /// <param name="locator"></param>
-        /// <param name="scopeName"></param>
-        /// <param name="addToScope"></param>
-        /// <param name="scopeContext"></param>
-        public static void UseScopedLocator(this IAppBuilder app, ILocator locator, Action<ILocatorRegistry> addToScope = null, object scopeName = null, object scopeContext = null)
+        /// <param name="serviceProviderTypeChecker"></param>
+        public static void UseScopedLocator(this IAppBuilder app, ILocator locator, IServiceProviderTypeChecker serviceProviderTypeChecker = null)
         {
             app.Use(new Func<AppFunc, AppFunc>(next => (async context =>
             {
-                var scoped = TryGetHttpScopedLocator(context, locator);
+                var scoped = TryGetHttpScopedLocator(context, locator) as ILocatorScoped;
                 var hasScopedLocator = scoped != null;
-                scoped = scoped ?? locator.OpenScope(scopeName, scopeContext); // create a new scope if not found.
+                scoped = scoped ?? (locator as ILocatorCreateScope).CreateScope();
 
-                // register items
-                var registry = scoped as ILocatorRegistry;
-                registry?.Add(typeof(IDictionary<string, object>), context);
-                registry?.Add(typeof(IMiddlewareContext), new MiddlewareContext(context));
-                addToScope?.Invoke(registry);
+                var contextAccessor = scoped.Get<IContextAccessor>();
+                (contextAccessor as IContextSetter)
+                    .SetContexts(new MiddlewareContext(context), context);
 
                 context[ScopedLocatorKeyInContext] = scoped;
-                context[ScopedProviderKeyInContext] = new ServiceProvider(scoped);
+                context[ScopedProviderKeyInContext] = new ServiceProvider
+                (
+                    serviceProviderTypeChecker ?? scoped.Get<IServiceProviderTypeChecker>(),
+                    scoped.Get<ILocatorScopedAccessor>()
+                );
 
                 // perform remaining tasks
                 await next.Invoke(context);
