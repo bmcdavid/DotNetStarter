@@ -43,18 +43,26 @@
         /// </summary>
         /// <param name="locator"></param>
         [Obsolete]
-        public ServiceProvider(ILocator locator) : this(locator.Get<IServiceProviderTypeChecker>(), locator.Get<ILocatorScopedAccessor>())
-        {
-        }
+        public ServiceProvider(ILocator locator) : this(locator.Get<IServiceProviderTypeChecker>(), locator.Get<ILocatorScopedAccessor>()) { }
 
         /// <summary>
         /// Constructor
         /// </summary>
         /// <param name="serviceProviderTypeChecker"></param>
         /// <param name="locatorScopedAccessor"></param>
-        public ServiceProvider(IServiceProviderTypeChecker serviceProviderTypeChecker, ILocatorScopedAccessor locatorScopedAccessor)
+        [Obsolete]
+        public ServiceProvider(IServiceProviderTypeChecker serviceProviderTypeChecker, ILocatorScopedAccessor locatorScopedAccessor) :
+            this(ApplicationContext.Default.Locator, serviceProviderTypeChecker, locatorScopedAccessor) { }
+
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="locator"></param>
+        /// <param name="serviceProviderTypeChecker"></param>
+        /// <param name="locatorScopedAccessor"></param>
+        public ServiceProvider(ILocator locator, IServiceProviderTypeChecker serviceProviderTypeChecker, ILocatorScopedAccessor locatorScopedAccessor)
         {
-            Locator = locatorScopedAccessor.CurrentScope;
+            Locator = locatorScopedAccessor.CurrentScope ?? locator; // fallback for netcore default service provider
             _ServiceProviderTypeChecker = serviceProviderTypeChecker;
         }
 

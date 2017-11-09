@@ -20,6 +20,25 @@ namespace DotNetStarter
         {
             RegisterServiceCollection.Services = serviceCollection;
         }
+
+        /// <summary>
+        /// Registers service collection with DotNetStarter
+        /// </summary>
+        /// <param name="serviceCollection"></param>
+        /// <param name="startupDotNetStarter">delegate function to invoke DotNetStarter.ApplicationContext.Startup</param>
+        /// <param name="serviceProviderFactory">delegate function to create an IServiceProvider</param>
+        public static IServiceProvider WithDotNetStarter(this IServiceCollection serviceCollection, Action startupDotNetStarter, Func<ILocator,IServiceProvider> serviceProviderFactory = null)
+        {
+            if (startupDotNetStarter == null)
+                throw new ArgumentNullException(nameof(startupDotNetStarter));
+
+            Func<ILocator, IServiceProvider> fallbackFactory = locator => locator.Get<IServiceProvider>();
+
+            WithDotNetStarter(serviceCollection); // add services
+            startupDotNetStarter();
+
+            return (serviceProviderFactory ?? fallbackFactory).Invoke(ApplicationContext.Default.Locator);
+        }
     }
 
     /// <summary>
