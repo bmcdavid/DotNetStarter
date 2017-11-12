@@ -5,6 +5,7 @@
     /// <summary>
     /// Provides simple service registration to IContainer
     /// </summary>
+    [Obsolete("RegisterAttribute will be removed in version 2, please use RegistrationAttribute unless depencency support is needed, then wait for version 2 to change.")]
     [AttributeUsage(AttributeTargets.Class, AllowMultiple = true, Inherited = false)]
     public class RegisterAttribute : DependencyBaseAttribute
     {

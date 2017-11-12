@@ -36,6 +36,7 @@
         /// </summary>
         /// <param name="target"></param>
         /// <returns></returns>
+        [Obsolete("BuildUp will move to ILocatorWithPropertyInjection in version 2.")]
         bool BuildUp(object target);
 
         /// <summary>

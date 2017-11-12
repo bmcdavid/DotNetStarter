@@ -13,6 +13,7 @@
         /// <param name="serviceType"></param>
         /// <param name="key"></param>
         /// <returns></returns>
+        [Obsolete("ContainsService will be moved to ILocatorRegistryWithContains in version 2.")]
         bool ContainsService(Type serviceType, string key = null);
 
         /// <summary>
@@ -29,12 +30,12 @@
         /// Adds service to container
         /// </summary>
         /// <param name="serviceType"></param>
-        /// <param name="implementationFactory"></param>
+        /// <param name="implementationFactory">Important: Given ILocator can only get Singleton and Transient (with no scoped parameters), use with caution!</param>
         /// <param name="lifeTime"></param>        
         void Add(Type serviceType, Func<ILocator, object> implementationFactory, LifeTime lifeTime);
 
         /// <summary>
-        /// Adds instance to container, the lifetime is set to either singleton or container
+        /// Adds instance to container, the lifetime is set to Singleton
         /// </summary>
         /// <param name="serviceType"></param>
         /// <param name="serviceInstance"></param>        
@@ -56,6 +57,7 @@
         /// <param name="serviceType"></param>
         /// <param name="key"></param>
         /// <param name="serviceImplementation"></param>
+        [Obsolete("Remove will be moved to ILocatorRegistryWithRemove in version 2.")]
         void Remove(Type serviceType, string key = null, Type serviceImplementation = null);
     }
 }
