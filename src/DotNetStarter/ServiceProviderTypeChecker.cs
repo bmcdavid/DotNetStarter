@@ -9,7 +9,7 @@ namespace DotNetStarter
     /// <summary>
     /// Default IServiceProviderTypeChecker
     /// </summary>
-    [Register(typeof(IServiceProviderTypeChecker), LifeTime.Singleton)]
+    [Registration(typeof(IServiceProviderTypeChecker), Lifecycle.Singleton)]
     public class ServiceProviderTypeChecker : IServiceProviderTypeChecker
     {
         private readonly IStartupConfiguration _StartupConfiguration;

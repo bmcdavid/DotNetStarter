@@ -44,7 +44,7 @@ namespace DotNetStarter
     /// <summary>
     /// Adds service collection to the ILocator during locator configure
     /// </summary>
-    [StartupModule(typeof(RegisterConfiguration), typeof(RegistrationConfiguration))]
+    [StartupModule(typeof(RegistrationConfiguration))]
     public class RegisterServiceCollection : ILocatorConfigure
     {
         internal static IServiceCollection Services { get; set; }

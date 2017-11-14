@@ -115,6 +115,7 @@
                 context[ScopedLocatorKeyInContext] = scoped;
                 context[ScopedProviderKeyInContext] = new ServiceProvider
                 (
+                    locator,
                     serviceProviderTypeChecker ?? scoped.Get<IServiceProviderTypeChecker>(),
                     scoped.Get<ILocatorScopedAccessor>()
                 );

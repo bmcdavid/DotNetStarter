@@ -2,7 +2,6 @@
 using DotNetStarter.Web;
 using System;
 using System.Collections.Generic;
-using System.Web;
 using System.Web.Http.Dependencies;
 
 namespace DotNetStarter.Extensions.WebApi
@@ -13,19 +12,25 @@ namespace DotNetStarter.Extensions.WebApi
     public class NullableWebApiDependencyResolver : NullableDependencyResolverBase, IDependencyResolver
     {
         private static readonly Type _LocatorType = typeof(ILocator);
+        private readonly IHttpContextProvider _HttpContextProvider;
+        private readonly ILocatorScopedFactory _LocatorScopeFactory;
         private readonly IPipelineScope _PipelineScope;
 
         /// <summary>
         /// Constructor
         /// </summary>
         /// <param name="locator"></param>
+        /// <param name="locatorScopedFactory"></param>
+        /// <param name="httpContextProvider"></param>
         /// <param name="reflectionHelper"></param>
         /// <param name="pipelineScope"></param>
         /// <param name="allowableNullForGetService"></param>
         /// <param name="allowableNullForGetServices"></param>
-        public NullableWebApiDependencyResolver(ILocator locator, IReflectionHelper reflectionHelper = null, IPipelineScope pipelineScope = null, IEnumerable<Type> allowableNullForGetService = null, IEnumerable<Type> allowableNullForGetServices = null) :
+        public NullableWebApiDependencyResolver(ILocator locator, ILocatorScopedFactory locatorScopedFactory, IHttpContextProvider httpContextProvider, IReflectionHelper reflectionHelper = null, IPipelineScope pipelineScope = null, IEnumerable<Type> allowableNullForGetService = null, IEnumerable<Type> allowableNullForGetServices = null) :
             base(locator, reflectionHelper, allowableNullForGetService, allowableNullForGetServices)
         {
+            _HttpContextProvider = httpContextProvider;
+            _LocatorScopeFactory = locatorScopedFactory;
             _PipelineScope = pipelineScope ?? _Locator.Get<IPipelineScope>();
         }
 
@@ -35,7 +40,7 @@ namespace DotNetStarter.Extensions.WebApi
         /// <returns></returns>
         public IDependencyScope BeginScope()
         {
-            return new NullableWebApiDependencyResolver(_Locator.OpenScope(), _ReflectionHelper, _PipelineScope, _AllowableNullForGetService, _AllowableNullForGetServices);
+            return new NullableWebApiDependencyResolver(_LocatorScopeFactory.CreateScope(), _LocatorScopeFactory, _HttpContextProvider, _ReflectionHelper, _PipelineScope, _AllowableNullForGetService, _AllowableNullForGetServices);
         }
 
         /// <summary>
@@ -97,7 +102,7 @@ namespace DotNetStarter.Extensions.WebApi
         /// <returns></returns>
         protected override ILocator ResolveLocator()
         {
-            return _PipelineScope.Enabled == true ? (HttpContext.Current?.GetScopedLocator() ?? _Locator) : _Locator;
+            return _PipelineScope.Enabled == true ? (_HttpContextProvider.CurrentContext?.GetScopedLocator() ?? _Locator) : _Locator;
         }
     }
 }

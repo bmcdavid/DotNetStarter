@@ -1,7 +1,6 @@
 ﻿namespace DotNetStarter.Extensions.Episerver
 {
     using DotNetStarter.Abstractions;
-    using DotNetStarter.Abstractions.Internal;
     using StructureMap;
     using System;
     using System.Collections.Generic;

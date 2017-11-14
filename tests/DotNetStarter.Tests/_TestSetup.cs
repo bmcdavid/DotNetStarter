@@ -11,7 +11,7 @@ namespace DotNetStarter.Tests
         [AssemblyInitialize]
         public static void Setup(TestContext context)
         {
-            ApplicationContext.Startup(assemblies: AppDomain.CurrentDomain.GetAssemblies());
+            ApplicationContext.Startup(assemblies: AppDomain.CurrentDomain.GetAssemblies(), objectFactory: new Mocks.TestObjectFactory());
         }
     }
 }

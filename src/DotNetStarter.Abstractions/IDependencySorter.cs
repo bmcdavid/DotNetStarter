@@ -13,6 +13,6 @@
         /// <typeparam name="T"></typeparam>
         /// <param name="nodes"></param>
         /// <returns>IEnumerable&lt;DependencyNode> or InvalidOperationException</returns>        
-        IEnumerable<IDependencyNode> Sort<T>(IEnumerable<object> nodes) where T : DependencyBaseAttribute;
+        IList<IDependencyNode> Sort<T>(IEnumerable<object> nodes) where T : StartupDependencyBaseAttribute;
     }
 }

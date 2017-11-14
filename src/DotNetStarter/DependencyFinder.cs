@@ -19,7 +19,7 @@
         /// <param name="assemblies"></param>
         /// <param name="assemblyFilter"></param>
         /// <returns></returns>
-        public virtual IEnumerable<object> Find<T>(IEnumerable<Assembly> assemblies, Func<Assembly, bool> assemblyFilter = null) where T : DependencyBaseAttribute
+        public virtual IEnumerable<object> Find<T>(IEnumerable<Assembly> assemblies, Func<Assembly, bool> assemblyFilter = null) where T : StartupDependencyBaseAttribute
         {
             if (assemblies == null)
                 throw new ArgumentNullException(nameof(assemblies));
@@ -29,7 +29,7 @@
 
             var attrType = typeof(T);
 
-            if (typeof(AssemblyDependencyBaseAttribute).IsAssignableFromCheck(attrType))
+            if (typeof(StartupAssemblyDependencyBaseAttribute).IsAssignableFromCheck(attrType))
             {
                 return assemblies.Where(x => x.CustomAttribute(attrType, false).Any()).OfType<object>();
             }

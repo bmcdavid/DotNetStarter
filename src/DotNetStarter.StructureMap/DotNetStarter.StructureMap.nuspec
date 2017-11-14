@@ -13,14 +13,6 @@
     <copyright>Copyright $year$</copyright>
     <tags>Startup Modules DI IOC</tags>
     <dependencies>
-      <group targetFramework="net35">
-        <dependency id="DotNetStarter" version="[1.4,2)" />
-        <dependency id="StructureMap" version="[2.6,3)" />
-      </group>
-      <group targetFramework="net40">
-        <dependency id="DotNetStarter" version="[1.4,2)" />
-        <dependency id="StructureMap" version="[4,5)" />
-      </group>
       <group targetFramework="net45">
         <dependency id="DotNetStarter" version="[1.4,2)" />
         <dependency id="StructureMap" version="[4.4.5,5)" />
@@ -37,14 +29,6 @@
     <file src="readme.txt" target="readme.txt" />
 
     <!--https://docs.nuget.org/ndocs/schema/target-frameworks-->
-    <file src="bin\Release\net35\DotNetStarter.StructureMap.dll" target="lib\net35" />
-    <file src="bin\Release\net35\DotNetStarter.StructureMap.pdb" target="lib\net35" />
-    <file src="bin\Release\net35\DotNetStarter.StructureMap.xml" target="lib\net35" />
-
-    <file src="bin\Release\net40\DotNetStarter.StructureMap.dll" target="lib\net40" />
-    <file src="bin\Release\net40\DotNetStarter.StructureMap.pdb" target="lib\net40" />
-    <file src="bin\Release\net40\DotNetStarter.StructureMap.xml" target="lib\net40" />
-
     <file src="bin\Release\net45\DotNetStarter.StructureMap.dll" target="lib\net45" />
     <file src="bin\Release\net45\DotNetStarter.StructureMap.pdb" target="lib\net45" />
     <file src="bin\Release\net45\DotNetStarter.StructureMap.xml" target="lib\net45" />

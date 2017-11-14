@@ -7,7 +7,7 @@
     /// Provides access to call module shutdown, useful for unit tests, or when finalizer isn't reliable.
     /// </summary>
     [EditorBrowsable(EditorBrowsableState.Never)]
-    [Register(typeof(IShutdownHandler), LifeTime.Singleton)]
+    [Registration(typeof(IShutdownHandler), Lifecycle.Singleton)]
     public class Shutdown : IShutdownHandler
     {
         /// <summary>

@@ -15,29 +15,10 @@
         /// </summary>
         object InternalContainer { get; }
 
-        //todo: v2, remove OpenScope from ILocator
-
-        /// <summary>
-        /// Creates a scoped locator
-        /// </summary>
-        /// <param name="scopeName"></param>
-        /// <param name="scopeContext"></param>
-        /// <returns></returns>
-        [Obsolete("OpenScope will be removed from ILocator in version 2.")]
-        ILocator OpenScope(object scopeName = null, object scopeContext = null);
-
         /// <summary>
         /// Debug information about container
         /// </summary>
         string DebugInfo { get; }
-
-        /// <summary>
-        /// Build up object from container
-        /// </summary>
-        /// <param name="target"></param>
-        /// <returns></returns>
-        [Obsolete("BuildUp will move to ILocatorWithPropertyInjection in version 2.")]
-        bool BuildUp(object target);
 
         /// <summary>
         /// Gets item from container

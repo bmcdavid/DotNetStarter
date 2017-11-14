@@ -22,7 +22,7 @@
             NodeAttribute = null;
             Node = nodeType;
             Dependencies = new HashSet<object>();
-            var attributes = Node.CustomAttribute(attributeType, false).OfType<DependencyBaseAttribute>();
+            var attributes = Node.CustomAttribute(attributeType, false).OfType<StartupDependencyBaseAttribute>();
 
             if (attributes?.Any() == true)
             {
@@ -32,7 +32,7 @@
                 {
                     foreach (Type t in attribute.Dependencies)
                     {
-                        if (typeof(AssemblyDependencyBaseAttribute).IsAssignableFromCheck(attributeType))
+                        if (typeof(StartupAssemblyDependencyBaseAttribute).IsAssignableFromCheck(attributeType))
                         {
                             Dependencies.Add(t.Assembly());
                         }
@@ -63,7 +63,7 @@
         /// <summary>
         /// Attribute instance for Node
         /// </summary>
-        public virtual DependencyBaseAttribute NodeAttribute { get; }
+        public virtual StartupDependencyBaseAttribute NodeAttribute { get; }
 
         /// <summary>
         /// Node can be a Type or Assembly

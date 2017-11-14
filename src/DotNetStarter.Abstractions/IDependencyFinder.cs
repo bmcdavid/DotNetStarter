@@ -16,6 +16,6 @@
         /// <param name="assemblies"></param>
         /// <param name="assemblyFilter"></param>
         /// <returns></returns>
-        IEnumerable<object> Find<T>(IEnumerable<Assembly> assemblies, Func<Assembly, bool> assemblyFilter = null) where T : DependencyBaseAttribute;
+        IEnumerable<object> Find<T>(IEnumerable<Assembly> assemblies, Func<Assembly, bool> assemblyFilter = null) where T : StartupDependencyBaseAttribute;
     }
 }

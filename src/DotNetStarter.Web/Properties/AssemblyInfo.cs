@@ -8,8 +8,8 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyDescription(".NET startup system for System.Web and netcore apps.")]
 [assembly: AssemblyProduct("DotNetStarter.Web")]
 [assembly: AssemblyCopyright("Copyright © {year}")]
-[assembly: AssemblyVersion("1.4.0")]
-[assembly: AssemblyFileVersion("1.4.0")]
-[assembly: AssemblyInformationalVersion("1.4.0 Build: {build} Commit Hash: {commit}")]
+[assembly: AssemblyVersion("2.0.0")]
+[assembly: AssemblyFileVersion("2.0.0")]
+[assembly: AssemblyInformationalVersion("2.0.0-alpha001 Build: {build} Commit Hash: {commit}")]
 
 [assembly: DotNetStarter.Abstractions.DiscoverableAssembly]

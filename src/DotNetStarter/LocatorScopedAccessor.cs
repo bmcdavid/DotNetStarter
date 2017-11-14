@@ -5,7 +5,7 @@ namespace DotNetStarter
     /// <summary>
     /// Provides access to currently scoped locator
     /// </summary>
-    [Register(typeof(ILocatorScopedAccessor), LifeTime.Scoped)]
+    [Registration(typeof(ILocatorScopedAccessor), Lifecycle.Scoped)]
     public sealed class LocatorScopedAccessor : ILocatorScopedAccessor, ILocatorScopedSetter
     {
         private ILocatorScoped _Current;

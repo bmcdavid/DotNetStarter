@@ -9,7 +9,7 @@
     /// <summary>
     /// Base DryIoc locator
     /// </summary>
-    public abstract class DryIocLocatorBase : ILocator, ILocatorCreateScope
+    public abstract class DryIocLocatorBase : ILocator, ILocatorCreateScope, ILocatorWithPropertyInjection
     {
         /// <summary>
         /// Raw container reference
@@ -106,27 +106,6 @@
         public virtual IEnumerable<TService> GetAll<TService>(string key = null) =>
                     _Container.ResolveMany<TService>(serviceKey: key); //_Container.Resolve<IEnumerable<TService>>(IfUnresolved.ReturnDefault);
 
-        /// <summary>
-        /// Creates a scoped container
-        /// </summary>
-        /// <param name="scopeName"></param>
-        /// <param name="scopeContext"></param>
-        /// <returns></returns>
-        public ILocator OpenScope(object scopeName = null, object scopeContext = null)
-        {
-            var typedContext = scopeContext as IScopeContext;
-            var container = _Container;
-
-            if (typedContext != null)
-                container = container.With(scopeContext: typedContext);
-
-            return new DryIocLocator
-            (
-                container
-                    .CreateFacade() // allows registrations to only exist in the instance
-                    .OpenScope(scopeName)
-            );
-        }
 
         /// <summary>
         /// Creates/opens locator scope
@@ -136,7 +115,7 @@
         {
             return new DryIocLocatorScoped(
                 _Container
-                .CreateFacade() // allows registrations to only exist in the instance
+                //.CreateFacade() // allows registrations to only exist in the instance
                 .OpenScope(),
                 this
             );

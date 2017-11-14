@@ -3,11 +3,7 @@ using System.Linq;
 using DotNetStarter.Abstractions;
 using DotNetStarter.Tests;
 
-// this is left until removed to ensure startup handler supports both
-[assembly: ScanTypeRegistry(typeof(MockBaseClass))]
-
-// todo: v2, move typeof(MockBaseClass)
-[assembly: DiscoverTypes(typeof(IMock), typeof(IGenericeMock<>), typeof(IGenericeMock<object>))]
+[assembly: DiscoverTypes(typeof(IMock), typeof(IGenericeMock<>), typeof(IGenericeMock<object>), typeof(MockBaseClass))]
 
 namespace DotNetStarter.Tests
 {
@@ -40,7 +36,7 @@ namespace DotNetStarter.Tests
         [TestMethod]
         public void ShouldScanServiceAttributes()
         {
-            var types = _AssemblyScanner.GetTypesFor(typeof(RegisterAttribute));
+            var types = _AssemblyScanner.GetTypesFor(typeof(RegistrationAttribute));
 
             Assert.IsTrue(types?.Count() > 0);
         }

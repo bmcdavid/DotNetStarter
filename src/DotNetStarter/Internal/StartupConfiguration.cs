@@ -38,6 +38,7 @@
             Logger = logger;
             ModuleFilter = moduleFilter;
             TimedTaskManager = timedTaskManager;
+            Environment = new StartupEnvironment("NotSet", "");
         }
 
         /// <summary>
@@ -79,5 +80,10 @@
         /// Default timed task manager
         /// </summary>
         public ITimedTaskManager TimedTaskManager { get; }
+
+        /// <summary>
+        /// Startup Environment
+        /// </summary>
+        public IStartupEnvironment Environment { get; }
     }
 }

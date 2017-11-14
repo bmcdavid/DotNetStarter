@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.27004.2006
+VisualStudioVersion = 15.0.27004.2008
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".Solution Items", ".Solution Items", "{90F6AC8D-CCBC-4EB1-A448-6C931901B985}"
 	ProjectSection(SolutionItems) = preProject
@@ -21,8 +21,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{2448A5
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{8A8DF2AE-D820-4CDB-BB3F-0A41C982FB53}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotNetStarter.StructureMap.Tests", "tests\DotNetStarter.StructureMap.Tests\DotNetStarter.StructureMap.Tests.csproj", "{C43106FA-20E7-4730-A21C-863F0A1FFF36}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotNetStarter.DryIoc.Tests", "tests\DotNetStarter.DryIoc.Tests\DotNetStarter.DryIoc.Tests.csproj", "{8A4FFC26-18D3-4A36-ADDA-E2A927D4E45A}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotNetStarter.Tests", "tests\DotNetStarter.Tests\DotNetStarter.Tests.csproj", "{1B53A02A-2796-48AF-8995-D62B8E856DDA}"
@@ -34,8 +32,6 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotNetStarter.DryIoc.Tests.Net40", "tests\DotNetStarter.DryIoc.Tests.Net40\DotNetStarter.DryIoc.Tests.Net40.csproj", "{2A132730-4B9F-483E-89FB-D13AC6427E06}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotNetStarter.DryIoc.Tests.Net45", "tests\DotNetStarter.DryIoc.Tests.Net45\DotNetStarter.DryIoc.Tests.Net45.csproj", "{95299793-D6E1-430A-9EEC-F53BEECD553B}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotNetStarter.StructureMap.Tests.Net40", "tests\DotNetStarter.StructureMap.Tests.Net40\DotNetStarter.StructureMap.Tests.Net40.csproj", "{E565844E-835F-4DC9-9126-C6B961A62D03}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotNetStarter.StructureMap.Tests.Net45", "tests\DotNetStarter.StructureMap.Tests.Net45\DotNetStarter.StructureMap.Tests.Net45.csproj", "{5378CEF1-A29E-4756-820C-CAA0F0F0BE62}"
 EndProject
@@ -106,10 +102,6 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{C43106FA-20E7-4730-A21C-863F0A1FFF36}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{C43106FA-20E7-4730-A21C-863F0A1FFF36}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{C43106FA-20E7-4730-A21C-863F0A1FFF36}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{C43106FA-20E7-4730-A21C-863F0A1FFF36}.Release|Any CPU.Build.0 = Release|Any CPU
 		{8A4FFC26-18D3-4A36-ADDA-E2A927D4E45A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{8A4FFC26-18D3-4A36-ADDA-E2A927D4E45A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8A4FFC26-18D3-4A36-ADDA-E2A927D4E45A}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -134,10 +126,6 @@ Global
 		{95299793-D6E1-430A-9EEC-F53BEECD553B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{95299793-D6E1-430A-9EEC-F53BEECD553B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{95299793-D6E1-430A-9EEC-F53BEECD553B}.Release|Any CPU.Build.0 = Release|Any CPU
-		{E565844E-835F-4DC9-9126-C6B961A62D03}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{E565844E-835F-4DC9-9126-C6B961A62D03}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{E565844E-835F-4DC9-9126-C6B961A62D03}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{E565844E-835F-4DC9-9126-C6B961A62D03}.Release|Any CPU.Build.0 = Release|Any CPU
 		{5378CEF1-A29E-4756-820C-CAA0F0F0BE62}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{5378CEF1-A29E-4756-820C-CAA0F0F0BE62}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5378CEF1-A29E-4756-820C-CAA0F0F0BE62}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -223,14 +211,12 @@ Global
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
-		{C43106FA-20E7-4730-A21C-863F0A1FFF36} = {8A8DF2AE-D820-4CDB-BB3F-0A41C982FB53}
 		{8A4FFC26-18D3-4A36-ADDA-E2A927D4E45A} = {8A8DF2AE-D820-4CDB-BB3F-0A41C982FB53}
 		{1B53A02A-2796-48AF-8995-D62B8E856DDA} = {8A8DF2AE-D820-4CDB-BB3F-0A41C982FB53}
 		{079AE087-9107-4F47-84A7-B8A3D86C8882} = {8A8DF2AE-D820-4CDB-BB3F-0A41C982FB53}
 		{C48F65C0-E811-4C3F-988A-4E58BF7FE1D1} = {8A8DF2AE-D820-4CDB-BB3F-0A41C982FB53}
 		{2A132730-4B9F-483E-89FB-D13AC6427E06} = {8A8DF2AE-D820-4CDB-BB3F-0A41C982FB53}
 		{95299793-D6E1-430A-9EEC-F53BEECD553B} = {8A8DF2AE-D820-4CDB-BB3F-0A41C982FB53}
-		{E565844E-835F-4DC9-9126-C6B961A62D03} = {8A8DF2AE-D820-4CDB-BB3F-0A41C982FB53}
 		{5378CEF1-A29E-4756-820C-CAA0F0F0BE62} = {8A8DF2AE-D820-4CDB-BB3F-0A41C982FB53}
 		{B05360EE-2966-4271-9644-84F6EA97080C} = {8A8DF2AE-D820-4CDB-BB3F-0A41C982FB53}
 		{21FDF613-9750-4B07-ACC6-5B39F057CE0A} = {8A8DF2AE-D820-4CDB-BB3F-0A41C982FB53}

@@ -12,7 +12,7 @@ namespace DotNetStarter.Extensions.WebApi
     /// <summary>
     /// Registers ApiControllers to the locator
     /// </summary>
-    [StartupModule(typeof(RegisterConfiguration), typeof(RegistrationConfiguration))]
+    [StartupModule(typeof(RegistrationConfiguration))]
     public class StartupWebApiConfigure : ILocatorConfigure
     {
         /// <summary>

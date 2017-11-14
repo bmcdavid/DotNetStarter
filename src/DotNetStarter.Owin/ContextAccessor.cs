@@ -7,7 +7,7 @@ namespace DotNetStarter.Owin
     /// <summary>
     /// Default context accessor
     /// </summary>
-    [Register(typeof(IContextAccessor), LifeTime.Scoped)]
+    [Registration(typeof(IContextAccessor), Lifecycle.Scoped)]
     public sealed class ContextAccessor : IContextAccessor, IContextSetter
     {
         private IDictionary<string, object> _Dictionary;

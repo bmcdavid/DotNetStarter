@@ -8,15 +8,6 @@
     public interface ILocatorRegistry : ILocator
     {
         /// <summary>
-        /// Determines if container has service
-        /// </summary>
-        /// <param name="serviceType"></param>
-        /// <param name="key"></param>
-        /// <returns></returns>
-        [Obsolete("ContainsService will be moved to ILocatorRegistryWithContains in version 2.")]
-        bool ContainsService(Type serviceType, string key = null);
-
-        /// <summary>
         /// Adds service to container
         /// </summary>
         /// <param name="serviceType"></param>
@@ -50,14 +41,5 @@
         /// <param name="lifetime"></param>
         /// <param name="constructorType"></param>
         void Add<TService, TImpl>(string key = null, LifeTime lifetime = LifeTime.Transient, ConstructorType constructorType = ConstructorType.Greediest) where TImpl : TService;
-
-        /// <summary>
-        /// Removes service from container, if serviceImplementation is null will be removed
-        /// </summary>
-        /// <param name="serviceType"></param>
-        /// <param name="key"></param>
-        /// <param name="serviceImplementation"></param>
-        [Obsolete("Remove will be moved to ILocatorRegistryWithRemove in version 2.")]
-        void Remove(Type serviceType, string key = null, Type serviceImplementation = null);
     }
 }

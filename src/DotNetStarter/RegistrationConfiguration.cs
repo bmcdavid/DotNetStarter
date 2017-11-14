@@ -2,6 +2,7 @@
 {
     using Abstractions;
     using DotNetStarter.Abstractions.Internal;
+    using System;
     using System.Linq;
 
     /// <summary>
@@ -14,11 +15,13 @@
         {
             var configuration = engine.Configuration;
             var serviceType = typeof(RegistrationAttribute);
-            var services = configuration.AssemblyScanner.GetTypesFor(serviceType).ToList();
+            var services = configuration.AssemblyScanner.GetTypesFor(serviceType);
+            var servicesSorted = configuration.DependencySorter.Sort<RegistrationAttribute>(services.OfType<object>());
 
-            for (int i = 0; i < services.Count; i++)
+            for (int i = 0; i < servicesSorted.Count; i++)
             {
-                var attrs = services[i].CustomAttribute(serviceType, false).OfType<RegistrationAttribute>();
+                var t = servicesSorted[i].Node as Type;
+                var attrs = t.CustomAttribute(serviceType, false).OfType<RegistrationAttribute>();
 
                 if (attrs?.Any() == true)
                 {
@@ -27,7 +30,7 @@
                         registry.Add
                         (
                             attr.ServiceType, // service
-                            services[i], // implementation
+                            t, // implementation
                             lifeTime: (LifeTime)((int)attr.Lifecycle), // converted lifecycle
                             constructorType: ConstructorType.Greediest
                         );

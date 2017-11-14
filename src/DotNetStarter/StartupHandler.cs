@@ -100,21 +100,17 @@
             scanSetup.TimedAction = () =>
             {
                 var discoverTypeAttrs = assemblies.SelectMany(x => x.CustomAttribute(typeof(DiscoverTypesAttribute), false).OfType<DiscoverTypesAttribute>());
-                var discoverTypes = discoverTypeAttrs.SelectMany(x => x.DiscoverTypes);
-
-                //todo: v2, remove registered scan variables.
-                var registeredScanAttrs = assemblies.SelectMany(x => x.CustomAttribute(typeof(ScanTypeRegistryAttribute), false).OfType<ScanTypeRegistryAttribute>());
-                var registerdScanTypes = registeredScanAttrs.SelectMany(x => x.ScanTypes);
-                var combined = discoverTypes.Union(registerdScanTypes);
+                var discoverTypes = discoverTypeAttrs.SelectMany(x => x.DiscoverTypes);                
 
                 // a custom config may set this to null
                 Func<Assembly, bool> assemblyFilter = null;
+
                 if (config.AssemblyFilter != null)
                 {
                     assemblyFilter = config.AssemblyFilter.FilterAssembly;
                 }
 
-                config.AssemblyScanner.Scan(assemblies, combined, assemblyFilter);
+                config.AssemblyScanner.Scan(assemblies, discoverTypes, assemblyFilter);
             };
 
             // modules with attribute

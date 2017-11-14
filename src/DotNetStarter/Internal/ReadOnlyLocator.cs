@@ -6,7 +6,7 @@ using System.Collections.Generic;
 
 namespace DotNetStarter.Internal
 {
-    public sealed class ReadOnlyLocator : IReadOnlyLocator, ILocatorSetContainer, ILocatorCreateScope
+    public sealed class ReadOnlyLocator : IReadOnlyLocator, ILocatorSetContainer, ILocatorCreateScope, ILocatorWithPropertyInjection
     {
         static bool _IsLocked = false;
         ILocator _ConfiguredLocator;
@@ -34,9 +34,15 @@ namespace DotNetStarter.Internal
         {
             return new ReadOnlyLocator(configuredLocator);
         }
+
         public bool BuildUp(object target)
         {
-            return _ConfiguredLocator.BuildUp(target);
+            if (_ConfiguredLocator is ILocatorWithPropertyInjection propertyInjector)
+            {
+                return propertyInjector.BuildUp(target);
+            }
+
+            return false;
         }
 
         public ILocatorScoped CreateScope()
@@ -77,11 +83,6 @@ namespace DotNetStarter.Internal
         public IEnumerable<object> GetAll(Type serviceType, string key = null)
         {
             return _ConfiguredLocator.GetAll(serviceType, key);
-        }
-
-        public ILocator OpenScope(object scopeName = null, object scopeContext = null)
-        {
-            return _ConfiguredLocator.OpenScope(scopeName, scopeContext);
         }
 
         public void SetContainer(object container)

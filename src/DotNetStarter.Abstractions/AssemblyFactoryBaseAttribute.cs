@@ -3,12 +3,10 @@
     using Internal;
     using System;
 
-    //todo: v2, replace base class with StartupAssemblyDependencyBaseAttribute
-
     /// <summary>
     /// Base attribute for creating assembly factories
     /// </summary>
-    public abstract class AssemblyFactoryBaseAttribute : AssemblyDependencyBaseAttribute
+    public abstract class AssemblyFactoryBaseAttribute : StartupAssemblyDependencyBaseAttribute
     {
         private static Func<Type, bool> _FactoryIsAbstract = TypeExtensions.IsAbstract;
         private static Func<Type, bool> _FactoryIsInterface = TypeExtensions.IsInterface;
@@ -91,7 +89,7 @@
         private static void ThrowIfNull(object value, string property)
         {
             if (value == null)
-                throw new NullReferenceException(property + $" func cannot be null in {typeof(AssemblyDependencyBaseAttribute).FullName}!");
+                throw new NullReferenceException(property + $" func cannot be null in {typeof(StartupAssemblyDependencyBaseAttribute).FullName}!");
         }
     }
 }

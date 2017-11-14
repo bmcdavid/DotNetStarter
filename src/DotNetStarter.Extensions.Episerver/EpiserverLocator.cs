@@ -48,15 +48,7 @@
         /// <param name="constructorType"></param>
         public virtual void Add(Type serviceType, Type serviceImplementation, string key = null, LifeTime lifeTime = LifeTime.Transient, ConstructorType constructorType = ConstructorType.Greediest)
         {
-            if (constructorType == ConstructorType.Empty)
-            {
-                var empty = serviceImplementation.GetConstructor(Type.EmptyTypes);
-                _Container.Configure(x => x.For(serviceType).LifecycleIs(ConvertLifeTime(lifeTime)).Use(serviceImplementation).Constructor = empty);
-            }
-            else
-            {
-                _Container.Configure(x => x.For(serviceType).LifecycleIs(ConvertLifeTime(lifeTime)).Use(serviceImplementation));
-            }
+            _Container.Configure(x => x.For(serviceType).LifecycleIs(ConvertLifeTime(lifeTime)).Use(serviceImplementation));
         }
 
         /// <summary>
@@ -120,12 +112,8 @@
                     return Lifecycles.Transient;
                 case LifeTime.Singleton:
                     return Lifecycles.Singleton;
-                case LifeTime.HttpRequest:
                 case LifeTime.Scoped:
                     return Lifecycles.Container;
-                case LifeTime.AlwaysUnique:
-                    return Lifecycles.Unique;
-
             }
 
             return Lifecycles.Transient;

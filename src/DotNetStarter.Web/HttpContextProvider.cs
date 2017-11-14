@@ -8,7 +8,7 @@ namespace DotNetStarter.Web
     /// <summary>
     /// Provides access to current HttpContext
     /// </summary>
-    [Register(typeof(IHttpContextProvider), LifeTime.Singleton)]
+    [Registration(typeof(IHttpContextProvider), Lifecycle.Singleton)]
     public class HttpContextProvider : IHttpContextProvider
     {
         /// <summary>

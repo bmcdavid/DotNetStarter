@@ -16,11 +16,6 @@
         public DryIocLocatorScoped(IContainer container, ILocator locator) : base(container)
         {
             Parent = locator as ILocatorScoped;
-            this.SetCurrentScopedLocator();
-
-            // Critical component to replace application ILocator with scoped one
-            container.RegisterDelegate(typeof(ILocator), resolver => this, Reuse.Singleton);
-            container.RegisterDelegate(typeof(ILocatorScoped), resolver => this, Reuse.Singleton);
         }
 
         /// <summary>

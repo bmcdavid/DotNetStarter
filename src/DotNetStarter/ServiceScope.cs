@@ -23,7 +23,7 @@ namespace DotNetStarter
     /// <summary>
     /// Access to scoped service provider
     /// </summary>
-    [Register(typeof(IServiceScope), LifeTime.Scoped)]
+    [Registration(typeof(IServiceScope), Lifecycle.Scoped)]
     public class ServiceScope : IServiceScope
     {
         IServiceProvider Provider;

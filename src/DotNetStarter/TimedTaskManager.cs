@@ -14,11 +14,6 @@
         private IRequestSettingsProvider RequestSettingsProvider;
 
         /// <summary>
-        /// Construcor
-        /// </summary>
-        public TimedTaskManager() : this(ObjectFactory.Default.CreateRequestSettingsProvider) { }
-
-        /// <summary>
         /// DI Constructor
         /// </summary>
         /// <param name="requestSettingsProviderFactory"></param>

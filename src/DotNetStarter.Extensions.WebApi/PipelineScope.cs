@@ -5,7 +5,7 @@ namespace DotNetStarter.Extensions.WebApi
     /// <summary>
     /// Default is to disable DotNetStarter.Web's scope
     /// </summary>
-    [Register(typeof(IPipelineScope), LifeTime.Singleton)]
+    [Registration(typeof(IPipelineScope), Lifecycle.Singleton)]
     public class PipelineScope : IPipelineScope
     {
         /// <summary>

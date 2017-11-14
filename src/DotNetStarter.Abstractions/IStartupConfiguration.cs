@@ -3,8 +3,6 @@
     using System.Collections.Generic;
     using System.Reflection;
 
-    //todo: v2, add reference to IStartupEnvironment
-
     /// <summary>
     /// startup Configuration
     /// </summary>
@@ -34,6 +32,11 @@
         /// Default dependency sorter
         /// </summary>
         IDependencySorter DependencySorter { get; }
+
+        /// <summary>
+        /// Startup Environment
+        /// </summary>
+        IStartupEnvironment Environment { get; }
 
         /// <summary>
         /// Default startup logger

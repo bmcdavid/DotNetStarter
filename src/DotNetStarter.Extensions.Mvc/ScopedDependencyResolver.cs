@@ -16,15 +16,6 @@ namespace DotNetStarter.Extensions.Mvc
         ILocator _Locator;
         IServiceProviderTypeChecker _ServiceProviderTypeChecker;
 
-        //todo: v2 remove obsolete constructor
-
-        /// <summary>
-        /// Constructor
-        /// </summary>
-        /// <param name="locator"></param>
-        [Obsolete("Please use other constructor")]
-        public ScopedDependencyResolver(ILocator locator) : this(locator, null, null) { }
-
         /// <summary>
         /// Constructor
         /// </summary>
@@ -93,8 +84,7 @@ namespace DotNetStarter.Extensions.Mvc
         /// <returns></returns>
         protected virtual ILocator ResolveLocator()
         {
-            // todo: v2, throw exception if GetScopedLocator() is null instead of using _Locator, since it messes up scoped registrations
-            return _HttpContextProvider.CurrentContext?.GetScopedLocator() ?? _Locator;
+            return _HttpContextProvider.CurrentContext?.GetScopedLocator() ?? throw new Exception("Unable to get scoped locator!");
         }
     }
 }

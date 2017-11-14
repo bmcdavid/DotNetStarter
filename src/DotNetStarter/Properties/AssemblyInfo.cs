@@ -8,20 +8,17 @@ using System.Reflection;
 
 #endif
 
-// todo: v2 freeze versions on major except for informational
-
 [assembly: AssemblyTitle("DotNetStarter")]
 [assembly: AssemblyDescription(".NET startup system with dependency injection.")]
 [assembly: AssemblyProduct("DotNetStarter")]
 [assembly: AssemblyCopyright("Copyright © {year}")]
-[assembly: AssemblyVersion("1.4.2")]
-[assembly: AssemblyFileVersion("1.4.2")]
-[assembly: AssemblyInformationalVersion("1.4.2 Build: {build} Commit Hash: {commit}")]
+[assembly: AssemblyVersion("2.0.0")]// v2 freeze versions on major except for informational
+[assembly: AssemblyFileVersion("2.0.0")]
+[assembly: AssemblyInformationalVersion("2.0.0-alph001 Build: {build} Commit Hash: {commit}")]
 
 [assembly: DiscoverableAssembly]
 [assembly: DiscoverTypes
 (
-    typeof(RegisterAttribute),
     typeof(RegistrationAttribute),
     typeof(StartupModuleAttribute),
     typeof(IStartupModule)

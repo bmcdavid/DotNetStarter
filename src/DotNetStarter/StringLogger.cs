@@ -17,22 +17,11 @@
         private readonly int _MaxStringBuilderLength;
         private readonly LogLevel _LogThreshold;
 
-        // todo: remove obsolete constructors
-
-        /// <summary>
-        /// Empty Constructor, defaults to log threshold of Error
-        /// </summary>
-        [Obsolete]
-        public StringLogger() : this(LogLevel.Error, 1024000) { }
-
         /// <summary>
         /// Injected constructor
         /// </summary>
         /// <param name="logThreshold"></param>
-        [Obsolete]
-        public StringLogger(LogLevel logThreshold) : this(logThreshold, 1024000)
-        {
-        }
+        public StringLogger(LogLevel logThreshold) : this(logThreshold, 1024000) { }
 
         /// <summary>
         /// 

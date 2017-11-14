@@ -5,7 +5,7 @@
     /// <summary>
     /// Required for IStartupModule and ILocatorConfigure implementations to execute, and optionally define dependencies
     /// </summary>    
-    public class StartupModuleAttribute : DependencyBaseAttribute
+    public class StartupModuleAttribute : StartupDependencyBaseAttribute
     {
         /// <summary>
         /// Constructor

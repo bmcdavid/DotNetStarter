@@ -20,10 +20,10 @@ namespace DotNetStarter.Web.Tests
                 new AssemblyFilter(),
                 new AssemblyScanner(),
                 new DependencyFinder(),
-                new DependencySorter(),
+                new DependencySorter(new StartupObjectFactory().CreateDependencyNode),
                 new StringLogger(LogLevel.Error, 10000),
                 new StartupModuleFilter(),
-                new TimedTaskManager()
+                new TimedTaskManager(new StartupObjectFactory().CreateRequestSettingsProvider)
             );
 
             Assert.AreSame(x.Environment.EnvironmentName, "UnitTest");

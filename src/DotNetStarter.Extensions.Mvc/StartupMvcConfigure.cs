@@ -12,7 +12,7 @@ namespace DotNetStarter.Extensions.Mvc
     /// <summary>
     /// Configure MVC
     /// </summary>
-    [StartupModule(typeof(RegisterConfiguration))]
+    [StartupModule(typeof(RegistrationConfiguration))]
     public class StartupMvcConfigure : ILocatorConfigure
     {
         /// <summary>

@@ -4,6 +4,8 @@ using EPiServer.Framework.Initialization;
 using EPiServer.ServiceLocation;
 using System;
 
+// todo: port this non Epi locator to DotNetStarter.StructuremapSigned package with example on how to wireup dotnetstarter.
+
 // instructs DotNetStarter to use this to create ILocatorRegistry
 [assembly: LocatorRegistryFactory(typeof(DotNetStarter.Extensions.Episerver.EpiserverLocatorSetup))]
 
@@ -18,12 +20,6 @@ namespace DotNetStarter.Extensions.Episerver
         static StructureMap.IContainer _Container; // must be static to share between instances
 
         static ILocatorRegistry _LocatorRegistry;
-
-        /// <summary>
-        /// Invokable action to startup DotNetStarter when the Episerver container is set. Use a System.Web.PreApplicationStartMethod to assign a startup action;
-        /// </summary>
-        [Obsolete]
-        public static Action<StructureMap.IContainer> ContainerSet = null;
 
         /// <summary>
         /// Invoked to create a locator registry since Structuremap is now modular in Episerver. Use a System.Web.PreApplicationStartMethod to assign a startup func;
@@ -47,7 +43,6 @@ namespace DotNetStarter.Extensions.Episerver
             // todo: remove lines below in Epi v11
             var container = context.Container;
             _Container = container; // store the containr for use in CreateRegistry
-            ContainerSet?.Invoke(container);
         }
 
         /// <summary>

@@ -9,7 +9,7 @@
     /// <summary>
     /// Reflection tool to support both netframework and netstandard
     /// </summary>
-    [Register(typeof(IReflectionHelper), LifeTime.Singleton)]
+    [Registration(typeof(IReflectionHelper), Lifecycle.Singleton)]
     public class ReflectionHelper : IReflectionHelper
     {
         /// <summary>

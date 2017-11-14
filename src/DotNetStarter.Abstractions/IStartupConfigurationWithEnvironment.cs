@@ -17,9 +17,6 @@
     /// </summary>
     public interface IStartupConfigurationWithEnvironment : IStartupConfiguration
     {
-        /// <summary>
-        /// Startup environment reference
-        /// </summary>
-        IStartupEnvironment Environment { get; }
+
     }
 }

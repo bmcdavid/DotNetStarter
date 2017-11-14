@@ -5,7 +5,7 @@ namespace DotNetStarter
     /// <summary>
     /// Default ILocatorScopeFactory implementation
     /// </summary>
-    [Register(typeof(ILocatorScopedFactory), LifeTime.Singleton)]
+    [Registration(typeof(ILocatorScopedFactory), Lifecycle.Singleton)]
     public class LocatorScopeFactory : ILocatorScopedFactory
     {
         private readonly ILocator _Locator;
@@ -45,7 +45,10 @@ namespace DotNetStarter
             if (creator == null)
                 throw new System.ArgumentException($"{locator.GetType().FullName} doesn't implement {typeof(ILocatorCreateScope).FullName}!");
 
-            return creator.CreateScope();
+            var scope = creator.CreateScope();
+            scope.SetCurrentScopedLocator();
+
+            return scope;
         }
     }
 }

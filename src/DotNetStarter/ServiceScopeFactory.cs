@@ -24,29 +24,17 @@ namespace DotNetStarter
     /// <summary>
     /// Creates a scoped service provider with injected locator
     /// </summary>
-    [Register(typeof(IServiceScopeFactory), LifeTime.Scoped)]
+    [Registration(typeof(IServiceScopeFactory), Lifecycle.Scoped)]
     public class ServiceScopeFactory : IServiceScopeFactory
     {
-        private readonly ILocator Locator;
         private readonly ILocatorScopedFactory _LocatorScopeFactory;
-
-        //todo: v2 remove first constructor, and only inject ILocatorScopedFactory
-
-        /// <summary>
-        /// Deprecated Constructor
-        /// </summary>
-        /// <param name="locator"></param>
-        [Obsolete]
-        public ServiceScopeFactory(ILocator locator) : this(locator, locator.Get<ILocatorScopedFactory>()) { }
 
         /// <summary>
         /// Constructor
         /// </summary>
-        /// <param name="locator"></param>
         /// <param name="locatorScopedFactory"></param>
-        public ServiceScopeFactory(ILocator locator, ILocatorScopedFactory locatorScopedFactory)
+        public ServiceScopeFactory(ILocatorScopedFactory locatorScopedFactory)
         {
-            Locator = locator;
             _LocatorScopeFactory = locatorScopedFactory;
         }
 

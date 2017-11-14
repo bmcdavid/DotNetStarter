@@ -66,7 +66,7 @@
         /// <param name="allModules"></param>
         /// <param name="startupConfiguration"></param>
         /// <returns></returns>
-        IStartupContext CreateStartupContext(ILocator locator, IEnumerable<IDependencyNode> filteredModules, IEnumerable<IDependencyNode> allModules, IStartupConfiguration startupConfiguration);
+        IStartupContext CreateStartupContext(IReadOnlyLocator locator, IEnumerable<IDependencyNode> filteredModules, IEnumerable<IDependencyNode> allModules, IStartupConfiguration startupConfiguration);
 
         /// <summary>
         /// Creates a logger

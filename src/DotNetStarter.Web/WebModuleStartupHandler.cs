@@ -12,19 +12,11 @@ namespace DotNetStarter.Web
     /// <summary>
     /// Initializes IHttpModules
     /// </summary>
-    [Register(typeof(IWebModuleStartupHandler), LifeTime.Singleton)]
+    [Registration(typeof(IWebModuleStartupHandler), Lifecycle.Singleton)]
     public class WebModuleStartupHandler : IWebModuleStartupHandler
     {
         private ILocatorScopedFactory _LocatorScopeFactory;
         private IEnumerable<IStartupModule> _StartupModules;
-
-        /// <summary>
-        /// Deprecated constructor
-        /// </summary>
-        /// <param name="context"></param>
-        [Obsolete]
-        public WebModuleStartupHandler(IStartupContext context) : this(context.Locator.Get<ILocatorScopedFactory>(), context.Locator.GetAll<IStartupModule>())
-        { }
 
         /// <summary>
         /// Constructor

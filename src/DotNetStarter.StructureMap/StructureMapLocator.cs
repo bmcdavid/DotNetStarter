@@ -5,14 +5,11 @@
     using StructureMap;
     using StructureMap.Pipeline;
     using System;
-    using System.Linq;
-
-    // todo v2: remove net35 and net40 support to consolidate on single package version
 
     /// <summary>
     /// Structuremap Locator
     /// </summary>
-    public class StructureMapLocator : StructureMapLocatorBase, ILocatorRegistry, ILocatorSetContainer
+    public class StructureMapLocator : StructureMapLocatorBase, ILocatorRegistry, ILocatorSetContainer, ILocatorRegistryWithContains, ILocatorRegistryWithRemove
     {
         /// <summary>
         /// Constructor
@@ -50,20 +47,7 @@
         /// <param name="constructorType"></param>
         public void Add(Type serviceType, Type serviceImplementation, string key = null, LifeTime lifeTime = LifeTime.Transient, ConstructorType constructorType = ConstructorType.Greediest)
         {
-            if (constructorType == ConstructorType.Empty)
-            {
-#if NET35
-                System.Diagnostics.Debug.WriteLine($"{typeof(StructureMapLocator).FullName} only supports greediest constructor types, if support is needed, please create a custom locator implementation!");
-                _Container.Configure(x => x.For(serviceType).LifecycleIs(ConvertLifeTime(lifeTime)).Use(serviceImplementation));
-#else
-                var empty = serviceImplementation.Constructors().FirstOrDefault(x => x.GetParameters().Length == 0);
-                _Container.Configure(x => x.For(serviceType).LifecycleIs(ConvertLifeTime(lifeTime)).Use(serviceImplementation).Constructor = empty);
-#endif
-            }
-            else
-            {
-                _Container.Configure(x => x.For(serviceType).LifecycleIs(ConvertLifeTime(lifeTime)).Use(serviceImplementation));
-            }
+            _Container.Configure(x => x.For(serviceType).LifecycleIs(ConvertLifeTime(lifeTime)).Use(serviceImplementation));
         }
 
         /// <summary>
@@ -79,7 +63,6 @@
             Add(typeof(TService), typeof(TImpl), key, lifetime, constructorType);
         }
 
-#if NET40 || NET45 || NETSTANDARD1_3
         private ILifecycle ConvertLifeTime(LifeTime lifetime)
         {
             switch (lifetime)
@@ -90,40 +73,12 @@
                 case LifeTime.Singleton:
                     return Lifecycles.Singleton;
 
-                case LifeTime.HttpRequest:
                 case LifeTime.Scoped:
                     return Lifecycles.Container;
-
-                case LifeTime.AlwaysUnique:
-                    return Lifecycles.Unique;
             }
 
             return Lifecycles.Transient;
         }
-#else
-
-        private InstanceScope ConvertLifeTime(LifeTime lifetime)
-        {
-            switch (lifetime)
-            {
-                case LifeTime.Transient:
-                    return InstanceScope.Transient;
-
-                case LifeTime.Scoped: // assumption here that this is for a web app.
-                case LifeTime.HttpRequest:
-                    return InstanceScope.HttpContext;
-
-                case LifeTime.Singleton:
-                    return InstanceScope.Singleton;
-
-                case LifeTime.AlwaysUnique:
-                    return InstanceScope.Unique;
-            }
-
-            return InstanceScope.Transient;
-        }
-
-#endif
 
         /// <summary>
         /// Checks if service is registered

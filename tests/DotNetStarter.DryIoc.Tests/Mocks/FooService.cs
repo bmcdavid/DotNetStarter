@@ -13,7 +13,7 @@ namespace DotNetStarter.Tests.Mocks
         string Test();
     }
 
-    [Register(typeof(RegistrationTestGreedyPrivate), LifeTime.Transient)]
+    [Registration(typeof(RegistrationTestGreedyPrivate), Lifecycle.Transient)]
     public class RegistrationTestGreedyPrivate
     {
         private RegistrationTestGreedyPrivate(string a, string b, bool c, ITransient d)
@@ -24,7 +24,7 @@ namespace DotNetStarter.Tests.Mocks
         public RegistrationTestGreedyPrivate(ITransient d) { }
     }
 
-    [Register(typeof(RegistrationTestGreedyInternal), LifeTime.Transient)]
+    [Registration(typeof(RegistrationTestGreedyInternal), Lifecycle.Transient)]
     public class RegistrationTestGreedyInternal
     {
         private RegistrationTestGreedyInternal(string a, string b, bool c, ITransient d)
@@ -35,7 +35,7 @@ namespace DotNetStarter.Tests.Mocks
         public RegistrationTestGreedyInternal(ITransient d) { }
     }
 
-    [Register(typeof(RegistrationTestStatic), LifeTime.Transient)]
+    [Registration(typeof(RegistrationTestStatic), Lifecycle.Transient)]
     public class RegistrationTestStatic
     {
         static RegistrationTestStatic()
@@ -58,19 +58,19 @@ namespace DotNetStarter.Tests.Mocks
         }
     }
 
-    [Register(typeof(IFoo), LifeTime.Singleton, typeof(FooServiceTwo))]
+    [Registration(typeof(IFoo), Lifecycle.Singleton, typeof(FooServiceTwo))]
     public class FooService : IFoo
     {
         public string Hello => "Hello, World!";
     }
 
-    [Register(typeof(IFoo), LifeTime.Singleton)]
+    [Registration(typeof(IFoo), Lifecycle.Singleton)]
     public class FooServiceTwo : IFoo
     {
         public string Hello => "Hello, World part two!";
     }
 
-    [Register(typeof(IFoo), LifeTime.Singleton)]
+    [Registration(typeof(IFoo), Lifecycle.Singleton)]
     public class FooServiceThree : IFoo
     {
         public string Hello => "Hello, World part three!";

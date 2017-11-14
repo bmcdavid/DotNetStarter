@@ -9,7 +9,7 @@
     /// <summary>
     /// Base locator for StructureMap
     /// </summary>
-    public abstract class StructureMapLocatorBase : ILocator, ILocatorCreateScope
+    public abstract class StructureMapLocatorBase : ILocator, ILocatorCreateScope, ILocatorWithPropertyInjection
     {
         /// <summary>
         /// StructureMap container
@@ -99,36 +99,12 @@
         }
 
         /// <summary>
-        /// Creates a scoped container
-        /// </summary>
-        /// <param name="scopeName"></param>
-        /// <param name="scopeContext"></param>
-        /// <returns></returns>
-        public virtual ILocator OpenScope(object scopeName = null, object scopeContext = null)
-        {
-#if NET35
-            return ThrowStructuremapNet35Exception();
-#else
-            return new StructureMapLocator(_Container.CreateChildContainer());
-#endif
-        }
-
-        /// <summary>
         /// Creates/opens locator scope
         /// </summary>
         /// <returns></returns>
         public virtual ILocatorScoped CreateScope()
         {
-#if NET35
-            return ThrowStructuremapNet35Exception() as ILocatorScoped;
-#else
             return new StructureMapLocatorScoped(_Container.CreateChildContainer(), this);
-#endif
-        }
-
-        private ILocator ThrowStructuremapNet35Exception()
-        {
-            throw new NotImplementedException("Structuremap in netframework v3.5 doesn't support scoping. DotNetStarter.DryIoc will work in these cases!");
-        }
+        }        
     }
 }

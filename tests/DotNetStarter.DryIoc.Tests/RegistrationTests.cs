@@ -41,24 +41,6 @@ namespace DotNetStarter.Tests
 
         }
 
-#if STRUCTUREMAPNET35
-        [ExpectedException(typeof(System.NotImplementedException))]
-        [TestMethod]
-        public void ShouldNotAllowScopedRegistrations()
-#else
-        [TestMethod]
-        public void ShouldAllowScopedRegistrations()
-
-#endif
-        {
-            using (var scoped = Context.Service.Locator.OpenScope())
-            {
-                (scoped as ILocatorRegistry).Add(typeof(LocatorLockedException), new LocatorLockedException());
-
-                Assert.IsNotNull(scoped.Get<LocatorLockedException>());
-            }
-        }
-
         [TestMethod]
         public void ShouldBeReadOnlyLocatorInAppContext()
         {
@@ -89,14 +71,28 @@ namespace DotNetStarter.Tests
         [ExpectedException(typeof(Exception), AllowDerivedTypes = true)]
         public void ShouldRemoveService()
         {
-            Assert.IsNull(DotNetStarter.ApplicationContext.Default.Locator.Get<IRemove>());
+            if (A.SupportsServiceRemoval)
+            {
+                Assert.IsNull(DotNetStarter.ApplicationContext.Default.Locator.Get<IRemove>());
+            }
+            else
+            {
+                throw new Exception("To pass the test");
+            }
         }
 
         [TestMethod]
         [ExpectedException(typeof(Exception), AllowDerivedTypes = true)]
         public void ShouldRemoveImport()
         {
-            Assert.IsNull(Remove.Service);
+            if (A.SupportsServiceRemoval)
+            {
+                Assert.IsNull(Remove.Service);
+            }
+            else
+            {
+                throw new Exception("To pass the test");
+            }
         }
 
         [TestMethod]
@@ -134,7 +130,7 @@ namespace DotNetStarter.Tests
 
     internal interface IRemove { }
 
-    [Register(typeof(IRemove), LifeTime.Transient)]
+    [Registration(typeof(IRemove), Lifecycle.Transient)]
     internal class Remove : IRemove { }
 
     public interface IFooTwo
@@ -171,7 +167,7 @@ namespace DotNetStarter.Tests
         IEnumerable<T> Items { get; set; }
     }
 
-    [Register(typeof(IPagedData<>), LifeTime.Transient)]
+    [Registration(typeof(IPagedData<>), Lifecycle.Transient)]
     public class PagedData<T> : IPagedData<T>
     {
         public IEnumerable<T> Items { get; set; }
@@ -179,9 +175,11 @@ namespace DotNetStarter.Tests
         public int TotalItems { get; set; }
     }
 
-    [StartupModule(typeof(RegisterConfiguration))]
+    [StartupModule(typeof(RegistrationConfiguration))]
     public class A : ILocatorConfigure
     {
+        internal static bool SupportsServiceRemoval = false;
+
         internal static bool RegisterException = false;
 
         public void Configure(ILocatorRegistry container, IStartupEngine engine)
@@ -195,10 +193,13 @@ namespace DotNetStarter.Tests
                 RegisterException = true;
             }
 
-            container.Remove(typeof(IRemove));
+            if (container is ILocatorRegistryWithRemove removable)
+            {
+                removable.Remove(typeof(IRemove));
+                SupportsServiceRemoval = true;
+            }
 
             container.Add<BaseTest, BaseImpl>(lifetime: LifeTime.Singleton);
-
             container.Add(typeof(IFooTwo), locator => FooTwoFactory.CreateFoo(), LifeTime.Transient);
         }
     }

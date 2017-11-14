@@ -35,6 +35,6 @@
         /// <summary>
         /// Node attribute
         /// </summary>
-        DependencyBaseAttribute NodeAttribute { get; }
+        StartupDependencyBaseAttribute NodeAttribute { get; }
     }
 }

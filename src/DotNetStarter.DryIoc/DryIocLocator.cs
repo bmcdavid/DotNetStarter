@@ -9,7 +9,7 @@
     /// <summary>
     /// Creates a locator based on DryIoc.dll
     /// </summary>
-    public class DryIocLocator : DryIocLocatorBase, ILocatorRegistry, ILocatorSetContainer
+    public class DryIocLocator : DryIocLocatorBase, ILocatorRegistry, ILocatorSetContainer, ILocatorRegistryWithContains, ILocatorRegistryWithRemove
     {
         /// <summary>
         /// Constructor
@@ -107,15 +107,11 @@
                 //case LifeTime.Container: // in dryioc really not container scope, so just treat as a singleton in the container
                 case LifeTime.Singleton:
                     return Reuse.Singleton;
-
                 case LifeTime.Transient:
                     return Reuse.Transient;
                 // scoping via the container isn't supported in the locator by default, it takes an unwrapped container to utilize this via cast of IContainer as IContainerRegistry
                 case LifeTime.Scoped:
                     return Reuse.InCurrentScope;
-                // web scoping takes special context which is setup in a special IContainerRegistry setup in the DotNetStarter.Web package
-                case LifeTime.HttpRequest:
-                    return Reuse.InWebRequest;
             }
 
             return Reuse.Transient;
@@ -123,24 +119,11 @@
 
         private static Made GetConstructorFor(DryIoc.IContainer register, Type implementationType, ConstructorType constructor = ConstructorType.Greediest)
         {
-            if (constructor == ConstructorType.Resolved)
-            {
-                return FactoryMethod.ConstructorWithResolvableArguments;
-            }
-
             var allConstructors = implementationType.Constructors()
-                                                    .Where(x => x.IsConstructor && x.IsPublic)
-                                                    .OrderByDescending(x => x.GetParameters().Count());
+                .Where(x => x.IsConstructor && x.IsPublic)
+                .OrderByDescending(x => x.GetParameters().Count());
 
-            switch (constructor)
-            {
-                case ConstructorType.Empty:
-                    return Made.Of(allConstructors.LastOrDefault());
-
-                case ConstructorType.Greediest:
-                default:
-                    return Made.Of(allConstructors.FirstOrDefault());
-            }
+            return Made.Of(allConstructors.FirstOrDefault());
         }
 
         private static void RegisterSimple<TInterface, TImplementation>(DryIoc.IContainer register, IReuse reuse = null, ConstructorType constructor = ConstructorType.Greediest, string key = null)

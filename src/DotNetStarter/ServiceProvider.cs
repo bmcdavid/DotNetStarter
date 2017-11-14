@@ -26,7 +26,7 @@
     /// <summary>
     /// Wraps ILocator in a service provider
     /// </summary>
-    [Register(typeof(IServiceProvider), LifeTime.Scoped)]
+    [Registration(typeof(IServiceProvider), Lifecycle.Scoped)]
     public class ServiceProvider : IServiceProvider, IDisposable, ISupportRequiredService
     {
         /// <summary>
@@ -35,24 +35,6 @@
         public ILocator Locator { get; }
 
         private readonly IServiceProviderTypeChecker _ServiceProviderTypeChecker;
-
-        //todo: v2 remove old constructors
-    
-        /// <summary>
-        /// Constructor
-        /// </summary>
-        /// <param name="locator"></param>
-        [Obsolete]
-        public ServiceProvider(ILocator locator) : this(locator.Get<IServiceProviderTypeChecker>(), locator.Get<ILocatorScopedAccessor>()) { }
-
-        /// <summary>
-        /// Constructor
-        /// </summary>
-        /// <param name="serviceProviderTypeChecker"></param>
-        /// <param name="locatorScopedAccessor"></param>
-        [Obsolete]
-        public ServiceProvider(IServiceProviderTypeChecker serviceProviderTypeChecker, ILocatorScopedAccessor locatorScopedAccessor) :
-            this(ApplicationContext.Default.Locator, serviceProviderTypeChecker, locatorScopedAccessor) { }
 
         /// <summary>
         /// Constructor

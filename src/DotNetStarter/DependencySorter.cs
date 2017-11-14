@@ -13,11 +13,6 @@
         private Func<object, Type, IDependencyNode> _DependencyNodeFactory;
 
         /// <summary>
-        /// Default constructor
-        /// </summary>
-        public DependencySorter() : this(ObjectFactory.Default.CreateDependencyNode) { }
-
-        /// <summary>
         /// DI constructor
         /// </summary>
         /// <param name="dependencyNodeFactory"></param>
@@ -39,7 +34,7 @@
         /// <typeparam name="T"></typeparam>
         /// <param name="nodes"></param>
         /// <returns></returns>
-        public virtual IEnumerable<IDependencyNode> Sort<T>(IEnumerable<object> nodes) where T : DependencyBaseAttribute
+        public virtual IList<IDependencyNode> Sort<T>(IEnumerable<object> nodes) where T : StartupDependencyBaseAttribute
         {
             IList<IDependencyNode> unresolved = StartupNodes(nodes, typeof(T), DependencyComparer);
             List<IDependencyNode> resolved = new List<IDependencyNode>();

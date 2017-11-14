@@ -4,7 +4,7 @@ using System.Web;
 
 namespace DotNetStarter.Web.Tests.Mocks
 {
-    [Register(typeof(IHttpContextProvider), LifeTime.Singleton, typeof(HttpContextProvider))]
+    [Registration(typeof(IHttpContextProvider), Lifecycle.Singleton, typeof(HttpContextProvider))]
     public class MockHttpContextProvider : IHttpContextProvider
     {
         public HttpContextBase CurrentContext => new HttpContextWrapper(new HttpContext

@@ -2,21 +2,13 @@
 
   <PropertyGroup>
     <RootNamespace>DotNetStarter</RootNamespace>
-    <TargetFrameworks>net35;net40;net45;netstandard1.3;</TargetFrameworks>
+    <TargetFrameworks>net45;netstandard1.3;</TargetFrameworks>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
     <DocumentationFile>bin\$(Configuration)\$(TargetFramework)\DotNetStarter.Structuremap.xml</DocumentationFile>
   </PropertyGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\DotNetStarter.Abstractions\DotNetStarter.Abstractions.csproj" />
-  </ItemGroup>
-
-  <ItemGroup Condition="'$(TargetFramework)' == 'net35'">
-    <PackageReference Include="structuremap" version="2.6.3" />
-  </ItemGroup>
-
-  <ItemGroup Condition="'$(TargetFramework)' == 'net40'">
-    <PackageReference Include="structuremap" version="4.0.0.315" />
   </ItemGroup>
 
   <ItemGroup Condition="'$(TargetFramework)' == 'net45'">

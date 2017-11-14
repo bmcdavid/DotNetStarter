@@ -59,7 +59,7 @@ namespace DotNetStarter
         /// Creates default dependency sorter
         /// </summary>
         /// <returns></returns>
-        public virtual IDependencySorter CreateDependencySorter() => new DependencySorter();
+        public virtual IDependencySorter CreateDependencySorter() => new DependencySorter(CreateDependencyNode);
 
         /// <summary>
         /// Creates default startup configuration
@@ -86,7 +86,7 @@ namespace DotNetStarter
         /// <param name="allModules"></param>
         /// <param name="startupConfiguration"></param>
         /// <returns></returns>
-        public virtual IStartupContext CreateStartupContext(ILocator locator, IEnumerable<IDependencyNode> filteredModules, IEnumerable<IDependencyNode> allModules, IStartupConfiguration startupConfiguration) =>
+        public virtual IStartupContext CreateStartupContext(IReadOnlyLocator locator, IEnumerable<IDependencyNode> filteredModules, IEnumerable<IDependencyNode> allModules, IStartupConfiguration startupConfiguration) =>
             new StartupContext(locator, allModules, filteredModules, startupConfiguration);
 
         /// <summary>
@@ -132,7 +132,7 @@ namespace DotNetStarter
         /// Creates default timed task manager.
         /// </summary>
         /// <returns></returns>
-        public virtual ITimedTaskManager CreateTimedTaskManager() => new TimedTaskManager();
+        public virtual ITimedTaskManager CreateTimedTaskManager() => new TimedTaskManager(CreateRequestSettingsProvider);
 
         /// <summary>
         /// Gets factory type for given factory attribute

@@ -97,10 +97,10 @@
                             throw new ArgumentException($"{nameof(configuration)} and {nameof(assemblies)} were both set, please pass configuration only in these cases.");
                         }
 
-                        ObjectFactory.EnsureDefaultObjectFactory(configuration?.Assemblies ?? assemblies, objectFactory);
-                        var factory = objectFactory ?? ObjectFactory.Default;
+                        var assembliesForStartup = configuration?.Assemblies ?? assemblies ?? new Internal.AssemblyLoader().GetAssemblies();
+                        var factory = objectFactory ?? new StartupObjectFactory();
                         _Handler = factory.CreateStartupHandler();
-                        _Configuration = configuration ?? factory.CreateStartupConfiguration(assemblies ?? ObjectFactory.Assemblies);
+                        _Configuration = configuration ?? factory.CreateStartupConfiguration(assembliesForStartup);
                         _Started = _Handler.Startup(_Configuration, factory, out _Default);
                     }
                 }

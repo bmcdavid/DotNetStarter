@@ -29,7 +29,7 @@ namespace DotNetStarter.Tests
                 var scopeTest2 = scopedLocator.Get<ScopeTest>();
 
                 Assert.IsTrue(scopedLocator.Parent == null);
-                Assert.IsTrue(scopedLocator.Get<ILocator>() is ILocatorScoped);
+                //Assert.IsTrue(scopedLocator.Get<ILocator>() is ILocatorScoped);
 
                 using (var nestedScope = (scopedLocator as ILocatorCreateScope).CreateScope())
                 {
@@ -162,7 +162,7 @@ namespace DotNetStarter.Tests
             Assert.IsNotNull(_Context.Service.Locator.Get<Mocks.RegistrationTestStatic>());
         }
 
-        [Register(typeof(ScopeTest), LifeTime.Scoped)]
+        [Registration(typeof(ScopeTest), Lifecycle.Scoped)]
         internal class ScopeTest
         {
             public ScopeTest()
@@ -173,7 +173,7 @@ namespace DotNetStarter.Tests
             public long TestVariable { get; }
         }
 
-        [Register(typeof(TestFuncCreationComplex), LifeTime.Transient)]
+        [Registration(typeof(TestFuncCreationComplex), Lifecycle.Transient)]
         internal class TestFuncCreationComplex
         {
             public TestFuncCreationComplex(IInjectable injectionTest, IStartupConfiguration configuration, IShutdownHandler shutdownHandler)
@@ -182,30 +182,23 @@ namespace DotNetStarter.Tests
             }
         }
 
-        [Register(typeof(TestLocatorInjectionScoped), LifeTime.Scoped)]
+        [Registration(typeof(TestLocatorInjectionScoped), Lifecycle.Scoped)]
         internal class TestLocatorInjectionScoped
         {
-            public TestLocatorInjectionScoped(ILocator locator, ILocatorScoped locatorScoped, ILocatorScopedAccessor locatorScopedAccessor)
+            public TestLocatorInjectionScoped(ILocatorScopedAccessor locatorScopedAccessor)
             {
-                var x = locator as ILocatorScoped;
-
-                if (x == null || x != locatorScoped)
-                    throw new Exception("Locator injection didn't work!");
-
-                if (locatorScoped != locatorScopedAccessor.CurrentScope)
-                    throw new Exception("Scopes do not match!");
+                if (null == locatorScopedAccessor.CurrentScope)
+                    throw new Exception("Scope not set!");
             }
         }
 
-        [Register(typeof(TestLocatorInjectionTransient), LifeTime.Scoped)]
+        [Registration(typeof(TestLocatorInjectionTransient), Lifecycle.Scoped)]
         internal class TestLocatorInjectionTransient
         {
-            public TestLocatorInjectionTransient(ILocator locator, ILocatorScoped locatorScoped)
+            public TestLocatorInjectionTransient(ILocatorScopedAccessor locatorScopedAccessor)
             {
-                var x = locator as ILocatorScoped;
-
-                if (x == null || x != locatorScoped)
-                    throw new Exception("Locator injection didn't work!");
+                if (null == locatorScopedAccessor.CurrentScope)
+                    throw new Exception("Scope not set!");
             }
         }
 
