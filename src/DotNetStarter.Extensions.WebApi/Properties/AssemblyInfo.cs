@@ -13,5 +13,5 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyInformationalVersion("2.0.0-alpha001 Build: {build} Commit Hash: {commit}")]
 
 [assembly: DotNetStarter.Abstractions.DiscoverableAssembly]
-[assembly: DotNetStarter.Abstractions.Exports(DotNetStarter.Abstractions.ExportsType.ExportsOnly)]
+//[assembly: DotNetStarter.Abstractions.Exports(DotNetStarter.Abstractions.ExportsType.ExportsOnly)]
 [assembly: DotNetStarter.Abstractions.DiscoverTypes(typeof(System.Web.Http.ApiController))]
