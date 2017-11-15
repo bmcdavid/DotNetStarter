@@ -1,5 +1,4 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System.Linq;
 using System.Reflection;
 
 namespace DotNetStarter.Extensions.Mvc.Tests
@@ -10,9 +9,17 @@ namespace DotNetStarter.Extensions.Mvc.Tests
         [AssemblyInitialize]
         public static void Setup(TestContext context)
         {
-            var scannableAssemblies = ApplicationContext.GetScannableAssemblies();
+            var scannableAssemblies = new Assembly[]
+            {
+                typeof(DotNetStarter.Abstractions.IAssemblyFilter).Assembly,
+                typeof(DotNetStarter.ApplicationContext).Assembly,
+                typeof(DotNetStarter.DryIocLocator).Assembly,
+                typeof(DotNetStarter.Web.Startup).Assembly,
+                typeof(DotNetStarter.Extensions.Mvc.StartupMvc).Assembly,
+                typeof(_TestSetup).Assembly
+            };
 
-            ApplicationContext.Startup(assemblies: scannableAssemblies.Union(new Assembly[] { typeof(_TestSetup).Assembly }));
+            DotNetStarter.ApplicationContext.Startup(assemblies: scannableAssemblies);
         }
     }
 }
