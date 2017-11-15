@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.27004.2008
+VisualStudioVersion = 15.0.27004.2009
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".Solution Items", ".Solution Items", "{90F6AC8D-CCBC-4EB1-A448-6C931901B985}"
 	ProjectSection(SolutionItems) = preProject
@@ -95,6 +95,10 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotNetStarter.Extensions.Mvc.Tests", "tests\DotNetStarter.Extensions.Mvc.Tests\DotNetStarter.Extensions.Mvc.Tests.csproj", "{A28E34D5-E45D-4675-987B-0CB6B1983C03}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotNetStarter.Extensions.WebApi.Tests", "tests\DotNetStarter.Extensions.WebApi.Tests\DotNetStarter.Extensions.WebApi.Tests.csproj", "{736DA1DA-475F-4943-BCC3-833F8C66A5EE}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DotNetStarter.StructureMapSigned", "src\DotNetStarter.StructureMapSigned\DotNetStarter.StructureMapSigned.csproj", "{357E42EF-4474-49E8-86DB-7ECBAAB9F5C4}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotNetStarter.StucturemapSigned.Tests.Net45", "tests\DotNetStarter.StucturemapSigned.Tests.Net45\DotNetStarter.StucturemapSigned.Tests.Net45.csproj", "{CA22FD27-EFF6-4A57-8BED-52C89A17D938}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -206,6 +210,14 @@ Global
 		{736DA1DA-475F-4943-BCC3-833F8C66A5EE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{736DA1DA-475F-4943-BCC3-833F8C66A5EE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{736DA1DA-475F-4943-BCC3-833F8C66A5EE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{357E42EF-4474-49E8-86DB-7ECBAAB9F5C4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{357E42EF-4474-49E8-86DB-7ECBAAB9F5C4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{357E42EF-4474-49E8-86DB-7ECBAAB9F5C4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{357E42EF-4474-49E8-86DB-7ECBAAB9F5C4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CA22FD27-EFF6-4A57-8BED-52C89A17D938}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CA22FD27-EFF6-4A57-8BED-52C89A17D938}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CA22FD27-EFF6-4A57-8BED-52C89A17D938}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CA22FD27-EFF6-4A57-8BED-52C89A17D938}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -232,6 +244,8 @@ Global
 		{A27975D6-5EEC-4AC9-9EB8-E09AE03CCF11} = {0E2C2FB2-59F2-41B6-88E5-BA65ACD0A29A}
 		{A28E34D5-E45D-4675-987B-0CB6B1983C03} = {8A8DF2AE-D820-4CDB-BB3F-0A41C982FB53}
 		{736DA1DA-475F-4943-BCC3-833F8C66A5EE} = {8A8DF2AE-D820-4CDB-BB3F-0A41C982FB53}
+		{357E42EF-4474-49E8-86DB-7ECBAAB9F5C4} = {FC53A6BC-F55F-42E8-A855-D0E955D3C79B}
+		{CA22FD27-EFF6-4A57-8BED-52C89A17D938} = {8A8DF2AE-D820-4CDB-BB3F-0A41C982FB53}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {FF3D216A-6303-4C08-8210-9B458DAC339C}

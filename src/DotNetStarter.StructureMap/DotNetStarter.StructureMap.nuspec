@@ -15,11 +15,11 @@
     <dependencies>
       <group targetFramework="net45">
         <dependency id="DotNetStarter" version="[1.4,2)" />
-        <dependency id="StructureMap" version="[4.4.5,5)" />
+        <dependency id="StructureMap" version="[4.5.3,5)" />
       </group>
       <group targetFramework="netstandard1.3">
         <dependency id="DotNetStarter" version="[1.4,2)" />
-        <dependency id="StructureMap" version="[4.4.5,5)" />
+        <dependency id="StructureMap" version="[4.5.3,5)" />
         <dependency id="NETStandard.Library" version="1.6.0" exclude="Build,Analyzers" />
       </group>
     </dependencies>

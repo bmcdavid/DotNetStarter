@@ -15,19 +15,19 @@
     <dependencies>
       <group targetFramework="net35">
         <dependency id="DotNetStarter" version="[1.4,2)" />
-        <dependency id="DryIoc.dll" version="[2.7,3)" />
+        <dependency id="DryIoc.dll" version="[2.12.5,3)" />
       </group>
       <group targetFramework="net40">
         <dependency id="DotNetStarter" version="[1.4,2)" />
-        <dependency id="DryIoc.dll" version="[2.7,3)" />
+        <dependency id="DryIoc.dll" version="[2.12.5,3)" />
       </group>
       <group targetFramework="net45">
         <dependency id="DotNetStarter" version="[1.4,2)" />
-        <dependency id="DryIoc.dll" version="[2.7,3)" />
+        <dependency id="DryIoc.dll" version="[2.12.5,3)" />
       </group>
       <group targetFramework="netstandard1.0">
         <dependency id="DotNetStarter" version="[1.4,2)" />
-        <dependency id="DryIoc.dll" version="[2.7,3)" />
+        <dependency id="DryIoc.dll" version="[2.12.5,3)" />
         <dependency id="NETStandard.Library" version="1.6.0" exclude="Build,Analyzers" />
       </group>
     </dependencies>
