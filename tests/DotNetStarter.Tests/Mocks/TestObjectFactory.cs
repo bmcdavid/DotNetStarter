@@ -4,15 +4,10 @@ using System.Linq;
 using System.Reflection;
 using DotNetStarter.Abstractions;
 
-//register this as the default configuration
-[assembly: StartupObjectFactory(typeof(DotNetStarter.Tests.Mocks.TestObjectFactory))]
-
 namespace DotNetStarter.Tests.Mocks
 {
     internal class TestObjectFactory : StartupObjectFactory
     {
-        public override int SortOrder => base.SortOrder + 100;
-
         public override IStartupLogger CreateStartupLogger() => new TestLogger();
 
         public override IStartupModuleFilter CreateModuleFilter() => new TestModuleFilter();

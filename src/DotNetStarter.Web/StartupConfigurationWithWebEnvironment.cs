@@ -7,7 +7,7 @@ namespace DotNetStarter.Web
     /// <summary>
     /// Default startup configuration with web environment
     /// </summary>
-    public class StartupConfigurationWithWebEnvironment : StartupConfigurationWithEnvironment, IStartupConfigurationWithEnvironment<IStartupEnvironmentWeb>
+    public class StartupConfigurationWithWebEnvironment : StartupConfiguration, IStartupConfigurationWithEnvironment<IStartupEnvironmentWeb>
     {
         private IStartupEnvironmentWeb _Environment;
 
@@ -38,14 +38,14 @@ namespace DotNetStarter.Web
             : base
             ( 
                 assemblies,
-                environment,
                 assemblyFilter,
                 assemblyScanner,
                 dependencyFinder,
                 dependencySorter,
                 startupLogger,
                 startupModuleFilter,
-                timedTaskManager
+                timedTaskManager,
+                environment
             )
         {
             _Environment = environment;

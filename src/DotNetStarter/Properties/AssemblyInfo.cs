@@ -17,9 +17,3 @@ using System.Reflection;
 [assembly: AssemblyInformationalVersion("2.0.0-alph001 Build: {build} Commit Hash: {commit}")]
 
 [assembly: DiscoverableAssembly]
-[assembly: DiscoverTypes
-(
-    typeof(RegistrationAttribute),
-    typeof(StartupModuleAttribute),
-    typeof(IStartupModule)
-)]

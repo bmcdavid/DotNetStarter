@@ -10,11 +10,6 @@
     public interface IStartupObjectFactory
     {
         /// <summary>
-        /// Highest number gets picked as configuration, be sure all factories return valid implementations
-        /// </summary>
-        int SortOrder { get; }
-
-        /// <summary>
         /// Creates assembly filter
         /// </summary>
         /// <returns></returns>
@@ -55,8 +50,10 @@
         /// <summary>
         /// Creates initalization configuration object
         /// </summary>
+        /// <param name="assemblies"></param>
+        /// <param name="startupEnvironment"></param>
         /// <returns></returns>
-        IStartupConfiguration CreateStartupConfiguration(IEnumerable<Assembly> assemblies);
+        IStartupConfiguration CreateStartupConfiguration(IEnumerable<Assembly> assemblies, IStartupEnvironment startupEnvironment);
 
         /// <summary>
         /// Creates the startup context object

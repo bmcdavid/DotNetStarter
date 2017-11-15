@@ -4,9 +4,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
 
-// adds controller implementations to the assembly scanner
-[assembly: DiscoverTypes(typeof(IController))]
-
 namespace DotNetStarter.Extensions.Mvc
 {
     /// <summary>

@@ -1,4 +1,5 @@
-﻿using System.Reflection;
+﻿using DotNetStarter.Abstractions;
+using System.Reflection;
 
 #if !NETSTANDARD1_0
 
@@ -14,3 +15,12 @@
 [assembly: AssemblyVersion("2.0.0")]
 [assembly: AssemblyFileVersion("2.0.0")]
 [assembly: AssemblyInformationalVersion("2.0.0-alpha001 Build: {build} Commit Hash: {commit}")]
+
+[assembly: Exports(typeof(RegistrationConfiguration))] // only export this type
+[assembly: DiscoverableAssembly]
+[assembly: DiscoverTypes
+(
+    typeof(RegistrationAttribute),
+    typeof(StartupModuleAttribute),
+    typeof(IStartupModule)
+)]

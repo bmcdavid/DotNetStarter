@@ -1,61 +1,55 @@
-﻿using DotNetStarter.Abstractions;
-using System.Collections.Generic;
-using System.Reflection;
-
-namespace DotNetStarter
+﻿namespace DotNetStarter
 {
+    using Abstractions;
+    using System.Collections.Generic;
+    using System.Reflection;
+
     /// <summary>
-    /// Default startup configuration with environment
+    /// Default implementation for startup configuration objects.
     /// </summary>
-    public class StartupConfigurationWithEnvironment : IStartupConfigurationWithEnvironment
+    public class StartupConfiguration : IStartupConfiguration
     {
         /// <summary>
         /// Constructor
         /// </summary>
         /// <param name="assemblies"></param>
-        /// <param name="environment"></param>
         /// <param name="assemblyFilter"></param>
         /// <param name="assemblyScanner"></param>
         /// <param name="dependencyFinder"></param>
         /// <param name="dependencySorter"></param>
-        /// <param name="startupLogger"></param>
-        /// <param name="startupModuleFilter"></param>
+        /// <param name="logger"></param>
+        /// <param name="moduleFilter"></param>
         /// <param name="timedTaskManager"></param>
-        public StartupConfigurationWithEnvironment(
+        /// <param name="startupEnvironment"></param>
+        public StartupConfiguration(
             IEnumerable<Assembly> assemblies,
-            IStartupEnvironment environment,
             IAssemblyFilter assemblyFilter,
             IAssemblyScanner assemblyScanner,
             IDependencyFinder dependencyFinder,
             IDependencySorter dependencySorter,
-            IStartupLogger startupLogger,
-            IStartupModuleFilter startupModuleFilter,
-            ITimedTaskManager timedTaskManager
-        )
+            IStartupLogger logger,
+            IStartupModuleFilter moduleFilter,
+            ITimedTaskManager timedTaskManager,
+            IStartupEnvironment startupEnvironment)
         {
-            Environment = environment;
             Assemblies = assemblies;
             AssemblyFilter = assemblyFilter;
             AssemblyScanner = assemblyScanner;
             DependencyFinder = dependencyFinder;
             DependencySorter = dependencySorter;
-            Logger = startupLogger;
-            ModuleFilter = startupModuleFilter;
+            Logger = logger;
+            ModuleFilter = moduleFilter;
             TimedTaskManager = timedTaskManager;
+            Environment = startupEnvironment ?? new StartupEnvironment("Local", Internal.CrossPlatformHelpers.GetApplicationBaseDirectory());
         }
 
         /// <summary>
-        /// Startup environment reference
-        /// </summary>
-        public virtual IStartupEnvironment Environment { get; }
-
-        /// <summary>
-        /// Application References for startup
+        /// Application Assemblies
         /// </summary>
         public IEnumerable<Assembly> Assemblies { get; }
 
         /// <summary>
-        /// Default assembly filter useful for AssemblyScanner
+        /// Default assembly filter
         /// </summary>
         public IAssemblyFilter AssemblyFilter { get; }
 
@@ -75,7 +69,7 @@ namespace DotNetStarter
         public IDependencySorter DependencySorter { get; }
 
         /// <summary>
-        /// Default startup logger
+        /// Default logger
         /// </summary>
         public IStartupLogger Logger { get; }
 
@@ -88,5 +82,10 @@ namespace DotNetStarter
         /// Default timed task manager
         /// </summary>
         public ITimedTaskManager TimedTaskManager { get; }
+
+        /// <summary>
+        /// Startup Environment
+        /// </summary>
+        public IStartupEnvironment Environment { get; }
     }
 }

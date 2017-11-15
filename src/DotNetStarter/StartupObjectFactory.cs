@@ -1,8 +1,5 @@
 ﻿using DotNetStarter.Abstractions;
 
-//register this as the default configuration
-[assembly: StartupObjectFactory(typeof(DotNetStarter.StartupObjectFactory))]
-
 namespace DotNetStarter
 {
     using Abstractions;
@@ -17,11 +14,6 @@ namespace DotNetStarter
     /// </summary>
     public class StartupObjectFactory : IStartupObjectFactory
     {
-        /// <summary>
-        /// Set to zero, if overriding set to higher number.
-        /// </summary>
-        public virtual int SortOrder => 0;
-
         /// <summary>
         /// Creates default assembly filter.
         /// </summary>
@@ -65,8 +57,9 @@ namespace DotNetStarter
         /// Creates default startup configuration
         /// </summary>
         /// <param name="assemblies">Assemblies found from assembly loader.</param>
+        /// <param name="startupEnvironment"></param>
         /// <returns></returns>
-        public virtual IStartupConfiguration CreateStartupConfiguration(IEnumerable<Assembly> assemblies) =>
+        public virtual IStartupConfiguration CreateStartupConfiguration(IEnumerable<Assembly> assemblies, IStartupEnvironment startupEnvironment) =>
             new StartupConfiguration(
                 assemblies,
                 CreateAssemblyFilter(),
@@ -75,7 +68,8 @@ namespace DotNetStarter
                 CreateDependencySorter(),
                 CreateStartupLogger(),
                 CreateModuleFilter(),
-                CreateTimedTaskManager()
+                CreateTimedTaskManager(),
+                startupEnvironment
             );
 
         /// <summary>

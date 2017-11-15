@@ -19,5 +19,18 @@
             return string.Compare(a,b, System.StringComparison.CurrentCultureIgnoreCase) == 0;
 #endif
         }
+
+        /// <summary>
+        /// For netframework gets the base directory, for netstandard returns empty string
+        /// </summary>
+        /// <returns></returns>
+        public static string GetApplicationBaseDirectory()
+        {
+#if NET35 || NET40 || NET45
+            return System.AppDomain.CurrentDomain.BaseDirectory;
+#else
+            return "";
+#endif
+        }
     }
 }

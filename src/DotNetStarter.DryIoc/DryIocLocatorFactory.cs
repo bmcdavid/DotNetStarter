@@ -1,6 +1,4 @@
-﻿[assembly: DotNetStarter.Abstractions.LocatorRegistryFactory(typeof(DotNetStarter.DryIocLocatorFactory))]
-
-namespace DotNetStarter
+﻿namespace DotNetStarter
 {
     using DotNetStarter.Abstractions;
 

@@ -88,6 +88,31 @@
         /// </summary>
         /// <param name="assembly"></param>
         /// <returns></returns>
-        protected virtual IEnumerable<Type> AssemblyTypes(Assembly assembly) => TypeExtensions.GetTypesCheck(assembly);
+        protected virtual IEnumerable<Type> AssemblyTypes(Assembly assembly)
+        {
+            //return assembly.GetTypesCheck();
+
+            ExportsType exportsType = ExportsType.All;
+            var exportAttribute = assembly.CustomAttribute(typeof(ExportsAttribute), false)
+                .OfType<ExportsAttribute>()
+                .FirstOrDefault();
+
+            if (exportAttribute != null)
+            {
+                exportsType = exportAttribute.ExportsType;
+            }
+
+            switch (exportsType)
+            {
+                case ExportsType.All:
+                    return assembly.GetTypesCheck(exportedOnly: false);
+                case ExportsType.ExportsOnly:
+                    return assembly.GetTypesCheck(exportedOnly: true);
+                case ExportsType.Specfic:
+                    return exportAttribute.Exports;
+                default:
+                    throw new NotSupportedException("Unknown ExportsType of " + exportsType);
+            }
+        }
     }
 }

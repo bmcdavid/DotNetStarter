@@ -1,7 +1,5 @@
 ﻿using DotNetStarter.Abstractions;
 
-[assembly: LocatorRegistryFactory(typeof(DotNetStarter.StructureMapFactory))]
-
 namespace DotNetStarter
 {
     /// <summary>

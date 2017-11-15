@@ -1,7 +1,6 @@
-﻿namespace DotNetStarter
+﻿namespace DotNetStarter.Abstractions
 {
-    using Abstractions;
-    using DotNetStarter.Abstractions.Internal;
+    using Internal;
     using System;
     using System.Linq;
 

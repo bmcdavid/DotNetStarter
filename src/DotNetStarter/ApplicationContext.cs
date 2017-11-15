@@ -8,7 +8,6 @@
 
     /// <summary>
     /// Default hook into startup process, execute DotNetStarter.ApplicationContext.Startup to invoke startup.
-    /// <para>preferred to access using Import&lt;T> instead of DotNetStarter.ApplicationContext.Default.Locator</para>
     /// </summary>
     public class ApplicationContext
     {
@@ -29,8 +28,6 @@
         private static IStartupContext _Default;
 
         private static IStartupHandler _Handler;
-
-        private static IStartupConfiguration _Configuration;
 
         /// <summary>
         /// Finalizer
@@ -64,10 +61,20 @@
         /// </summary>
         /// <param name="configuration"></param>
         /// <param name="objectFactory"></param>
-        /// <param name="assemblies">Please do not pass assemblies if also passing a IStartupConfiguration.</param>
-        public static void Startup(IStartupConfiguration configuration = null, IStartupObjectFactory objectFactory = null, IEnumerable<Assembly> assemblies = null)
+        public static void Startup(IStartupConfiguration configuration, IStartupObjectFactory objectFactory = null)
         {
-            EnsureStartup(configuration, objectFactory, assemblies);
+            EnsureStartup(configuration: configuration, objectFactory: objectFactory);
+        }
+
+        /// <summary>
+        /// Entry point for startup process
+        /// </summary>
+        /// <param name="environment"></param>
+        /// <param name="assemblies"></param>
+        /// <param name="objectFactory"></param>
+        public static void Startup(IStartupEnvironment environment = null, IEnumerable<Assembly> assemblies = null, IStartupObjectFactory objectFactory = null)
+        {
+            EnsureStartup(environment: environment, objectFactory: objectFactory, assemblies: assemblies);
         }
 
         /// <summary>
@@ -78,13 +85,15 @@
             get
             {
                 if (_Default == null)
+                {
                     EnsureStartup();
+                }
 
                 return _Default;
             }
         }
 
-        static void EnsureStartup(IStartupConfiguration configuration = null, IStartupObjectFactory objectFactory = null, IEnumerable<Assembly> assemblies = null)
+        static void EnsureStartup(IStartupEnvironment environment = null, IStartupConfiguration configuration = null, IStartupObjectFactory objectFactory = null, IEnumerable<Assembly> assemblies = null)
         {
             if (!_Started)
             {
@@ -92,16 +101,11 @@
                 {
                     if (!_Started)
                     {
-                        if (configuration?.Assemblies != null && assemblies != null)
-                        {
-                            throw new ArgumentException($"{nameof(configuration)} and {nameof(assemblies)} were both set, please pass configuration only in these cases.");
-                        }
-
                         var assembliesForStartup = configuration?.Assemblies ?? assemblies ?? new Internal.AssemblyLoader().GetAssemblies();
                         var factory = objectFactory ?? new StartupObjectFactory();
                         _Handler = factory.CreateStartupHandler();
-                        _Configuration = configuration ?? factory.CreateStartupConfiguration(assembliesForStartup);
-                        _Started = _Handler.Startup(_Configuration, factory, out _Default);
+                        var startupConfig = configuration ?? factory.CreateStartupConfiguration(assembliesForStartup, environment);
+                        _Started = _Handler.Startup(startupConfig, factory, out _Default);
                     }
                 }
             }
