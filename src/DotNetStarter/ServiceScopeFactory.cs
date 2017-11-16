@@ -22,9 +22,9 @@ namespace DotNetStarter
 #endif
 
     /// <summary>
-    /// Creates a scoped service provider with injected locator
+    /// Creates IServiceScopeFactory
     /// </summary>
-    [Registration(typeof(IServiceScopeFactory), Lifecycle.Scoped)]
+    [Registration(typeof(IServiceScopeFactory), Lifecycle.Singleton)]
     public class ServiceScopeFactory : IServiceScopeFactory
     {
         private readonly ILocatorScopedFactory _LocatorScopeFactory;
@@ -46,7 +46,14 @@ namespace DotNetStarter
         {
             var scope = _LocatorScopeFactory.CreateScope();
 
-            return scope.Get<IServiceScope>();
+            return new ServiceScope
+            (
+                new ServiceProvider
+                (
+                    scope.Get<IServiceProviderTypeChecker>(),
+                    scope.Get<ILocatorScopedAccessor>()
+                )
+            );
         }
     }
 }

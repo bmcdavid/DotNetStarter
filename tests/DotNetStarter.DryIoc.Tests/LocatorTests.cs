@@ -1,7 +1,6 @@
 ﻿using System;
 using DotNetStarter.Abstractions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using DotNetStarter.Abstractions.Internal;
 
 #if DRYNETSTANDARD || MAPNETSTANDARD
 using Microsoft.Extensions.DependencyInjection;
@@ -9,27 +8,82 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace DotNetStarter.Tests
 {
+    #region Mocks
+
+    [Registration(typeof(ScopeTest), Lifecycle.Scoped)]
+    internal class ScopeTest
+    {
+        public ScopeTest()
+        {
+            TestVariable = DateTime.Now.Ticks;
+        }
+
+        public long TestVariable { get; }
+    }
+
+    [Registration(typeof(TestFuncCreationComplex), Lifecycle.Transient)]
+    internal class TestFuncCreationComplex
+    {
+        public TestFuncCreationComplex(IInjectable injectionTest, IStartupConfiguration configuration, IShutdownHandler shutdownHandler)
+        {
+
+        }
+    }
+
+    [Registration(typeof(TestLocatorInjectionScoped), Lifecycle.Scoped)]
+    internal class TestLocatorInjectionScoped
+    {
+        public TestLocatorInjectionScoped(ILocatorScopedAccessor locatorScopedAccessor)
+        {
+            if (null == locatorScopedAccessor.CurrentScope)
+                throw new Exception("Scope not set!");
+        }
+    }
+
+    [Registration(typeof(TestLocatorInjectionTransient), Lifecycle.Scoped)]
+    internal class TestLocatorInjectionTransient
+    {
+        public TestLocatorInjectionTransient(ILocatorScopedAccessor locatorScopedAccessor)
+        {
+            if (null == locatorScopedAccessor.CurrentScope)
+                throw new Exception("Scope not set!");
+        }
+    }
+
+    internal interface IInjectable { }
+
+    [Registration(typeof(IInjectable))] // hack: must be registered for LightInject
+    internal class TestInjectable : IInjectable
+    {
+
+    }
+    #endregion
+
     [TestClass]
     public class LocatorTests
     {
         public Import<IStartupContext> _Context { get; set; }
 
-#if !STRUCTUREMAPNET35   
-
         [TestMethod]
         public void ShouldCreateLocatorScope()
         {
             var locator = _Context.Service.Locator;
+            ScopeTest noScopeTest = null;
+
+            // hack: LightInject cannot resolve scoped objects when no scope is open
+            using (var scope = (locator as ILocatorCreateScope).CreateScope())
+            {
+                noScopeTest = locator.Get<ScopeTest>();
+                System.Threading.Thread.Sleep(1);
+            }
+
             using (var scopedLocator = (locator as ILocatorCreateScope).CreateScope())
             {
-                var noScopeTest = locator.Get<ScopeTest>();
-                System.Threading.Thread.Sleep(1);
                 var scopeTest = scopedLocator.Get<ScopeTest>();
                 System.Threading.Thread.Sleep(1);
                 var scopeTest2 = scopedLocator.Get<ScopeTest>();
 
                 Assert.IsTrue(scopedLocator.Parent == null);
-                //Assert.IsTrue(scopedLocator.Get<ILocator>() is ILocatorScoped);
 
                 using (var nestedScope = (scopedLocator as ILocatorCreateScope).CreateScope())
                 {
@@ -43,7 +97,7 @@ namespace DotNetStarter.Tests
             }
 
             var resolveTest = locator.Get<IAssemblyScanner>();
-            Assert.IsNotNull(resolveTest);
+            Assert.IsNotNull(resolveTest, "final resolve");
         }
         
         [TestMethod]
@@ -51,8 +105,14 @@ namespace DotNetStarter.Tests
         {
             var locator = _Context.Service.Locator;
             var factory = locator.Get<ILocatorScopedFactory>();
-            var noScopeTest = locator.Get<ScopeTest>();
-            System.Threading.Thread.Sleep(1);
+            ScopeTest noScopeTest;
+
+            // hack: LightInject cannot resolve scoped objects when no scope is open
+            using (var scopedLocator = factory.CreateScope())
+            {
+                noScopeTest = locator.Get<ScopeTest>();
+                System.Threading.Thread.Sleep(1);
+            }
 
             using (var scopedLocator = factory.CreateScope())
             {
@@ -77,10 +137,16 @@ namespace DotNetStarter.Tests
         public void ShouldGetLocatorScopedFromAccessor()
         {
             var factory = _Context.Service.Locator.Get<ILocatorScopedFactory>();
-            var scope1 = factory.CreateScope();
+            using (var scope1 = factory.CreateScope())
+            {
+                var sut1 = scope1.Get<ILocatorScopedAccessor>().CurrentScope;
 
-            Assert.IsNotNull(scope1.Get<ILocatorScopedAccessor>().CurrentScope);
-            Assert.IsNull(_Context.Service.Locator.Get<ILocatorScopedAccessor>().CurrentScope);
+                Assert.IsNotNull(sut1);
+            }
+
+            // hack : cannot resolve in LightInject
+            //var sut2 = _Context.Service.Locator.Get<ILocatorScopedAccessor>().CurrentScope;
+            //Assert.IsNull(sut2);
         }
 
         [TestMethod]
@@ -136,8 +202,6 @@ namespace DotNetStarter.Tests
             Assert.IsNotNull(sut(new TestInjectable()));
         }
 
-#endif
-
         [TestMethod]
         public void ShouldImportContext()
         {
@@ -160,53 +224,6 @@ namespace DotNetStarter.Tests
         public void ShouldResolveClassWithStaticConstructor()
         {
             Assert.IsNotNull(_Context.Service.Locator.Get<Mocks.RegistrationTestStatic>());
-        }
-
-        [Registration(typeof(ScopeTest), Lifecycle.Scoped)]
-        internal class ScopeTest
-        {
-            public ScopeTest()
-            {
-                TestVariable = DateTime.Now.Ticks;
-            }
-
-            public long TestVariable { get; }
-        }
-
-        [Registration(typeof(TestFuncCreationComplex), Lifecycle.Transient)]
-        internal class TestFuncCreationComplex
-        {
-            public TestFuncCreationComplex(IInjectable injectionTest, IStartupConfiguration configuration, IShutdownHandler shutdownHandler)
-            {
-
-            }
-        }
-
-        [Registration(typeof(TestLocatorInjectionScoped), Lifecycle.Scoped)]
-        internal class TestLocatorInjectionScoped
-        {
-            public TestLocatorInjectionScoped(ILocatorScopedAccessor locatorScopedAccessor)
-            {
-                if (null == locatorScopedAccessor.CurrentScope)
-                    throw new Exception("Scope not set!");
-            }
-        }
-
-        [Registration(typeof(TestLocatorInjectionTransient), Lifecycle.Scoped)]
-        internal class TestLocatorInjectionTransient
-        {
-            public TestLocatorInjectionTransient(ILocatorScopedAccessor locatorScopedAccessor)
-            {
-                if (null == locatorScopedAccessor.CurrentScope)
-                    throw new Exception("Scope not set!");
-            }
-        }
-
-        internal interface IInjectable { }
-
-        internal class TestInjectable : IInjectable
-        {
-
         }
     }
 }

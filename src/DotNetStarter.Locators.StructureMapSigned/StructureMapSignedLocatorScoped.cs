@@ -1,19 +1,19 @@
 ﻿using DotNetStarter.Abstractions;
 using StructureMap;
 
-namespace DotNetStarter
+namespace DotNetStarter.Locators
 {
     /// <summary>
     /// Scoped structuremap locator
     /// </summary>
-    public sealed class StructureMapLocatorScoped : StructureMapLocatorBase, ILocatorScoped
+    public sealed class StructureMapSignedLocatorScoped : StructureMapSignedLocatorBase, ILocatorScoped
     {
         /// <summary>
         /// Constructor
         /// </summary>
         /// <param name="container"></param>
         /// <param name="locator"></param>
-        public StructureMapLocatorScoped(IContainer container, ILocator locator) : base(container)
+        public StructureMapSignedLocatorScoped(IContainer container, ILocator locator) : base(container)
         {
             Parent = locator as ILocatorScoped;
         }

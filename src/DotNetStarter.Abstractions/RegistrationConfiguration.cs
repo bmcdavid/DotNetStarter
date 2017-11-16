@@ -20,17 +20,17 @@
             for (int i = 0; i < servicesSorted.Count; i++)
             {
                 var t = servicesSorted[i].Node as Type;
-                var attrs = t.CustomAttribute(serviceType, false).OfType<RegistrationAttribute>();
+                var attrs = t.CustomAttribute(serviceType, false).OfType<RegistrationAttribute>().ToList();
 
-                if (attrs?.Any() == true)
+                if (attrs.Count > 0)
                 {
-                    foreach (var attr in attrs)
+                    for (int j = 0; j < attrs.Count; j++)
                     {
                         registry.Add
                         (
-                            attr.ServiceType, // service
+                            attrs[j].ServiceType, // service
                             t, // implementation
-                            lifeTime: (LifeTime)((int)attr.Lifecycle), // converted lifecycle
+                            lifeTime: (LifeTime)((int)attrs[j].Lifecycle), // converted lifecycle
                             constructorType: ConstructorType.Greediest
                         );
                     }

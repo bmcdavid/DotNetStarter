@@ -1,0 +1,36 @@
+<?xml version="1.0"?>
+<package>
+  <metadata>
+    <id>DotNetStarter.Locators.LightInject</id>
+    <version>$version$</version>
+    <!-- overridden by "NuGet pack -Version" flag -->
+    <authors>Brad McDavid</authors>
+    <owners>Brad McDavid</owners>
+    <projectUrl>https://bmcdavid.github.io/DotNetStarter/</projectUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>Enables support for DI/IOC in startup.</description>
+    <releaseNotes>Better scoping support.</releaseNotes>
+    <copyright>Copyright $year$</copyright>
+    <tags>Startup Modules DI IOC</tags>
+    <dependencies>
+      <group targetFramework="net452">
+        <dependency id="DotNetStarter.Abstractions" version="[2,)" />
+        <dependency id="LightInject" version="5.1.1" />
+      </group>
+    </dependencies>
+  </metadata>
+  <files>
+    <file src="**\*.cs" target="src" exclude="obj\**\*.cs" />
+    <file src="readme.txt" target="readme.txt" />
+
+    <!--https://docs.nuget.org/ndocs/schema/target-frameworks-->
+    <file src="bin\Release\net452\DotNetStarter.Locators.LightInject.dll" target="lib\net452" />
+    <file src="bin\Release\net452\DotNetStarter.Locators.LightInject.pdb" target="lib\net452" />
+    <file src="bin\Release\net452\DotNetStarter.Locators.LightInject.xml" target="lib\net452" />
+
+
+    <file src="bin\Release\netstandard1.1\DotNetStarter.Locators.LightInject.dll" target="lib\netstandard1.1" />
+    <file src="bin\Release\netstandard1.1\DotNetStarter.Locators.LightInject.pdb" target="lib\netstandard1.1" />
+    <file src="bin\Release\netstandard1.1\DotNetStarter.Locators.LightInject.xml" target="lib\netstandard1.1" />
+  </files>
+</package>

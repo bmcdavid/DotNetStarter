@@ -104,14 +104,13 @@
         {
             switch (lifetime)
             {
-                //case LifeTime.Container: // in dryioc really not container scope, so just treat as a singleton in the container
                 case LifeTime.Singleton:
                     return Reuse.Singleton;
                 case LifeTime.Transient:
                     return Reuse.Transient;
                 // scoping via the container isn't supported in the locator by default, it takes an unwrapped container to utilize this via cast of IContainer as IContainerRegistry
                 case LifeTime.Scoped:
-                    return Reuse.InCurrentScope;
+                    return Reuse.ScopedOrSingleton;
             }
 
             return Reuse.Transient;

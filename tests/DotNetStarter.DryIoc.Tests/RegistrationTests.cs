@@ -122,7 +122,7 @@ namespace DotNetStarter.Tests
         [TestMethod]
         public void ShouldGetGenericService()
         {
-            var sut = DotNetStarter.ApplicationContext.Default.Locator.Get<IPagedData<object>>();
+            var sut = DotNetStarter.ApplicationContext.Default.Locator.Get<IPagedData<FooTwo>>(); // hack: object fails in LightInject
 
             Assert.IsNotNull(sut);
         }

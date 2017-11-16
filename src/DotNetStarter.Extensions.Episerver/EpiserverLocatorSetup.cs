@@ -4,8 +4,6 @@ using EPiServer.Framework.Initialization;
 using EPiServer.ServiceLocation;
 using System;
 
-// todo: port this non Epi locator to DotNetStarter.StructuremapSigned package with example on how to wireup dotnetstarter.
-
 // instructs DotNetStarter to use this to create ILocatorRegistry
 [assembly: LocatorRegistryFactory(typeof(DotNetStarter.Extensions.Episerver.EpiserverLocatorSetup))]
 

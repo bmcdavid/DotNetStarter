@@ -27,9 +27,19 @@ namespace DotNetStarter.Tests
         }
 
         [TestMethod]
+        public void ShouldImportInOrder()
+        {
+            var allFoo = Foo.AllServices.ToList();
+
+            Assert.IsTrue(allFoo[0] is FooServiceThree, "Order check 0");
+            Assert.IsTrue(allFoo[1] is FooService, "Order check 1");
+            Assert.IsTrue(allFoo[2] is FooServiceTwo, "Order check 2");
+        }
+
+        [TestMethod]
         public void ShouldImportLastService()
         {
-            Assert.IsTrue(Foo.Service is FooService);
+            Assert.IsTrue(Foo.Service is FooServiceTwo, "Last Service check");
         }
 
         [TestMethod]

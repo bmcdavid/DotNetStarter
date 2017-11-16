@@ -16,7 +16,7 @@ namespace DotNetStarter.Tests
             ApplicationContext.Startup(assemblies: assemblies);
 #elif MAPNETSTANDARD
             var assemblies = System.AppDomain.CurrentDomain.GetAssemblies().ToList();
-            assemblies.Add(typeof(DotNetStarter.StructureMapFactory).Assembly);
+            assemblies.Add(typeof(DotNetStarter.Locators.StructureMapFactory).Assembly);
 
             ApplicationContext.Startup(assemblies: assemblies);
 #else

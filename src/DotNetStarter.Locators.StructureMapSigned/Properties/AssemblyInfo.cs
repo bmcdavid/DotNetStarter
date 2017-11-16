@@ -1,8 +1,8 @@
 using System.Reflection;
 
-[assembly: AssemblyTitle("DotNetStarter.StructureMapSigned")]
+[assembly: AssemblyTitle("DotNetStarter.Locators.StructureMapSigned")]
 [assembly: AssemblyDescription(".NET DI implementation using structuremap.")]
-[assembly: AssemblyProduct("DotNetStarter.StructureMapSigned")]
+[assembly: AssemblyProduct("DotNetStarter.Locators.StructureMapSigned")]
 [assembly: AssemblyCopyright("Copyright © {year}")]
 [assembly: AssemblyVersion("1.0.0")]
 [assembly: AssemblyFileVersion("1.0.0")]
@@ -10,4 +10,4 @@ using System.Reflection;
 
 [assembly: DotNetStarter.Abstractions.DiscoverableAssembly]
 [assembly: DotNetStarter.Abstractions.Exports] // no need to export any types
-[assembly: DotNetStarter.Abstractions.LocatorRegistryFactory(typeof(DotNetStarter.StructureMapSignedFactory))]
+[assembly: DotNetStarter.Abstractions.LocatorRegistryFactory(typeof(DotNetStarter.Locators.StructureMapSignedFactory))]

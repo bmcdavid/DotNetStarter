@@ -14,7 +14,7 @@ using System.Reflection;
 
 // instructs DotNetStarter to use this to create ILocatorRegistry
 [assembly: LocatorRegistryFactory(typeof(ExampleNamespace.Business.Initialization.WireupDotNetStarter),
-    typeof(DotNetStarter.StructureMapSignedFactory))]
+    typeof(DotNetStarter.Locators.StructureMapSignedFactory))]
 
 namespace ExampleNamespace.Business.Initialization
 {

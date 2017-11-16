@@ -1,4 +1,4 @@
-﻿namespace DotNetStarter
+﻿namespace DotNetStarter.Locators
 {
     using DotNetStarter.Abstractions;
     using DotNetStarter.Abstractions.Internal;
@@ -9,12 +9,12 @@
     /// <summary>
     /// Structuremap Locator
     /// </summary>
-    public class StructureMapSignedLocator : StructureMapSignedLocatorBase, ILocatorRegistry, ILocatorSetContainer, ILocatorRegistryWithContains, ILocatorRegistryWithRemove
+    public class StructureMapLocator : StructureMapLocatorBase, ILocatorRegistry, ILocatorSetContainer, ILocatorRegistryWithContains, ILocatorRegistryWithRemove
     {
         /// <summary>
         /// Constructor
         /// </summary>
-        public StructureMapSignedLocator(IContainer container = null) : base(container) { }
+        public StructureMapLocator(IContainer container = null) : base(container) { }
 
         /// <summary>
         /// Add object instance

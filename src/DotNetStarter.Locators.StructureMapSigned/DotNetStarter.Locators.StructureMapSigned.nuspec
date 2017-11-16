@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <package>
   <metadata>
-    <id>DotNetStarter.StructureMapSigned</id>
+    <id>DotNetStarter.Locators.StructureMapSigned</id>
     <version>$version$</version>
     <!-- overridden by "NuGet pack -Version" flag -->
     <authors>Brad McDavid</authors>
@@ -24,8 +24,8 @@
     <file src="readme.txt" target="readme.txt" />
 
     <!--https://docs.nuget.org/ndocs/schema/target-frameworks-->
-    <file src="bin\Release\net45\DotNetStarter.StructureMapSigned.dll" target="lib\net45" />
-    <file src="bin\Release\net45\DotNetStarter.StructureMapSigned.pdb" target="lib\net45" />
-    <file src="bin\Release\net45\DotNetStarter.StructureMapSigned.xml" target="lib\net45" />
+    <file src="bin\Release\net45\DotNetStarter.Locators.StructureMapSigned.dll" target="lib\net45" />
+    <file src="bin\Release\net45\DotNetStarter.Locators.StructureMapSigned.pdb" target="lib\net45" />
+    <file src="bin\Release\net45\DotNetStarter.Locators.StructureMapSigned.xml" target="lib\net45" />
   </files>
 </package>

@@ -9,11 +9,7 @@
 
   <ItemGroup>
     <PackageReference Include="DryIoc.dll" version="2.12.5" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\DotNetStarter.Abstractions\DotNetStarter.Abstractions.csproj" />
-    <ProjectReference Include="..\DotNetStarter\DotNetStarter.csproj" />
   </ItemGroup>
 
 </Project>

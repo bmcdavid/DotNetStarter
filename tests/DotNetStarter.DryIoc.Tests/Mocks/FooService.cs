@@ -58,13 +58,13 @@ namespace DotNetStarter.Tests.Mocks
         }
     }
 
-    [Registration(typeof(IFoo), Lifecycle.Singleton, typeof(FooServiceTwo))]
+    [Registration(typeof(IFoo), Lifecycle.Singleton, typeof(FooServiceThree))]
     public class FooService : IFoo
     {
         public string Hello => "Hello, World!";
     }
 
-    [Registration(typeof(IFoo), Lifecycle.Singleton)]
+    [Registration(typeof(IFoo), Lifecycle.Singleton, typeof(FooService))]
     public class FooServiceTwo : IFoo
     {
         public string Hello => "Hello, World part two!";

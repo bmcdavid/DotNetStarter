@@ -26,7 +26,6 @@
     /// <summary>
     /// Wraps ILocator in a service provider
     /// </summary>
-    [Registration(typeof(IServiceProvider), Lifecycle.Scoped)]
     public class ServiceProvider : IServiceProvider, IDisposable, ISupportRequiredService
     {
         /// <summary>
@@ -37,14 +36,24 @@
         private readonly IServiceProviderTypeChecker _ServiceProviderTypeChecker;
 
         /// <summary>
-        /// Constructor
+        /// Scoped Constructor
+        /// </summary>
+        /// <param name="serviceProviderTypeChecker"></param>
+        /// <param name="locatorScopedAccessor"></param>
+        public ServiceProvider(IServiceProviderTypeChecker serviceProviderTypeChecker, ILocatorScopedAccessor locatorScopedAccessor)
+        {
+            Locator = locatorScopedAccessor.CurrentScope;
+            _ServiceProviderTypeChecker = serviceProviderTypeChecker;
+        }
+
+        /// <summary>
+        /// Singleton Constructor
         /// </summary>
         /// <param name="locator"></param>
         /// <param name="serviceProviderTypeChecker"></param>
-        /// <param name="locatorScopedAccessor"></param>
-        public ServiceProvider(ILocator locator, IServiceProviderTypeChecker serviceProviderTypeChecker, ILocatorScopedAccessor locatorScopedAccessor)
+        public ServiceProvider(ILocator locator, IServiceProviderTypeChecker serviceProviderTypeChecker)
         {
-            Locator = locatorScopedAccessor.CurrentScope ?? locator; // fallback for netcore default service provider
+            Locator = locator;
             _ServiceProviderTypeChecker = serviceProviderTypeChecker;
         }
 
@@ -80,7 +89,7 @@
         /// </summary>
         public void Dispose()
         {
-            Locator?.Dispose();
+           Locator?.Dispose();
         }
 
         /// <summary>
