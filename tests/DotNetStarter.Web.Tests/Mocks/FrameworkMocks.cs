@@ -1,5 +1,4 @@
 ﻿using DotNetStarter.Abstractions;
-using System.Collections.Generic;
 using System.Web;
 
 namespace DotNetStarter.Web.Tests.Mocks
@@ -31,7 +30,7 @@ namespace DotNetStarter.Web.Tests.Mocks
 
     public class DisabledWebModuleHandler : DotNetStarter.Web.WebModuleStartupHandler
     {
-        public DisabledWebModuleHandler(ILocator locator, IEnumerable<IStartupModule> modules) : base(locator.Get<ILocatorScopedFactory>(), modules)
+        public DisabledWebModuleHandler(ILocator locator) : base(locator.Get<ILocatorScopedFactory>(), locator)
         {
 
         }

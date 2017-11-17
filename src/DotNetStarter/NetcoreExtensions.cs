@@ -32,7 +32,7 @@ namespace DotNetStarter
             if (startupDotNetStarter == null)
                 throw new ArgumentNullException(nameof(startupDotNetStarter));
 
-            Func<ILocator, IServiceProvider> fallbackFactory = locator => new ServiceProvider(locator, locator.Get<IServiceProviderTypeChecker>());
+            Func<ILocator, IServiceProvider> fallbackFactory = locator => locator.Get<IServiceProvider>();
 
             WithDotNetStarter(serviceCollection); // add services
             startupDotNetStarter();

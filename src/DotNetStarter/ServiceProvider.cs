@@ -26,6 +26,7 @@
     /// <summary>
     /// Wraps ILocator in a service provider
     /// </summary>
+    [Registration(typeof(IServiceProvider), Lifecycle.Singleton)]
     public class ServiceProvider : IServiceProvider, IDisposable, ISupportRequiredService
     {
         /// <summary>
@@ -47,11 +48,12 @@
         }
 
         /// <summary>
-        /// Singleton Constructor
+        /// Singleton Constructor, greediest one to use
         /// </summary>
         /// <param name="locator"></param>
         /// <param name="serviceProviderTypeChecker"></param>
-        public ServiceProvider(ILocator locator, IServiceProviderTypeChecker serviceProviderTypeChecker)
+        /// <param name="startupConfiguration"></param>
+        public ServiceProvider(ILocator locator, IServiceProviderTypeChecker serviceProviderTypeChecker, IStartupConfiguration startupConfiguration)
         {
             Locator = locator;
             _ServiceProviderTypeChecker = serviceProviderTypeChecker;

@@ -3,7 +3,6 @@
 namespace DotNetStarter.Web
 {
     using DotNetStarter.Abstractions;
-    using System;
     using System.Collections.Generic;
     using System.Linq;
     using System.Web;
@@ -22,11 +21,11 @@ namespace DotNetStarter.Web
         /// Constructor
         /// </summary>
         /// <param name="locatorScopeFactory"></param>
-        /// <param name="startupModules"></param>        
-        public WebModuleStartupHandler(ILocatorScopedFactory locatorScopeFactory, IEnumerable<IStartupModule> startupModules)
+        /// <param name="locator"></param>        
+        public WebModuleStartupHandler(ILocatorScopedFactory locatorScopeFactory, ILocator locator)
         {
             _LocatorScopeFactory = locatorScopeFactory;
-            _StartupModules = startupModules;            
+            _StartupModules = locator.GetAll<IStartupModule>(); // hack: needed to get correct sorting on some locators!            
         }
 
         /// <summary>
