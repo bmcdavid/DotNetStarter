@@ -4,7 +4,7 @@
     <RootNamespace>DotNetStarter.Locators</RootNamespace>
     <TargetFrameworks>net45;</TargetFrameworks>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
-    <DocumentationFile>bin\$(Configuration)\$(TargetFramework)\DotNetStarter.StructuremapSigned.xml</DocumentationFile>
+    <DocumentationFile>bin\$(Configuration)\$(TargetFramework)\DotNetStarter.Locators.StructuremapSigned.xml</DocumentationFile>
     <SignAssembly>True</SignAssembly>
     <AssemblyOriginatorKeyFile>..\..\dotnetstarter.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>

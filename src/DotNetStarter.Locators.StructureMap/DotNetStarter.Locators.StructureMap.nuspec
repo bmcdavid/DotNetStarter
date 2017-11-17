@@ -29,12 +29,12 @@
     <file src="readme.txt" target="readme.txt" />
 
     <!--https://docs.nuget.org/ndocs/schema/target-frameworks-->
-    <file src="bin\Release\net45\DotNetStarter.StructureMap.dll" target="lib\net45" />
-    <file src="bin\Release\net45\DotNetStarter.StructureMap.pdb" target="lib\net45" />
-    <file src="bin\Release\net45\DotNetStarter.StructureMap.xml" target="lib\net45" />
+    <file src="bin\Release\net45\DotNetStarter.Locators.StructureMap.dll" target="lib\net45" />
+    <file src="bin\Release\net45\DotNetStarter.Locators.StructureMap.pdb" target="lib\net45" />
+    <file src="bin\Release\net45\DotNetStarter.Locators.StructureMap.xml" target="lib\net45" />
 
-    <file src="bin\Release\netstandard1.3\DotNetStarter.StructureMap.dll" target="lib\netstandard1.3" />
-    <file src="bin\Release\netstandard1.3\DotNetStarter.StructureMap.pdb" target="lib\netstandard1.3" />
-    <file src="bin\Release\netstandard1.3\DotNetStarter.StructureMap.xml" target="lib\netstandard1.3" />
+    <file src="bin\Release\netstandard1.3\DotNetStarter.Locators.StructureMap.dll" target="lib\netstandard1.3" />
+    <file src="bin\Release\netstandard1.3\DotNetStarter.Locators.StructureMap.pdb" target="lib\netstandard1.3" />
+    <file src="bin\Release\netstandard1.3\DotNetStarter.Locators.StructureMap.xml" target="lib\netstandard1.3" />
   </files>
 </package>

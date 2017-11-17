@@ -4,7 +4,7 @@
     <RootNamespace>DotNetStarter</RootNamespace>
     <TargetFrameworks>net45;netstandard1.3;</TargetFrameworks>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
-    <DocumentationFile>bin\$(Configuration)\$(TargetFramework)\DotNetStarter.Structuremap.xml</DocumentationFile>
+    <DocumentationFile>bin\$(Configuration)\$(TargetFramework)\DotNetStarter.Locators.Structuremap.xml</DocumentationFile>
   </PropertyGroup>
 
   <ItemGroup>

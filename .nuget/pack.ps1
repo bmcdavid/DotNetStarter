@@ -12,6 +12,10 @@ foreach($file in $specFiles)
 	if([System.IO.File]::Exists($dll) -ne $true){
 			$dll = $dllbase + "bin\release\net45\" + $file.Name.Replace(".nuspec", ".dll")
 	}
+	#fallback for LightInject
+	if([System.IO.File]::Exists($dll) -ne $true){
+			$dll = $dllbase + "bin\release\net452\" + $file.Name.Replace(".nuspec", ".dll")
+	}
 	$versionFullString = [System.Diagnostics.FileVersionInfo]::GetVersionInfo($dll).ProductVersion
 	$version = $versionFullString.Split(" ")[0] 
 	Write-Host "Found " $version " from " $dll
