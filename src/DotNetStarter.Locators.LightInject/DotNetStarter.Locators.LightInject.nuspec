@@ -17,6 +17,10 @@
         <dependency id="DotNetStarter.Abstractions" version="[2,)" />
         <dependency id="LightInject" version="5.1.1" />
       </group>
+      <group targetFramework="netstandard1.1">
+        <dependency id="DotNetStarter.Abstractions" version="[2,)" />
+        <dependency id="LightInject" version="5.1.1" />
+      </group>
     </dependencies>
   </metadata>
   <files>

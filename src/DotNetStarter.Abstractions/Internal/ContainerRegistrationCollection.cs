@@ -37,7 +37,7 @@ namespace DotNetStarter.Abstractions.Internal
         /// <summary>
         /// Service LifeTime
         /// </summary>
-        public LifeTime LifeTime { get; set; }
+        public Lifecycle Lifecycle { get; set; }
     }
 
     /// <summary>

@@ -51,15 +51,14 @@ namespace DotNetStarter.Locators
         /// <param name="serviceImplementation"></param>
         /// <param name="key"></param>
         /// <param name="lifeTime"></param>
-        /// <param name="constructorType"></param>
-        public void Add(Type serviceType, Type serviceImplementation, string key = null, LifeTime lifeTime = LifeTime.Transient, ConstructorType constructorType = ConstructorType.Greediest)
+        public void Add(Type serviceType, Type serviceImplementation, string key = null, Lifecycle lifeTime = Lifecycle.Transient)
         {
             //_Container.Register(serviceType, serviceImplementation, ConvertAddKey(key, serviceType), ConvertLifetime(lifeTime));
 
             AddRegistration(new ContainerRegistration()
             {
                 ServiceKey = key,
-                LifeTime = lifeTime,
+                Lifecycle = lifeTime,
                 ServiceType = serviceType,
                 ServiceImplementation = serviceImplementation
             });
@@ -71,13 +70,11 @@ namespace DotNetStarter.Locators
         /// <param name="serviceType"></param>
         /// <param name="implementationFactory"></param>
         /// <param name="lifeTime"></param>
-        public void Add(Type serviceType, Func<ILocator, object> implementationFactory, LifeTime lifeTime)
+        public void Add(Type serviceType, Func<ILocator, object> implementationFactory, Lifecycle lifeTime)
         {
-            //_Container.RegisterFallback((type, key) => type == serviceType, r => implementationFactory(this), ConvertLifetime(lifeTime));
-
             AddRegistration(new ContainerRegistration()
             {
-                LifeTime = lifeTime,
+                Lifecycle = lifeTime,
                 ServiceType = serviceType,
                 ServiceFactory = implementationFactory
             });
@@ -90,11 +87,9 @@ namespace DotNetStarter.Locators
         /// <param name="serviceInstance"></param>
         public void Add(Type serviceType, object serviceInstance)
         {
-            //_Container.RegisterInstance(serviceType, serviceInstance);
-
             AddRegistration(new ContainerRegistration()
             {
-                LifeTime = LifeTime.Singleton,
+                Lifecycle = Lifecycle.Singleton,
                 ServiceType = serviceType,
                 ServiceImplementation = serviceInstance?.GetType(),
                 ServiceInstance = serviceInstance
@@ -108,11 +103,8 @@ namespace DotNetStarter.Locators
         /// <typeparam name="TImpl"></typeparam>
         /// <param name="key"></param>
         /// <param name="lifetime"></param>
-        /// <param name="constructorType"></param>
-        public void Add<TService, TImpl>(string key = null, LifeTime lifetime = LifeTime.Transient, ConstructorType constructorType = ConstructorType.Greediest) where TImpl : TService
+        public void Add<TService, TImpl>(string key = null, Lifecycle lifetime = Lifecycle.Transient) where TImpl : TService
         {
-            //_Container.Register<TService, TImpl>(ConvertAddKey(key, typeof(TService)), ConvertLifetime(lifetime));
-
             Add(typeof(TService), typeof(TImpl), key, lifetime);
         }
 
@@ -262,11 +254,11 @@ namespace DotNetStarter.Locators
                     }
                     else if (registration.ServiceFactory != null)
                     {
-                        _Container.RegisterFallback((type, key) => type == registration.ServiceType, r => registration.ServiceFactory.Invoke(this), ConvertLifetime(registration.LifeTime));
+                        _Container.RegisterFallback((type, key) => type == registration.ServiceType, r => registration.ServiceFactory.Invoke(this), ConvertLifetime(registration.Lifecycle));
                     }
                     else
                     {
-                        _Container.Register(registration.ServiceType, registration.ServiceImplementation, serviceKey, ConvertLifetime(registration.LifeTime));
+                        _Container.Register(registration.ServiceType, registration.ServiceImplementation, serviceKey, ConvertLifetime(registration.Lifecycle));
                     }
                 }
             }
@@ -312,17 +304,18 @@ namespace DotNetStarter.Locators
 
         private string ConvertKey(string key) => key ?? string.Empty;
 
-        private ILifetime ConvertLifetime(LifeTime lifetime)
+        private ILifetime ConvertLifetime(Lifecycle lifetime)
         {
             switch (lifetime)
             {
-                case LifeTime.Scoped:
+                case Lifecycle.Scoped:
                     return new PerScopeLifetime();
-                case LifeTime.Singleton:
+                case Lifecycle.Singleton:
                     return new PerContainerLifetime();
-                case LifeTime.Transient:
+                case Lifecycle.Transient:
                 default:
-                    return null; // todo: determine if PerRequestLifeTime() should be used?
+                    return null;
+                    //return new PerRequestLifeTime(); // todo: determine if PerRequestLifeTime() should be used?
             }
         }
 

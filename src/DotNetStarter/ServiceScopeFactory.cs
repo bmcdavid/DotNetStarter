@@ -1,5 +1,4 @@
-﻿using System;
-using DotNetStarter.Abstractions;
+﻿using DotNetStarter.Abstractions;
 
 #if NETSTANDARD1_0 || NETSTANDARD1_1 || NETSTANDARD2_0
 using Microsoft.Extensions.DependencyInjection;

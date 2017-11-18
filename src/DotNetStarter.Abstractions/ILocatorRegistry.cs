@@ -13,17 +13,16 @@
         /// <param name="serviceType"></param>
         /// <param name="serviceImplementation"></param>
         /// <param name="key"></param>
-        /// <param name="lifeTime"></param>
-        /// <param name="constructorType"></param>
-        void Add(Type serviceType, Type serviceImplementation, string key = null, LifeTime lifeTime = LifeTime.Transient, ConstructorType constructorType = ConstructorType.Greediest);
+        /// <param name="lifecycle"></param>
+        void Add(Type serviceType, Type serviceImplementation, string key = null, Lifecycle lifecycle = Lifecycle.Transient);
 
         /// <summary>
         /// Adds service to container
         /// </summary>
         /// <param name="serviceType"></param>
         /// <param name="implementationFactory">Important: Given ILocator can only get Singleton and Transient (with no scoped parameters), use with caution!</param>
-        /// <param name="lifeTime"></param>        
-        void Add(Type serviceType, Func<ILocator, object> implementationFactory, LifeTime lifeTime);
+        /// <param name="lifecycle"></param>        
+        void Add(Type serviceType, Func<ILocator, object> implementationFactory, Lifecycle lifecycle);
 
         /// <summary>
         /// Adds instance to container, the lifetime is set to Singleton
@@ -38,8 +37,7 @@
         /// <typeparam name="TService"></typeparam>
         /// <typeparam name="TImpl"></typeparam>
         /// <param name="key"></param>
-        /// <param name="lifetime"></param>
-        /// <param name="constructorType"></param>
-        void Add<TService, TImpl>(string key = null, LifeTime lifetime = LifeTime.Transient, ConstructorType constructorType = ConstructorType.Greediest) where TImpl : TService;
+        /// <param name="lifecycle"></param>
+        void Add<TService, TImpl>(string key = null, Lifecycle lifecycle = Lifecycle.Transient) where TImpl : TService;
     }
 }

@@ -30,7 +30,7 @@ namespace DotNetStarter.Extensions.Mvc
 
                     foreach (var controller in controllerTypes.Where(x => !x.IsAbstract && !x.IsInterface))
                     {
-                        registry?.Add(controller, controller, lifeTime: controllerRegistrationSetup.ControllerLifeTime);
+                        registry?.Add(controller, controller, lifecycle: Lifecycle.Transient);
                     }
                 }
             };

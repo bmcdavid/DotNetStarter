@@ -30,7 +30,7 @@ namespace DotNetStarter.Extensions.WebApi
 
                     foreach (var controller in controllerTypes.Where(x => x.IsAbstract == false))
                     {
-                        registry?.Add(controller, controller, lifeTime: controllerRegistrationSetup.ApiControllerLifeTime);
+                        registry?.Add(controller, controller, lifecycle: Lifecycle.Transient);
                     }
                 }
             };

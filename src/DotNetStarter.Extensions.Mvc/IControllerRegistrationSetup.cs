@@ -11,10 +11,5 @@ namespace DotNetStarter.Extensions.Mvc
         /// Enables controller registartions by this packages startup module
         /// </summary>
         bool EnableControllerRegisterations { get; }
-
-        /// <summary>
-        /// Determiens the controller lifetime
-        /// </summary>
-        LifeTime ControllerLifeTime { get; }
     }
 }

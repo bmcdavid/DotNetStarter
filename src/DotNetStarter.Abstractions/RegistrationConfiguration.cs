@@ -30,8 +30,7 @@
                         (
                             attrs[j].ServiceType, // service
                             t, // implementation
-                            lifeTime: (LifeTime)((int)attrs[j].Lifecycle), // converted lifecycle
-                            constructorType: ConstructorType.Greediest
+                            lifecycle: attrs[j].Lifecycle
                         );
                     }
                 }

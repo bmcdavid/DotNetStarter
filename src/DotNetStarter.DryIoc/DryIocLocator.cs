@@ -23,10 +23,9 @@
         /// <param name="serviceImplementation"></param>
         /// <param name="key"></param>
         /// <param name="lifetime"></param>
-        /// <param name="constructorType"></param>
-        public virtual void Add(Type serviceType, Type serviceImplementation, string key = null, LifeTime lifetime = LifeTime.Transient, ConstructorType constructorType = ConstructorType.Greediest)
+        public virtual void Add(Type serviceType, Type serviceImplementation, string key = null, Lifecycle lifetime = Lifecycle.Transient)
         {
-            RegisterSimple(_Container, serviceType, serviceImplementation, ConvertLifeTime(lifetime), constructorType, key);
+            RegisterSimple(_Container, serviceType, serviceImplementation, ConvertLifeTime(lifetime), key);
         }
 
         /// <summary>
@@ -36,11 +35,10 @@
         /// <typeparam name="TImpl"></typeparam>
         /// <param name="key"></param>
         /// <param name="lifetime"></param>
-        /// <param name="constructorType"></param>
-        public virtual void Add<TService, TImpl>(string key = null, LifeTime lifetime = LifeTime.Transient, ConstructorType constructorType = ConstructorType.Greediest)
+        public virtual void Add<TService, TImpl>(string key = null, Lifecycle lifetime = Lifecycle.Transient)
             where TImpl : TService
         {
-            RegisterSimple<TService, TImpl>(_Container, ConvertLifeTime(lifetime), constructorType, key);
+            RegisterSimple<TService, TImpl>(_Container, ConvertLifeTime(lifetime), key);
         }
 
         /// <summary>
@@ -49,7 +47,7 @@
         /// <param name="serviceType"></param>
         /// <param name="implementationFactory"></param>
         /// <param name="lifeTime"></param>
-        public virtual void Add(Type serviceType, Func<ILocator, object> implementationFactory, LifeTime lifeTime)
+        public virtual void Add(Type serviceType, Func<ILocator, object> implementationFactory, Lifecycle lifeTime)
         {
             _Container.RegisterDelegate(serviceType, r => implementationFactory(r.Resolve<ILocator>()), ConvertLifeTime(lifeTime));
         }
@@ -61,7 +59,7 @@
         /// <param name="serviceInstance"></param>
         public void Add(Type serviceType, object serviceInstance)
         {
-            _Container.RegisterDelegate(serviceType, resolver => serviceInstance, ConvertLifeTime(LifeTime.Singleton));
+            _Container.RegisterDelegate(serviceType, resolver => serviceInstance, ConvertLifeTime(Lifecycle.Singleton));
         }
 
         /// <summary>
@@ -100,23 +98,23 @@
             _Container = tempContainer ?? throw new ArgumentException($"{container} doesn't implement {typeof(IContainer).FullName}!");
         }
 
-        private static IReuse ConvertLifeTime(LifeTime lifetime)
+        private static IReuse ConvertLifeTime(Lifecycle lifetime)
         {
             switch (lifetime)
             {
-                case LifeTime.Singleton:
+                case Lifecycle.Singleton:
                     return Reuse.Singleton;
-                case LifeTime.Transient:
+                case Lifecycle.Transient:
                     return Reuse.Transient;
                 // scoping via the container isn't supported in the locator by default, it takes an unwrapped container to utilize this via cast of IContainer as IContainerRegistry
-                case LifeTime.Scoped:
+                case Lifecycle.Scoped:
                     return Reuse.ScopedOrSingleton;
             }
 
             return Reuse.Transient;
         }
 
-        private static Made GetConstructorFor(DryIoc.IContainer register, Type implementationType, ConstructorType constructor = ConstructorType.Greediest)
+        private static Made GetConstructorFor(DryIoc.IContainer register, Type implementationType)
         {
             var allConstructors = implementationType.Constructors()
                 .Where(x => x.IsConstructor && x.IsPublic)
@@ -125,15 +123,15 @@
             return Made.Of(allConstructors.FirstOrDefault());
         }
 
-        private static void RegisterSimple<TInterface, TImplementation>(DryIoc.IContainer register, IReuse reuse = null, ConstructorType constructor = ConstructorType.Greediest, string key = null)
+        private static void RegisterSimple<TInterface, TImplementation>(DryIoc.IContainer register, IReuse reuse = null, string key = null)
             where TImplementation : TInterface
         {
             register.Register<TInterface, TImplementation>(reuse: reuse,
-                made: GetConstructorFor(register, typeof(TImplementation), constructor),
+                made: GetConstructorFor(register, typeof(TImplementation)),
                 serviceKey: key);
         }
 
-        private static void RegisterSimple(DryIoc.IContainer register, Type service, Type implementation, IReuse reuse = null, ConstructorType constructor = ConstructorType.Greediest, string key = null)
+        private static void RegisterSimple(DryIoc.IContainer register, Type service, Type implementation, IReuse reuse = null, string key = null)
         {
             //note: evaluate how these can be better, example in netcore has issue
             //   Microsoft.AspNetCore.Server.Kestrel.Internal.KestrelServerOptionsSetup cannot be converted to Microsoft.Extensions.Options.IConfigureOptions`1[[Microsoft.AspNetCore.Server.Kestrel.KestrelServerOptions, Microsoft.AspNetCore.Server.Kestrel, Version=1.0.1.0, Culture=neutral, PublicKeyToken=adb9793829ddae60]]!
@@ -153,7 +151,7 @@
                 }
             }
 
-            register.Register(service, implementation, reuse: reuse, made: GetConstructorFor(register, implementation, constructor), serviceKey: key);
+            register.Register(service, implementation, reuse: reuse, made: GetConstructorFor(register, implementation), serviceKey: key);
         }
 
         private static void ThrowRegisterException(Type service, Type implementation)

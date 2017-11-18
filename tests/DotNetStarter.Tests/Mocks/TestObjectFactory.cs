@@ -29,14 +29,14 @@ namespace DotNetStarter.Tests.Mocks
 
         public string DebugInfo => null;
 
-        public void Add(Type serviceType, Type serviceImplementation, string key = null, LifeTime lifeTime = LifeTime.Transient, ConstructorType constructorType = ConstructorType.Greediest)
+        public void Add(Type serviceType, Type serviceImplementation, string key = null, Lifecycle lifeTime = Lifecycle.Transient)
         {
             if (allowedTypes.Contains(serviceType))
                 modules.Add(serviceImplementation);
 
         }
 
-        public void Add(Type serviceType, Func<ILocator, object> implementationFactory, LifeTime lifeTime)
+        public void Add(Type serviceType, Func<ILocator, object> implementationFactory, Lifecycle lifeTime)
         {
 
         }
@@ -46,9 +46,9 @@ namespace DotNetStarter.Tests.Mocks
 
         }
 
-        public void Add<TService, TImpl>(string key = null, LifeTime lifetime = LifeTime.Transient, ConstructorType constructorType = ConstructorType.Greediest) where TImpl : TService
+        public void Add<TService, TImpl>(string key = null, Lifecycle lifetime = Lifecycle.Transient) where TImpl : TService
         {
-            Add(typeof(TService), typeof(TImpl), key, lifetime, constructorType);
+            Add(typeof(TService), typeof(TImpl), key, lifetime);
         }
 
         public bool BuildUp(object target)

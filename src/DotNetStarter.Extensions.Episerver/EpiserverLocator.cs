@@ -33,7 +33,7 @@
         /// <param name="serviceType"></param>
         /// <param name="implementationFactory"></param>
         /// <param name="lifeTime"></param>
-        public virtual void Add(Type serviceType, Func<ILocator, object> implementationFactory, LifeTime lifeTime)
+        public virtual void Add(Type serviceType, Func<ILocator, object> implementationFactory, Lifecycle lifeTime)
         {
             _Container.Configure(x => x.For(serviceType).LifecycleIs(ConvertLifeTime(lifeTime)).Use((context) => implementationFactory.Invoke(context.GetInstance<ILocator>())));
         }
@@ -45,8 +45,7 @@
         /// <param name="serviceImplementation"></param>
         /// <param name="key"></param>
         /// <param name="lifeTime"></param>
-        /// <param name="constructorType"></param>
-        public virtual void Add(Type serviceType, Type serviceImplementation, string key = null, LifeTime lifeTime = LifeTime.Transient, ConstructorType constructorType = ConstructorType.Greediest)
+        public virtual void Add(Type serviceType, Type serviceImplementation, string key = null, Lifecycle lifeTime = Lifecycle.Transient)
         {
             _Container.Configure(x => x.For(serviceType).LifecycleIs(ConvertLifeTime(lifeTime)).Use(serviceImplementation));
         }
@@ -58,10 +57,9 @@
         /// <typeparam name="TImpl"></typeparam>
         /// <param name="key"></param>
         /// <param name="lifetime"></param>
-        /// <param name="constructorType"></param>
-        public virtual void Add<TService, TImpl>(string key = null, LifeTime lifetime = LifeTime.Transient, ConstructorType constructorType = ConstructorType.Greediest) where TImpl : TService
+        public virtual void Add<TService, TImpl>(string key = null, Lifecycle lifetime = Lifecycle.Transient) where TImpl : TService
         {
-            Add(typeof(TService), typeof(TImpl), key, lifetime, constructorType);
+            Add(typeof(TService), typeof(TImpl), key, lifetime);
         }
 
         /// <summary>
@@ -104,15 +102,15 @@
             }
         }
 
-        private ILifecycle ConvertLifeTime(LifeTime lifetime)
+        private ILifecycle ConvertLifeTime(Lifecycle lifetime)
         {
             switch (lifetime)
             {
-                case LifeTime.Transient:
+                case Lifecycle.Transient:
                     return Lifecycles.Transient;
-                case LifeTime.Singleton:
+                case Lifecycle.Singleton:
                     return Lifecycles.Singleton;
-                case LifeTime.Scoped:
+                case Lifecycle.Scoped:
                     return Lifecycles.Container;
             }
 

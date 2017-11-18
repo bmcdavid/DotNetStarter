@@ -11,10 +11,5 @@ namespace DotNetStarter.Extensions.WebApi
         /// Enables controller registrations
         /// </summary>
         bool EnableApiControllerRegistrations { get; }
-
-        /// <summary>
-        /// Determines the lifetime registration for each controller
-        /// </summary>
-        LifeTime ApiControllerLifeTime { get; }
     }
 }

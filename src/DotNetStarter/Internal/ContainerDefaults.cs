@@ -27,10 +27,10 @@
             foreach (var module in modules)
             {
                 if (initModuleType.IsAssignableFromCheck(module))
-                    registry.Add(initModuleType, module, null, LifeTime.Singleton, ConstructorType.Greediest);
+                    registry.Add(initModuleType, module, null, Lifecycle.Singleton);
 
                 if (configureModuleType.IsAssignableFromCheck(module))
-                    registry.Add(configureModuleType, module, null, LifeTime.Singleton, ConstructorType.Greediest);
+                    registry.Add(configureModuleType, module, null, Lifecycle.Singleton);
             }
 
             // add default instances    
@@ -40,7 +40,7 @@
             registry.Add(typeof(IAssemblyScanner), configuration.AssemblyScanner);
             registry.Add(typeof(IDependencyFinder), configuration.DependencyFinder);
             registry.Add(typeof(IDependencySorter), configuration.DependencySorter);
-            registry.Add<ITimedTask, TimedTask>(lifetime: LifeTime.Transient, constructorType: ConstructorType.Greediest);    
+            registry.Add<ITimedTask, TimedTask>(lifecycle: Lifecycle.Transient);    
         }
     }
 }

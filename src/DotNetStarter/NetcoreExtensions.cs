@@ -37,7 +37,8 @@ namespace DotNetStarter
             WithDotNetStarter(serviceCollection); // add services
             startupDotNetStarter();
 
-            return (serviceProviderFactory ?? fallbackFactory).Invoke(ApplicationContext.Default.Locator);
+            // testing with an open scoped 
+            return (serviceProviderFactory ?? fallbackFactory).Invoke(ApplicationContext.Default.Locator.Get<ILocatorScopedFactory>().CreateScope());
         }
     }
 
@@ -67,7 +68,7 @@ namespace DotNetStarter
 
                 if (service.ImplementationType != null)
                 {
-                    locator.Add(service.ServiceType, service.ImplementationType, lifeTime: lifetime);
+                    locator.Add(service.ServiceType, service.ImplementationType, lifecycle: lifetime);
                 }
                 else if (service.ImplementationFactory != null)
                 {
@@ -80,17 +81,17 @@ namespace DotNetStarter
             }
         }
 
-        private static LifeTime ConvertLifeTime(ServiceLifetime lifetime)
+        private static Lifecycle ConvertLifeTime(ServiceLifetime lifetime)
         {
             switch (lifetime)
             {
                 case ServiceLifetime.Scoped:
-                    return LifeTime.Scoped;
+                    return Lifecycle.Scoped;
                 case ServiceLifetime.Singleton:
-                    return LifeTime.Singleton;
+                    return Lifecycle.Singleton;
                 case ServiceLifetime.Transient:
                 default:
-                    return LifeTime.Transient;
+                    return Lifecycle.Transient;
             }
         }
     }

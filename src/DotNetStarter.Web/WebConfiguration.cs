@@ -18,7 +18,7 @@ namespace DotNetStarter.Web
 #if !NETSTANDARD1_3
             if (RegisterScopedHttpContext)
             {
-                registry.Add(typeof(System.Web.HttpContextBase), _ => new System.Web.HttpContextWrapper(System.Web.HttpContext.Current), LifeTime.Scoped);
+                registry.Add(typeof(System.Web.HttpContextBase), _ => new System.Web.HttpContextWrapper(System.Web.HttpContext.Current), Lifecycle.Scoped);
             }
 #endif
         }

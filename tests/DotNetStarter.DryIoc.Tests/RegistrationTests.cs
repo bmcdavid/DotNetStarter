@@ -186,7 +186,7 @@ namespace DotNetStarter.Tests
         {
             try
             {
-                container.Add(typeof(IRemove), typeof(BaseImpl), null, LifeTime.Singleton);
+                container.Add(typeof(IRemove), typeof(BaseImpl), null, Lifecycle.Singleton);
             }
             catch
             {
@@ -199,8 +199,8 @@ namespace DotNetStarter.Tests
                 SupportsServiceRemoval = true;
             }
 
-            container.Add<BaseTest, BaseImpl>(lifetime: LifeTime.Singleton);
-            container.Add(typeof(IFooTwo), locator => FooTwoFactory.CreateFoo(), LifeTime.Transient);
+            container.Add<BaseTest, BaseImpl>(lifecycle: Lifecycle.Singleton);
+            container.Add(typeof(IFooTwo), locator => FooTwoFactory.CreateFoo(), Lifecycle.Transient);
         }
     }
 }
