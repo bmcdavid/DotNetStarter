@@ -17,7 +17,7 @@ namespace DotNetStarter.Locators
     /// Default LightInject ILocatoryRegistry
     /// </summary>
     public class LightInjectLocator : ILocatorRegistry, ILocatorVerification, ILocatorCreateScope,
-        ILocatorWithPropertyInjection, ILocatorRegistryWithContains, ILocatorResolveConfigureModules, ILocatorRegistryWithRemove
+        ILocatorRegistryWithContains, ILocatorResolveConfigureModules, ILocatorRegistryWithRemove
     {
         private IServiceContainer _Container;
         private ContainerRegistrationCollection _Registrations;
@@ -29,7 +29,13 @@ namespace DotNetStarter.Locators
         /// <param name="serviceContainer"></param>
         public LightInjectLocator(IServiceContainer serviceContainer = null)
         {
-            _Container = serviceContainer ?? new ServiceContainer();
+            _Container = serviceContainer ?? new ServiceContainer
+                (
+                    new ContainerOptions()
+                    {
+                        EnablePropertyInjection = false, // for netcore support
+                    }
+                );
             _Registrations = new ContainerRegistrationCollection();
             _Verified = false;
         }
@@ -53,8 +59,6 @@ namespace DotNetStarter.Locators
         /// <param name="lifeTime"></param>
         public void Add(Type serviceType, Type serviceImplementation, string key = null, Lifecycle lifeTime = Lifecycle.Transient)
         {
-            //_Container.Register(serviceType, serviceImplementation, ConvertAddKey(key, serviceType), ConvertLifetime(lifeTime));
-
             AddRegistration(new ContainerRegistration()
             {
                 ServiceKey = key,
@@ -106,18 +110,6 @@ namespace DotNetStarter.Locators
         public void Add<TService, TImpl>(string key = null, Lifecycle lifetime = Lifecycle.Transient) where TImpl : TService
         {
             Add(typeof(TService), typeof(TImpl), key, lifetime);
-        }
-
-        /// <summary>
-        /// Injects properties
-        /// </summary>
-        /// <param name="target"></param>
-        /// <returns></returns>
-        public bool BuildUp(object target)
-        {
-            var r = _Container.InjectProperties(target);
-
-            return r != null;
         }
 
         /// <summary>
