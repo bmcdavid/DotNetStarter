@@ -12,7 +12,7 @@ namespace DotNetStarter.Extensions.Episerver
     /// <summary>
     /// Creates a DotNetStarter ILocatorFactory using Episerver's structuremap instance
     /// </summary>
-    [ModuleDependency(typeof(ServiceContainerInitialization))]
+    [ModuleDependency]
     public class EpiserverLocatorSetup : IConfigurableModule, ILocatorRegistryFactory
     {
         static StructureMap.IContainer _Container; // must be static to share between instances
@@ -37,10 +37,6 @@ namespace DotNetStarter.Extensions.Episerver
         {
             _LocatorRegistry = CreateLocatorRegistry?.Invoke(context);
             InvokeDotNetStarter?.Invoke();
-
-            // todo: remove lines below in Epi v11
-            var container = context.Container;
-            _Container = container; // store the containr for use in CreateRegistry
         }
 
         /// <summary>
@@ -52,16 +48,7 @@ namespace DotNetStarter.Extensions.Episerver
             if (_LocatorRegistry != null)
                 return _LocatorRegistry;
 
-            // todo: remove lines below in Epi v11
-
-            if (_Container == null)
-            {
-                throw new NullReferenceException($"{typeof(ApplicationContext).FullName}.{nameof(ApplicationContext.Startup)}" +
-                    $" was invoked before Episerver initialization. Please assign an action to {typeof(EpiserverLocatorSetup).FullName}.ContainerSet" +
-                    " to invoke startup when the container reference is set in the global.asax class constructor.");
-            }
-
-            return new EpiserverStructuremapLocator(_Container);
+            throw new Exception($"Please review https://bmcdavid.github.io/DotNetStarter/example-episerver-locator.html for setting up with Episerver.");
         }
 
         /// <summary>

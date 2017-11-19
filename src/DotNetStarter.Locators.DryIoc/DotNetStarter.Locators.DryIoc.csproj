@@ -1,10 +1,10 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <RootNamespace>DotNetStarter</RootNamespace>
+    <RootNamespace>DotNetStarter.Locators</RootNamespace>
     <TargetFrameworks>net35;net40;net45;netstandard1.0</TargetFrameworks>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
-    <DocumentationFile>bin\$(Configuration)\$(TargetFramework)\DotNetStarter.DryIoc.xml</DocumentationFile>
+    <DocumentationFile>bin\$(Configuration)\$(TargetFramework)\DotNetStarter.Locators.DryIoc.xml</DocumentationFile>
   </PropertyGroup>
 
   <ItemGroup>

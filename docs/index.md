@@ -33,7 +33,5 @@ Package  | Version
 * [Known Issues](https://bmcdavid.github.io/DotNetStarter/known-issues.html)
 
 ## Examples
-* [MVC with Scoped Dependency Resolver](https://bmcdavid.github.io/DotNetStarter/example-netframework-mvc.html)
-* [WebApi with Scoped Depenendy Resolver](https://bmcdavid.github.io/DotNetStarter/example-netframework-webapi.html)
 * [Episerver Locator with Scoped Dependency Resolver](https://bmcdavid.github.io/DotNetStarter/example-episerver-locator.html)
 * [ASP.Net Core Service Configuration](https://bmcdavid.github.io/DotNetStarter/example-netcore-configure-services.html)

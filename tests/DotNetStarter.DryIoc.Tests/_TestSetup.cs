@@ -11,7 +11,7 @@ namespace DotNetStarter.Tests
         {
 #if DRYNETSTANDARD
             var assemblies = System.AppDomain.CurrentDomain.GetAssemblies().ToList();
-            assemblies.Add(typeof(DotNetStarter.DryIocLocator).Assembly);
+            assemblies.Add(typeof(DotNetStarter.Locators.DryIocLocator).Assembly);
 
             ApplicationContext.Startup(assemblies: assemblies);
 #elif MAPNETSTANDARD

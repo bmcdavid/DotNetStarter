@@ -37,20 +37,20 @@
     <file src="readme.txt" target="readme.txt" />
 
     <!--https://docs.nuget.org/ndocs/schema/target-frameworks-->
-    <file src="bin\Release\net35\DotNetStarter.DryIoc.dll" target="lib\net35" />
-    <file src="bin\Release\net35\DotNetStarter.DryIoc.pdb" target="lib\net35" />
-    <file src="bin\Release\net35\DotNetStarter.DryIoc.xml" target="lib\net35" />
+    <file src="bin\Release\net35\DotNetStarter.Locators.DryIoc.dll" target="lib\net35" />
+    <file src="bin\Release\net35\DotNetStarter.Locators.DryIoc.pdb" target="lib\net35" />
+    <file src="bin\Release\net35\DotNetStarter.Locators.DryIoc.xml" target="lib\net35" />
 
-    <file src="bin\Release\net40\DotNetStarter.DryIoc.dll" target="lib\net40" />
-    <file src="bin\Release\net40\DotNetStarter.DryIoc.pdb" target="lib\net40" />
-    <file src="bin\Release\net40\DotNetStarter.DryIoc.xml" target="lib\net40" />
+    <file src="bin\Release\net40\DotNetStarter.Locators.DryIoc.dll" target="lib\net40" />
+    <file src="bin\Release\net40\DotNetStarter.Locators.DryIoc.pdb" target="lib\net40" />
+    <file src="bin\Release\net40\DotNetStarter.Locators.DryIoc.xml" target="lib\net40" />
 
-    <file src="bin\Release\net45\DotNetStarter.DryIoc.dll" target="lib\net45" />
-    <file src="bin\Release\net45\DotNetStarter.DryIoc.pdb" target="lib\net45" />
-    <file src="bin\Release\net45\DotNetStarter.DryIoc.xml" target="lib\net45" />
+    <file src="bin\Release\net45\DotNetStarter.Locators.DryIoc.dll" target="lib\net45" />
+    <file src="bin\Release\net45\DotNetStarter.Locators.DryIoc.pdb" target="lib\net45" />
+    <file src="bin\Release\net45\DotNetStarter.Locators.DryIoc.xml" target="lib\net45" />
 
-    <file src="bin\Release\netstandard1.0\DotNetStarter.DryIoc.dll" target="lib\netstandard1.0" />
-    <file src="bin\Release\netstandard1.0\DotNetStarter.DryIoc.pdb" target="lib\netstandard1.0" />
-    <file src="bin\Release\netstandard1.0\DotNetStarter.DryIoc.xml" target="lib\netstandard1.0" />
+    <file src="bin\Release\netstandard1.0\DotNetStarter.Locators.DryIoc.dll" target="lib\netstandard1.0" />
+    <file src="bin\Release\netstandard1.0\DotNetStarter.Locators.DryIoc.pdb" target="lib\netstandard1.0" />
+    <file src="bin\Release\netstandard1.0\DotNetStarter.Locators.DryIoc.xml" target="lib\netstandard1.0" />
   </files>
 </package>

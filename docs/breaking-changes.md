@@ -9,10 +9,16 @@ This page is used to note each versions breaking changes and list future breakin
 The read-only locator was introduced in 1.x since registrations after OnLocatorStartupComplete required casting as ILocatorRegistry.
 
 ## 1.x - 2.x
-* Add IStartupEnvironment to IStartupConfiguration, and set with similar mechanism to ILocatoryRegistryFactory.
-* Remove obsolete methods
+* Added IStartupEnvironment to IStartupConfiguration, and set by passing an implementation to DotNetStarter.ApplicationContext.Startup
+* Added LightInject and StructureMapSigned locators
+* Added DotNetStarter.Locators namespace for all locators
+  * DryIoc and Structuremap retain their existing NuGet package Ids
+* New services can no longer be registered in an open scope
+* Removed obsoleted code
+* Removed RegisterAttribute, replaced with RegistrationAttribute
 * Removed IStartupConfigurationWithEnvironment
-* Removed LifeTime and ConstructorType enums.
+* Removed LifeTime and ConstructorType enums
+* Moved RegistrationConfiguration to DotNetStarter.Abstractions
 * Changed ILocator
   * Removed OpenScope
   * Moved BuildUp to ILocatorWithPropertyInjection

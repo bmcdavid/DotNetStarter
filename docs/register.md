@@ -5,13 +5,13 @@ title: DotNetStarter - Registering Items
 
 There are two ways to register items with to the locator.
 
-## DotNetStarter.Abstractions.RegisterAttribute
+## DotNetStarter.Abstractions.RegistrationAttribute
 
-The first and simplest way is using the DotNetStarter.Abstractions.RegisterAttribute on the implementation class.
+The first and simplest way is using the DotNetStarter.Abstractions.RegistrationAttribute on the implementation class.
 This works for registering type implementations but doesn't support delegate or instance based registrations.
 
 ```cs
-[Register(typeof(IServiceType), LifeTime.Singleton)]
+[Registration(typeof(IServiceType), LifeTime.Singleton)]
 ```
 
 ## DotNetStarter.Abstractions.ILocatorConfigure
@@ -24,9 +24,9 @@ public class Example : ILocatorConfigure
 {
     public void Configure(ILocatorRegistry container, IStartupEngine engine)
     {
-        container.Add<BaseTest, BaseImpl>(lifetime: LifeTime.Scoped);
+        container.Add<BaseTest, BaseImpl>(lifecycle: Lifecycle.Scoped);
 
-        container.Add(typeof(IFoo), locator => FooFactory.CreateFoo(), LifeTime.Transient);
+        container.Add(typeof(IFoo), locator => FooFactory.CreateFoo(), Lifecycle.Transient);
     }
 }
 ```
@@ -34,7 +34,7 @@ public class Example : ILocatorConfigure
 ***IMPORTANT:*** The types that implement this interface also need empty constructors as locator with its underlying container have not been configured, there will be nothing to inject.
 
 ## Dependencies
-Both methods support adding dependencies which allows for an override system. The most common example will be overriding services registered with the RegisterAttribute
+Both methods support adding dependencies which allows for an override system. The most common example will be overriding services registered with the RegistrationAttribute
 
 ### ILocatorConfigure module dependent on the RegisterConfiguration type:
 
@@ -44,20 +44,20 @@ public class DependencyExample : ILocatorConfigure
 {
     public void Configure(ILocatorRegistry container, IStartupEngine engine)
     {
-        container.Add<IServiceType, NewImpl>(lifetime: LifeTime.Scoped);
+        container.Add<IServiceType, NewImpl>(lifecycle: Lifecycle.Scoped);
     }
 }
 ```
 
-### RegisterAttribute dependent on another implementation type:
+### RegistrationAttribute dependent on another implementation type:
 
 ```cs
-[Register(typeof(IServiceType), LifeTime.Singleton, Contructor.Greediest, typeof(ServiceTypeImplToOverride))]
+[Registration(typeof(IServiceType), Lifecycle.Singleton, typeof(ServiceTypeImplToOverride))]
 ```
 
-The attribute with the typeof(RegisterConfiguration) allows this ILocatorConfigure to be executed after the RegisterAttribute assignments. 
-The StartupModuleAttribute and RegisterAttribute a for an array of type dependencies, so the more dependencies they have the later they will executed! 
+The attribute with the typeof(RegistrationConfiguration) allows this ILocatorConfigure to be executed after the RegistrationAttribute assignments. 
+The StartupModuleAttribute and RegistrationAttribute a for an array of type dependencies, so the more dependencies they have the later they will executed! 
 
-***IMPORTANT:*** The typeof() dependencies must match the class type they are overriding, for example RegisterConfiguration implements ILocatorConfigure,
+***IMPORTANT:*** The typeof() dependencies must match the class type they are overriding, for example RegistrationConfiguration implements ILocatorConfigure,
  so adding it as dependency to implementations of ILocatorConfigure works.
 Adding a type that doesn't match for example typeof(string) will result in an InvalidOperationException during dependency sorting.

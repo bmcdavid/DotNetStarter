@@ -13,7 +13,7 @@ namespace DotNetStarter.Extensions.WebApi.Tests
             {
                 typeof(DotNetStarter.Abstractions.IAssemblyFilter).Assembly,
                 typeof(DotNetStarter.ApplicationContext).Assembly,
-                typeof(DotNetStarter.DryIocLocator).Assembly,
+                typeof(DotNetStarter.Locators.DryIocLocator).Assembly,
                 typeof(DotNetStarter.Web.Startup).Assembly,
                 typeof(DotNetStarter.Extensions.WebApi.StartupWebApiConfigure).Assembly,
                 typeof(_TestSetup).Assembly

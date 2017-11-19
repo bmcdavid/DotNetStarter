@@ -5,6 +5,112 @@ title: DotNetStarter - ASP.Net Core Configure Services
 
 Below are examples of how to configure the IServiceProvider in Configure Services for the supported locators.
 
+## DotNetStarter
+
+DotNetStarter can now create the service provider in the configure set. The only issue with using it is it selects the greediest constructor and not all services are wired up in that manner. Below is a simple example that works with all three of the maintained locators.
+
+### Required Packages
+
+* DotNetStarter.RegistrationAbstractions
+* DotNetStarter.Abstractions
+* DotNetStarter
+* One of the following:
+  * DotNetStarter.DryIoc
+  * DotNetStarter.Structuremap
+  * DotNetStarter.Locators.LightInject
+
+```cs
+
+    public class Startup
+    {
+        public Startup(IConfiguration configuration, IHostingEnvironment env)
+        {
+            Configuration = configuration;
+            Env = env;
+        }
+
+        public IConfiguration Configuration { get; }
+        public IHostingEnvironment Env { get; }
+
+        // This method gets called by the runtime. Use this method to add services to the container.
+        public IServiceProvider ConfigureServices(IServiceCollection services)
+        {
+            services
+                .AddMvc()
+                .AddViewLocalization();
+
+            // the implementation has 2 greediest constructors with different arguments
+            var loggerFactoryType = typeof(Microsoft.Extensions.Logging.ILoggerFactory);
+            var loggerDescriptor = services.FirstOrDefault(x => x.ServiceType == loggerFactoryType);
+
+            if (loggerDescriptor != null)
+            {
+                services.Remove(loggerDescriptor);
+                services.Add(new ServiceDescriptor
+                (
+                    loggerFactoryType,
+                    new Microsoft.Extensions.Logging.LoggerFactory()
+                ));
+            }
+
+            // add this to provide missing argument for Microsoft.AspNetCore.Mvc.Internal.MvcRouteHandler
+            services.Add(new ServiceDescriptor
+            (
+                typeof(IActionContextAccessor),
+                typeof(ActionContextAccessor),
+                ServiceLifetime.Singleton
+            ));
+
+            var provider = services.WithDotNetStarter(() => StartupDotNetStarter(Env));
+
+            return provider;
+        }
+
+        public static void StartupDotNetStarter(IHostingEnvironment hostingEnvironment)
+        {
+            // Add the following lines in the Startup class constructor, for netcore assembly loading
+            Func<IEnumerable<Assembly>> assemblyLoader = () =>
+            {
+                var runtimeId = Microsoft.DotNet.PlatformAbstractions.RuntimeEnvironment.GetRuntimeIdentifier();
+                var libraries = Microsoft.Extensions.DependencyModel.DependencyContextExtensions.GetRuntimeAssemblyNames(Microsoft.Extensions.DependencyModel.DependencyContext.Default,
+                    runtimeId);
+
+                return libraries.Select(x => Assembly.Load(new AssemblyName(x.Name)));
+            };
+
+            var hostingEnv = new DotNetStarter.StartupEnvironment(hostingEnvironment.EnvironmentName, hostingEnvironment.ContentRootPath);
+            var filteredAssemblies = DotNetStarter.ApplicationContext.GetScannableAssemblies(assemblies: assemblyLoader());
+
+            ApplicationContext.Startup(assemblies: filteredAssemblies.Union(new Assembly[] { typeof(Example.Startup).Assembly }), environment: hostingEnv);
+        }
+
+
+        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        {
+            if (env.IsDevelopment())
+            {
+                app.UseDeveloperExceptionPage();
+                app.UseBrowserLink();
+            }
+            else
+            {
+                app.UseExceptionHandler("/Home/Error");
+            }
+
+            app.UseStaticFiles();
+
+            app.UseMvc(routes =>
+            {
+                routes.MapRoute(
+                    name: "default",
+                    template: "{controller=Home}/{action=Index}/{id?}");
+            });
+        }
+    }
+}
+```
+
 ## DryIoc Locator
 
 ### Required Nuget packages

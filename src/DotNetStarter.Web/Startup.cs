@@ -1,7 +1,6 @@
 ﻿#if !NETSTANDARD1_3
 
 using DotNetStarter.Abstractions;
-using System;
 
 namespace DotNetStarter.Web
 {
@@ -11,13 +10,6 @@ namespace DotNetStarter.Web
     [StartupModule]
     public class Startup : IStartupModule
     {
-        /// <summary>
-        /// If set to true (default is false), then a 'PreApplicationStartMethodAttribute' assembly attribute (https://msdn.microsoft.com/en-us/library/system.web.preapplicationstartmethodattribute.aspx)
-        /// must be used to execute DotNetStarter.Web.Startup.RegisterWebModuleStartup
-        /// </summary>
-        [Obsolete("No longed required, will be removed in version 2.")]
-        public static bool DisableStartupModuleRegistration { get; set; }
-
         private static bool IsRegistered = false;
 
         void IStartupModule.Shutdown(IStartupEngine engine) { }

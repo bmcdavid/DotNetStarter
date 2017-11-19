@@ -1,4 +1,4 @@
-﻿namespace DotNetStarter
+﻿namespace DotNetStarter.Locators
 {
     using DotNetStarter.Abstractions;
     using DotNetStarter.Abstractions.Internal;

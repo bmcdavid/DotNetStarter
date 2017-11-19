@@ -16,7 +16,7 @@ Also some containers may handle scoped items differently, some may have a single
 ```cs
 var locator = DotNetStarter.ApplicationContext.Default.Locator;
 
-using (var scope = locator.OpenScope())
+using (var scope = locator.Get<ILocatorScopedFactory>().CreateScope())
 {
     var scopedService = scope.Get<IScopedService>();
 

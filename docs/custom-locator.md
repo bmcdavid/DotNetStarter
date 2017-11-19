@@ -6,8 +6,10 @@ title: DotNetStarter - Customizing the Locator
 The ILocator and ILocatorRegistry system is a wrapper for any container that can implement the interfaces.
 The following are the currently supported container implementations:
 
-* DotNetStarter.DryIoc - support for net35+ and netstandard 1.0+
-* DotNetStarter.Structuremap - support for net35+ and netstandard 1.3+, net35 doesn't support container/locator scoping.
+* DotNetStarter.Locators.DryIoc - support for net35+ and netstandard 1.0+
+* DotNetStarter.Locators.StructureMap - support for net45+ and netstandard 1.3+.
+* DotNetStarter.Locators.LightInject - support for net452+ and netstandard1.1+.
+* DotNetStarter.Locators.StructureMapSigned - support for net45+.
 
 ## Example Custom Locator with factory
 
@@ -16,7 +18,7 @@ The following are the currently supported container implementations:
 [assembly: DotNetStarter.Abstractions.LocatorRegistryFactory
 (
     typeof(Example.CustomLocatorFactory), // the locator factory to register
-    typeof(DotNetStarter.DryIocLocatorFactory) // factory dependency to override, can have many if needed
+    typeof(DotNetStarter.Locators.DryIocLocatorFactory) // factory dependency to override, can have many if needed
 )]
 
 namespace Example 

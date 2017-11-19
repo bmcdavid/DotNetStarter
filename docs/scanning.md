@@ -10,11 +10,11 @@ Assembly scanning occurs to discover IStartupModule and ILocatorConfigure module
 ```cs
  using DotNetStarter.Abstractions;
 
- // this scans for types that implement IStartupModule, StartupModuleAttribute, and RegisterAttribute usages
+ // this scans for types that implement IStartupModule, StartupModuleAttribute, and RegistrationAttribute usages
 [assembly: DiscoverTypes(
     typeof(IStartupModule),
     typeof(StartupModuleAttribute),
-    typeof(RegisterAttribute)
+    typeof(RegistrationAttribute)
 )]
 ```
 
@@ -23,32 +23,32 @@ Assembly scanning occurs to discover IStartupModule and ILocatorConfigure module
  using DotNetStarter.Abstractions;
 
 [StartupModule]
-public class RegisterConfiguration : ILocatorConfigure
+public class RegistrationConfiguration : ILocatorConfigure
 {
     public void Configure(ILocatorRegistry container, IStartupEngine engine)
     {
         // access to default configuration's to get its AssemblyScanner
         var configuration = container.Get<IStartupConfiguration>() ?? engine.Configuration;
-        var serviceType = typeof(RegisterAttribute);
+        var serviceType = typeof(RegistrationAttribute);
         
-        // get all types found for RegisterAttribute
+        // get all types found for RegistrationAttribute
         var services = configuration.AssemblyScanner.GetTypesFor(serviceType);
 
-        // additional sorting used since RegisterAttribute inherits DependencyBaseAttribute which allows dependency system
-        var servicesSorted = configuration.DependencySorter.Sort<RegisterAttribute>(services.OfType<object>()).ToList();
+        // additional sorting used since RegistrationAttribute inherits StartupDependencyBaseAttribute which allows dependency system
+        var servicesSorted = configuration.DependencySorter.Sort<RegistrationAttribute>(services.OfType<object>()).ToList();
 
         // add all types found
         for (int i = 0; i < servicesSorted.Count; i++)
         {
             var t = servicesSorted[i].Node as Type;
-            var attrs = t.CustomAttribute(serviceType, false).OfType<RegisterAttribute>();
+            var attrs = t.CustomAttribute(serviceType, false).OfType<RegistrationAttribute>();
 
             if (attrs?.Any() == true)
             {
                 foreach (var attr in attrs)
                 {
                     attr.ImplementationType = t;
-                    container.Add(attr.ServiceType, attr.ImplementationType, null, attr.LifeTime, attr.ConstructorType);
+                    container.Add(attr.ServiceType, attr.ImplementationType, null, attr.Lifecycle);
                 }
             }
         }

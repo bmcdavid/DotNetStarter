@@ -8,7 +8,6 @@
     [AttributeUsage(AttributeTargets.Assembly, AllowMultiple = false, Inherited = true)]
     public abstract class StartupAssemblyDependencyBaseAttribute : StartupDependencyBaseAttribute
     {
-        [Obsolete("Please use the params Type[] constructor", true)]
         private StartupAssemblyDependencyBaseAttribute() { }
 
         /// <summary>

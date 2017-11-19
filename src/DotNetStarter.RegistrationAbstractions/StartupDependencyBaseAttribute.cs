@@ -19,7 +19,6 @@
         /// </summary>
         public bool IsAssemblyDependency { get; protected set; }
 
-        [Obsolete("Please use the params Type[] constructor", true)]
         private StartupDependencyBaseAttribute() { }
 
         /// <summary>

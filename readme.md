@@ -82,7 +82,7 @@ public interface ITest
     string SayHi(string n);
 }
 
-[Register(typeof(ITest), LifeTime.Transient)]
+[Registration(typeof(ITest), Lifecycle.Transient)]
 public class Test : ITest
 {
     public string SayHi(string n) => "Hello " + n;

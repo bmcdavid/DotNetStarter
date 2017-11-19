@@ -69,9 +69,9 @@
       <Project>{e7196a51-5932-47ea-be3a-f65567c9cd8b}</Project>
       <Name>DotNetStarter.Abstractions</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\src\DotNetStarter.DryIoc\DotNetStarter.DryIoc.csproj">
-      <Project>{544b1924-3071-4261-b4ba-151ab6af1d43}</Project>
-      <Name>DotNetStarter.DryIoc</Name>
+    <ProjectReference Include="..\..\src\DotNetStarter.Locators.DryIoc\DotNetStarter.Locators.DryIoc.csproj">
+      <Project>{a9a02b93-bfda-4b29-863c-dc0625c89565}</Project>
+      <Name>DotNetStarter.Locators.DryIoc</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\src\DotNetStarter.RegistrationAbstractions\DotNetStarter.RegistrationAbstractions.csproj">
       <Project>{c68c2f9d-a735-4ae7-9811-f108fa104ce7}</Project>
