@@ -25,7 +25,7 @@ namespace DotNetStarter.Tests
     [StartupModule]
     public class StartupTest : IStartupModule
     {
-        public void Shutdown(IStartupEngine engine)
+        public void Shutdown()
         {
         }
 

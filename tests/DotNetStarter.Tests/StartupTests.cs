@@ -115,7 +115,8 @@ namespace DotNetStarter.Tests
         [TestMethod]
         public void ShouldShutdown()
         {
-            Internal.Shutdown.CallShutdown();
+            var shutdown = DotNetStarter.ApplicationContext.Default.Locator.Get<IShutdownHandler>();
+            shutdown.Shutdown();
 
             Assert.IsTrue(StartupTest.ShutdownCalled);
         }
@@ -139,6 +140,7 @@ namespace DotNetStarter.Tests
         {
             new StartupHandler().Startup(ApplicationContext.Default.Configuration, new NullLocatorObjectFactory(), out IStartupContext x);
         }
+
         internal class MockFactory : ILocatorRegistryFactory
         {
             public ILocatorRegistry CreateRegistry()
@@ -159,7 +161,7 @@ namespace DotNetStarter.Tests
 
         internal static bool ShutdownCalled => _ShutdownCalled;
 
-        public void Shutdown(IStartupEngine engine)
+        public void Shutdown()
         {
             _ShutdownCalled = true;
         }

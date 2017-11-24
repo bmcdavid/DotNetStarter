@@ -10,16 +10,8 @@
     /// <summary>
     /// Default startup handler
     /// </summary>
-    public class StartupHandler : IStartupHandler
+    public class StartupHandler : IStartupHandler, IStartupEngine
     {
-        internal static IStartupContext _Context;
-
-        internal static IEnumerable<IStartupModule> _StartupModules;
-
-        internal static IStartupEngine _Engine;
-
-        private event Action _OnLocatorStartupComplete;
-
         private bool _LocatorStartupInvoked = false;
 
         /// <summary>
@@ -47,31 +39,14 @@
         /// </summary>
         public event Action OnStartupComplete;
 
+        private event Action _OnLocatorStartupComplete;
         /// <summary>
-        /// Finalizer
-        /// </summary>        
-        ~StartupHandler()
-        {
-            Dispose();
-        }
-
-        /// <summary>
-        /// Context Reference
-        /// </summary>
-        protected IStartupContext Context => _Context;
-
-        /// <summary>
-        /// Modules reference
-        /// </summary>
-        protected IEnumerable<IStartupModule> InitModules => _StartupModules;
-
-        /// <summary>
-        /// Configuration Reference
+        /// Startup Configuration for IStartupEngine
         /// </summary>
         public IStartupConfiguration Configuration { get; protected set; }
 
         /// <summary>
-        /// Locator Reference
+        /// ILocator for IStartupEngine
         /// </summary>
         public ILocator Locator { get; protected set; }
 
@@ -84,10 +59,10 @@
         /// <returns></returns>
         public virtual bool Startup(IStartupConfiguration config, IStartupObjectFactory objectFactory, out IStartupContext context)
         {
-            _Engine = this;
             Configuration = config;
-            Locator = objectFactory.CreateRegistry(config);
+            Locator = objectFactory.CreateRegistry(config) as ILocator;
 
+            IStartupEngine startupEngine = this;
             IEnumerable<Assembly> assemblies = config.Assemblies;
             IStartupContext tempContext = null;
             IEnumerable<IDependencyNode> sortedModules = null;
@@ -143,14 +118,14 @@
 
                 objectFactory.CreateContainerDefaults().Configure(registry, filteredModules, config, objectFactory);
                 var locatorRegistries = (registry as ILocatorResolveConfigureModules)?.ResolveConfigureModules(filteredModules, config)
-                                            ?? registry.GetAll<ILocatorConfigure>();
+                                            ?? (registry as ILocator).GetAll<ILocatorConfigure>();
 
                 foreach (var map in locatorRegistries ?? Enumerable.Empty<ILocatorConfigure>())
                 {
                     map.Configure(registry, this);
                 }
 
-                var readOnlyLocator = Internal.ReadOnlyLocator.CreateReadOnlyLocator(registry);
+                var readOnlyLocator = Internal.ReadOnlyLocator.CreateReadOnlyLocator(registry as ILocator);
                 tempContext = objectFactory.CreateStartupContext(readOnlyLocator, filteredModules, sortedModules, config);
 
                 // register context once its created
@@ -192,31 +167,11 @@
             }
 
             // assign the context(s) after running tasks
-            _Context = context = tempContext;
+            context = tempContext;
+
+            // context.Locator.Get<IShutdownHandler>(); // create shutdownhandler for disposal
 
             return true;
-        }
-
-        /// <summary>
-        /// Executes on finalizer
-        /// </summary>
-        internal static void Shutdown()
-        {
-            if (_StartupModules != null)
-            {
-                foreach (var module in _StartupModules)
-                {
-                    try
-                    {
-                        module?.Shutdown(_Engine);
-                    }
-                    catch (Exception ex)
-                    {
-                        _Context.Configuration.Logger.
-                            LogException($"Failed to shutdown module {module.GetType().FullName}!", ex, typeof(StartupHandler), LogLevel.Error);
-                    }
-                }
-            }
         }
 
         /// <summary>
@@ -225,15 +180,12 @@
         /// <param name="modules"></param>
         protected virtual void Startup(IEnumerable<IStartupModule> modules)
         {
-            _StartupModules = modules ?? Enumerable.Empty<IStartupModule>();
+            var startupModules = modules ?? Enumerable.Empty<IStartupModule>();
 
-            foreach (var x in _StartupModules)
+            foreach (var x in startupModules)
             {
                 x.Startup(this);
             }
-
-            // AppDomain.CurrentDomain.DomainUnload += (sender, e) => Shutdown();// netframework
-            // AssemblyLoadContext.Unloading //netstandard1.6
         }
 
         /// <summary>
@@ -241,20 +193,7 @@
         /// </summary>
         public void Dispose()
         {
-            Dispose(true);
-        }
-
-        /// <summary>
-        /// Dispose
-        /// </summary>
-        /// <param name="disposing"></param>
-        protected virtual void Dispose(bool disposing)
-        {
-            if (disposing)
-            {
-                Shutdown();
-                _StartupModules = null;
-            }
+            
         }
     }
 }

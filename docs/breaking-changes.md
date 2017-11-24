@@ -15,6 +15,9 @@ The read-only locator was introduced in 1.x since registrations after OnLocatorS
   * DryIoc and Structuremap retain their existing NuGet package Ids
 * New services can no longer be registered in an open scope
 * Removed obsoleted code
+* Removed ILocator inheritance from ILocatorRegistry
+* Renamed IShutdownHandler.InvokeShutdown to Shutdown
+* Removed IStartupModule.Shutdown IStartupEngine arguments
 * Removed RegisterAttribute, replaced with RegistrationAttribute
 * Removed IStartupConfigurationWithEnvironment
 * Removed LifeTime and ConstructorType enums

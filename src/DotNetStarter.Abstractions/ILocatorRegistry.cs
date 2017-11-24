@@ -5,7 +5,7 @@
     /// <summary>
     /// Provides access to container setup tasks, such as add, remove, contains
     /// </summary>
-    public interface ILocatorRegistry : ILocator
+    public interface ILocatorRegistry
     {
         /// <summary>
         /// Adds service to container

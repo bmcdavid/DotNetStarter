@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using DotNetStarter.Abstractions;
+using System.Diagnostics;
 
 namespace DotNetStarter.Tests.Mocks
 {
@@ -19,9 +20,11 @@ namespace DotNetStarter.Tests.Mocks
     /// <summary>
     /// simple locator that only cares about startup modules
     /// </summary>
-    internal class TestLocator : ILocatorRegistry
+    internal class TestLocator : ILocatorRegistry, ILocator
     {
         private List<Type> modules = new List<Type>();
+
+        private Dictionary<Type, object> instances = new Dictionary<Type, object>();
 
         private IEnumerable<Type> allowedTypes = new Type[] { typeof(IStartupModule), typeof(ILocatorConfigure), typeof(IReflectionHelper) };
 
@@ -43,7 +46,7 @@ namespace DotNetStarter.Tests.Mocks
 
         public void Add(Type serviceType, object serviceInstance)
         {
-
+            instances[serviceType] = serviceInstance;
         }
 
         public void Add<TService, TImpl>(string key = null, Lifecycle lifetime = Lifecycle.Transient) where TImpl : TService
@@ -73,6 +76,13 @@ namespace DotNetStarter.Tests.Mocks
 
         public T Get<T>(string key = null)
         {
+            if (typeof(T) == typeof(IShutdownHandler))
+            {
+                IShutdownHandler x = new Internal.Shutdown(instances[typeof(ILocator)] as ILocator, instances[typeof(IStartupContext)] as IStartupContext);
+
+                return new object[] { x }.OfType<T>().Last();
+            }
+
             if (allowedTypes.Contains(typeof(T)))
             {
                 var startupModules = modules.Select(x => Activator.CreateInstance(x)).OfType<T>();
@@ -88,6 +98,8 @@ namespace DotNetStarter.Tests.Mocks
             if (allowedTypes.Contains(typeof(T)))
             {
                 var startupModules = modules.Select(x => Activator.CreateInstance(x)).OfType<T>().ToList();
+
+                instances[typeof(T)] = startupModules;
 
                 return startupModules;
             }
@@ -133,9 +145,23 @@ namespace DotNetStarter.Tests.Mocks
     }
 
     [StartupModule]
+    public class ShutdownMessage : IStartupModule
+    {
+        public void Shutdown()
+        {
+            Debug.WriteLine("DNS shutdown");
+        }
+
+        public void Startup(IStartupEngine engine)
+        {
+            Debug.WriteLine("DNS startup");
+        }
+    }
+
+    [StartupModule]
     public class ExcludeModule : IStartupModule
     {
-        public void Shutdown(IStartupEngine engine)
+        public void Shutdown()
         {
 
         }

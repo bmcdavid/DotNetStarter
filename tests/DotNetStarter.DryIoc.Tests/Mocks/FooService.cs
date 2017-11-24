@@ -1,5 +1,6 @@
 ﻿using System;
 using DotNetStarter.Abstractions;
+using System.Diagnostics;
 
 namespace DotNetStarter.Tests.Mocks
 {
@@ -74,5 +75,19 @@ namespace DotNetStarter.Tests.Mocks
     public class FooServiceThree : IFoo
     {
         public string Hello => "Hello, World part three!";
+    }
+
+    [StartupModule]
+    public class ShutdownMessage : IStartupModule
+    {
+        public void Shutdown()
+        {
+            Debug.WriteLine("DNS Locator shutdown");
+        }
+
+        public void Startup(IStartupEngine engine)
+        {
+            Debug.WriteLine("DNS Locator startup");
+        }
     }
 }

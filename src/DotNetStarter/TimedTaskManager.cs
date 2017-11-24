@@ -25,7 +25,7 @@
         /// <summary>
         /// Store all timed tasks
         /// </summary>
-        private static List<ITimedTask> _ApplicationTasks = new List<ITimedTask>();
+        private List<ITimedTask> _ApplicationTasks = new List<ITimedTask>();
 
         /// <summary>
         /// Execute timed task

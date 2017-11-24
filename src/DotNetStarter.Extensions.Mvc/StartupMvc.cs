@@ -27,7 +27,7 @@ namespace DotNetStarter.Extensions.Mvc
             _HttpContextProvider = httpContextProvider;
         }
 
-        void IStartupModule.Shutdown(IStartupEngine engine) { }
+        void IStartupModule.Shutdown() { }
         
         void IStartupModule.Startup(IStartupEngine engine)
         {

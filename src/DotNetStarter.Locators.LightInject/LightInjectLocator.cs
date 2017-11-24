@@ -16,7 +16,7 @@ namespace DotNetStarter.Locators
     /// <summary>
     /// Default LightInject ILocatoryRegistry
     /// </summary>
-    public class LightInjectLocator : ILocatorRegistry, ILocatorVerification, ILocatorCreateScope,
+    public class LightInjectLocator : ILocatorRegistry, ILocator, ILocatorVerification, ILocatorCreateScope,
         ILocatorRegistryWithContains, ILocatorResolveConfigureModules, ILocatorRegistryWithRemove,
         ILocatorSetContainer
     {
