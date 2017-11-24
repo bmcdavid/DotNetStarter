@@ -8,7 +8,7 @@
     /// Handles shutdown process
     /// </summary>
     [Registration(typeof(IShutdownHandler), Lifecycle.Singleton)]
-    public class Shutdown : IShutdownHandler
+    public class Shutdown : IShutdownHandler, IDisposable
     {
         private readonly IEnumerable<IStartupModule> _StartupModules;
         private readonly IStartupContext _StartupContext;
@@ -24,7 +24,37 @@
             _StartupContext = startupContext;
         }
 
-        void IShutdownHandler.InvokeShutdown()
+        /// <summary>
+        /// Finalize
+        /// </summary>
+        ~Shutdown()
+        {
+            Dispose();
+        }
+
+        /// <summary>
+        /// Dispose
+        /// </summary>
+        public void Dispose()
+        {
+            Dispose(true);
+        }
+
+        /// <summary>
+        /// Actual dispose
+        /// </summary>
+        /// <param name="disposing"></param>
+        protected void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+               InvokeShutdown();
+            }
+        }
+
+        void IShutdownHandler.Shutdown() => InvokeShutdown();
+
+        void InvokeShutdown()
         {
             if (_StartupModules != null)
             {

@@ -14,16 +14,6 @@
     {
         private bool _LocatorStartupInvoked = false;
 
-        private IShutdownHandler _ShutdownHandler;
-
-        /// <summary>
-        /// Finalizer
-        /// </summary>        
-        ~StartupHandler()
-        {
-            Dispose();
-        }
-
         /// <summary>
         /// Fires after ILocatorConfigure.Configure has completed in all executing modules
         /// </summary>
@@ -61,14 +51,6 @@
         public ILocator Locator { get; protected set; }
 
         /// <summary>
-        /// Dispose
-        /// </summary>
-        public void Dispose()
-        {
-            Dispose(true);
-        }
-
-        /// <summary>
         /// Starup process, by default it scans assemblies, sorts modules, configures container, and runs startup for each module
         /// </summary>
         /// <param name="config"></param>
@@ -78,7 +60,7 @@
         public virtual bool Startup(IStartupConfiguration config, IStartupObjectFactory objectFactory, out IStartupContext context)
         {
             Configuration = config;
-            Locator = objectFactory.CreateRegistry(config);
+            Locator = objectFactory.CreateRegistry(config) as ILocator;
 
             IStartupEngine startupEngine = this;
             IEnumerable<Assembly> assemblies = config.Assemblies;
@@ -136,14 +118,14 @@
 
                 objectFactory.CreateContainerDefaults().Configure(registry, filteredModules, config, objectFactory);
                 var locatorRegistries = (registry as ILocatorResolveConfigureModules)?.ResolveConfigureModules(filteredModules, config)
-                                            ?? registry.GetAll<ILocatorConfigure>();
+                                            ?? (registry as ILocator).GetAll<ILocatorConfigure>();
 
                 foreach (var map in locatorRegistries ?? Enumerable.Empty<ILocatorConfigure>())
                 {
                     map.Configure(registry, this);
                 }
 
-                var readOnlyLocator = Internal.ReadOnlyLocator.CreateReadOnlyLocator(registry);
+                var readOnlyLocator = Internal.ReadOnlyLocator.CreateReadOnlyLocator(registry as ILocator);
                 tempContext = objectFactory.CreateStartupContext(readOnlyLocator, filteredModules, sortedModules, config);
 
                 // register context once its created
@@ -187,21 +169,9 @@
             // assign the context(s) after running tasks
             context = tempContext;
 
-            _ShutdownHandler = Locator.Get<IShutdownHandler>();
+            // context.Locator.Get<IShutdownHandler>(); // create shutdownhandler for disposal
 
             return true;
-        }
-
-        /// <summary>
-        /// Dispose
-        /// </summary>
-        /// <param name="disposing"></param>
-        protected virtual void Dispose(bool disposing)
-        {
-            if (disposing)
-            {
-                _ShutdownHandler.InvokeShutdown();
-            }
         }
 
         /// <summary>
@@ -216,6 +186,14 @@
             {
                 x.Startup(this);
             }
+        }
+
+        /// <summary>
+        /// Dispose
+        /// </summary>
+        public void Dispose()
+        {
+            
         }
     }
 }

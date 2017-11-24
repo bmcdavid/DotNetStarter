@@ -8,6 +8,6 @@
         /// <summary>
         /// Invoke modules shutdown
         /// </summary>
-        void InvokeShutdown();
+        void Shutdown();
     }
 }

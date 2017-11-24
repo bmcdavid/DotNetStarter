@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using DotNetStarter.Abstractions;
+using System.Diagnostics;
 
 namespace DotNetStarter.Tests.Mocks
 {
@@ -19,7 +20,7 @@ namespace DotNetStarter.Tests.Mocks
     /// <summary>
     /// simple locator that only cares about startup modules
     /// </summary>
-    internal class TestLocator : ILocatorRegistry
+    internal class TestLocator : ILocatorRegistry, ILocator
     {
         private List<Type> modules = new List<Type>();
 
@@ -140,6 +141,20 @@ namespace DotNetStarter.Tests.Mocks
         public TestLogger() : base(LogLevel.Error, 100000)
         {
 
+        }
+    }
+
+    [StartupModule]
+    public class ShutdownMessage : IStartupModule
+    {
+        public void Shutdown()
+        {
+            Debug.WriteLine("DNS shutdown");
+        }
+
+        public void Startup(IStartupEngine engine)
+        {
+            Debug.WriteLine("DNS startup");
         }
     }
 
