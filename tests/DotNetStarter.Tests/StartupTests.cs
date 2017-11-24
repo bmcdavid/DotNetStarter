@@ -115,7 +115,8 @@ namespace DotNetStarter.Tests
         [TestMethod]
         public void ShouldShutdown()
         {
-            Internal.Shutdown.CallShutdown();
+            var shutdown = DotNetStarter.ApplicationContext.Default.Locator.Get<IShutdownHandler>();
+            shutdown.InvokeShutdown();
 
             Assert.IsTrue(StartupTest.ShutdownCalled);
         }
@@ -159,7 +160,7 @@ namespace DotNetStarter.Tests
 
         internal static bool ShutdownCalled => _ShutdownCalled;
 
-        public void Shutdown(IStartupEngine engine)
+        public void Shutdown()
         {
             _ShutdownCalled = true;
         }

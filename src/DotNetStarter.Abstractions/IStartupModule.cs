@@ -13,6 +13,6 @@
         /// <summary>
         /// Shutdown
         /// </summary>
-        void Shutdown(IStartupEngine engine);
+        void Shutdown();
     }
 }

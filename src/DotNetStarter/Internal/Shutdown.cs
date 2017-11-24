@@ -1,26 +1,46 @@
 ﻿namespace DotNetStarter.Internal
 {
     using Abstractions;
-    using System.ComponentModel;
+    using System;
+    using System.Collections.Generic;
 
     /// <summary>
-    /// Provides access to call module shutdown, useful for unit tests, or when finalizer isn't reliable.
+    /// Handles shutdown process
     /// </summary>
-    [EditorBrowsable(EditorBrowsableState.Never)]
     [Registration(typeof(IShutdownHandler), Lifecycle.Singleton)]
     public class Shutdown : IShutdownHandler
     {
+        private readonly IEnumerable<IStartupModule> _StartupModules;
+        private readonly IStartupContext _StartupContext;
+
         /// <summary>
-        /// Calls default initalization handler shutdown. Mainly used for unit tests.
+        /// Injected constructor
         /// </summary>
-        public static void CallShutdown()
+        /// <param name="locator">Locator is passed to get all startup modules in a sorted manner, as some locators cannot sort while injecting</param>
+        /// <param name="startupContext"></param>
+        public Shutdown(ILocator locator, IStartupContext startupContext)
         {
-            StartupHandler.Shutdown();
+            _StartupModules = locator.GetAll<IStartupModule>();
+            _StartupContext = startupContext;
         }
 
         void IShutdownHandler.InvokeShutdown()
         {
-            CallShutdown();
+            if (_StartupModules != null)
+            {
+                foreach (var module in _StartupModules)
+                {
+                    try
+                    {
+                        module?.Shutdown();
+                    }
+                    catch (Exception ex)
+                    {
+                        _StartupContext.Configuration.Logger.
+                            LogException($"Failed to shutdown module {module.GetType().FullName}!", ex, typeof(StartupHandler), LogLevel.Error);
+                    }
+                }
+            }
         }
     }
 }
