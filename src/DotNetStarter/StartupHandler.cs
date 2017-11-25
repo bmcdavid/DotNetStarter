@@ -14,6 +14,10 @@
     {
         private bool _LocatorStartupInvoked = false;
 
+        private bool _Started = false;
+
+        private IStartupContext _Context;
+
         /// <summary>
         /// Fires after ILocatorConfigure.Configure has completed in all executing modules
         /// </summary>
@@ -59,6 +63,13 @@
         /// <returns></returns>
         public virtual bool Startup(IStartupConfiguration config, IStartupObjectFactory objectFactory, out IStartupContext context)
         {
+            if (_Started)
+            {
+                context = _Context;
+
+                return false;
+            }
+
             Configuration = config;
             Locator = objectFactory.CreateRegistry(config) as ILocator;
 
@@ -126,11 +137,11 @@
                 }
 
                 var readOnlyLocator = Internal.ReadOnlyLocator.CreateReadOnlyLocator(registry as ILocator);
-                tempContext = objectFactory.CreateStartupContext(readOnlyLocator, filteredModules, sortedModules, config);
-
-                // register context once its created
-                registry.Add(typeof(IStartupContext), tempContext);
                 registry.Add(typeof(ILocator), readOnlyLocator);
+
+                tempContext = objectFactory.CreateStartupContext(readOnlyLocator, filteredModules, sortedModules, config);
+                registry.Add(typeof(IStartupContext), tempContext);
+
                 ImportHelper.OnEnsureLocator += (() => readOnlyLocator); // configure import<T> locator
 
                 _OnLocatorStartupComplete?.Invoke(); //execute locator complete before verification since last minute additions can occur here.
@@ -167,11 +178,11 @@
             }
 
             // assign the context(s) after running tasks
-            context = tempContext;
+            _Context = context = tempContext;
 
-            // context.Locator.Get<IShutdownHandler>(); // create shutdownhandler for disposal
+            _Started = true;
 
-            return true;
+            return _Started;
         }
 
         /// <summary>
@@ -186,14 +197,6 @@
             {
                 x.Startup(this);
             }
-        }
-
-        /// <summary>
-        /// Dispose
-        /// </summary>
-        public void Dispose()
-        {
-            
         }
     }
 }

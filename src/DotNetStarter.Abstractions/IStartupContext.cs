@@ -6,7 +6,7 @@
     /// <summary>
     /// startup Context
     /// </summary>
-    public interface IStartupContext : IDisposable
+    public interface IStartupContext
     {
         /// <summary>
         /// Service Locator

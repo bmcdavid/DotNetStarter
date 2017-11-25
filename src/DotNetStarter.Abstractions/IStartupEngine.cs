@@ -5,7 +5,7 @@ namespace DotNetStarter.Abstractions
     /// <summary>
     /// Contains events for intialization
     /// </summary>
-    public interface IStartupEngine : IDisposable
+    public interface IStartupEngine
     {
         /// <summary>
         /// Executes when locator startup is complete

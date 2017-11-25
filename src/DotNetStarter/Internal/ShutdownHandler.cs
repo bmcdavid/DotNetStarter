@@ -3,61 +3,50 @@
     using Abstractions;
     using System;
     using System.Collections.Generic;
+    using System.Linq;
 
     /// <summary>
     /// Handles shutdown process
     /// </summary>
     [Registration(typeof(IShutdownHandler), Lifecycle.Singleton)]
-    public class Shutdown : IShutdownHandler, IDisposable
+    public sealed class ShutdownHandler : IShutdownHandler
     {
+        private bool _ShutdownInvoked = false;
+
+        private readonly ILocator _Locator;
         private readonly IEnumerable<IStartupModule> _StartupModules;
-        private readonly IStartupContext _StartupContext;
+        private readonly IStartupConfiguration _StartupConfiguration;
 
         /// <summary>
         /// Injected constructor
         /// </summary>
         /// <param name="locator">Locator is passed to get all startup modules in a sorted manner, as some locators cannot sort while injecting</param>
-        /// <param name="startupContext"></param>
-        public Shutdown(ILocator locator, IStartupContext startupContext)
+        /// <param name="startupConfiguration">Used to log any errors</param>
+        public ShutdownHandler(ILocator locator, IStartupConfiguration startupConfiguration)
         {
-            _StartupModules = locator.GetAll<IStartupModule>();
-            _StartupContext = startupContext;
+            _Locator = locator;
+            _StartupModules = locator.GetAll<IStartupModule>().ToList();
+            _StartupConfiguration = startupConfiguration;
         }
 
         /// <summary>
         /// Finalize
         /// </summary>
-        ~Shutdown()
+        ~ShutdownHandler()
         {
-            Dispose();
-        }
-
-        /// <summary>
-        /// Dispose
-        /// </summary>
-        public void Dispose()
-        {
-            Dispose(true);
-        }
-
-        /// <summary>
-        /// Actual dispose
-        /// </summary>
-        /// <param name="disposing"></param>
-        protected void Dispose(bool disposing)
-        {
-            if (disposing)
-            {
-               InvokeShutdown();
-            }
+            InvokeShutdown();
         }
 
         void IShutdownHandler.Shutdown() => InvokeShutdown();
 
         void InvokeShutdown()
         {
+            if (_ShutdownInvoked) return;
+
             if (_StartupModules != null)
             {
+                _ShutdownInvoked = true;
+
                 foreach (var module in _StartupModules)
                 {
                     try
@@ -66,10 +55,13 @@
                     }
                     catch (Exception ex)
                     {
-                        _StartupContext.Configuration.Logger.
-                            LogException($"Failed to shutdown module {module.GetType().FullName}!", ex, typeof(StartupHandler), LogLevel.Error);
+                        _StartupConfiguration.Logger.
+                            LogException($"Failed to shutdown module {module.GetType().FullName}!", ex, typeof(ShutdownHandler), LogLevel.Error);
                     }
                 }
+
+                // Dispose root locator and backing container
+                _Locator.Dispose();
             }
         }
     }

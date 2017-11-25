@@ -57,13 +57,5 @@
                             .IsAssignableFromCheck(x.Node as Type))?.Select(x => x.Node as Type);
             }
         }
-
-        /// <summary>
-        /// Dispose
-        /// </summary>
-        public void Dispose()
-        {
-            Locator?.Dispose();
-        }
     }
 }

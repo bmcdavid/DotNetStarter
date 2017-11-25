@@ -51,7 +51,7 @@
         /// </summary>
         public void Dispose()
         {
-            _Container?.Dispose();
+            _Container.Dispose();
         }
 
         /// <summary>

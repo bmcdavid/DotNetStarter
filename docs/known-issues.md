@@ -5,25 +5,28 @@ title: DotNetStarter - Known Issues
 
 #### IStartupModule.Shutdown doesn't execute in netcoreapps. Workaround is to add an init module and attach to unloading event as noted below:
 ```cs
-    [StartupModule]
-    public class ShutdownHook : IStartupModule
+[StartupModule(typeof(RegistrationConfiguration))]
+public class ShutdownHook : IStartupModule
+{
+    IShutdownHandler _ShutdownHandler;
+
+    void IStartupModule.Shutdown()
     {
-        public void Shutdown(IStartupEngine engine)
-        {
-            AssemblyLoadContext.Default.Unloading -= Default_Unloading;
-        }
-
-        public void Startup(IStartupEngine engine)
-        {
-            AssemblyLoadContext.Default.Unloading -= Default_Unloading;
-            AssemblyLoadContext.Default.Unloading += Default_Unloading;
-        }
-
-        private static void Default_Unloading(AssemblyLoadContext obj)
-        {
-            DotNetStarter.Internal.Shutdown.CallShutdown();
-        }
+        System.Runtime.Loader.AssemblyLoadContext.Default.Unloading -= Default_Unloading;
     }
+
+    void IStartupModule.Startup(IStartupEngine engine)
+    {
+        _ShutdownHandler = engine.Locator.Get<IShutdownHandler>(); // cannot inject it, to avoid recursion
+        System.Runtime.Loader.AssemblyLoadContext.Default.Unloading -= Default_Unloading;
+        System.Runtime.Loader.AssemblyLoadContext.Default.Unloading += Default_Unloading;
+    }
+
+    void Default_Unloading(System.Runtime.Loader.AssemblyLoadContext obj)
+    {
+        _ShutdownHandler.Shutdown();
+    }
+}
 ```
 
 #### netcoreapps require custom assembly loading noted below:

@@ -144,7 +144,8 @@ namespace DotNetStarter.Locators
         /// </summary>
         public void Dispose()
         {
-            _Container.Dispose();
+            // hack: disposing throws StackOverFlowException, so its not done
+            //_Container.Dispose();
         }
 
         /// <summary>

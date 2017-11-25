@@ -78,7 +78,7 @@ namespace DotNetStarter.Tests.Mocks
         {
             if (typeof(T) == typeof(IShutdownHandler))
             {
-                IShutdownHandler x = new Internal.Shutdown(instances[typeof(ILocator)] as ILocator, instances[typeof(IStartupContext)] as IStartupContext);
+                IShutdownHandler x = new Internal.ShutdownHandler(instances[typeof(ILocator)] as ILocator, instances[typeof(IStartupConfiguration)] as IStartupConfiguration);
 
                 return new object[] { x }.OfType<T>().Last();
             }
@@ -150,6 +150,7 @@ namespace DotNetStarter.Tests.Mocks
         public void Shutdown()
         {
             Debug.WriteLine("DNS shutdown");
+            Console.WriteLine("DNS shutdown");
         }
 
         public void Startup(IStartupEngine engine)

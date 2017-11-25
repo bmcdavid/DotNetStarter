@@ -15,6 +15,7 @@ namespace DotNetStarter
         private readonly IStartupConfiguration _StartupConfiguration;
         private readonly IReflectionHelper _ReflectionHelper;
         Dictionary<Assembly, bool> _ScannedLookups;
+        List<Assembly> _ScannedAssemblies;
 
         /// <summary>
         /// Constructor
@@ -26,6 +27,7 @@ namespace DotNetStarter
             _StartupConfiguration = startupConfiguration;
             _ReflectionHelper = reflectionHelper;
             _ScannedLookups = new Dictionary<Assembly, bool>();
+            _ScannedAssemblies = new List<Assembly>();
         }
 
         /// <summary>
@@ -36,15 +38,25 @@ namespace DotNetStarter
         /// <returns></returns>
         public virtual bool IsScannedAssembly(Type serviceType, Exception exception)
         {
-            // if the configuration does not have a null assembly filter, we cannot rely on the assembly sequence as it could be all application assemblies
-            if (_StartupConfiguration.AssemblyFilter != null)
-                return false;
-
+            if (_ScannedAssemblies.Count == 0)
+            {
+                // if not pre-filtered, we must filter them again :(
+                if (_StartupConfiguration.AssemblyFilter != null)
+                {
+                    _ScannedAssemblies.AddRange(_StartupConfiguration.Assemblies.Where(a =>
+                        _StartupConfiguration.AssemblyFilter.FilterAssembly(a) == false));
+                }
+                else
+                {
+                    _ScannedAssemblies.AddRange(_StartupConfiguration.Assemblies);
+                }
+            }
+            
             var assembly = _ReflectionHelper.GetAssembly(serviceType);
 
             if (!_ScannedLookups.TryGetValue(assembly, out bool isScanned))
             {
-                isScanned = _StartupConfiguration.Assemblies.Any(x => x == assembly);
+                isScanned = _ScannedAssemblies.Any(x => x == assembly);
                 _ScannedLookups[assembly] = isScanned;
             }
 

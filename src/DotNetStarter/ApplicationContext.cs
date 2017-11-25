@@ -29,15 +29,6 @@
 
         private static IStartupHandler _Handler;
 
-        /// <summary>
-        /// Finalizer
-        /// </summary>
-        ~ApplicationContext()
-        {
-            _Handler?.Dispose();
-            _Default?.Dispose();
-        }
-
         private ApplicationContext() { }
 
         /// <summary>

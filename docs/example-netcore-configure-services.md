@@ -81,9 +81,10 @@ DotNetStarter can now create the service provider in the configure set. The only
             var hostingEnv = new DotNetStarter.StartupEnvironment(hostingEnvironment.EnvironmentName, hostingEnvironment.ContentRootPath);
             var filteredAssemblies = DotNetStarter.ApplicationContext.GetScannableAssemblies(assemblies: assemblyLoader());
 
+            // Invoke DotNetStarter Startup
             ApplicationContext.Startup(assemblies: filteredAssemblies.Union(new Assembly[] { typeof(Example.Startup).Assembly }), environment: hostingEnv);
-        }
 
+        }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)

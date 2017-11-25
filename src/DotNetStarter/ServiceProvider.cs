@@ -91,7 +91,7 @@
         /// </summary>
         public void Dispose()
         {
-           Locator?.Dispose();
+           Locator.Dispose();
         }
 
         /// <summary>

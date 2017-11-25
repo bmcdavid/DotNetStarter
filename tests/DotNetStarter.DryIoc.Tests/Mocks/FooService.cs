@@ -82,7 +82,8 @@ namespace DotNetStarter.Tests.Mocks
     {
         public void Shutdown()
         {
-            Debug.WriteLine("DNS Locator shutdown");
+            Debug.WriteLine("DNS locator shutdown");
+            Console.WriteLine("DNS locator shutdown");
         }
 
         public void Startup(IStartupEngine engine)
