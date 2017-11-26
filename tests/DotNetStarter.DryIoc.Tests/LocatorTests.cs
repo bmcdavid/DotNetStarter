@@ -64,20 +64,27 @@ namespace DotNetStarter.Tests
     {
         public Import<IStartupContext> _Context { get; set; }
 
+        private ILocatorScoped CreateScope(ILocator locator = null)
+        {
+            var l = locator ?? _Context.Service.Locator;
+
+            // hack: LightInject cannot resolve scoped objects when no scope is open
+            return (l as ILocatorCreateScope).CreateScope();
+        }
+
         [TestMethod]
         public void ShouldCreateLocatorScope()
         {
             var locator = _Context.Service.Locator;
             ScopeTest noScopeTest = null;
 
-            // hack: LightInject cannot resolve scoped objects when no scope is open
-            using (var scope = (locator as ILocatorCreateScope).CreateScope())
+            using (var scope = CreateScope())
             {
                 noScopeTest = locator.Get<ScopeTest>();
                 System.Threading.Thread.Sleep(1);
             }
 
-            using (var scopedLocator = (locator as ILocatorCreateScope).CreateScope())
+            using (var scopedLocator = CreateScope())
             {
                 var scopeTest = scopedLocator.Get<ScopeTest>();
                 System.Threading.Thread.Sleep(1);
@@ -85,7 +92,7 @@ namespace DotNetStarter.Tests
 
                 Assert.IsTrue(scopedLocator.Parent == null);
 
-                using (var nestedScope = (scopedLocator as ILocatorCreateScope).CreateScope())
+                using (var nestedScope = CreateScope(scopedLocator))
                 {
                     Assert.IsNotNull(nestedScope.Parent);
                     Assert.IsNull(nestedScope.Parent.Parent);
@@ -142,11 +149,7 @@ namespace DotNetStarter.Tests
                 var sut1 = scope1.Get<ILocatorScopedAccessor>().CurrentScope;
 
                 Assert.IsNotNull(sut1);
-            }
-
-            // hack : cannot resolve in LightInject
-            //var sut2 = _Context.Service.Locator.Get<ILocatorScopedAccessor>().CurrentScope;
-            //Assert.IsNull(sut2);
+            }            
         }
 
         [TestMethod]

@@ -24,8 +24,8 @@
     <file src="readme.txt" target="readme.txt" />
 
     <!--https://docs.nuget.org/ndocs/schema/target-frameworks-->
-    <file src="bin\Release\DotNetStarter.Extensions.Episerver.dll" target="lib\net45" />
-    <file src="bin\Release\DotNetStarter.Extensions.Episerver.pdb" target="lib\net45" />
-    <file src="bin\Release\DotNetStarter.Extensions.Episerver.xml" target="lib\net45" />
+    <file src="bin\Release\DotNetStarter.Extensions.Episerver.dll" target="lib\net461" />
+    <file src="bin\Release\DotNetStarter.Extensions.Episerver.pdb" target="lib\net461" />
+    <file src="bin\Release\DotNetStarter.Extensions.Episerver.xml" target="lib\net461" />
   </files>
 </package>

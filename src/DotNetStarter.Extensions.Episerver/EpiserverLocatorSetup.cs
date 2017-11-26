@@ -4,6 +4,8 @@ using EPiServer.Framework.Initialization;
 using EPiServer.ServiceLocation;
 using System;
 
+#pragma warning disable CS0612 // Type or member is obsolete
+
 // instructs DotNetStarter to use this to create ILocatorRegistry
 [assembly: LocatorRegistryFactory(typeof(DotNetStarter.Extensions.Episerver.EpiserverLocatorSetup))]
 
@@ -12,6 +14,7 @@ namespace DotNetStarter.Extensions.Episerver
     /// <summary>
     /// Creates a DotNetStarter ILocatorFactory using Episerver's structuremap instance
     /// </summary>
+    [Obsolete]
     [ModuleDependency]
     public class EpiserverLocatorSetup : IConfigurableModule, ILocatorRegistryFactory
     {
@@ -20,11 +23,13 @@ namespace DotNetStarter.Extensions.Episerver
         /// <summary>
         /// Invoked to create a locator registry since Structuremap is now modular in Episerver. Use a System.Web.PreApplicationStartMethod to assign a startup func;
         /// </summary>
+        [Obsolete]
         public static Func<ServiceConfigurationContext, ILocatorRegistry> CreateLocatorRegistry = null;
 
         /// <summary>
         /// Assign a custom action to invoke DotNetStarter startup process
         /// </summary>
+        [Obsolete]
         public static Action InvokeDotNetStarter = null;
 
         /// <summary>

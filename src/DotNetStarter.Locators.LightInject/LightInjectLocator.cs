@@ -7,12 +7,6 @@ using System.Linq;
 
 namespace DotNetStarter.Locators
 {
-    // hack: GetAllInstances Requires additional sorting as LightInject returns from ConcurrentDictionary
-    /* Which means IEnumerable will need another sorting mechanism for most things
-     * I will need to work around it in IStartupModule cases like in DotNetStarter.Web
-     * this also won't support delegate rolutions
-     */
-
     /// <summary>
     /// Default LightInject ILocatoryRegistry
     /// </summary>
@@ -317,13 +311,18 @@ namespace DotNetStarter.Locators
                 case Lifecycle.Singleton:
                     return new PerContainerLifetime();
                 case Lifecycle.Transient:
-                default:
-                    return null;
-                    //return new PerRequestLifeTime(); // todo: determine if PerRequestLifeTime() should be used?
+                    return new PerRequestLifeTime();
             }
+
+            return null;
         }
 
-        // hack: which causes many other considerations as constructor injection isn't supported by this, affects DotNetStarter.Web injection
+        // hack: GetAllInstances Requires additional sorting as LightInject returns from ConcurrentDictionary
+        // required for LightInject, which causes many other considerations as constructor injection isn't supported by this, affects DotNetStarter.Web injection
+        /* IEnumerable will need another sorting mechanism for most things
+         * I will need to work around it in IStartupModule cases like in DotNetStarter.Web
+         * this also won't support delegate rolutions
+         */
         private void SortList<T>(ref IEnumerable<T> list, Type service)
         {
             List<ContainerRegistration> sourceList;
