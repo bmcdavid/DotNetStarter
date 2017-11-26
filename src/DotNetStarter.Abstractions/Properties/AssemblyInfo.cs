@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: AssemblyCopyright("Copyright © {year}")]
 [assembly: AssemblyVersion("2.0.0")]
 [assembly: AssemblyFileVersion("2.0.0")]
-[assembly: AssemblyInformationalVersion("2.0.0-alpha001 Build: {build} Commit Hash: {commit}")]
+[assembly: AssemblyInformationalVersion("2.0.0 Build: {build} Commit Hash: {commit}")]
 
 [assembly: Exports(typeof(RegistrationConfiguration))] // only export this type
 [assembly: DiscoverableAssembly]

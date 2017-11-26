@@ -9,22 +9,22 @@
     <projectUrl>https://bmcdavid.github.io/DotNetStarter/</projectUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>Startup system for web projects, including IHttpModule for netframework.</description>
-    <releaseNotes>Added DotNetStarter.Web.Startup.RegisterWebModuleStartup and DotNetStarter.Web.Startup.DisableStartupModuleRegistration for more control on where startup can be executed.</releaseNotes>
+    <releaseNotes>Updated for interface changes.</releaseNotes>
     <copyright>Copyright $year$</copyright>
     <tags>Startup Modules System.Web</tags>
     <dependencies>
       <group targetFramework="net35">
-        <dependency id="DotNetStarter" version="[1.4,2)" />
+        <dependency id="DotNetStarter" version="[2,)" />
       </group>
       <group targetFramework="net40">
-        <dependency id="DotNetStarter" version="[1.4,2)" />
+        <dependency id="DotNetStarter" version="[2,)" />
         <dependency id="Microsoft.Web.Infrastructure" version="1.0.0.0" />
       </group>
       <group targetFramework="net45">
-        <dependency id="DotNetStarter" version="[1.4,2)" />
+        <dependency id="DotNetStarter" version="[2,)" />
       </group>
       <group targetFramework="netstandard1.3">
-        <dependency id="DotNetStarter" version="[1.4,2)" />
+        <dependency id="DotNetStarter" version="[2,)" />
         <dependency id="Microsoft.AspNetCore.Http.Abstractions" version="[1,2)" />
         <dependency id="Microsoft.AspNetCore.Hosting.Abstractions" version="[1,)" />
       </group>

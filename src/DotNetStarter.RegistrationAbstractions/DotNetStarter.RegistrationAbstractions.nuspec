@@ -9,7 +9,7 @@
     <projectUrl>https://bmcdavid.github.io/DotNetStarter/</projectUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>Abstractions for a registration system.</description>
-    <releaseNotes>This package is to for library authors who wish to register services with DotNetStarter.</releaseNotes>
+    <releaseNotes>Updated for interface changes.</releaseNotes>
     <copyright>Copyright $year$</copyright>
     <tags>Startup Modules Abstractions DI</tags>
     <dependencies>
@@ -21,9 +21,6 @@
       </group>
       <group targetFramework="netstandard1.1">
         <dependency id="NETStandard.Library" version="1.6.0" exclude="Build,Analyzers" />
-        <!--<dependency id="System.Collections" version="4.0.11" />
-        <dependency id="System.Reflection" version="4.1.0" />
-        <dependency id="System.Reflection.Extensions" version="4.0.1" />-->
       </group>
     </dependencies>
   </metadata>

@@ -12,7 +12,7 @@ using System.Reflection;
 [assembly: AssemblyCopyright("Copyright © {year}")]
 [assembly: AssemblyVersion("2.0.0")]
 [assembly: AssemblyFileVersion("2.0.0")]
-[assembly: AssemblyInformationalVersion("2.0.0-alpha001 Build: {build} Commit Hash: {commit}")]
+[assembly: AssemblyInformationalVersion("2.0.0 Build: {build} Commit Hash: {commit}")]
 
 [assembly: DotNetStarter.Abstractions.DiscoverableAssembly]
 [assembly: DotNetStarter.Abstractions.Exports] // no need to export any types

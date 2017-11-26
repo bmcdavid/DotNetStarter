@@ -9,16 +9,16 @@
     <projectUrl>https://bmcdavid.github.io/DotNetStarter/</projectUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>Enables support for DI/IOC in startup.</description>
-    <releaseNotes>Better scoping support.</releaseNotes>
+    <releaseNotes>Namespace change. Updated for interface changes. Removed net35 and net40 support.</releaseNotes>
     <copyright>Copyright $year$</copyright>
     <tags>Startup Modules DI IOC</tags>
     <dependencies>
       <group targetFramework="net45">
-        <dependency id="DotNetStarter" version="[1.4,2)" />
+        <dependency id="DotNetStarter.Abstractions" version="[2,)" />
         <dependency id="StructureMap" version="[4.5.3,5)" />
       </group>
       <group targetFramework="netstandard1.3">
-        <dependency id="DotNetStarter" version="[1.4,2)" />
+        <dependency id="DotNetStarter.Abstractions" version="[2,)" />
         <dependency id="StructureMap" version="[4.5.3,5)" />
         <dependency id="NETStandard.Library" version="1.6.0" exclude="Build,Analyzers" />
       </group>

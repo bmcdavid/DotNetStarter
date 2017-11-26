@@ -9,25 +9,25 @@
     <projectUrl>https://bmcdavid.github.io/DotNetStarter/</projectUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>Abstractions for a startup system and service registration for a DI container.</description>
-    <releaseNotes>Starting interface segregation for ILocator and ILocatorRegistry interfaces, in version 2, interfaces will be cleaned up.</releaseNotes>
+    <releaseNotes>ILocatorRegistry no longer inherits from ILocator, changed many other interfaces.</releaseNotes>
     <copyright>Copyright $year$</copyright>
     <tags>Startup Modules Abstractions</tags>
     <dependencies>
       <group targetFramework="net35">
-        <dependency id="DotNetStarter.RegistrationAbstractions" version="[1.0.1,)" />
+        <dependency id="DotNetStarter.RegistrationAbstractions" version="[1.1.0,)" />
       </group>
       <group targetFramework="net40">
-        <dependency id="DotNetStarter.RegistrationAbstractions" version="[1.0.1,)" />
+        <dependency id="DotNetStarter.RegistrationAbstractions" version="[1.1.0,)" />
       </group>
       <group targetFramework="net45">
-        <dependency id="DotNetStarter.RegistrationAbstractions" version="[1.0.1,)" />
+        <dependency id="DotNetStarter.RegistrationAbstractions" version="[1.1.0,)" />
       </group>
       <group targetFramework="netstandard1.0">
-        <dependency id="DotNetStarter.RegistrationAbstractions" version="[1.0.1,)" />
+        <dependency id="DotNetStarter.RegistrationAbstractions" version="[1.1.0,)" />
         <dependency id="NETStandard.Library" version="1.6.0" exclude="Build,Analyzers" />
       </group>
       <group targetFramework="netstandard1.1">
-        <dependency id="DotNetStarter.RegistrationAbstractions" version="[1.0.1,)" />
+        <dependency id="DotNetStarter.RegistrationAbstractions" version="[1.1.0,)" />
         <dependency id="NETStandard.Library" version="1.6.0" exclude="Build,Analyzers" />
       </group>
     </dependencies>

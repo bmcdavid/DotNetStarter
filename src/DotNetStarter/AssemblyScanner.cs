@@ -90,8 +90,6 @@
         /// <returns></returns>
         protected virtual IEnumerable<Type> AssemblyTypes(Assembly assembly)
         {
-            //return assembly.GetTypesCheck();
-
             ExportsType exportsType = ExportsType.All;
             var exportAttribute = assembly.CustomAttribute(typeof(ExportsAttribute), false)
                 .OfType<ExportsAttribute>()

@@ -15,8 +15,6 @@ namespace DotNetStarter.Extensions.Episerver
     [ModuleDependency]
     public class EpiserverLocatorSetup : IConfigurableModule, ILocatorRegistryFactory
     {
-        static StructureMap.IContainer _Container; // must be static to share between instances
-
         static ILocatorRegistry _LocatorRegistry;
 
         /// <summary>

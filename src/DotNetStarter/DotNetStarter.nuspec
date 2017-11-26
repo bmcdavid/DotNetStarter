@@ -9,26 +9,26 @@
     <projectUrl>https://bmcdavid.github.io/DotNetStarter/</projectUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>Startup system and service registration for a DI container.</description>
-    <releaseNotes>Added better netcore service registration extension, fixed service provider bug.</releaseNotes>
+    <releaseNotes>Updated for interface changes.</releaseNotes>
     <copyright>Copyright $year$</copyright>
     <tags>Startup Modules</tags>
     <dependencies>
       <group targetFramework="net35">
-        <dependency id="DotNetStarter.Abstractions" version="[1.3,2)" />
+        <dependency id="DotNetStarter.Abstractions" version="[2,)" />
       </group>
       <group targetFramework="net40">
-        <dependency id="DotNetStarter.Abstractions" version="[1.3,2)" />
+        <dependency id="DotNetStarter.Abstractions" version="[2,)" />
       </group>
       <group targetFramework="net45">
-        <dependency id="DotNetStarter.Abstractions" version="[1.3,2)" />
+        <dependency id="DotNetStarter.Abstractions" version="[2,)" />
       </group>
       <group targetFramework="netstandard1.0">
-        <dependency id="DotNetStarter.Abstractions" version="[1.3,2)" />
+        <dependency id="DotNetStarter.Abstractions" version="[2,)" />
         <dependency id="NETStandard.Library" version="1.6.0" exclude="Build,Analyzers" />
         <dependency id="Microsoft.Extensions.DependencyInjection.Abstractions" version="1.0.0" />
       </group>
       <group targetFramework="netstandard1.1">
-        <dependency id="DotNetStarter.Abstractions" version="[1.3,2)" />
+        <dependency id="DotNetStarter.Abstractions" version="[2,)" />
         <dependency id="NETStandard.Library" version="1.6.0" exclude="Build,Analyzers" />
         <dependency id="Microsoft.Extensions.DependencyInjection.Abstractions" version="1.0.0" />
       </group>
