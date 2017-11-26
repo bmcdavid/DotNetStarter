@@ -13,7 +13,7 @@
     <copyright>Copyright $year$</copyright>
     <tags>Startup Modules Episerver</tags>
     <dependencies>
-      <group targetFramework="net45">
+      <group targetFramework="net461">
         <dependency id="DotNetStarter.Extensions.Mvc" version="[2,)" />
         <dependency id="Episerver.Framework" version="[9,)" />
       </group>
