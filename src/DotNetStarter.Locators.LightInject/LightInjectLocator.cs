@@ -311,7 +311,8 @@ namespace DotNetStarter.Locators
                 case Lifecycle.Singleton:
                     return new PerContainerLifetime();
                 case Lifecycle.Transient:
-                    return new PerRequestLifeTime();
+                    return null; // todo: understand PerRequestLifeTime();
+                    //return new PerRequestLifeTime();
             }
 
             return null;

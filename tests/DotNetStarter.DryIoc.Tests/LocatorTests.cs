@@ -26,8 +26,10 @@ namespace DotNetStarter.Tests
     {
         public TestFuncCreationComplex(IInjectable injectionTest, IStartupConfiguration configuration, IShutdownHandler shutdownHandler)
         {
-
+            InjectionTest = injectionTest;
         }
+
+        public IInjectable InjectionTest { get; }
     }
 
     [Registration(typeof(TestLocatorInjectionScoped), Lifecycle.Scoped)]
@@ -50,12 +52,11 @@ namespace DotNetStarter.Tests
         }
     }
 
-    internal interface IInjectable { }
+    internal interface IInjectable { int Id { get; } }
 
-    [Registration(typeof(IInjectable))] // hack: must be registered for LightInject
     internal class TestInjectable : IInjectable
     {
-
+        public int Id { get; set; }
     }
     #endregion
 
@@ -103,10 +104,10 @@ namespace DotNetStarter.Tests
                 Assert.AreNotEqual(scopeTest2.TestVariable, noScopeTest.TestVariable);
             }
 
-            var resolveTest = locator.Get<IAssemblyScanner>();
+            var resolveTest = locator.Get<Abstractions.IAssemblyScanner>();
             Assert.IsNotNull(resolveTest, "final resolve");
         }
-        
+
         [TestMethod]
         public void ShouldCreateScopeWithFactory()
         {
@@ -149,7 +150,7 @@ namespace DotNetStarter.Tests
                 var sut1 = scope1.Get<ILocatorScopedAccessor>().CurrentScope;
 
                 Assert.IsNotNull(sut1);
-            }            
+            }
         }
 
         [TestMethod]
@@ -200,16 +201,18 @@ namespace DotNetStarter.Tests
         [TestMethod]
         public void ShouldResolveComplexFuncCreator()
         {
+            var injectedArg = new TestInjectable() { Id = 42 };
             var sut = _Context.Service.Locator.Get<Func<IInjectable, TestFuncCreationComplex>>();
+            var created = sut(injectedArg);
 
-            Assert.IsNotNull(sut(new TestInjectable()));
+            Assert.IsTrue(created.InjectionTest.Id == 42);
         }
 
         [TestMethod]
         public void ShouldImportContext()
         {
             Assert.AreEqual(_Context.Service, ApplicationContext.Default);
-        }        
+        }
 
         [TestMethod]
         public void ShouldResolveClassWithGreedyInternalConstructor()
