@@ -25,11 +25,15 @@
 
         private static bool _Started = false;
 
+        private static bool _Starting = false;
+
         private static IStartupContext _Default;
 
         private static IStartupHandler _Handler;
 
-        private ApplicationContext() { }
+        private ApplicationContext()
+        {
+        }
 
         /// <summary>
         /// Filters a list of assemblies for DiscoverableAssemblyAttribute.
@@ -84,14 +88,20 @@
             }
         }
 
-        static void EnsureStartup(IStartupEnvironment environment = null, IStartupConfiguration configuration = null, IStartupObjectFactory objectFactory = null, IEnumerable<Assembly> assemblies = null)
+        private static void EnsureStartup(IStartupEnvironment environment = null, IStartupConfiguration configuration = null, IStartupObjectFactory objectFactory = null, IEnumerable<Assembly> assemblies = null)
         {
+            if (_Starting)
+            {
+                throw new Exception($"Do not access {typeof(ApplicationContext).FullName}.{nameof(Default)} during startup!");
+            }
+
             if (!_Started)
             {
                 lock (_Lock)
                 {
                     if (!_Started)
                     {
+                        _Starting = true;
                         var assembliesForStartup = configuration?.Assemblies ?? assemblies ?? new Internal.AssemblyLoader().GetAssemblies();
                         var factory = objectFactory ?? new StartupObjectFactory();
                         _Handler = factory.CreateStartupHandler();
