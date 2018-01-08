@@ -90,13 +90,13 @@
 
         private static void EnsureStartup(IStartupEnvironment environment = null, IStartupConfiguration configuration = null, IStartupObjectFactory objectFactory = null, IEnumerable<Assembly> assemblies = null)
         {
-            if (_Starting)
-            {
-                throw new Exception($"Do not access {typeof(ApplicationContext).FullName}.{nameof(Default)} during startup!");
-            }
-
             if (!_Started)
             {
+                if (_Starting)
+                {
+                    throw new Exception($"Do not access {typeof(ApplicationContext).FullName}.{nameof(Default)} during startup!");
+                }
+
                 lock (_Lock)
                 {
                     if (!_Started)
@@ -107,6 +107,7 @@
                         _Handler = factory.CreateStartupHandler();
                         var startupConfig = configuration ?? factory.CreateStartupConfiguration(assembliesForStartup, environment);
                         _Started = _Handler.Startup(startupConfig, factory, out _Default);
+                        _Starting = false;
                     }
                 }
             }
