@@ -1,10 +1,12 @@
 ﻿using DotNetStarter.Abstractions;
+using DotNetStarter.Configure.Expressions;
 using System;
 
 namespace DotNetStarter.Configure
 {
     /// <summary>
     /// Provides fluent api for DotNetStarter Configuration
+    /// <para>IMPORTANT: For ASP.Net Core applications, ConfigureAssemblies MUST be used as there is no default assembly loader!</para>
     /// </summary>
     public sealed class StartupBuilder
     {
@@ -49,9 +51,9 @@ namespace DotNetStarter.Configure
         /// Runs expressions, and configures DotNetStarter's ILocator, but does not run IStartupModules
         /// <para>IMPORTANT: Must run after all other configurations.</para>
         /// </summary>
-        /// <param name="useApplicationContext"></param>
+        /// <param name="useApplicationContext">If false, the static ApplicationContext.Default will not be set after execution. Default is true.</param>
         /// <returns></returns>
-        public StartupBuilder BuildContainer(bool useApplicationContext = true)
+        public StartupBuilder Build(bool useApplicationContext = true)
         {
             if (_isConfigured) return this;
 
@@ -122,7 +124,7 @@ namespace DotNetStarter.Configure
             if (_runOnce) return;
 
             _runOnce = true;
-            BuildContainer(); // just in case its not called fluently
+            Build(); // just in case its not called fluently
             var configuration = StartupContext.Configuration;
             if (!(configuration is StartupBuilderConfiguration delayed))
             {

@@ -1,7 +1,7 @@
 ﻿using DotNetStarter.Abstractions;
 using System;
 
-namespace DotNetStarter.StartupBuilderTests
+namespace DotNetStarter.StartupBuilderTests.Mocks
 {
     [StartupModule]
     public class BadStartupModule : IStartupModule

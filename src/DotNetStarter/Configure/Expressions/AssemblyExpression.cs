@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 
-namespace DotNetStarter.Configure
+namespace DotNetStarter.Configure.Expressions
 {
     /// <summary>
     /// Allows ability to configure assemblies scanned during startup process
@@ -65,7 +65,8 @@ namespace DotNetStarter.Configure
         }
 
         /// <summary>
-        /// Gets all assemblies with DotNetStarter.Abstractions.DiscoverableAssemblyAttribute, which is generally a good starting point
+        /// Gets all assemblies with DotNetStarter.Abstractions.DiscoverableAssemblyAttribute, which is generally a good starting point.
+        /// <para>IMPORTANT: For ASP.Net Core applications, assemblies must be provided as there is no default assembly loader!</para>
         /// </summary>
         /// <returns></returns>
         public AssemblyExpression WithScannableAssemblies(IEnumerable<Assembly> assemblies = null, Func<Assembly, Type, IEnumerable<Attribute>> attributeChecker = null)

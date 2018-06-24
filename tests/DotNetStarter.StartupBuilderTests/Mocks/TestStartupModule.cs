@@ -1,6 +1,6 @@
 ﻿using DotNetStarter.Abstractions;
 
-namespace DotNetStarter.StartupBuilderTests
+namespace DotNetStarter.StartupBuilderTests.Mocks
 {
     public class TestStartupModule : IStartupModule
     {

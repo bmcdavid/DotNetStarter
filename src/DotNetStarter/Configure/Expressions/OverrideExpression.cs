@@ -1,7 +1,7 @@
 ﻿using DotNetStarter.Abstractions;
 using System;
 
-namespace DotNetStarter.Configure
+namespace DotNetStarter.Configure.Expressions
 {
     /// <summary>
     /// Allows ability to override default service instances
@@ -12,6 +12,7 @@ namespace DotNetStarter.Configure
         internal IAssemblyScanner AssemblyScanner { get; private set; }
         internal IDependencyFinder DependencyFinder { get; private set; }
         internal IDependencySorter DependencySorter { get; private set; }
+        internal IStartupObjectFactory FallbackStartupObjectFactory { get; private set; }
         internal IStartupLogger Logger { get; private set; }
         internal ILocatorRegistryFactory RegistryFactory { get; private set; }
         internal IStartupHandler StartupHandler { get; private set; }
@@ -61,6 +62,16 @@ namespace DotNetStarter.Configure
             return this;
         }
 
+        /// <summary>
+        /// CAUTION: Advanced usages only, also never calls IStartupObjectFactory.CreateStartupConfiguration
+        /// </summary>
+        /// <param name="fallbackStartupObjectFactory"></param>
+        /// <returns></returns>
+        public OverrideExpression UseFallbackObjectFactory(IStartupObjectFactory fallbackStartupObjectFactory)
+        {
+            FallbackStartupObjectFactory = fallbackStartupObjectFactory;
+            return this;
+        }
         /// <summary>
         /// Sets the startup ILocatorRegistryFactory, bypassing assembly resolutions
         /// </summary>

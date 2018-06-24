@@ -117,9 +117,7 @@
             containerSetup.Name = timerNameBase + ".ContainerSetup";
             containerSetup.TimedAction = () =>
             {
-                var registry = Locator as ILocatorRegistry;
-
-                if (registry == null)
+                if (!(Locator is ILocatorRegistry registry))
                     throw new NullLocatorException();
 
                 var setDefaults = objectFactory.CreateContainerDefaults();
@@ -166,7 +164,7 @@
 
             // optionally allows delaying startup until later, must be implemented on IStartupConfiguration instances
             var delayedStart = config as IStartupDelayed;
-            Action startup = () => config.TimedTaskManager.Execute(startupModulesTask);
+            void startup() => config.TimedTaskManager.Execute(startupModulesTask);
 
             if (delayedStart?.EnableDelayedStartup == true)
             {

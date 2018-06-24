@@ -24,13 +24,13 @@ namespace DotNetStarter.Configure
         public IEnumerable<Assembly> Assemblies { get; }
         public IAssemblyFilter AssemblyFilter { get; }
         public IAssemblyScanner AssemblyScanner { get; }
+        public Action DelayedStartup { get; set; }
         public IDependencyFinder DependencyFinder { get; }
         public IDependencySorter DependencySorter { get; }
+        public bool EnableDelayedStartup => true;
         public IStartupEnvironment Environment { get; }
         public IStartupLogger Logger { get; }
         public IStartupModuleFilter ModuleFilter { get; }
         public ITimedTaskManager TimedTaskManager { get; }
-        public bool EnableDelayedStartup => true;
-        public Action DelayedStartup { get; set; }
     }
 }

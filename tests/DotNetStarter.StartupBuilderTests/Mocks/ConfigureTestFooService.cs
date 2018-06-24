@@ -1,14 +1,13 @@
 ﻿using DotNetStarter.Abstractions;
-using System;
 
-namespace DotNetStarter.StartupBuilderTests
+namespace DotNetStarter.StartupBuilderTests.Mocks
 {
     [StartupModule]
-    public class BadConfigureModule : ILocatorConfigure
+    public class ConfigureTestFooService : ILocatorConfigure
     {
         public void Configure(ILocatorRegistry registry, IStartupEngine engine)
         {
-            throw new NotImplementedException();
+            registry.Add<TestFoo, TestFoo>();
         }
     }
 }

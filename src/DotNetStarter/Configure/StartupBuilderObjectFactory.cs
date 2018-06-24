@@ -1,4 +1,5 @@
 ﻿using DotNetStarter.Abstractions;
+using DotNetStarter.Configure.Expressions;
 using System;
 using System.Collections.Generic;
 using System.Reflection;
@@ -7,52 +8,59 @@ namespace DotNetStarter.Configure
 {
     internal class StartupBuilderObjectFactory : IStartupObjectFactory
     {
-        public OverrideExpression OverrideExpression { get; set; }
-
+        private IStartupObjectFactory _defaultStartupObjectFactory;
         public AssemblyExpression AssemblyExpression { get; set; }
-
-        public StartupModulesExpression StartupModulesExpression { get; set; }
-
-        private readonly IStartupObjectFactory _defaultStartupObjectFactory;
-
         public IStartupEnvironment Environment { private get; set; }
-
-        public StartupBuilderObjectFactory()
-        {
-            _defaultStartupObjectFactory = new StartupObjectFactory();
-        }
-
+        public OverrideExpression OverrideExpression { get; set; }
+        public StartupModulesExpression StartupModulesExpression { get; set; }
         public IAssemblyFilter CreateAssemblyFilter()
         {
             // assume if we are given assemblies and no filter, we do not need to filter
             if (OverrideExpression.AssemblyFilter == null && AssemblyExpression?.Assemblies.Count > 0) return null;
 
-            return OverrideExpression.AssemblyFilter ?? _defaultStartupObjectFactory.CreateAssemblyFilter();
+            return OverrideExpression.AssemblyFilter ?? ResolveObjectFactory().CreateAssemblyFilter();
         }
 
         public IAssemblyScanner CreateAssemblyScanner()
         {
-            return OverrideExpression.AssemblyScanner ?? _defaultStartupObjectFactory.CreateAssemblyScanner();
+            return OverrideExpression.AssemblyScanner ?? ResolveObjectFactory().CreateAssemblyScanner();
         }
 
         public ILocatorDefaultRegistrations CreateContainerDefaults()
         {
-            return _defaultStartupObjectFactory.CreateContainerDefaults();
+            return ResolveObjectFactory().CreateContainerDefaults();
         }
 
         public IDependencyFinder CreateDependencyFinder()
         {
-            return OverrideExpression.DependencyFinder ?? _defaultStartupObjectFactory.CreateDependencyFinder();
+            return OverrideExpression.DependencyFinder ?? ResolveObjectFactory().CreateDependencyFinder();
         }
 
         public IDependencyNode CreateDependencyNode(object nodeType, Type attributeType)
         {
-            return _defaultStartupObjectFactory.CreateDependencyNode(nodeType, attributeType);
+            return ResolveObjectFactory().CreateDependencyNode(nodeType, attributeType);
         }
 
         public IDependencySorter CreateDependencySorter()
         {
-            return OverrideExpression.DependencySorter ?? _defaultStartupObjectFactory.CreateDependencySorter();
+            return OverrideExpression.DependencySorter ?? ResolveObjectFactory().CreateDependencySorter();
+        }
+
+        public IStartupModuleFilter CreateModuleFilter()
+        {
+            return StartupModulesExpression.RemoveModuleTypes.Count > 0 ?
+                new StartupBuilderModuleFilter(StartupModulesExpression.RemoveModuleTypes) :
+                ResolveObjectFactory().CreateModuleFilter();
+        }
+
+        public ILocatorRegistry CreateRegistry(IStartupConfiguration startupConfiguration)
+        {
+            return OverrideExpression.RegistryFactory?.CreateRegistry() ?? ResolveObjectFactory().CreateRegistry(startupConfiguration);
+        }
+
+        public IRequestSettingsProvider CreateRequestSettingsProvider()
+        {
+            return ResolveObjectFactory().CreateRequestSettingsProvider();
         }
 
         public IStartupConfiguration CreateStartupConfiguration(IEnumerable<Assembly> assemblies, IStartupEnvironment startupEnvironment)
@@ -67,7 +75,7 @@ namespace DotNetStarter.Configure
         public IStartupContext CreateStartupContext(IReadOnlyLocator locator, IEnumerable<IDependencyNode> filteredModules, IEnumerable<IDependencyNode> allModules,
             IStartupConfiguration startupConfiguration)
         {
-            return _defaultStartupObjectFactory.CreateStartupContext
+            return ResolveObjectFactory().CreateStartupContext
             (
                 locator,
                 filteredModules,
@@ -76,41 +84,31 @@ namespace DotNetStarter.Configure
             );
         }
 
-        public IStartupLogger CreateStartupLogger()
-        {
-            return OverrideExpression.Logger ?? _defaultStartupObjectFactory.CreateStartupLogger();
-        }
-
         public IStartupHandler CreateStartupHandler()
         {
-            return OverrideExpression.StartupHandler ?? _defaultStartupObjectFactory.CreateStartupHandler();
+            return OverrideExpression.StartupHandler ?? ResolveObjectFactory().CreateStartupHandler();
         }
 
-        public IStartupModuleFilter CreateModuleFilter()
+        public IStartupLogger CreateStartupLogger()
         {
-            return StartupModulesExpression.RemoveModuleTypes.Count > 0 ?
-                new StartupBuilderModuleFilter(StartupModulesExpression.RemoveModuleTypes) :
-                _defaultStartupObjectFactory.CreateModuleFilter();
+            return OverrideExpression.Logger ?? ResolveObjectFactory().CreateStartupLogger();
         }
-
-        public ILocatorRegistry CreateRegistry(IStartupConfiguration startupConfiguration)
-        {
-            return OverrideExpression.RegistryFactory.CreateRegistry() ?? _defaultStartupObjectFactory.CreateRegistry(startupConfiguration);
-        }
-
-        public IRequestSettingsProvider CreateRequestSettingsProvider()
-        {
-            return _defaultStartupObjectFactory.CreateRequestSettingsProvider();
-        }
-
         public ITimedTask CreateTimedTask()
         {
-            return _defaultStartupObjectFactory.CreateTimedTask();
+            return ResolveObjectFactory().CreateTimedTask();
         }
 
         public ITimedTaskManager CreateTimedTaskManager()
         {
-            return OverrideExpression.TimedTaskManager ?? _defaultStartupObjectFactory.CreateTimedTaskManager();
+            return OverrideExpression.TimedTaskManager ?? ResolveObjectFactory().CreateTimedTaskManager();
+        }
+
+        private IStartupObjectFactory ResolveObjectFactory()
+        {
+            if (_defaultStartupObjectFactory != null) return _defaultStartupObjectFactory;
+            _defaultStartupObjectFactory = OverrideExpression.FallbackStartupObjectFactory ?? new StartupObjectFactory();
+
+            return _defaultStartupObjectFactory;
         }
     }
 }
