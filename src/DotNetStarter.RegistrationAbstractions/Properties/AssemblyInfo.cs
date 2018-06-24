@@ -13,4 +13,4 @@
 [assembly: AssemblyCopyright("Copyright © {year}")]
 [assembly: AssemblyVersion("1.0.1")]
 [assembly: AssemblyFileVersion("1.0.1")]
-[assembly: AssemblyInformationalVersion("1.1.0 Build: {build} Commit Hash: {commit}")]
+[assembly: AssemblyInformationalVersion("1.1.1 Build: {build} Commit Hash: {commit}")]
