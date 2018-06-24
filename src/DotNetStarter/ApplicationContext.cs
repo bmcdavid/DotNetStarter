@@ -23,13 +23,14 @@
 
         private static readonly object _Lock = new object();
 
-        private static bool _Started = false;
+        /// <summary>
+        /// Used to determine if application default startup has executed
+        /// </summary>
+        public static bool Started { get; private set; }
 
         private static bool _Starting = false;
 
         private static IStartupContext _Default;
-
-        private static IStartupHandler _Handler;
 
         private ApplicationContext()
         {
@@ -90,7 +91,7 @@
 
         private static void EnsureStartup(IStartupEnvironment environment = null, IStartupConfiguration configuration = null, IStartupObjectFactory objectFactory = null, IEnumerable<Assembly> assemblies = null)
         {
-            if (!_Started)
+            if (!Started)
             {
                 if (_Starting)
                 {
@@ -99,18 +100,29 @@
 
                 lock (_Lock)
                 {
-                    if (!_Started)
+                    if (!Started)
                     {
                         _Starting = true;
                         var assembliesForStartup = configuration?.Assemblies ?? assemblies ?? new Internal.AssemblyLoader().GetAssemblies();
                         var factory = objectFactory ?? new StartupObjectFactory();
-                        _Handler = factory.CreateStartupHandler();
                         var startupConfig = configuration ?? factory.CreateStartupConfiguration(assembliesForStartup, environment);
-                        _Started = _Handler.Startup(startupConfig, factory, out _Default);
+                        _Default = RunStartup(factory, startupConfig);
+                        Started = _Default != null;
                         _Starting = false;
                     }
                 }
             }
+        }
+
+        internal static IStartupContext RunStartup(IStartupObjectFactory startupObjectFactory, IStartupConfiguration startupConfiguration)
+        {
+            if (startupObjectFactory == null) throw new ArgumentNullException(nameof(startupObjectFactory));
+            if (startupConfiguration == null) throw new ArgumentNullException(nameof(startupConfiguration));
+            var handler = startupObjectFactory.CreateStartupHandler() ?? throw new NullReferenceException($"{startupObjectFactory.GetType().FullName} returned a null for {nameof(startupObjectFactory.CreateStartupHandler)}!");
+
+            handler.Startup(startupConfiguration, startupObjectFactory, out var startupContext);
+
+            return startupContext;
         }
     }
 }

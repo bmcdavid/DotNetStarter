@@ -102,6 +102,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotNetStarter.Locators.Ligh
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DotNetStarter.Locators.DryIoc", "src\DotNetStarter.Locators.DryIoc\DotNetStarter.Locators.DryIoc.csproj", "{A9A02B93-BFDA-4B29-863C-DC0625C89565}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotNetStarter.StartupBuilderTests", "tests\DotNetStarter.StartupBuilderTests\DotNetStarter.StartupBuilderTests.csproj", "{4C3E87F3-4175-4E35-9D6E-B31796DDE1C3}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -228,6 +230,10 @@ Global
 		{A9A02B93-BFDA-4B29-863C-DC0625C89565}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A9A02B93-BFDA-4B29-863C-DC0625C89565}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A9A02B93-BFDA-4B29-863C-DC0625C89565}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4C3E87F3-4175-4E35-9D6E-B31796DDE1C3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4C3E87F3-4175-4E35-9D6E-B31796DDE1C3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4C3E87F3-4175-4E35-9D6E-B31796DDE1C3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4C3E87F3-4175-4E35-9D6E-B31796DDE1C3}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -258,6 +264,7 @@ Global
 		{4FEBAE7B-35C6-4FBE-AE0D-C10B24142DE7} = {FC53A6BC-F55F-42E8-A855-D0E955D3C79B}
 		{CDA03C13-D121-4921-9F3F-6C347470A1F6} = {8A8DF2AE-D820-4CDB-BB3F-0A41C982FB53}
 		{A9A02B93-BFDA-4B29-863C-DC0625C89565} = {FC53A6BC-F55F-42E8-A855-D0E955D3C79B}
+		{4C3E87F3-4175-4E35-9D6E-B31796DDE1C3} = {8A8DF2AE-D820-4CDB-BB3F-0A41C982FB53}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {FF3D216A-6303-4C08-8210-9B458DAC339C}
