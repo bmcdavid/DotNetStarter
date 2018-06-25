@@ -124,5 +124,17 @@
 
             return startupContext;
         }
+
+        internal static TFactoryType GetAssemblyFactory<TFactoryAttr, TFactoryType>(IStartupConfiguration config) where TFactoryAttr : AssemblyFactoryBaseAttribute
+        {
+            var dependents = config.DependencyFinder.Find<TFactoryAttr>(config.Assemblies);
+            var sorted = config.DependencySorter.Sort<TFactoryAttr>(dependents);
+            var attr = sorted.LastOrDefault()?.NodeAttribute as AssemblyFactoryBaseAttribute;
+
+            if (attr == null)
+                return default(TFactoryType);
+
+            return (TFactoryType)Activator.CreateInstance(attr.FactoryType);
+        }
     }
 }

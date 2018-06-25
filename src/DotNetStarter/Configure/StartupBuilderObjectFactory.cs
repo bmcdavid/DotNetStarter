@@ -1,5 +1,6 @@
 ﻿using DotNetStarter.Abstractions;
 using DotNetStarter.Configure.Expressions;
+using DotNetStarter.Internal;
 using System;
 using System.Collections.Generic;
 using System.Reflection;
@@ -8,59 +9,58 @@ namespace DotNetStarter.Configure
 {
     internal class StartupBuilderObjectFactory : IStartupObjectFactory
     {
-        private IStartupObjectFactory _defaultStartupObjectFactory;
         public AssemblyExpression AssemblyExpression { get; set; }
         public IStartupEnvironment Environment { private get; set; }
         public OverrideExpression OverrideExpression { get; set; }
         public StartupModulesExpression StartupModulesExpression { get; set; }
+
         public IAssemblyFilter CreateAssemblyFilter()
         {
             // assume if we are given assemblies and no filter, we do not need to filter
             if (OverrideExpression.AssemblyFilter == null && AssemblyExpression?.Assemblies.Count > 0) return null;
 
-            return OverrideExpression.AssemblyFilter ?? ResolveObjectFactory().CreateAssemblyFilter();
+            return OverrideExpression.AssemblyFilter ?? new AssemblyFilter();
         }
 
         public IAssemblyScanner CreateAssemblyScanner()
         {
-            return OverrideExpression.AssemblyScanner ?? ResolveObjectFactory().CreateAssemblyScanner();
+            return OverrideExpression.AssemblyScanner ?? new AssemblyScanner();
         }
 
         public ILocatorDefaultRegistrations CreateContainerDefaults()
         {
-            return ResolveObjectFactory().CreateContainerDefaults();
+            return OverrideExpression.ContainerDefaults ?? new ContainerDefaults();
         }
 
         public IDependencyFinder CreateDependencyFinder()
         {
-            return OverrideExpression.DependencyFinder ?? ResolveObjectFactory().CreateDependencyFinder();
+            return OverrideExpression.DependencyFinder ?? new DependencyFinder();
         }
 
         public IDependencyNode CreateDependencyNode(object nodeType, Type attributeType)
         {
-            return ResolveObjectFactory().CreateDependencyNode(nodeType, attributeType);
+            return new DependencyNode(nodeType, attributeType);
         }
 
         public IDependencySorter CreateDependencySorter()
         {
-            return OverrideExpression.DependencySorter ?? ResolveObjectFactory().CreateDependencySorter();
+            return OverrideExpression.DependencySorter ?? new DependencySorter(CreateDependencyNode);
         }
 
         public IStartupModuleFilter CreateModuleFilter()
         {
-            return StartupModulesExpression.RemoveModuleTypes.Count > 0 ?
-                new StartupBuilderModuleFilter(StartupModulesExpression.RemoveModuleTypes) :
-                ResolveObjectFactory().CreateModuleFilter();
+            return new StartupBuilderModuleFilter(StartupModulesExpression.RemoveModuleTypes);
         }
 
-        public ILocatorRegistry CreateRegistry(IStartupConfiguration startupConfiguration)
+        public ILocatorRegistry CreateRegistry(IStartupConfiguration config)
         {
-            return OverrideExpression.RegistryFactory?.CreateRegistry() ?? ResolveObjectFactory().CreateRegistry(startupConfiguration);
+            return OverrideExpression.RegistryFactory?.CreateRegistry() ?? 
+                ApplicationContext.GetAssemblyFactory<LocatorRegistryFactoryAttribute, ILocatorRegistryFactory>(config)?.CreateRegistry();
         }
 
         public IRequestSettingsProvider CreateRequestSettingsProvider()
         {
-            return ResolveObjectFactory().CreateRequestSettingsProvider();
+            return OverrideExpression.RequestSettingsProviderFactory?.Invoke() ?? new RequestSettingsProvider();
         }
 
         public IStartupConfiguration CreateStartupConfiguration(IEnumerable<Assembly> assemblies, IStartupEnvironment startupEnvironment)
@@ -75,40 +75,27 @@ namespace DotNetStarter.Configure
         public IStartupContext CreateStartupContext(IReadOnlyLocator locator, IEnumerable<IDependencyNode> filteredModules, IEnumerable<IDependencyNode> allModules,
             IStartupConfiguration startupConfiguration)
         {
-            return ResolveObjectFactory().CreateStartupContext
-            (
-                locator,
-                filteredModules,
-                allModules,
-                startupConfiguration
-            );
+            return new StartupContext(locator, allModules, filteredModules, startupConfiguration);
         }
 
         public IStartupHandler CreateStartupHandler()
         {
-            return OverrideExpression.StartupHandler ?? ResolveObjectFactory().CreateStartupHandler();
+            return OverrideExpression.StartupHandler ?? new StartupHandler();
         }
 
         public IStartupLogger CreateStartupLogger()
         {
-            return OverrideExpression.Logger ?? ResolveObjectFactory().CreateStartupLogger();
+            return OverrideExpression.Logger ?? new StringLogger(LogLevel.Error, 1024000);
         }
+
         public ITimedTask CreateTimedTask()
         {
-            return ResolveObjectFactory().CreateTimedTask();
+            return OverrideExpression.TimedTaskFactory?.Invoke() ?? new TimedTask();
         }
 
         public ITimedTaskManager CreateTimedTaskManager()
         {
-            return OverrideExpression.TimedTaskManager ?? ResolveObjectFactory().CreateTimedTaskManager();
-        }
-
-        private IStartupObjectFactory ResolveObjectFactory()
-        {
-            if (_defaultStartupObjectFactory != null) return _defaultStartupObjectFactory;
-            _defaultStartupObjectFactory = OverrideExpression.FallbackStartupObjectFactory ?? new StartupObjectFactory();
-
-            return _defaultStartupObjectFactory;
+            return OverrideExpression.TimedTaskManager ?? new TimedTaskManager(CreateRequestSettingsProvider);
         }
     }
 }

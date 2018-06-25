@@ -137,24 +137,5 @@ namespace DotNetStarter.StartupBuilderTests
             Assert.IsTrue(ApplicationContext.Started);
             Assert.AreEqual(builder.StartupContext, ApplicationContext.Default);
         }
-
-        [TestMethod]
-        public void ShouldUseCustomStartupFactory()
-        {
-            var sut = new MockObjectFactory();
-            var builder = StartupBuilder.Create();
-            builder.ConfigureAssemblies(assemblies =>
-            {
-                assemblies.WithAssembliesFromTypes(typeof(ApplicationContext), typeof(RegistrationConfiguration));
-            })
-            .OverrideDefaults(d =>
-            {
-                d.UseFallbackObjectFactory(sut);
-            })
-            .Build(useApplicationContext: false)
-            .Run();
-
-            Assert.IsTrue(sut.Executed);
-        }
     }
 }

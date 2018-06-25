@@ -10,12 +10,14 @@ namespace DotNetStarter.Configure.Expressions
     {
         internal IAssemblyFilter AssemblyFilter { get; private set; }
         internal IAssemblyScanner AssemblyScanner { get; private set; }
+        internal ILocatorDefaultRegistrations ContainerDefaults { get; private set; }
         internal IDependencyFinder DependencyFinder { get; private set; }
         internal IDependencySorter DependencySorter { get; private set; }
-        internal IStartupObjectFactory FallbackStartupObjectFactory { get; private set; }
         internal IStartupLogger Logger { get; private set; }
         internal ILocatorRegistryFactory RegistryFactory { get; private set; }
+        internal Func<IRequestSettingsProvider> RequestSettingsProviderFactory { get; private set; }
         internal IStartupHandler StartupHandler { get; private set; }
+        internal Func<ITimedTask> TimedTaskFactory { get; private set; }
         internal ITimedTaskManager TimedTaskManager { get; private set; }
 
         /// <summary>
@@ -37,6 +39,17 @@ namespace DotNetStarter.Configure.Expressions
         public OverrideExpression UseAssemblyScanner(IAssemblyScanner assemblyScanner)
         {
             AssemblyScanner = assemblyScanner ?? throw new ArgumentNullException(nameof(assemblyScanner));
+            return this;
+        }
+
+        /// <summary>
+        /// CAUTION: Advanced usage to override the default registrations, do so with extreme caution.
+        /// </summary>
+        /// <param name="locatorDefaultRegistrations"></param>
+        /// <returns></returns>
+        public OverrideExpression UseContainerDefaults(ILocatorDefaultRegistrations locatorDefaultRegistrations)
+        {
+            ContainerDefaults = locatorDefaultRegistrations ?? throw new ArgumentNullException(nameof(locatorDefaultRegistrations));
             return this;
         }
 
@@ -63,16 +76,6 @@ namespace DotNetStarter.Configure.Expressions
         }
 
         /// <summary>
-        /// CAUTION: Advanced usages only, also never calls IStartupObjectFactory.CreateStartupConfiguration
-        /// </summary>
-        /// <param name="fallbackStartupObjectFactory"></param>
-        /// <returns></returns>
-        public OverrideExpression UseFallbackObjectFactory(IStartupObjectFactory fallbackStartupObjectFactory)
-        {
-            FallbackStartupObjectFactory = fallbackStartupObjectFactory;
-            return this;
-        }
-        /// <summary>
         /// Sets the startup ILocatorRegistryFactory, bypassing assembly resolutions
         /// </summary>
         /// <param name="factory"></param>
@@ -95,6 +98,18 @@ namespace DotNetStarter.Configure.Expressions
         }
 
         /// <summary>
+        /// Creates the request settings provider for the default ITimedTaskManager implementation
+        /// <para>Note: This call is not used when ITimedTaskManager is overriden!</para>
+        /// </summary>
+        /// <param name="requestSettingsProviderFactory"></param>
+        /// <returns></returns>
+        public OverrideExpression UseRequestSettingsProviderFactory(Func<IRequestSettingsProvider> requestSettingsProviderFactory)
+        {
+            RequestSettingsProviderFactory = requestSettingsProviderFactory ?? throw new ArgumentNullException(nameof(requestSettingsProviderFactory));
+            return this;
+        }
+
+        /// <summary>
         /// CAUTION: Advanced usage to override the startup handler, do so with extreme caution.
         /// </summary>
         /// <param name="startupHandler"></param>
@@ -102,6 +117,17 @@ namespace DotNetStarter.Configure.Expressions
         public OverrideExpression UseStartupHandler(IStartupHandler startupHandler)
         {
             StartupHandler = startupHandler ?? throw new ArgumentNullException(nameof(startupHandler));
+            return this;
+        }
+
+        /// <summary>
+        /// Creates timed tasks
+        /// </summary>
+        /// <param name="timedTaskFactory"></param>
+        /// <returns></returns>
+        public OverrideExpression UseTimedTaskFactory(Func<ITimedTask> timedTaskFactory)
+        {
+            TimedTaskFactory = timedTaskFactory;
             return this;
         }
 

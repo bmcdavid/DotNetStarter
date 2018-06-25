@@ -10,11 +10,11 @@ namespace DotNetStarter.Configure
     /// </summary>
     public sealed class StartupBuilder
     {
-        private readonly StartupBuilderObjectFactory _fluentObjectFactory;
         private Action<AssemblyExpression> _assemblyExpression;
         private bool _isConfigured;
         private Action<StartupModulesExpression> _moduleExpression;
         private Action<OverrideExpression> _overrideExpression;
+        private IStartupEnvironment _environment;
         private bool _runOnce;
 
         /// <summary>
@@ -24,7 +24,6 @@ namespace DotNetStarter.Configure
 
         private StartupBuilder()
         {
-            _fluentObjectFactory = new StartupBuilderObjectFactory();
         }
 
         /// <summary>
@@ -58,6 +57,7 @@ namespace DotNetStarter.Configure
             if (_isConfigured) return this;
 
             _isConfigured = true;
+            var _fluentObjectFactory = new StartupBuilderObjectFactory() { Environment = _environment };
             var assemblyExp = new AssemblyExpression();
             _assemblyExpression?.Invoke(assemblyExp);
             _fluentObjectFactory.AssemblyExpression = assemblyExp;
@@ -125,10 +125,9 @@ namespace DotNetStarter.Configure
 
             _runOnce = true;
             Build(); // just in case its not called fluently
-            var configuration = StartupContext.Configuration;
-            if (!(configuration is StartupBuilderConfiguration delayed))
+            if (!(StartupContext.Configuration is StartupBuilderConfiguration delayed))
             {
-                throw new Exception($"{configuration.GetType().FullName} does not implement {typeof(StartupBuilderConfiguration).FullName}!");
+                throw new Exception($"{StartupContext.Configuration.GetType().FullName} does not implement {typeof(StartupBuilderConfiguration).FullName}!");
             }
 
             delayed.DelayedStartup();
@@ -141,7 +140,7 @@ namespace DotNetStarter.Configure
         /// <returns></returns>
         public StartupBuilder UseEnvironment(IStartupEnvironment startupEnvironment)
         {
-            _fluentObjectFactory.Environment = startupEnvironment;
+            _environment = startupEnvironment;
             return this;
         }
     }
