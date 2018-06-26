@@ -46,7 +46,7 @@ namespace DotNetStarter.StartupBuilderTests
                 ConfigureAssemblies(assemblies =>
                 {
                     assemblies
-                        .WithScannableAssemblies(new[] { typeof(StringLogger).Assembly(), typeof(RegistrationConfiguration).Assembly() })
+                        .WithDiscoverableAssemblies(new[] { typeof(StringLogger).Assembly(), typeof(RegistrationConfiguration).Assembly() })
                         .WithAssemblyFromType<StructureMapFactory>();
                 })
                 .ConfigureStartupModules(modules =>

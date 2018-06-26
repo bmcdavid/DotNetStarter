@@ -120,12 +120,12 @@
                 if (!(Locator is ILocatorRegistry registry))
                     throw new NullLocatorException();
 
-                var setDefaults = objectFactory.CreateContainerDefaults();
+                var containerDefaults = objectFactory.CreateContainerDefaults();
 
-                if (setDefaults == null)
+                if (containerDefaults == null)
                     throw new NotSupportedException("Unable to set container defaults, the object factory returned a null service for it!");
 
-                objectFactory.CreateContainerDefaults().Configure(registry, filteredModules, config, objectFactory);
+                containerDefaults.Configure(registry, filteredModules, config, objectFactory);
                 var locatorRegistries = (registry as ILocatorResolveConfigureModules)?.ResolveConfigureModules(filteredModules, config)
                                             ?? (registry as ILocator).GetAll<ILocatorConfigure>();
 

@@ -14,6 +14,23 @@ namespace DotNetStarter.Configure.Expressions
         internal readonly HashSet<Assembly> Assemblies = new HashSet<Assembly>();
 
         /// <summary>
+        /// Removes given assemblies from the scanning process
+        /// </summary>
+        /// <param name="assembliesToRemove"></param>
+        /// <returns></returns>
+        public AssemblyExpression RemoveAssemblies(IEnumerable<Assembly> assembliesToRemove)
+        {
+            if (assembliesToRemove == null) return this;
+
+            foreach (var a in assembliesToRemove)
+            {
+                Assemblies.Remove(a);
+            }
+
+            return this;
+        }
+
+        /// <summary>
         /// Removes the assembly for the given type from the scanning process
         /// </summary>
         /// <param name="t"></param>
@@ -25,22 +42,16 @@ namespace DotNetStarter.Configure.Expressions
         }
 
         /// <summary>
-        /// Adds the given type's assembly to the scanning process
+        /// Adds assemblies to the scanning process
         /// </summary>
-        /// <param name="type"></param>
+        /// <param name="assemblies"></param>
         /// <returns></returns>
-        public AssemblyExpression WithAssemblyFromType(Type type)
+        public AssemblyExpression WithAssemblies(IEnumerable<Assembly> assemblies)
         {
-            Assemblies.Add(type.Assembly());
+            if (assemblies == null) return this;
+            AddAssemblyRange(assemblies);
             return this;
         }
-
-        /// <summary>
-        /// Adds the given type's assembly to the scanning process
-        /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <returns></returns>
-        public AssemblyExpression WithAssemblyFromType<T>() => WithAssemblyFromType(typeof(T));
 
         /// <summary>
         /// Adds given types assemblies to the scanning process
@@ -65,11 +76,29 @@ namespace DotNetStarter.Configure.Expressions
         }
 
         /// <summary>
+        /// Adds the given type's assembly to the scanning process
+        /// </summary>
+        /// <param name="type"></param>
+        /// <returns></returns>
+        public AssemblyExpression WithAssemblyFromType(Type type)
+        {
+            Assemblies.Add(type.Assembly());
+            return this;
+        }
+
+        /// <summary>
+        /// Adds the given type's assembly to the scanning process
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <returns></returns>
+        public AssemblyExpression WithAssemblyFromType<T>() => WithAssemblyFromType(typeof(T));
+        
+        /// <summary>
         /// Gets all assemblies with DotNetStarter.Abstractions.DiscoverableAssemblyAttribute, which is generally a good starting point.
         /// <para>IMPORTANT: For ASP.Net Core applications, assemblies must be provided as there is no default assembly loader!</para>
         /// </summary>
         /// <returns></returns>
-        public AssemblyExpression WithScannableAssemblies(IEnumerable<Assembly> assemblies = null, Func<Assembly, Type, IEnumerable<Attribute>> attributeChecker = null)
+        public AssemblyExpression WithDiscoverableAssemblies(IEnumerable<Assembly> assemblies = null, Func<Assembly, Type, IEnumerable<Attribute>> attributeChecker = null)
         {
             AddAssemblyRange(ApplicationContext.GetScannableAssemblies(assemblies, attributeChecker));
             return this;
