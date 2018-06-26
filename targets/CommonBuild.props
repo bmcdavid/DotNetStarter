@@ -11,5 +11,7 @@
     <RepositoryCommit Condition="'$(BUILD_SOURCEVERSION)' != ''">$(BUILD_SOURCEBRANCHNAME)</RepositoryCommit>
 
     <CurrentYear>$([System.DateTime]::Now.ToString(yyyy))</CurrentYear>
+
+    <FrameworkPathOverride Condition="'$(TargetFramework)' == 'net35'">$(MSBuildProgramFiles32)\Reference Assemblies\Microsoft\Framework\.NETFramework\v3.5\Profile\Client</FrameworkPathOverride>
   </PropertyGroup>
 </Project>
