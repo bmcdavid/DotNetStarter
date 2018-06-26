@@ -16,4 +16,21 @@
         /// <param name="objectFactory"></param>
         void Configure(ILocatorRegistry locator, IEnumerable<IDependencyNode> filteredModules, IStartupConfiguration configuration, IStartupObjectFactory objectFactory);
     }
+
+    //todo: IlocatorDefaultRegistrationsWithCollections is a temp fix until next breaking change, these should be moved to 
+    /// <summary>
+    /// Provides access to StartupBuilder registered modules
+    /// </summary>
+    public interface IlocatorDefaultRegistrationsWithCollections : ILocatorDefaultRegistrations
+    {
+        /// <summary>
+        /// IStartupModules added during configuration using the StartupModuleExpression
+        /// </summary>
+        IStartupModuleCollection StartupModuleCollection { get; set; }
+
+        /// <summary>
+        /// ILocatorConfigure modules added during configuration using the StartupModuleExpression
+        /// </summary>
+        ILocatorConfigureCollection LocatorConfigureModuleCollection { get; set; }
+    }
 }

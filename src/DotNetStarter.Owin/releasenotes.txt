@@ -1,0 +1,2 @@
+﻿Added netstandard 2.0 support.
+Breaking change: scoped locators can no longer register.

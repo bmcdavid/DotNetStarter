@@ -78,7 +78,7 @@
       <Name>DotNetStarter.Abstractions</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\src\DotNetStarter.Extensions.WebApi\DotNetStarter.Extensions.WebApi.csproj">
-      <Project>{db0d1573-a384-4d85-acc4-81127bdd9f42}</Project>
+      <Project>{907c1777-aa90-4a29-94f6-0583d3aafaf3}</Project>
       <Name>DotNetStarter.Extensions.WebApi</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\src\DotNetStarter.Locators.DryIoc\DotNetStarter.Locators.DryIoc.csproj">

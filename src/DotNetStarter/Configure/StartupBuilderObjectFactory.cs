@@ -10,7 +10,7 @@ namespace DotNetStarter.Configure
     internal class StartupBuilderObjectFactory : IStartupObjectFactory
     {
         public AssemblyExpression AssemblyExpression { get; set; }
-        public IStartupEnvironment Environment { private get; set; }
+        public IStartupEnvironment Environment { get; set; }
         public OverrideExpression OverrideExpression { get; set; }
         public StartupModulesExpression StartupModulesExpression { get; set; }
 
@@ -31,10 +31,10 @@ namespace DotNetStarter.Configure
         {
             var defaults = OverrideExpression.ContainerDefaults ?? new ContainerDefaults();
 
-            if(defaults is IlocatorDefaultRegistrationsWithCollections defaultRegistrationsWithCollections)
+            if (defaults is IlocatorDefaultRegistrationsWithCollections defaultWithCollections)
             {
-                defaultRegistrationsWithCollections.LocatorConfigureModuleCollection = StartupModulesExpression.InternalConfigureModules;
-                defaultRegistrationsWithCollections.StartupModuleCollection = StartupModulesExpression.InternalStartupModules;
+                defaultWithCollections.LocatorConfigureModuleCollection = StartupModulesExpression.InternalConfigureModules;
+                defaultWithCollections.StartupModuleCollection = StartupModulesExpression.InternalStartupModules;
             }
 
             return defaults;
@@ -62,7 +62,7 @@ namespace DotNetStarter.Configure
 
         public ILocatorRegistry CreateRegistry(IStartupConfiguration config)
         {
-            return OverrideExpression.RegistryFactory?.CreateRegistry() ?? 
+            return OverrideExpression.RegistryFactory?.CreateRegistry() ??
                 ApplicationContext.GetAssemblyFactory<LocatorRegistryFactoryAttribute, ILocatorRegistryFactory>(config)?.CreateRegistry();
         }
 

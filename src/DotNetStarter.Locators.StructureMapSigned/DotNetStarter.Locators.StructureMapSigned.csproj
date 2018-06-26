@@ -1,12 +1,23 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
+  <Import Project="..\..\targets\AddReleaseNotes.targets" />
+  <Import Project="..\..\targets\AddReadMeMarkdown.targets" />
+  <Import Project="..\..\targets\CommonBuild.props" />
+  <Import Project="..\..\targets\CommonNuGetPackage.props" />
+  <Import Project="..\..\targets\SignDll.props" />
 
   <PropertyGroup>
-    <RootNamespace>DotNetStarter.Locators</RootNamespace>
+    <PackageId>DotNetStarter.Locators.StructureMapSigned</PackageId>
     <TargetFrameworks>net45;</TargetFrameworks>
-    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
-    <DocumentationFile>bin\$(Configuration)\$(TargetFramework)\DotNetStarter.Locators.StructuremapSigned.xml</DocumentationFile>
-    <SignAssembly>True</SignAssembly>
-    <AssemblyOriginatorKeyFile>..\..\dotnetstarter.snk</AssemblyOriginatorKeyFile>
+    <RootNamespace>DotNetStarter.Locators</RootNamespace>
+    <Authors>Brad McDavid</Authors>
+    <Copyright>Copyright $(CurrentYear)</Copyright>
+    <Description>Enables support for DI/IOC in startup.</Description>
+    <!--follow semantic versioning may include prelease information too-->
+    <PackageVersion>1.0.1</PackageVersion>
+    <PackageTags>Startup Modules DI IOC</PackageTags>
+    <!--do not change unless you want to deal with assembly redirects-->
+    <AssemblyVersion>1.0.0</AssemblyVersion>
+    <FileVersion>1.0.0</FileVersion>
   </PropertyGroup>
 
   <ItemGroup>

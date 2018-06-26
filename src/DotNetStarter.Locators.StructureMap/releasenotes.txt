@@ -1,0 +1,1 @@
+﻿Namespace change. Updated for interface changes. Removed net35 and net40 support.

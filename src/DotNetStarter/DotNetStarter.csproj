@@ -1,11 +1,23 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
+  <Import Project="..\..\targets\AddReleaseNotes.targets" />
+  <Import Project="..\..\targets\AddReadMeMarkdown.targets" />
+  <Import Project="..\..\targets\CommonBuild.props" />
+  <Import Project="..\..\targets\CommonNuGetPackage.props" />
+  <Import Project="..\..\targets\SignDll.props" />
 
   <PropertyGroup>
+    <PackageId>DotNetStarter</PackageId>
     <TargetFrameworks>net35;net40;net45;netstandard1.0;netstandard1.1;netstandard2.0</TargetFrameworks>
-    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
-    <DocumentationFile>bin\$(Configuration)\$(TargetFramework)\DotNetStarter.xml</DocumentationFile>
-    <SignAssembly>True</SignAssembly>
-    <AssemblyOriginatorKeyFile>..\..\dotnetstarter.snk</AssemblyOriginatorKeyFile>
+    <Authors>Brad McDavid</Authors>
+    <Copyright>Copyright $(CurrentYear)</Copyright>
+    <Description>Startup system and service registration for a DI container.</Description>
+    <!--follow semantic versioning may include prelease information too-->
+    <PackageVersion>2.1.0</PackageVersion>
+    <PackageTags>Startup Modules DI</PackageTags>
+
+    <!--do not change unless you want to deal with assembly redirects-->
+    <AssemblyVersion>2.0.0</AssemblyVersion>
+    <FileVersion>2.0.0</FileVersion>
   </PropertyGroup>
 
   <!--<PropertyGroup Condition="'$(TargetFramework)' == 'netstandard1.1' OR '$(TargetFramework)' == 'netstandard1.0'">
@@ -22,10 +34,6 @@
 
   <ItemGroup Condition="'$(TargetFramework)' == 'netstandard2.0'">
     <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="2.0.0" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Compile Remove="Internal\ObjectFactory.cs" />
   </ItemGroup>
 
   <ItemGroup>

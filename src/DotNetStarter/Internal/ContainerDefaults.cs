@@ -1,24 +1,28 @@
 ﻿namespace DotNetStarter.Internal
 {
     using Abstractions;
-    using DotNetStarter.Abstractions.Internal;
+    using Abstractions.Internal;
     using System;
     using System.Collections.Generic;
     using System.Linq;
-
-    public interface IlocatorDefaultRegistrationsWithCollections
-    {
-        IStartupModuleCollection StartupModuleCollection { get; set; }
-        ILocatorConfigureCollection LocatorConfigureModuleCollection { get; set; }
-    }
 
     /// <summary>
     /// Assigns default instances to the container
     /// </summary>
     public class ContainerDefaults : ILocatorDefaultRegistrations, IlocatorDefaultRegistrationsWithCollections
     {
-        public IStartupModuleCollection StartupModuleCollection { get; set; }
+        private static readonly Type LocatorConfigureType = typeof(ILocatorConfigure);
+        private static readonly Type StartupModuleType = typeof(IStartupModule);
+
+        /// <summary>
+        /// ILocatorConfigure modules added during configuration
+        /// </summary>
         public ILocatorConfigureCollection LocatorConfigureModuleCollection { get; set; }
+
+        /// <summary>
+        /// IStartupModules added during configuration
+        /// </summary>
+        public IStartupModuleCollection StartupModuleCollection { get; set; }
 
         /// <summary>
         /// Assigns default instances to the locator
@@ -29,41 +33,10 @@
         /// <param name="objectFactory"></param>
         public virtual void Configure(ILocatorRegistry registry, IEnumerable<IDependencyNode> filteredModules, IStartupConfiguration configuration, IStartupObjectFactory objectFactory)
         {
-            Type initModuleType = typeof(IStartupModule);
-            Type configureModuleType = typeof(ILocatorConfigure);
             var modules = filteredModules.Select(x => x.Node).OfType<Type>();
-
-            foreach (var module in modules)
-            {
-                if (initModuleType.IsAssignableFromCheck(module))
-                    registry.Add(initModuleType, module, null, Lifecycle.Singleton);
-
-                if (configureModuleType.IsAssignableFromCheck(module))
-                    registry.Add(configureModuleType, module, null, Lifecycle.Singleton);
-            }
-
-            if (StartupModuleCollection?.Count > 0)
-            {
-                foreach (var module in StartupModuleCollection)
-                {
-                    if (module.ModuleInstance != null)
-                    {
-                        registry.Add(initModuleType, module.ModuleInstance);
-                    }
-                    else if (module.ModuleType != null)
-                    {
-                        registry.Add(initModuleType, module.ModuleType, null, Lifecycle.Singleton);
-                    }
-                }
-            }
-
-            if (LocatorConfigureModuleCollection?.Count > 0)
-            {
-                foreach (var module in LocatorConfigureModuleCollection)
-                {
-                    registry.Add(configureModuleType, module);
-                }
-            }
+            RegisterScannedModules(registry, modules);
+            RegisterStartupModuleCollection(registry);
+            RegisterLocatorConfigureCollection(registry);
 
             // add default instances    
             registry.Add(typeof(IStartupConfiguration), configuration);
@@ -73,6 +46,47 @@
             registry.Add(typeof(IDependencyFinder), configuration.DependencyFinder);
             registry.Add(typeof(IDependencySorter), configuration.DependencySorter);
             registry.Add<ITimedTask, TimedTask>(lifecycle: Lifecycle.Transient);
+        }
+
+        private static void RegisterScannedModules(ILocatorRegistry registry, IEnumerable<Type> modules)
+        {
+            foreach (var module in modules)
+            {
+                if (StartupModuleType.IsAssignableFromCheck(module))
+                    registry.Add(StartupModuleType, module, null, Lifecycle.Singleton);
+
+                if (LocatorConfigureType.IsAssignableFromCheck(module))
+                    registry.Add(LocatorConfigureType, module, null, Lifecycle.Singleton);
+            }
+        }
+
+        private void RegisterLocatorConfigureCollection(ILocatorRegistry registry)
+        {
+            if (LocatorConfigureModuleCollection?.Count > 0)
+            {
+                foreach (var module in LocatorConfigureModuleCollection)
+                {
+                    registry.Add(LocatorConfigureType, module);
+                }
+            }
+        }
+
+        private void RegisterStartupModuleCollection(ILocatorRegistry registry)
+        {
+            if (StartupModuleCollection?.Count > 0)
+            {
+                foreach (var module in StartupModuleCollection)
+                {
+                    if (module.ModuleInstance != null)
+                    {
+                        registry.Add(StartupModuleType, module.ModuleInstance);
+                    }
+                    else if (module.ModuleType != null)
+                    {
+                        registry.Add(StartupModuleType, module.ModuleType, null, Lifecycle.Singleton);
+                    }
+                }
+            }
         }
     }
 }

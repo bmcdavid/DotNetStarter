@@ -16,7 +16,6 @@ namespace DotNetStarter.Configure.Expressions
         internal ILocatorConfigureCollection InternalConfigureModules { get; private set; }
         internal IStartupModuleCollection InternalStartupModules { get; private set; }
 
-
         /// <summary>
         /// Provides fluent access to assigning an ILocatorConfigure module during a startupbuilder
         /// <para>Added ILocatorConfigure modules will execute after RegistrationConfiguration</para>

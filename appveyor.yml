@@ -3,16 +3,12 @@ configuration: Release
 platform: Any CPU
 before_build:
 - cmd: nuget restore
-- ps: .\.nuget\setVersion.ps1    
+#- ps: .\.nuget\setVersion.ps1    
 build:
   verbosity: minimal
 after_test:
-- ps: .\.nuget\pack.ps1    
+- cmd: dotnet pack --output ..\..\
+#- ps: .\.nuget\pack.ps1    
 artifacts:
- # - path: src\**\bin\$(configuration)\DotNetStarter*
- # - path: net40\**\bin\$(configuration)\DotNetStarter*
- # - path: net45\**\bin\$(configuration)\DotNetStarter*
- # - path: netstandard13\**\bin\$(configuration)\DotNetStarter*
   - path: '*.nupkg'
     name: nuget
-#http://andrewlock.net/publishing-your-first-nuget-package-with-appveyor-and-myget/

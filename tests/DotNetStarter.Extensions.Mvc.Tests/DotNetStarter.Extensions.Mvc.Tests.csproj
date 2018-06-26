@@ -84,7 +84,7 @@
       <Name>DotNetStarter.Abstractions</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\src\DotNetStarter.Extensions.Mvc\DotNetStarter.Extensions.Mvc.csproj">
-      <Project>{5f0d3088-4b29-4ecd-8df0-c5f14366db5b}</Project>
+      <Project>{9504d727-fa4e-4195-9564-be8eb915a3af}</Project>
       <Name>DotNetStarter.Extensions.Mvc</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\src\DotNetStarter.Locators.DryIoc\DotNetStarter.Locators.DryIoc.csproj">

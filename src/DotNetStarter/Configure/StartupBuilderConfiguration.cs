@@ -8,17 +8,17 @@ namespace DotNetStarter.Configure
 {
     internal class StartupBuilderConfiguration : IStartupConfiguration, IStartupDelayed
     {
-        public StartupBuilderConfiguration(StartupBuilderObjectFactory fluentObjectFactory, IEnumerable<Assembly> assemblies, IStartupEnvironment startupEnvironment)
+        public StartupBuilderConfiguration(StartupBuilderObjectFactory objectFactory, IEnumerable<Assembly> assemblies, IStartupEnvironment environment)
         {
             Assemblies = assemblies;
-            AssemblyFilter = fluentObjectFactory.CreateAssemblyFilter();
-            AssemblyScanner = fluentObjectFactory.CreateAssemblyScanner();
-            DependencyFinder = fluentObjectFactory.CreateDependencyFinder();
-            DependencySorter = fluentObjectFactory.CreateDependencySorter();
-            Environment = startupEnvironment;
-            Logger = fluentObjectFactory.CreateStartupLogger();
-            ModuleFilter = fluentObjectFactory.CreateModuleFilter();
-            TimedTaskManager = fluentObjectFactory.CreateTimedTaskManager();
+            AssemblyFilter = objectFactory.CreateAssemblyFilter();
+            AssemblyScanner = objectFactory.CreateAssemblyScanner();
+            DependencyFinder = objectFactory.CreateDependencyFinder();
+            DependencySorter = objectFactory.CreateDependencySorter();
+            Environment = environment;
+            Logger = objectFactory.CreateStartupLogger();
+            ModuleFilter = objectFactory.CreateModuleFilter();
+            TimedTaskManager = objectFactory.CreateTimedTaskManager();
         }
 
         public IEnumerable<Assembly> Assemblies { get; }

@@ -1,0 +1,2 @@
+﻿Added netstandard 2.0 support.
+ILocatorRegistry no longer inherits from ILocator, changed many other interfaces.
