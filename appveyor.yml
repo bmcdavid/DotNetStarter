@@ -7,5 +7,5 @@ build:
   verbosity: minimal
 #after_test:
 #- cmd: dotnet pack --output ..\..\
-#artifacts:
-#  - path: '*.nupkg'
+artifacts:
+  - path: '*.nupkg'
