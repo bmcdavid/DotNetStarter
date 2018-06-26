@@ -29,7 +29,15 @@ namespace DotNetStarter.Configure
 
         public ILocatorDefaultRegistrations CreateContainerDefaults()
         {
-            return OverrideExpression.ContainerDefaults ?? new ContainerDefaults();
+            var defaults = OverrideExpression.ContainerDefaults ?? new ContainerDefaults();
+
+            if(defaults is IlocatorDefaultRegistrationsWithCollections defaultRegistrationsWithCollections)
+            {
+                defaultRegistrationsWithCollections.LocatorConfigureModuleCollection = StartupModulesExpression.InternalConfigureModules;
+                defaultRegistrationsWithCollections.StartupModuleCollection = StartupModulesExpression.InternalStartupModules;
+            }
+
+            return defaults;
         }
 
         public IDependencyFinder CreateDependencyFinder()

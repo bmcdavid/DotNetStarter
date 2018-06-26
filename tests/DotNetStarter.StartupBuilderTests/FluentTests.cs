@@ -5,6 +5,7 @@ using DotNetStarter.Locators;
 using DotNetStarter.StartupBuilderTests.Mocks;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
+using System.Linq;
 
 namespace DotNetStarter.StartupBuilderTests
 {
@@ -61,7 +62,7 @@ namespace DotNetStarter.StartupBuilderTests
                 .Build(useApplicationContext: false)
                 .Run();
 
-            var sut = builder.StartupContext.Locator.Get<TestStartupModule>();
+            var sut = builder.StartupContext.Locator.GetAll<IStartupModule>().OfType<TestStartupModule>().FirstOrDefault();
             Assert.IsTrue(sut.Executed);
         }
 
