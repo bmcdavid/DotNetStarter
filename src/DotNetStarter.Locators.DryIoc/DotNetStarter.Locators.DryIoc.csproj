@@ -21,7 +21,7 @@
   <Import Project="..\..\targets\CommonNuGetPackage.props" />
 
   <ItemGroup>
-    <PackageReference Include="DryIoc.dll" version="2.12.10" />
+    <PackageReference Include="DryIoc.dll" version="[2.12.10,3)" />
     <ProjectReference Include="..\DotNetStarter.Abstractions\DotNetStarter.Abstractions.csproj" />
   </ItemGroup>
 

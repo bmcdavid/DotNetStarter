@@ -9,7 +9,7 @@ namespace DotNetStarter.Web
     /// </summary>
     public class StartupConfigurationWithWebEnvironment : StartupConfiguration, IStartupConfigurationWithEnvironment<IStartupEnvironmentWeb>
     {
-        private IStartupEnvironmentWeb _Environment;
+        private readonly IStartupEnvironmentWeb _Environment;
 
         /// <summary>
         /// Constructor

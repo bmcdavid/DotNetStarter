@@ -14,8 +14,7 @@
     <PackageReference Include="MSTest.TestAdapter" Version="1.3.2" />
     <PackageReference Include="MSTest.TestFramework" Version="1.3.2" />
     <Compile Include="..\DotNetStarter.LocatorUnitTests\**\*.cs" />
-  </ItemGroup>
-  
+  </ItemGroup> 
 
   <ItemGroup>
     <ProjectReference Include="..\..\src\DotNetStarter.Abstractions\DotNetStarter.Abstractions.csproj" />

@@ -1,7 +1,7 @@
 ﻿using DotNetStarter.Abstractions;
 using System;
 
-#if NETSTANDARD1_3
+#if NETSTANDARD
 using Microsoft.AspNetCore.Hosting;
 #else
 using System.Configuration;
@@ -14,7 +14,7 @@ namespace DotNetStarter.Web
     /// </summary>
     public class StartupEnvironmentWeb : StartupEnvironment, IStartupEnvironmentWeb
     {
-#if NETSTANDARD1_3
+#if NETSTANDARD
         /// <summary>
         /// Constructor for netstandard
         /// </summary>
@@ -42,7 +42,7 @@ namespace DotNetStarter.Web
             )
         {
             var appDomain = AppDomain.CurrentDomain;
-            WebRootPath = webRootPath != null ? webRootPath : !string.IsNullOrEmpty(appDomain.SetupInformation.PrivateBinPath) ? appDomain.BaseDirectory : null;
+            WebRootPath = webRootPath ?? (!string.IsNullOrEmpty(appDomain.SetupInformation.PrivateBinPath) ? appDomain.BaseDirectory : null);
             ContentRootPath = contentRootPath ?? WebRootPath;
         }
 #endif
