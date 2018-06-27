@@ -17,7 +17,7 @@
         /// <summary>
         /// ILocatorConfigure modules added during configuration
         /// </summary>
-        public ILocatorConfigureCollection LocatorConfigureModuleCollection { get; set; }
+        public ILocatorConfigureModuleCollection LocatorConfigureModuleCollection { get; set; }
 
         /// <summary>
         /// IStartupModules added during configuration
@@ -48,7 +48,12 @@
             registry.Add<ITimedTask, TimedTask>(lifecycle: Lifecycle.Transient);
         }
 
-        private static void RegisterScannedModules(ILocatorRegistry registry, IEnumerable<Type> modules)
+        /// <summary>
+        /// Registers canned modules
+        /// </summary>
+        /// <param name="registry"></param>
+        /// <param name="modules"></param>
+        protected static void RegisterScannedModules(ILocatorRegistry registry, IEnumerable<Type> modules)
         {
             foreach (var module in modules)
             {
@@ -60,7 +65,11 @@
             }
         }
 
-        private void RegisterLocatorConfigureCollection(ILocatorRegistry registry)
+        /// <summary>
+        /// Registers ILocatorConfigure modules
+        /// </summary>
+        /// <param name="registry"></param>
+        protected void RegisterLocatorConfigureCollection(ILocatorRegistry registry)
         {
             if (LocatorConfigureModuleCollection?.Count > 0)
             {
@@ -71,7 +80,11 @@
             }
         }
 
-        private void RegisterStartupModuleCollection(ILocatorRegistry registry)
+        /// <summary>
+        /// Registers IStartupModules
+        /// </summary>
+        /// <param name="registry"></param>
+        protected void RegisterStartupModuleCollection(ILocatorRegistry registry)
         {
             if (StartupModuleCollection?.Count > 0)
             {

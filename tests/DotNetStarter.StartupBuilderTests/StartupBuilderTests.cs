@@ -10,7 +10,7 @@ using System.Linq;
 namespace DotNetStarter.StartupBuilderTests
 {
     [TestClass]
-    public class FluentTests
+    public class StartupBuilderTests
     {
         [TestMethod]
         public void ShouldRegisterConfigureModuleViaConfiguration()
@@ -112,7 +112,7 @@ namespace DotNetStarter.StartupBuilderTests
                 {
                     assemblies
                         .WithAssemblyFromType<RegistrationConfiguration>()
-                        .WithAssembly(typeof(FluentTests).Assembly())
+                        .WithAssembly(typeof(StartupBuilderTests).Assembly())
                         .WithAssembliesFromTypes(typeof(StartupBuilder));
                 })
                 .ConfigureStartupModules(modules =>

@@ -10,10 +10,10 @@ namespace DotNetStarter.Configure.Expressions
     public sealed class StartupModulesExpression
     {
         internal readonly HashSet<Type> RemoveModuleTypes = new HashSet<Type>();
-        private Action<ILocatorConfigureCollection> _locatorConfigureCollection;
+        private Action<ILocatorConfigureModuleCollection> _locatorConfigureCollection;
         private Action<IStartupModuleCollection> _startupModuleCollection;
 
-        internal ILocatorConfigureCollection InternalConfigureModules { get; private set; }
+        internal ILocatorConfigureModuleCollection InternalConfigureModules { get; private set; }
         internal IStartupModuleCollection InternalStartupModules { get; private set; }
 
         /// <summary>
@@ -22,7 +22,7 @@ namespace DotNetStarter.Configure.Expressions
         /// </summary>
         /// <param name="locatorConfigureModuleCollection"></param>
         /// <returns></returns>
-        public StartupModulesExpression ConfigureLocatorModuleCollection(Action<ILocatorConfigureCollection> locatorConfigureModuleCollection)
+        public StartupModulesExpression ConfigureLocatorModuleCollection(Action<ILocatorConfigureModuleCollection> locatorConfigureModuleCollection)
         {
             _locatorConfigureCollection += locatorConfigureModuleCollection;
             return this;

@@ -31,6 +31,6 @@
         /// <summary>
         /// ILocatorConfigure modules added during configuration using the StartupModuleExpression
         /// </summary>
-        ILocatorConfigureCollection LocatorConfigureModuleCollection { get; set; }
+        ILocatorConfigureModuleCollection LocatorConfigureModuleCollection { get; set; }
     }
 }

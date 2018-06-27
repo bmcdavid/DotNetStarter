@@ -57,19 +57,19 @@ namespace DotNetStarter.Configure
             if (_isConfigured) return this;
 
             _isConfigured = true;
-            var _fluentObjectFactory = new StartupBuilderObjectFactory() { Environment = _environment };
+            var objFactory = new StartupBuilderObjectFactory() { Environment = _environment };
             var assemblyExp = new AssemblyExpression();
             _assemblyExpression?.Invoke(assemblyExp);
-            _fluentObjectFactory.AssemblyExpression = assemblyExp;
+            objFactory.AssemblyExpression = assemblyExp;
 
             var moduleExp = new StartupModulesExpression();
             _moduleExpression?.Invoke(moduleExp);
             moduleExp.Build();
-            _fluentObjectFactory.StartupModulesExpression = moduleExp;
+            objFactory.StartupModulesExpression = moduleExp;
 
             var overrideExp = new OverrideExpression();
             _overrideExpression?.Invoke(overrideExp);
-            _fluentObjectFactory.OverrideExpression = overrideExp;
+            objFactory.OverrideExpression = overrideExp;
 
             // default way using the static startup
             if (useApplicationContext)
@@ -78,7 +78,7 @@ namespace DotNetStarter.Configure
                 var assemblies = assemblyExp.Assemblies.Count > 0 ? assemblyExp.Assemblies : null;
 
                 // one day, perhaps this static startup goes away :)
-                ApplicationContext.Startup(objectFactory: _fluentObjectFactory, assemblies: assemblies);
+                ApplicationContext.Startup(objectFactory: objFactory, assemblies: assemblies);
                 StartupContext = ApplicationContext.Default;
                 return this;
             }
@@ -89,8 +89,8 @@ namespace DotNetStarter.Configure
             }
 
             // allows for non static execution
-            var startupConfig = _fluentObjectFactory.CreateStartupConfiguration(assemblyExp.Assemblies, startupEnvironment: null);
-            StartupContext = ApplicationContext.RunStartup(_fluentObjectFactory, startupConfig);
+            var startupConfig = objFactory.CreateStartupConfiguration(assemblyExp.Assemblies, startupEnvironment: null);
+            StartupContext = ApplicationContext.RunStartup(objFactory, startupConfig);
             return this;
         }
 
