@@ -8,8 +8,7 @@ namespace DotNetStarter.Internal
 {
     public sealed class ReadOnlyLocator : IReadOnlyLocator, ILocatorSetContainer, ILocatorCreateScope, ILocatorWithPropertyInjection
     {
-        static bool _IsLocked = false;
-        ILocator _ConfiguredLocator;
+        private readonly ILocator _ConfiguredLocator;
 
         private ReadOnlyLocator(ILocator configuredLocator)
         {
@@ -28,7 +27,7 @@ namespace DotNetStarter.Internal
             }
         }
 
-        public bool IsLocked => _IsLocked;
+        public bool IsLocked { get; private set; } = false;
 
         public static ReadOnlyLocator CreateReadOnlyLocator(ILocator configuredLocator)
         {
@@ -62,7 +61,7 @@ namespace DotNetStarter.Internal
 
         public void EnsureLocked()
         {
-            _IsLocked = true;
+            IsLocked = true;
         }
 
         public object Get(Type serviceType, string key = null)
