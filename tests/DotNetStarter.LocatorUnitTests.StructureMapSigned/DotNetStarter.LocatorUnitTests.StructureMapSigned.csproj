@@ -1,19 +1,22 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFrameworks>netcoreapp2.0;netcoreapp1.0;net45;</TargetFrameworks>
+    <TargetFrameworks>net45;</TargetFrameworks>
     <IsPackable>false</IsPackable>
+    <DefineConstants>$(DefineConstants);STRUCTUREMAPSIGNED_LOCATOR;</DefineConstants>
   </PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="15.7.0" />
     <PackageReference Include="MSTest.TestAdapter" Version="1.2.1" />
     <PackageReference Include="MSTest.TestFramework" Version="1.2.1" />
+    <Compile Include="..\DotNetStarter.LocatorUnitTests\**\*.cs" />
   </ItemGroup>
+  
 
   <ItemGroup>
     <ProjectReference Include="..\..\src\DotNetStarter.Abstractions\DotNetStarter.Abstractions.csproj" />
-    <ProjectReference Include="..\..\src\DotNetStarter.Locators.StructureMap\DotNetStarter.Locators.StructureMap.csproj" />
     <ProjectReference Include="..\..\src\DotNetStarter.RegistrationAbstractions\DotNetStarter.RegistrationAbstractions.csproj" />
     <ProjectReference Include="..\..\src\DotNetStarter\DotNetStarter.csproj" />
+    <ProjectReference Include="..\..\src\DotNetStarter.Locators.StructureMapSigned\DotNetStarter.Locators.StructureMapSigned.csproj" />
   </ItemGroup>
 </Project>

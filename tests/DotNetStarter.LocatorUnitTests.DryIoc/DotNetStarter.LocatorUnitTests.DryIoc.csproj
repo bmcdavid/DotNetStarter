@@ -2,45 +2,39 @@
   <PropertyGroup>
     <TargetFrameworks>net45;net451;net452;netcoreapp1.0;netcoreapp2.0</TargetFrameworks>
     <IsPackable>false</IsPackable>
+    <DefineConstants>$(DefineConstants);DRYIOC_LOCATOR;</DefineConstants>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(TargetFramework)' == 'netcoreapp1.0' OR '$(TargetFramework)' == 'netcoreapp2.0'">
     <DefineConstants>$(DefineConstants);NETSTANDARD;</DefineConstants>
   </PropertyGroup>
-
+  
   <ItemGroup>
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="15.7.0" />
     <PackageReference Include="MSTest.TestAdapter" Version="1.2.1" />
     <PackageReference Include="MSTest.TestFramework" Version="1.2.1" />
+    <Compile Include="..\DotNetStarter.LocatorUnitTests\**\*.cs" />
   </ItemGroup>
 
   <ItemGroup Condition="'$(TargetFramework)' == 'net45'">
     <ProjectReference Include="..\..\src\DotNetStarter.Abstractions\DotNetStarter.Abstractions.csproj" AdditionalProperties="TargetFramework=net35" />
     <ProjectReference Include="..\..\src\DotNetStarter.RegistrationAbstractions\DotNetStarter.RegistrationAbstractions.csproj" AdditionalProperties="TargetFramework=net35" />
     <ProjectReference Include="..\..\src\DotNetStarter\DotNetStarter.csproj" AdditionalProperties="TargetFramework=net35" />
+    <ProjectReference Include="..\..\src\DotNetStarter.Locators.DryIoc\DotNetStarter.Locators.DryIoc.csproj" AdditionalProperties="TargetFramework=net35" />
   </ItemGroup>
 
   <ItemGroup Condition="'$(TargetFramework)' == 'net451'">
     <ProjectReference Include="..\..\src\DotNetStarter.Abstractions\DotNetStarter.Abstractions.csproj" AdditionalProperties="TargetFramework=net40" />
     <ProjectReference Include="..\..\src\DotNetStarter.RegistrationAbstractions\DotNetStarter.RegistrationAbstractions.csproj" AdditionalProperties="TargetFramework=net40" />
     <ProjectReference Include="..\..\src\DotNetStarter\DotNetStarter.csproj" AdditionalProperties="TargetFramework=net40" />
+    <ProjectReference Include="..\..\src\DotNetStarter.Locators.DryIoc\DotNetStarter.Locators.DryIoc.csproj" AdditionalProperties="TargetFramework=net40" />
   </ItemGroup>
 
-  <ItemGroup Condition="'$(TargetFramework)' == 'net452'">
-    <ProjectReference Include="..\..\src\DotNetStarter.Abstractions\DotNetStarter.Abstractions.csproj" AdditionalProperties="TargetFramework=net45" />
-    <ProjectReference Include="..\..\src\DotNetStarter.RegistrationAbstractions\DotNetStarter.RegistrationAbstractions.csproj" AdditionalProperties="TargetFramework=net45" />
-    <ProjectReference Include="..\..\src\DotNetStarter\DotNetStarter.csproj" AdditionalProperties="TargetFramework=net45" />
-  </ItemGroup>
-
-  <ItemGroup Condition="'$(TargetFramework)' == 'netcoreapp1.0'">
-    <ProjectReference Include="..\..\src\DotNetStarter.Abstractions\DotNetStarter.Abstractions.csproj" AdditionalProperties="TargetFramework=netstandard1.0" />
-    <ProjectReference Include="..\..\src\DotNetStarter.RegistrationAbstractions\DotNetStarter.RegistrationAbstractions.csproj" AdditionalProperties="TargetFramework=netstandard1.0" />
-    <ProjectReference Include="..\..\src\DotNetStarter\DotNetStarter.csproj" AdditionalProperties="TargetFramework=netstandard1.0" />
-  </ItemGroup>
-
-  <ItemGroup Condition="'$(TargetFramework)' == 'netcoreapp2.0'">
-    <ProjectReference Include="..\..\src\DotNetStarter.Abstractions\DotNetStarter.Abstractions.csproj" AdditionalProperties="TargetFramework=netstandard2.0" />
-    <ProjectReference Include="..\..\src\DotNetStarter.RegistrationAbstractions\DotNetStarter.RegistrationAbstractions.csproj" AdditionalProperties="TargetFramework=netstandard2.0" />
-    <ProjectReference Include="..\..\src\DotNetStarter\DotNetStarter.csproj" AdditionalProperties="TargetFramework=netstandard2.0" />
+  <!--Fallback for remaining are selected correctly-->
+  <ItemGroup Condition="'$(TargetFramework)' != 'net45' AND '$(TargetFramework)' != 'net451'">
+    <ProjectReference Include="..\..\src\DotNetStarter.Abstractions\DotNetStarter.Abstractions.csproj" />
+    <ProjectReference Include="..\..\src\DotNetStarter.RegistrationAbstractions\DotNetStarter.RegistrationAbstractions.csproj" />
+    <ProjectReference Include="..\..\src\DotNetStarter\DotNetStarter.csproj" />
+    <ProjectReference Include="..\..\src\DotNetStarter.Locators.DryIoc\DotNetStarter.Locators.DryIoc.csproj" />
   </ItemGroup>
 </Project>
