@@ -2,7 +2,6 @@
   <Import Project="..\..\targets\AddReleaseNotes.targets" />
   <Import Project="..\..\targets\AddReadMeMarkdown.targets" />
   <Import Project="..\..\targets\CommonBuild.props" />
-  <Import Project="..\..\targets\CommonNuGetPackage.props" />
 
   <PropertyGroup>
     <PackageId>DotNetStarter.DryIoc</PackageId>
@@ -18,6 +17,8 @@
     <AssemblyVersion>2.0.0</AssemblyVersion>
     <FileVersion>2.0.0</FileVersion>
   </PropertyGroup>
+
+  <Import Project="..\..\targets\CommonNuGetPackage.props" />
 
   <ItemGroup>
     <PackageReference Include="DryIoc.dll" version="2.12.5" />

@@ -1,5 +1,5 @@
 <Project>
-  <!-- Must be imported after CommonBuild -->
+  <!-- Must be imported after ProjectVersion property and CommonBuild -->
   <PropertyGroup>
     <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
     <PackageLicenseUrl>https://github.com/bmcdavid/DotNetStarter/blob/master/license.txt</PackageLicenseUrl>
