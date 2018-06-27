@@ -15,12 +15,9 @@ namespace DotNetStarter.UnitTests
         public static void Setup(TestContext context)
         {
             List<Assembly> assemblies = new List<Assembly>();
-#if NETCOREAPP1_0
             assemblies.Add(typeof(DotNetStarter.ApplicationContext).Assembly());
             assemblies.Add(typeof(DotNetStarter.Abstractions.RegistrationConfiguration).Assembly());
-#else
-            assemblies.AddRange(AppDomain.CurrentDomain.GetAssemblies());
-#endif
+            assemblies.Add(typeof(DotNetStarter.UnitTests.Mocks.ExcludeModule).Assembly());
 
             ApplicationContext.Startup(assemblies: assemblies, objectFactory: new Mocks.TestObjectFactory());
         }
