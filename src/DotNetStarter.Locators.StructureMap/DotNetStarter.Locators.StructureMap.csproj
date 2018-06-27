@@ -22,14 +22,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\DotNetStarter.Abstractions\DotNetStarter.Abstractions.csproj" />
-  </ItemGroup>
-
-  <ItemGroup Condition="'$(TargetFramework)' == 'net45'">
     <PackageReference Include="structuremap" version="4.6.1" />
-  </ItemGroup>
-
-  <ItemGroup Condition="'$(TargetFramework)' == 'netstandard1.3'">
-    <PackageReference Include="structuremap" version="4.5.3" />
-  </ItemGroup>
-  
+  </ItemGroup>  
 </Project>
