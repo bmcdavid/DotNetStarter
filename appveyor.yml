@@ -6,7 +6,18 @@ before_build:
 build:
   verbosity: minimal
 after_test:
+# dotnet pack fails for net35 supported projects
 #- cmd: dotnet pack --output ..\..\
-- cmd: msbuild /t:pack /p:IncludeSymbols=true /p:Configuration=Release src\DotNetStarter.Web\DotNetStarter.Web.csproj
+- cmd: msbuild /t:pack /p:NoBuild=true /p:IncludeSymbols=true /p:Configuration=Release /p:PackageOutputPath=..\..\ src\DotNetStarter\DotNetStarter.csproj
+- cmd: msbuild /t:pack /p:NoBuild=true /p:IncludeSymbols=true /p:Configuration=Release /p:PackageOutputPath=..\..\ src\DotNetStarter.Abstractions\DotNetStarter.Abstractions.csproj
+- cmd: msbuild /t:pack /p:NoBuild=true /p:IncludeSymbols=true /p:Configuration=Release /p:PackageOutputPath=..\..\ src\DotNetStarter.Owin\DotNetStarter.Owin.csproj
+- cmd: msbuild /t:pack /p:NoBuild=true /p:IncludeSymbols=true /p:Configuration=Release /p:PackageOutputPath=..\..\ src\DotNetStarter.RegistrationAbstractions\DotNetStarter.RegistrationAbstractions.csproj
+- cmd: msbuild /t:pack /p:NoBuild=true /p:IncludeSymbols=true /p:Configuration=Release /p:PackageOutputPath=..\..\ src\DotNetStarter.Web\DotNetStarter.Web.csproj
+- cmd: msbuild /t:pack /p:NoBuild=true /p:IncludeSymbols=true /p:Configuration=Release /p:PackageOutputPath=..\..\ src\DotNetStarter.Extensions.Mvc\DotNetStarter.Extensions.Mvc.csproj
+- cmd: msbuild /t:pack /p:NoBuild=true /p:IncludeSymbols=true /p:Configuration=Release /p:PackageOutputPath=..\..\ src\DotNetStarter.Extensions.WebApi\DotNetStarter.Extensions.WebApi.csproj
+- cmd: msbuild /t:pack /p:NoBuild=true /p:IncludeSymbols=true /p:Configuration=Release /p:PackageOutputPath=..\..\ src\DotNetStarter.Locators.DryIoc\DotNetStarter.Locators.DryIoc.csproj
+- cmd: msbuild /t:pack /p:NoBuild=true /p:IncludeSymbols=true /p:Configuration=Release /p:PackageOutputPath=..\..\ src\DotNetStarter.Locators.StructureMap\DotNetStarter.Locators.StructureMap.csproj
+- cmd: msbuild /t:pack /p:NoBuild=true /p:IncludeSymbols=true /p:Configuration=Release /p:PackageOutputPath=..\..\ src\DotNetStarter.Locators.LightInject\DotNetStarter.Locators.LightInject.csproj
+- cmd: msbuild /t:pack /p:NoBuild=true /p:IncludeSymbols=true /p:Configuration=Release /p:PackageOutputPath=..\..\ src\DotNetStarter.Locators.StructureMapSigned\DotNetStarter.Locators.StructureMapSigned.csproj
 artifacts:
   - path: '*.nupkg'
