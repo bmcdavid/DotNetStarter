@@ -23,14 +23,21 @@ Package  | Version
 
 To kickoff the startup modules and configure the locator please execute the following early in the project startup, for example global.asax class constructor for ASP.Net Framework web applications.
 
+The StartupBuilder provides a fluent API to change almost every aspect of the startup process, but can also be as simple as:
+
+```cs
+DotNetStarter.Configure.StartupBuilder.Create().Run();
+```
+Or more finely-tuned for assembly scanning and overriding defaults.
+
 ```cs
 var builder = DotNetStarter.Configure.StartupBuilder.Create();
 builder
-	// configure the assemblies to scan
+    // configure the assemblies to scan
     .ConfigureAssemblies(assemblies =>
     {
         assemblies
-			// Filters assemblies for ones using the [assembly: DotNetStarter.Abstractions.DiscoverableAssembly] 
+            // Filters assemblies for ones using the [assembly: DotNetStarter.Abstractions.DiscoverableAssembly] 
             .WithDiscoverableAssemblies() // for ASP.NET Core projects an initial list of assemblies must be provided
             .WithAssemblyFromType<RegistrationConfiguration>()
             .WithAssembliesFromTypes(typeof(StartupBuilder), typeof(BadStartupModule));
@@ -39,16 +46,16 @@ builder
     {
         modules
             // ability to manually add ILocatorConfigure modules after the scanned ones
-			.ConfigureLocatorModuleCollection(configureModules =>
+            .ConfigureLocatorModuleCollection(configureModules =>
             {
                 configureModules.Add(sut);
             })
-			// ability to manually add IStartupModule modules after the scanned ones
-			.ConfigureStartupModuleCollection(collection =>
+            // ability to manually add IStartupModule modules after the scanned ones
+           .ConfigureStartupModuleCollection(collection =>
             {
                 collection.AddType<TestStartupModule>();
             })
-			// if there are any modules that are acting badly or if you want to customize remove some to insert customized versions.
+            // if there are any modules that are acting badly or if you want to customize remove some to insert customized versions.
             .RemoveStartupModule<BadStartupModule>()
             .RemoveConfigureModule<BadConfigureModule>();
     })
@@ -62,12 +69,6 @@ builder
     })
     .Build() // configures the ILocator
     .Run() // Runs IStartupModule registrations;
-```
-
-The StartupBuilder provides a fluent API to change almost every aspect of the startup process, but can also be as simple as:
-
-```cs
-DotNetStarter.Configure.StartupBuilder.Create().Run();
 ```
 
 ### Inversion of Control / Dependency Injection
