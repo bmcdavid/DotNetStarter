@@ -52,11 +52,14 @@
             return filteredAssemblies.ToList();
         }
 
+        // todo: Remove Startup methods on breaking change
+
         /// <summary>
         /// Entry point for startup process
         /// </summary>
         /// <param name="configuration"></param>
         /// <param name="objectFactory"></param>
+        [Obsolete("Please use DotNetStarter.Configure.StartupBuilder.Create().Run() instead!, This will be removed next breaking change!", false)]
         public static void Startup(IStartupConfiguration configuration, IStartupObjectFactory objectFactory = null)
         {
             EnsureStartup(configuration: configuration, objectFactory: objectFactory);
@@ -68,6 +71,7 @@
         /// <param name="environment"></param>
         /// <param name="assemblies"></param>
         /// <param name="objectFactory"></param>
+        [Obsolete("Please use DotNetStarter.Configure.StartupBuilder.Create().Run() instead!, This will be removed next breaking change!", false)]
         public static void Startup(IStartupEnvironment environment = null, IEnumerable<Assembly> assemblies = null, IStartupObjectFactory objectFactory = null)
         {
             EnsureStartup(environment: environment, objectFactory: objectFactory, assemblies: assemblies);
@@ -82,14 +86,16 @@
             {
                 if (_Default == null)
                 {
-                    EnsureStartup();
+                    Configure.StartupBuilder.Create().Run();
                 }
 
                 return _Default;
             }
         }
 
-        private static void EnsureStartup(IStartupEnvironment environment = null, IStartupConfiguration configuration = null, IStartupObjectFactory objectFactory = null, IEnumerable<Assembly> assemblies = null)
+#pragma warning disable CS0612 // Type or member is obsolete
+        internal static void EnsureStartup(IStartupEnvironment environment = null, IStartupConfiguration configuration = null, IStartupObjectFactory objectFactory = null, IEnumerable<Assembly> assemblies = null)
+#pragma warning restore CS0612 // Type or member is obsolete
         {
             if (!Started)
             {
@@ -114,7 +120,9 @@
             }
         }
 
+#pragma warning disable CS0612 // Type or member is obsolete
         internal static IStartupContext RunStartup(IStartupObjectFactory startupObjectFactory, IStartupConfiguration startupConfiguration)
+#pragma warning restore CS0612 // Type or member is obsolete
         {
             if (startupObjectFactory == null) throw new ArgumentNullException(nameof(startupObjectFactory));
             if (startupConfiguration == null) throw new ArgumentNullException(nameof(startupConfiguration));
@@ -129,9 +137,8 @@
         {
             var dependents = config.DependencyFinder.Find<TFactoryAttr>(config.Assemblies);
             var sorted = config.DependencySorter.Sort<TFactoryAttr>(dependents);
-            var attr = sorted.LastOrDefault()?.NodeAttribute as AssemblyFactoryBaseAttribute;
 
-            if (attr == null)
+            if (!(sorted.LastOrDefault()?.NodeAttribute is AssemblyFactoryBaseAttribute attr))
                 return default(TFactoryType);
 
             return (TFactoryType)Activator.CreateInstance(attr.FactoryType);

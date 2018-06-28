@@ -10,7 +10,7 @@ namespace DotNetStarter.Web.Tests
         [AssemblyInitialize]
         public static void Setup(TestContext context)
         {
-            IEnumerable<Assembly> assemblies = new Assembly[]
+            var scannableAssemblies = new List<Assembly>
             {
                 typeof(DotNetStarter.ApplicationContext).Assembly,
                 typeof(DotNetStarter.Abstractions.IAssemblyFilter).Assembly,
@@ -19,7 +19,9 @@ namespace DotNetStarter.Web.Tests
                 typeof(Mocks.MockHttpContextProvider).Assembly,
             };
 
-            ApplicationContext.Startup(assemblies: assemblies);
+            Configure.StartupBuilder.Create()
+                .ConfigureAssemblies(a => a.WithAssemblies(scannableAssemblies))
+                .Run();
         }
     }
 }

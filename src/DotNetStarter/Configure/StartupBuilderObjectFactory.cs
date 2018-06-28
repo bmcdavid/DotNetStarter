@@ -7,7 +7,9 @@ using System.Reflection;
 
 namespace DotNetStarter.Configure
 {
+#pragma warning disable CS0612 // Type or member is obsolete
     internal class StartupBuilderObjectFactory : IStartupObjectFactory
+#pragma warning restore CS0612 // Type or member is obsolete
     {
         public AssemblyExpression AssemblyExpression { get; set; }
         public IStartupEnvironment Environment { get; set; }
@@ -31,7 +33,7 @@ namespace DotNetStarter.Configure
         {
             var defaults = OverrideExpression.ContainerDefaults ?? new ContainerDefaults();
 
-            if (defaults is IlocatorDefaultRegistrationsWithCollections defaultWithCollections)
+            if (defaults is ILocatorDefaultRegistrationsWithCollections defaultWithCollections)
             {
                 defaultWithCollections.LocatorConfigureModuleCollection = StartupModulesExpression.InternalConfigureModules;
                 defaultWithCollections.StartupModuleCollection = StartupModulesExpression.InternalStartupModules;

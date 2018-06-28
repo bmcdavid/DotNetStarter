@@ -19,7 +19,9 @@ namespace DotNetStarter.Extensions.Mvc.Tests
                 typeof(_TestSetup).Assembly
             };
 
-            DotNetStarter.ApplicationContext.Startup(assemblies: scannableAssemblies);
+            Configure.StartupBuilder.Create()
+                .ConfigureAssemblies(a => a.WithAssemblies(scannableAssemblies))
+                .Run();
         }
     }
 }

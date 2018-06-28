@@ -1,18 +1,17 @@
-﻿using DotNetStarter.Abstractions;
-
-namespace DotNetStarter
+﻿namespace DotNetStarter
 {
     using Abstractions;
     using Internal;
     using System;
     using System.Collections.Generic;
-    using System.Linq;
     using System.Reflection;
 
+#pragma warning disable CS0612 // Type or member is obsolete
     /// <summary>
     /// Default initalization object factory, responsible for creating types before container is ready
     /// </summary>
     public class StartupObjectFactory : IStartupObjectFactory
+#pragma warning restore CS0612 // Type or member is obsolete
     {
         /// <summary>
         /// Creates default assembly filter.

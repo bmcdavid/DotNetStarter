@@ -77,11 +77,7 @@ namespace DotNetStarter.Internal
         /// <returns></returns>
         public virtual IEnumerable<Assembly> GetAssemblies()
         {
-            throw new NotImplementedException($"Please pass assemblies to {typeof(ApplicationContext).FullName}.{nameof(ApplicationContext.Startup)}!");
-            //var runtimeId = Microsoft.DotNet.PlatformAbstractions.RuntimeEnvironment.GetRuntimeIdentifier();
-            //var libraries = Microsoft.Extensions.DependencyModel.DependencyContextExtensions.GetRuntimeAssemblyNames(Microsoft.Extensions.DependencyModel.DependencyContext.Default, runtimeId);
-
-            //return libraries.Select(x => Assembly.Load(new AssemblyName(x.Name)));
+            throw new AssembliesNotConfiguredException();
         }
 #else
         /// <summary>

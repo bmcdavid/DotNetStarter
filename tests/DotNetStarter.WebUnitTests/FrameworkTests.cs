@@ -13,7 +13,9 @@ namespace DotNetStarter.Web.Tests
         [TestMethod]
         public void ShouldCreateStartupEnvironmentWeb()
         {
+#pragma warning disable CS0612 // Type or member is obsolete
             var x = new StartupConfigurationWithWebEnvironment(
+#pragma warning restore CS0612 // Type or member is obsolete
                 System.AppDomain.CurrentDomain.GetAssemblies(),
                 new StartupEnvironmentWeb("UnitTest"),
                 new AssemblyFilter(),

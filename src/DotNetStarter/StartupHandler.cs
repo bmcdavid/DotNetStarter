@@ -54,14 +54,16 @@
         /// </summary>
         public ILocator Locator { get; protected set; }
 
-        /// <summary>
-        /// Starup process, by default it scans assemblies, sorts modules, configures container, and runs startup for each module
-        /// </summary>
-        /// <param name="config"></param>
-        /// <param name="objectFactory"></param>
-        /// <param name="context"></param>
-        /// <returns></returns>
+#pragma warning disable CS0612 // Type or member is obsolete
+                              /// <summary>
+                              /// Starup process, by default it scans assemblies, sorts modules, configures container, and runs startup for each module
+                              /// </summary>
+                              /// <param name="config"></param>
+                              /// <param name="objectFactory"></param>
+                              /// <param name="context"></param>
+                              /// <returns></returns>
         public virtual bool Startup(IStartupConfiguration config, IStartupObjectFactory objectFactory, out IStartupContext context)
+#pragma warning restore CS0612 // Type or member is obsolete
         {
             if (_Started)
             {

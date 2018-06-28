@@ -9,7 +9,7 @@
     /// <summary>
     /// Assigns default instances to the container
     /// </summary>
-    public class ContainerDefaults : ILocatorDefaultRegistrations, IlocatorDefaultRegistrationsWithCollections
+    public class ContainerDefaults : ILocatorDefaultRegistrations, ILocatorDefaultRegistrationsWithCollections
     {
         private static readonly Type LocatorConfigureType = typeof(ILocatorConfigure);
         private static readonly Type StartupModuleType = typeof(IStartupModule);
@@ -24,14 +24,16 @@
         /// </summary>
         public IStartupModuleCollection StartupModuleCollection { get; set; }
 
-        /// <summary>
-        /// Assigns default instances to the locator
-        /// </summary>
-        /// <param name="registry"></param>
-        /// <param name="filteredModules"></param>
-        /// <param name="configuration"></param>
-        /// <param name="objectFactory"></param>
+#pragma warning disable CS0612 // Type or member is obsolete
+                              /// <summary>
+                              /// Assigns default instances to the locator
+                              /// </summary>
+                              /// <param name="registry"></param>
+                              /// <param name="filteredModules"></param>
+                              /// <param name="configuration"></param>
+                              /// <param name="objectFactory"></param>
         public virtual void Configure(ILocatorRegistry registry, IEnumerable<IDependencyNode> filteredModules, IStartupConfiguration configuration, IStartupObjectFactory objectFactory)
+#pragma warning restore CS0612 // Type or member is obsolete
         {
             var modules = filteredModules.Select(x => x.Node).OfType<Type>();
             RegisterScannedModules(registry, modules);
@@ -40,7 +42,9 @@
 
             // add default instances    
             registry.Add(typeof(IStartupConfiguration), configuration);
+#pragma warning disable CS0612 // Type or member is obsolete
             registry.Add(typeof(IStartupObjectFactory), objectFactory);
+#pragma warning restore CS0612 // Type or member is obsolete
             registry.Add(typeof(IStartupLogger), configuration.Logger);
             registry.Add(typeof(IAssemblyScanner), configuration.AssemblyScanner);
             registry.Add(typeof(IDependencyFinder), configuration.DependencyFinder);

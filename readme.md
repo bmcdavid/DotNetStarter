@@ -62,7 +62,7 @@ builder
     // ability to customize environment object, which can be used make registration decisions based on environment
     .UseEnvironment(new StartupEnvironment("UnitTest1", ""))
     // override default objects
-	.OverrideDefaults(defaults =>
+    .OverrideDefaults(defaults =>
     {
         defaults
             .UseLogger(new StringLogger(LogLevel.Info));

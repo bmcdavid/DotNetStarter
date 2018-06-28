@@ -76,16 +76,14 @@ namespace DotNetStarter.Configure
             {
                 // if no assemblies have been configured follow the default scanner rule
                 var assemblies = assemblyExp.Assemblies.Count > 0 ? assemblyExp.Assemblies : null;
-
-                // one day, perhaps this static startup goes away :)
-                ApplicationContext.Startup(objectFactory: objFactory, assemblies: assemblies);
+                ApplicationContext.EnsureStartup(objectFactory: objFactory, assemblies: assemblies);
                 StartupContext = ApplicationContext.Default;
                 return this;
             }
 
             if (assemblyExp.Assemblies.Count == 0)
             {
-                throw new Exception($"No assemblies were configured for scanning! Please add them using the {nameof(ConfigureAssemblies)} callback");
+                throw new Internal.AssembliesNotConfiguredException();
             }
 
             // allows for non static execution
