@@ -1,0 +1,17 @@
+<Project>
+  <!-- Must be imported after ProjectVersion property and CommonBuild -->
+  <PropertyGroup>
+    <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
+    <PackageLicenseUrl>https://github.com/bmcdavid/DotNetStarter/blob/master/license.txt</PackageLicenseUrl>
+    <PackageProjectUrl>https://bmcdavid.github.io/DotNetStarter/</PackageProjectUrl>
+    <IncludeReadMeMarkdown>true</IncludeReadMeMarkdown>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <IncludeSymbols>true</IncludeSymbols>
+    <IncludeSource>true</IncludeSource>
+
+    <!--set assembly info version from CI prop if possible-->
+    <BuildInfo Condition="'$(CIBuildNumber)' != ''"> Commit: $(RepositoryCommit) Branch: $(RepositoryBranch) Build: $(CIBuildNumber)</BuildInfo>
+    <InformationalVersion>$(PackageVersion)$(BuildInfo)</InformationalVersion>
+
+  </PropertyGroup>
+</Project>

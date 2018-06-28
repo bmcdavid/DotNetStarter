@@ -25,7 +25,7 @@
                 .WithoutThrowIfDependencyHasShorterReuseLifespan()
                 .WithFactorySelector(Rules.SelectLastRegisteredFactory())
                 .WithTrackingDisposableTransients() //used in transient delegate cases
-                .WithImplicitRootOpenScope()
+                .WithImplicitRootOpenScope() // removed in V3
                 ;
 
             _Container = container ?? new Container(rules);
@@ -104,8 +104,7 @@
         /// <param name="key"></param>
         /// <returns></returns>
         public virtual IEnumerable<TService> GetAll<TService>(string key = null) =>
-                    _Container.ResolveMany<TService>(serviceKey: key); //_Container.Resolve<IEnumerable<TService>>(IfUnresolved.ReturnDefault);
-
+                    _Container.ResolveMany<TService>(serviceKey: key);
 
         /// <summary>
         /// Creates/opens locator scope

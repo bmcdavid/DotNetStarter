@@ -1,12 +1,12 @@
 ﻿namespace DotNetStarter.Abstractions
 {
     /// <summary>
-    /// Creates locator registry objects
+    /// Creates an ILocatorRegistry
     /// </summary>
     public interface ILocatorRegistryFactory
     {
         /// <summary>
-        /// Creates locator registry objects
+        /// Creates an ILocatoryRegistry
         /// </summary>
         /// <returns></returns>
         ILocatorRegistry CreateRegistry();

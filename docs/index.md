@@ -5,8 +5,8 @@ title: DotNetStarter
 
 [![Build status](https://ci.appveyor.com/api/projects/status/a907wfniy73sk5de?svg=true)](https://ci.appveyor.com/project/bmcdavid/dotnetstarter)
 
-The goal of this project is to create a startup and IoC/DI framework for netframeworks 3.5+ and netstandard 1.0+
- which allows packages to support container registrations with a container specified at runtime.
+The goal of this project is to create a startup and dependency injection framework for netframeworks 3.5+ and netstandard 1.0+
+ which allows packages to support container registrations with a container determined at runtime. This allows NuGet package authors to depend on DotNetStarter.Abstractions or DotNetStarter.RegistrationAbstractions NuGet packages allowing authors the ability to use dependency injection in their code base. Application owners can install DotNetStarter and a DotNetStarter locator package to consume these packages and override package implementations as needed, or use the package's provided defaults.
 
 Package  | Version 
 -------- | :------------ 
@@ -19,12 +19,11 @@ Package  | Version
 [DotNetStarter.Structuremap](https://www.nuget.org/packages/DotNetStarter.Structuremap/) |  [![NuGet version](https://badge.fury.io/nu/DotNetStarter.Structuremap.svg)](https://badge.fury.io/nu/DotNetStarter.Structuremap)
 [DotNetStarter.Extensions.Mvc](https://www.nuget.org/packages/DotNetStarter.Extensions.Mvc/) |  [![NuGet version](https://badge.fury.io/nu/DotNetStarter.Extensions.Mvc.svg)](https://badge.fury.io/nu/DotNetStarter.Extensions.Mvc)
 [DotNetStarter.Extensions.WebApi](https://www.nuget.org/packages/DotNetStarter.Extensions.WebApi/) |  [![NuGet version](https://badge.fury.io/nu/DotNetStarter.Extensions.WebApi.svg)](https://badge.fury.io/nu/DotNetStarter.Extensions.WebApi)
-[DotNetStarter.Extensions.Episerver](https://www.nuget.org/packages/DotNetStarter.Extensions.Episerver/) |  [![NuGet version](https://badge.fury.io/nu/DotNetStarter.Extensions.Episerver.svg)](https://badge.fury.io/nu/DotNetStarter.Extensions.Episerver)
 
 ## Documentation
 
 * [**Important:** Breaking Changes](https://bmcdavid.github.io/DotNetStarter/breaking-changes.html)
-* [Object Factory and customization](https://bmcdavid.github.io/DotNetStarter/custom-objectfactory.html)
+* [Customization](https://bmcdavid.github.io/DotNetStarter/custom-objectfactory.html)
 * [Module creation, discovery, and dependencies](https://bmcdavid.github.io/DotNetStarter/modules.html)
 * [Registering items](https://bmcdavid.github.io/DotNetStarter/register.html)
 * [Assembly Scanning](https://bmcdavid.github.io/DotNetStarter/scanning.html)

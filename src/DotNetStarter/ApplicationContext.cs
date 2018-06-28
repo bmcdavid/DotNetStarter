@@ -23,13 +23,14 @@
 
         private static readonly object _Lock = new object();
 
-        private static bool _Started = false;
+        /// <summary>
+        /// Used to determine if application default startup has executed
+        /// </summary>
+        public static bool Started { get; private set; }
 
         private static bool _Starting = false;
 
         private static IStartupContext _Default;
-
-        private static IStartupHandler _Handler;
 
         private ApplicationContext()
         {
@@ -51,11 +52,14 @@
             return filteredAssemblies.ToList();
         }
 
+        // todo: Remove Startup methods on breaking change
+
         /// <summary>
         /// Entry point for startup process
         /// </summary>
         /// <param name="configuration"></param>
         /// <param name="objectFactory"></param>
+        [Obsolete("Please use DotNetStarter.Configure.StartupBuilder.Create().Run() instead!, This will be removed next breaking change!", false)]
         public static void Startup(IStartupConfiguration configuration, IStartupObjectFactory objectFactory = null)
         {
             EnsureStartup(configuration: configuration, objectFactory: objectFactory);
@@ -67,6 +71,7 @@
         /// <param name="environment"></param>
         /// <param name="assemblies"></param>
         /// <param name="objectFactory"></param>
+        [Obsolete("Please use DotNetStarter.Configure.StartupBuilder.Create().Run() instead!, This will be removed next breaking change!", false)]
         public static void Startup(IStartupEnvironment environment = null, IEnumerable<Assembly> assemblies = null, IStartupObjectFactory objectFactory = null)
         {
             EnsureStartup(environment: environment, objectFactory: objectFactory, assemblies: assemblies);
@@ -81,16 +86,18 @@
             {
                 if (_Default == null)
                 {
-                    EnsureStartup();
+                    Configure.StartupBuilder.Create().Run();
                 }
 
                 return _Default;
             }
         }
 
-        private static void EnsureStartup(IStartupEnvironment environment = null, IStartupConfiguration configuration = null, IStartupObjectFactory objectFactory = null, IEnumerable<Assembly> assemblies = null)
+#pragma warning disable CS0612 // Type or member is obsolete
+        internal static void EnsureStartup(IStartupEnvironment environment = null, IStartupConfiguration configuration = null, IStartupObjectFactory objectFactory = null, IEnumerable<Assembly> assemblies = null)
+#pragma warning restore CS0612 // Type or member is obsolete
         {
-            if (!_Started)
+            if (!Started)
             {
                 if (_Starting)
                 {
@@ -99,18 +106,42 @@
 
                 lock (_Lock)
                 {
-                    if (!_Started)
+                    if (!Started)
                     {
                         _Starting = true;
                         var assembliesForStartup = configuration?.Assemblies ?? assemblies ?? new Internal.AssemblyLoader().GetAssemblies();
                         var factory = objectFactory ?? new StartupObjectFactory();
-                        _Handler = factory.CreateStartupHandler();
                         var startupConfig = configuration ?? factory.CreateStartupConfiguration(assembliesForStartup, environment);
-                        _Started = _Handler.Startup(startupConfig, factory, out _Default);
+                        _Default = RunStartup(factory, startupConfig);
+                        Started = _Default != null;
                         _Starting = false;
                     }
                 }
             }
+        }
+
+#pragma warning disable CS0612 // Type or member is obsolete
+        internal static IStartupContext RunStartup(IStartupObjectFactory startupObjectFactory, IStartupConfiguration startupConfiguration)
+#pragma warning restore CS0612 // Type or member is obsolete
+        {
+            if (startupObjectFactory == null) throw new ArgumentNullException(nameof(startupObjectFactory));
+            if (startupConfiguration == null) throw new ArgumentNullException(nameof(startupConfiguration));
+            var handler = startupObjectFactory.CreateStartupHandler() ?? throw new NullReferenceException($"{startupObjectFactory.GetType().FullName} returned a null for {nameof(startupObjectFactory.CreateStartupHandler)}!");
+
+            handler.Startup(startupConfiguration, startupObjectFactory, out var startupContext);
+
+            return startupContext;
+        }
+
+        internal static TFactoryType GetAssemblyFactory<TFactoryAttr, TFactoryType>(IStartupConfiguration config) where TFactoryAttr : AssemblyFactoryBaseAttribute
+        {
+            var dependents = config.DependencyFinder.Find<TFactoryAttr>(config.Assemblies);
+            var sorted = config.DependencySorter.Sort<TFactoryAttr>(dependents);
+
+            if (!(sorted.LastOrDefault()?.NodeAttribute is AssemblyFactoryBaseAttribute attr))
+                return default(TFactoryType);
+
+            return (TFactoryType)Activator.CreateInstance(attr.FactoryType);
         }
     }
 }

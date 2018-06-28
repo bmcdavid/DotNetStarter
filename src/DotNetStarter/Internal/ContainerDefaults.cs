@@ -1,7 +1,7 @@
 ﻿namespace DotNetStarter.Internal
 {
     using Abstractions;
-    using DotNetStarter.Abstractions.Internal;
+    using Abstractions.Internal;
     using System;
     using System.Collections.Generic;
     using System.Linq;
@@ -9,38 +9,101 @@
     /// <summary>
     /// Assigns default instances to the container
     /// </summary>
-    public class ContainerDefaults : ILocatorDefaultRegistrations
+    public class ContainerDefaults : ILocatorDefaultRegistrations, ILocatorDefaultRegistrationsWithCollections
     {
+        private static readonly Type LocatorConfigureType = typeof(ILocatorConfigure);
+        private static readonly Type StartupModuleType = typeof(IStartupModule);
+
         /// <summary>
-        /// Assigns default instances to the locator
+        /// ILocatorConfigure modules added during configuration
         /// </summary>
-        /// <param name="registry"></param>
-        /// <param name="filteredModules"></param>
-        /// <param name="configuration"></param>
-        /// <param name="objectFactory"></param>
+        public ILocatorConfigureModuleCollection LocatorConfigureModuleCollection { get; set; }
+
+        /// <summary>
+        /// IStartupModules added during configuration
+        /// </summary>
+        public IStartupModuleCollection StartupModuleCollection { get; set; }
+
+#pragma warning disable CS0612 // Type or member is obsolete
+                              /// <summary>
+                              /// Assigns default instances to the locator
+                              /// </summary>
+                              /// <param name="registry"></param>
+                              /// <param name="filteredModules"></param>
+                              /// <param name="configuration"></param>
+                              /// <param name="objectFactory"></param>
         public virtual void Configure(ILocatorRegistry registry, IEnumerable<IDependencyNode> filteredModules, IStartupConfiguration configuration, IStartupObjectFactory objectFactory)
+#pragma warning restore CS0612 // Type or member is obsolete
         {
-            Type initModuleType = typeof(IStartupModule);
-            Type configureModuleType = typeof(ILocatorConfigure);
             var modules = filteredModules.Select(x => x.Node).OfType<Type>();
-
-            foreach (var module in modules)
-            {
-                if (initModuleType.IsAssignableFromCheck(module))
-                    registry.Add(initModuleType, module, null, Lifecycle.Singleton);
-
-                if (configureModuleType.IsAssignableFromCheck(module))
-                    registry.Add(configureModuleType, module, null, Lifecycle.Singleton);
-            }
+            RegisterScannedModules(registry, modules);
+            RegisterStartupModuleCollection(registry);
+            RegisterLocatorConfigureCollection(registry);
 
             // add default instances    
             registry.Add(typeof(IStartupConfiguration), configuration);
+#pragma warning disable CS0612 // Type or member is obsolete
             registry.Add(typeof(IStartupObjectFactory), objectFactory);
+#pragma warning restore CS0612 // Type or member is obsolete
             registry.Add(typeof(IStartupLogger), configuration.Logger);
             registry.Add(typeof(IAssemblyScanner), configuration.AssemblyScanner);
             registry.Add(typeof(IDependencyFinder), configuration.DependencyFinder);
             registry.Add(typeof(IDependencySorter), configuration.DependencySorter);
-            registry.Add<ITimedTask, TimedTask>(lifecycle: Lifecycle.Transient);    
+            registry.Add<ITimedTask, TimedTask>(lifecycle: Lifecycle.Transient);
+        }
+
+        /// <summary>
+        /// Registers canned modules
+        /// </summary>
+        /// <param name="registry"></param>
+        /// <param name="modules"></param>
+        protected static void RegisterScannedModules(ILocatorRegistry registry, IEnumerable<Type> modules)
+        {
+            foreach (var module in modules)
+            {
+                if (StartupModuleType.IsAssignableFromCheck(module))
+                    registry.Add(StartupModuleType, module, null, Lifecycle.Singleton);
+
+                if (LocatorConfigureType.IsAssignableFromCheck(module))
+                    registry.Add(LocatorConfigureType, module, null, Lifecycle.Singleton);
+            }
+        }
+
+        /// <summary>
+        /// Registers ILocatorConfigure modules
+        /// </summary>
+        /// <param name="registry"></param>
+        protected void RegisterLocatorConfigureCollection(ILocatorRegistry registry)
+        {
+            if (LocatorConfigureModuleCollection?.Count > 0)
+            {
+                foreach (var module in LocatorConfigureModuleCollection)
+                {
+                    registry.Add(LocatorConfigureType, module);
+                }
+            }
+        }
+
+        /// <summary>
+        /// Registers IStartupModules
+        /// </summary>
+        /// <param name="registry"></param>
+        protected void RegisterStartupModuleCollection(ILocatorRegistry registry)
+        {
+            if (StartupModuleCollection?.Count > 0)
+            {
+                foreach (var module in StartupModuleCollection)
+                {
+                    if (module.ModuleInstance != null)
+                    {
+                        registry.Add(StartupModuleType, module.ModuleInstance);
+                    }
+                    else if (module.ModuleType != null)
+                    {
+                        registry.Add(StartupModuleType, module.ModuleType, null, Lifecycle.Singleton);
+                    }
+                }
+            }
         }
     }
 }

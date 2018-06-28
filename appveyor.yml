@@ -3,16 +3,33 @@ configuration: Release
 platform: Any CPU
 before_build:
 - cmd: nuget restore
-- ps: .\.nuget\setVersion.ps1    
 build:
   verbosity: minimal
 after_test:
-- ps: .\.nuget\pack.ps1    
+# dotnet pack fails for net35 supported projects
+#- cmd: dotnet pack --output ..\..\
+- cmd: >-
+    
+    msbuild /t:pack /p:NoBuild=true /p:Platform= /p:IncludeSymbols=true /p:Configuration=Release /p:PackageOutputPath=..\..\ src\DotNetStarter\DotNetStarter.csproj
+    
+    msbuild /t:pack /p:NoBuild=true /p:Platform= /p:IncludeSymbols=true /p:Configuration=Release /p:PackageOutputPath=..\..\ src\DotNetStarter.Abstractions\DotNetStarter.Abstractions.csproj
+    
+    msbuild /t:pack /p:NoBuild=true /p:Platform= /p:IncludeSymbols=true /p:Configuration=Release /p:PackageOutputPath=..\..\ src\DotNetStarter.Owin\DotNetStarter.Owin.csproj
+    
+    msbuild /t:pack /p:NoBuild=true /p:Platform= /p:IncludeSymbols=true /p:Configuration=Release /p:PackageOutputPath=..\..\ src\DotNetStarter.RegistrationAbstractions\DotNetStarter.RegistrationAbstractions.csproj
+    
+    msbuild /t:pack /p:NoBuild=true /p:Platform= /p:IncludeSymbols=true /p:Configuration=Release /p:PackageOutputPath=..\..\ src\DotNetStarter.Web\DotNetStarter.Web.csproj
+    
+    msbuild /t:pack /p:NoBuild=true /p:Platform= /p:IncludeSymbols=true /p:Configuration=Release /p:PackageOutputPath=..\..\ src\DotNetStarter.Extensions.Mvc\DotNetStarter.Extensions.Mvc.csproj
+    
+    msbuild /t:pack /p:NoBuild=true /p:Platform= /p:IncludeSymbols=true /p:Configuration=Release /p:PackageOutputPath=..\..\ src\DotNetStarter.Extensions.WebApi\DotNetStarter.Extensions.WebApi.csproj
+    
+    msbuild /t:pack /p:NoBuild=true /p:Platform= /p:IncludeSymbols=true /p:Configuration=Release /p:PackageOutputPath=..\..\ src\DotNetStarter.Locators.DryIoc\DotNetStarter.Locators.DryIoc.csproj
+    
+    msbuild /t:pack /p:NoBuild=true /p:Platform= /p:IncludeSymbols=true /p:Configuration=Release /p:PackageOutputPath=..\..\ src\DotNetStarter.Locators.StructureMap\DotNetStarter.Locators.StructureMap.csproj
+    
+    msbuild /t:pack /p:NoBuild=true /p:Platform= /p:IncludeSymbols=true /p:Configuration=Release /p:PackageOutputPath=..\..\ src\DotNetStarter.Locators.LightInject\DotNetStarter.Locators.LightInject.csproj
+    
+    msbuild /t:pack /p:NoBuild=true /p:Platform= /p:IncludeSymbols=true /p:Configuration=Release /p:PackageOutputPath=..\..\ src\DotNetStarter.Locators.StructureMapSigned\DotNetStarter.Locators.StructureMapSigned.csproj
 artifacts:
- # - path: src\**\bin\$(configuration)\DotNetStarter*
- # - path: net40\**\bin\$(configuration)\DotNetStarter*
- # - path: net45\**\bin\$(configuration)\DotNetStarter*
- # - path: netstandard13\**\bin\$(configuration)\DotNetStarter*
   - path: '*.nupkg'
-    name: nuget
-#http://andrewlock.net/publishing-your-first-nuget-package-with-appveyor-and-myget/

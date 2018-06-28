@@ -3,7 +3,7 @@
     using System;
 
     /// <summary>
-    /// Provides access to container setup tasks, such as add, remove, contains
+    /// Provides access to container add services to the ILocator
     /// </summary>
     public interface ILocatorRegistry
     {

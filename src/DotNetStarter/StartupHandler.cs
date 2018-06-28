@@ -54,14 +54,16 @@
         /// </summary>
         public ILocator Locator { get; protected set; }
 
-        /// <summary>
-        /// Starup process, by default it scans assemblies, sorts modules, configures container, and runs startup for each module
-        /// </summary>
-        /// <param name="config"></param>
-        /// <param name="objectFactory"></param>
-        /// <param name="context"></param>
-        /// <returns></returns>
+#pragma warning disable CS0612 // Type or member is obsolete
+                              /// <summary>
+                              /// Starup process, by default it scans assemblies, sorts modules, configures container, and runs startup for each module
+                              /// </summary>
+                              /// <param name="config"></param>
+                              /// <param name="objectFactory"></param>
+                              /// <param name="context"></param>
+                              /// <returns></returns>
         public virtual bool Startup(IStartupConfiguration config, IStartupObjectFactory objectFactory, out IStartupContext context)
+#pragma warning restore CS0612 // Type or member is obsolete
         {
             if (_Started)
             {
@@ -117,17 +119,15 @@
             containerSetup.Name = timerNameBase + ".ContainerSetup";
             containerSetup.TimedAction = () =>
             {
-                var registry = Locator as ILocatorRegistry;
-
-                if (registry == null)
+                if (!(Locator is ILocatorRegistry registry))
                     throw new NullLocatorException();
 
-                var setDefaults = objectFactory.CreateContainerDefaults();
+                var containerDefaults = objectFactory.CreateContainerDefaults();
 
-                if (setDefaults == null)
+                if (containerDefaults == null)
                     throw new NotSupportedException("Unable to set container defaults, the object factory returned a null service for it!");
 
-                objectFactory.CreateContainerDefaults().Configure(registry, filteredModules, config, objectFactory);
+                containerDefaults.Configure(registry, filteredModules, config, objectFactory);
                 var locatorRegistries = (registry as ILocatorResolveConfigureModules)?.ResolveConfigureModules(filteredModules, config)
                                             ?? (registry as ILocator).GetAll<ILocatorConfigure>();
 
@@ -166,7 +166,7 @@
 
             // optionally allows delaying startup until later, must be implemented on IStartupConfiguration instances
             var delayedStart = config as IStartupDelayed;
-            Action startup = () => config.TimedTaskManager.Execute(startupModulesTask);
+            void startup() => config.TimedTaskManager.Execute(startupModulesTask);
 
             if (delayedStart?.EnableDelayedStartup == true)
             {

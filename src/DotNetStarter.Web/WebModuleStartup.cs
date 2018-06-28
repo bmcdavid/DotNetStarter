@@ -1,4 +1,4 @@
-﻿#if !NETSTANDARD1_3
+﻿#if !NETSTANDARD
 
 namespace DotNetStarter.Web
 {
@@ -12,7 +12,7 @@ namespace DotNetStarter.Web
     /// </summary>
     public class WebModuleStartup : IHttpModule
     {
-        private IEnumerable<IHttpModule> StartupModules;
+        private readonly IEnumerable<IHttpModule> StartupModules;
 
         private IWebModuleStartupHandler _ModuleHandler;
 

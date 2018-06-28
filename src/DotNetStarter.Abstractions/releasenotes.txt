@@ -1,0 +1,3 @@
+﻿Added netstandard 2.0 support.
+Added ILocatorConfigureModuleCollection and IStartupModuleCollection for manual instance configurations, which extensions can be made for.
+ILocatorRegistry no longer inherits from ILocator, changed many other interfaces.

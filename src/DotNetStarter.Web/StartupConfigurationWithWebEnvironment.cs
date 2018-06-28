@@ -1,4 +1,5 @@
 ﻿using DotNetStarter.Abstractions;
+using System;
 using System.Collections.Generic;
 using System.Reflection;
 
@@ -7,9 +8,10 @@ namespace DotNetStarter.Web
     /// <summary>
     /// Default startup configuration with web environment
     /// </summary>
+    [Obsolete]
     public class StartupConfigurationWithWebEnvironment : StartupConfiguration, IStartupConfigurationWithEnvironment<IStartupEnvironmentWeb>
     {
-        private IStartupEnvironmentWeb _Environment;
+        private readonly IStartupEnvironmentWeb _Environment;
 
         /// <summary>
         /// Constructor

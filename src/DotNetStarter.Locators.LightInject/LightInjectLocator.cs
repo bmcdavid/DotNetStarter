@@ -215,6 +215,9 @@ namespace DotNetStarter.Locators
             {
                 foreach (var module in locatorConfTypes)
                 {
+                    if (module.ServiceInstance != null)
+                        yield return (ILocatorConfigure)module.ServiceInstance;
+
                     yield return (ILocatorConfigure)Activator.CreateInstance(module.ServiceImplementation);
                 }
             }

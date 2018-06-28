@@ -1,18 +1,17 @@
-﻿using DotNetStarter.Abstractions;
-
-namespace DotNetStarter
+﻿namespace DotNetStarter
 {
     using Abstractions;
     using Internal;
     using System;
     using System.Collections.Generic;
-    using System.Linq;
     using System.Reflection;
 
+#pragma warning disable CS0612 // Type or member is obsolete
     /// <summary>
     /// Default initalization object factory, responsible for creating types before container is ready
     /// </summary>
     public class StartupObjectFactory : IStartupObjectFactory
+#pragma warning restore CS0612 // Type or member is obsolete
     {
         /// <summary>
         /// Creates default assembly filter.
@@ -137,14 +136,7 @@ namespace DotNetStarter
         /// <returns></returns>
         protected virtual TFactoryType GetFactory<TFactoryAttr,TFactoryType>(IStartupConfiguration config) where TFactoryAttr : AssemblyFactoryBaseAttribute
         {
-            var dependents = config.DependencyFinder.Find<TFactoryAttr>(config.Assemblies);
-            var sorted = config.DependencySorter.Sort<TFactoryAttr>(dependents);
-            var attr = sorted.LastOrDefault()?.NodeAttribute as AssemblyFactoryBaseAttribute;
-
-            if (attr == null)
-                return default(TFactoryType);
-
-            return (TFactoryType)Activator.CreateInstance(attr.FactoryType);
+            return ApplicationContext.GetAssemblyFactory<TFactoryAttr, TFactoryType>(config);
         }
     }
 }

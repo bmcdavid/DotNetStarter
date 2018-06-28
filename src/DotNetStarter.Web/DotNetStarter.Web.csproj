@@ -1,13 +1,30 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
+  <Import Project="..\..\targets\AddReleaseNotes.targets" />
+  <Import Project="..\..\targets\AddReadMeMarkdown.targets" />
+  <Import Project="..\..\targets\CommonBuild.props" />
+  <Import Project="..\..\targets\SignDll.props" />
 
   <PropertyGroup>
-    <TargetFrameworks>net35;net40;net45;netstandard1.3</TargetFrameworks>
-    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
-    <DocumentationFile>bin\$(Configuration)\$(TargetFramework)\DotNetStarter.Web.xml</DocumentationFile>
-    <SignAssembly>True</SignAssembly>
-    <AssemblyOriginatorKeyFile>..\..\dotnetstarter.snk</AssemblyOriginatorKeyFile>
+    <PackageId>DotNetStarter.Web</PackageId>
+    <TargetFrameworks>net35;net40;net45;netstandard1.3;netstandard2.0</TargetFrameworks>
+    <Authors>Brad McDavid</Authors>
+    <Copyright>Copyright $(CurrentYear)</Copyright>
+    <Description>Startup system for web projects, including IHttpModule for netframework.</Description>
+    <!--follow semantic versioning may include prelease information too-->
+    <PackageVersion>2.1.0</PackageVersion>
+    <PackageTags>Startup Modules System.Web</PackageTags>
+    <!--do not change unless you want to deal with assembly redirects-->
+    <AssemblyVersion>2.0.0</AssemblyVersion>
+    <FileVersion>2.0.0</FileVersion>
+    <FrameworkPathOverride Condition="'$(TargetFramework)' == 'net35'"></FrameworkPathOverride>
   </PropertyGroup>
 
+  <Import Project="..\..\targets\CommonNuGetPackage.props" />
+
+  <PropertyGroup Condition="'$(TargetFramework)' == 'netstandard1.0' OR '$(TargetFramework)' == 'netstandard2.0'">
+    <DefineConstants>$(DefineConstants);NETSTANDARD;</DefineConstants>
+  </PropertyGroup>
+  
   <ItemGroup>
     <ProjectReference Include="..\DotNetStarter.Abstractions\DotNetStarter.Abstractions.csproj" />
     <ProjectReference Include="..\DotNetStarter\DotNetStarter.csproj" />
@@ -36,6 +53,11 @@
   <ItemGroup Condition="'$(TargetFramework)' == 'netstandard1.3'">
     <PackageReference Include="Microsoft.AspNetCore.Hosting.Abstractions" Version="1.0.0" />
     <PackageReference Include="Microsoft.AspNetCore.Http.Abstractions" Version="1.0.0" />
+  </ItemGroup>
+
+  <ItemGroup Condition="'$(TargetFramework)' == 'netstandard2.0'">
+    <PackageReference Include="Microsoft.AspNetCore.Hosting.Abstractions" Version="2.0.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Http.Abstractions" Version="2.0.0" />
   </ItemGroup>
 
 </Project>

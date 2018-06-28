@@ -1,12 +1,24 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
+  <Import Project="..\..\targets\AddReleaseNotes.targets" />
+  <Import Project="..\..\targets\AddReadMeMarkdown.targets" />
+  <Import Project="..\..\targets\CommonBuild.props" />
+  <Import Project="..\..\targets\SignDll.props" />
 
   <PropertyGroup>
-    <TargetFrameworks>net45;netstandard1.3</TargetFrameworks>
-    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
-    <DocumentationFile>bin\$(Configuration)\$(TargetFramework)\DotNetStarter.Owin.xml</DocumentationFile>
-    <SignAssembly>True</SignAssembly>
-    <AssemblyOriginatorKeyFile>..\..\dotnetstarter.snk</AssemblyOriginatorKeyFile>
+    <PackageId>DotNetStarter.Owin</PackageId>
+    <TargetFrameworks>net45;netstandard1.3;netstandard2.0</TargetFrameworks>
+    <Authors>Brad McDavid</Authors>
+    <Copyright>Copyright $(CurrentYear)</Copyright>
+    <Description>Owin Startup system with optional support for DI/IOC.</Description>
+    <!--follow semantic versioning may include prelease information too-->
+    <PackageVersion>2.1.0</PackageVersion>
+    <PackageTags>Startup Owin</PackageTags>
+    <!--do not change unless you want to deal with assembly redirects-->
+    <AssemblyVersion>2.0.0</AssemblyVersion>
+    <FileVersion>2.0.0</FileVersion>
   </PropertyGroup>
+
+  <Import Project="..\..\targets\CommonNuGetPackage.props" />
 
   <ItemGroup>
     <ProjectReference Include="..\DotNetStarter.Abstractions\DotNetStarter.Abstractions.csproj" />

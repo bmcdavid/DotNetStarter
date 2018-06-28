@@ -1,6 +1,6 @@
 ﻿using System;
 
-#if NET35 || NET40 || NET45
+#if !NETSTANDARD1_0 && !NETSTANDARD1_1
 
 namespace DotNetStarter.Abstractions.Internal
 {

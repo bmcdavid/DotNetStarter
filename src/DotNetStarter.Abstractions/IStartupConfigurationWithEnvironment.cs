@@ -1,9 +1,12 @@
-﻿namespace DotNetStarter.Abstractions
+﻿using System;
+
+namespace DotNetStarter.Abstractions
 {
 
     /// <summary>
     /// enhanced startup configuration with environment reference
     /// </summary>
+    [Obsolete]
     public interface IStartupConfigurationWithEnvironment<TEnvironment> : IStartupConfigurationWithEnvironment where TEnvironment : IStartupEnvironment
     {
         /// <summary>
@@ -15,6 +18,7 @@
     /// <summary>
     /// enhanced startup configuration with environment reference
     /// </summary>
+    [Obsolete]
     public interface IStartupConfigurationWithEnvironment : IStartupConfiguration
     {
 

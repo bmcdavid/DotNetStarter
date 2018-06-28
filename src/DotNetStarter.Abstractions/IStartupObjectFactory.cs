@@ -7,6 +7,7 @@
     /// <summary>
     /// Implementations must have empty constructor!
     /// </summary>
+    [Obsolete]
     public interface IStartupObjectFactory
     {
         /// <summary>
