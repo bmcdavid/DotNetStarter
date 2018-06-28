@@ -6,7 +6,7 @@
 
   <PropertyGroup>
     <PackageId>DotNetStarter.Web</PackageId>
-    <TargetFrameworks>net40;net45;netstandard1.3;netstandard2.0</TargetFrameworks>
+    <TargetFrameworks>net35;net40;net45;netstandard1.3;netstandard2.0</TargetFrameworks>
     <Authors>Brad McDavid</Authors>
     <Copyright>Copyright $(CurrentYear)</Copyright>
     <Description>Startup system for web projects, including IHttpModule for netframework.</Description>
@@ -16,6 +16,7 @@
     <!--do not change unless you want to deal with assembly redirects-->
     <AssemblyVersion>2.0.0</AssemblyVersion>
     <FileVersion>2.0.0</FileVersion>
+    <FrameworkPathOverride Condition="'$(TargetFramework)' == 'net35'"></FrameworkPathOverride>
   </PropertyGroup>
 
   <Import Project="..\..\targets\CommonNuGetPackage.props" />

@@ -6,7 +6,7 @@ title: DotNetStarter
 [![Build status](https://ci.appveyor.com/api/projects/status/a907wfniy73sk5de?svg=true)](https://ci.appveyor.com/project/bmcdavid/dotnetstarter)
 
 The goal of this project is to create a startup and dependency injection framework for netframeworks 3.5+ and netstandard 1.0+
- which allows packages to support container registrations with a container specified at runtime. This allows NuGet package authors to depend on DotNetStarter.Abstractions or DotNetStarter.RegistrationAbstractions taking advantage of dependency injection. Application owners have the ability to install DotNetStarter and a DotNetStarter locator to consume these packages and override package implementations as needed, or let the package provide all the defaults.
+ which allows packages to support container registrations with a container determined at runtime. This allows NuGet package authors to depend on DotNetStarter.Abstractions or DotNetStarter.RegistrationAbstractions NuGet packages allowing authors the ability to use dependency injection in their code base. Application owners can install DotNetStarter and a DotNetStarter locator package to consume these packages and override package implementations as needed, or use the package's provided defaults.
 
 Package  | Version 
 -------- | :------------ 

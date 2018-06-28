@@ -3,7 +3,7 @@ title: DotNetStarter - Customizing the startup process
 ---
 # DotNetStarter - Customizing the startup process
 
-The startup process is owned by the application owner in which DotNetStarter is ran. In order to run efficiently, the application should fine tune this process to only scan assemblies using DotNetStarter.Abstractions or DotNetStarter.RegistrationAbsractions. Below is an exmple startup using the StartupBuilder configuration class
+The startup process is owned by the application owner in which DotNetStarter is ran. In order to run efficiently, the application should be fine-tuned to only scan assemblies utilizing DotNetStarter.Abstractions or DotNetStarter.RegistrationAbsractions. Below is an exmple startup using the StartupBuilder configuration class
 
 ```cs
 var builder = DotNetStarter.Configure.StartupBuilder.Create();
@@ -12,24 +12,34 @@ builder
     .ConfigureAssemblies(assemblies =>
     {
         assemblies
-            .WithDiscoverableAssemblies() // for ASP.NET Framework projects only
+			// Filters assemblies for ones using the [assembly: DotNetStarter.Abstractions.DiscoverableAssembly] 
+            .WithDiscoverableAssemblies() // for ASP.NET Core projects an initial list of assemblies must be provided
             .WithAssemblyFromType<RegistrationConfiguration>()
             .WithAssembliesFromTypes(typeof(StartupBuilder), typeof(BadStartupModule));
     })
     .ConfigureStartupModules(modules =>
     {
-		// if there are any modules that are acting badly or if you want to customize versions.
         modules
+            // ability to manually add ILocatorConfigure modules after the scanned ones
+			.ConfigureLocatorModuleCollection(configureModules =>
+            {
+                configureModules.Add(sut);
+            })
+			// ability to manually add IStartupModule modules after the scanned ones
+			.ConfigureStartupModuleCollection(collection =>
+            {
+                collection.AddType<TestStartupModule>();
+            })
+			// if there are any modules that are acting badly or if you want to customize remove some to insert customized versions.
             .RemoveStartupModule<BadStartupModule>()
             .RemoveConfigureModule<BadConfigureModule>();
     })
-    // customize environment object
+    // ability to customize environment object, which can be used make registration decisions based on environment
     .UseEnvironment(new StartupEnvironment("UnitTest1", ""))
     // override default objects
 	.OverrideDefaults(defaults =>
     {
         defaults
-            .UseLocatorRegistryFactory(new StructureMapFactory())
             .UseLogger(new StringLogger(LogLevel.Info));
     })
     .Build() // configures the ILocator

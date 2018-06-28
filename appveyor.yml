@@ -6,6 +6,7 @@ before_build:
 build:
   verbosity: minimal
 after_test:
-- cmd: dotnet pack --output ..\..\
+#- cmd: dotnet pack --output ..\..\
+- cmd: msbuild /t:pack /p:IncludeSymbols=true /p:Configuration=Release src\DotNetStarter.Web\DotNetStarter.Web.csproj
 artifacts:
   - path: '*.nupkg'

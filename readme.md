@@ -15,17 +15,59 @@ Package  | Version
 [DotNetStarter.Structuremap](https://www.nuget.org/packages/DotNetStarter.Structuremap/) |  [![NuGet version](https://badge.fury.io/nu/DotNetStarter.Structuremap.svg)](https://badge.fury.io/nu/DotNetStarter.Structuremap)
 [DotNetStarter.Extensions.Mvc](https://www.nuget.org/packages/DotNetStarter.Extensions.Mvc/) |  [![NuGet version](https://badge.fury.io/nu/DotNetStarter.Extensions.Mvc.svg)](https://badge.fury.io/nu/DotNetStarter.Extensions.Mvc)
 [DotNetStarter.Extensions.WebApi](https://www.nuget.org/packages/DotNetStarter.Extensions.WebApi/) |  [![NuGet version](https://badge.fury.io/nu/DotNetStarter.Extensions.WebApi.svg)](https://badge.fury.io/nu/DotNetStarter.Extensions.WebApi)
-[DotNetStarter.Extensions.Episerver](https://www.nuget.org/packages/DotNetStarter.Extensions.Episerver/) |  [![NuGet version](https://badge.fury.io/nu/DotNetStarter.Extensions.Episerver.svg)](https://badge.fury.io/nu/DotNetStarter.Extensions.Episerver)
 
 ## Getting Started
 
 * [**Important:** Breaking Changes](https://bmcdavid.github.io/DotNetStarter/breaking-changes.html)
 * [Full Documentation](https://bmcdavid.github.io/DotNetStarter/)
 
-To kickoff the startup modules and configure the locator please execute the following early in the project startup, for example global.asax class constructor for web applications.
+To kickoff the startup modules and configure the locator please execute the following early in the project startup, for example global.asax class constructor for ASP.Net Framework web applications.
 
 ```cs
-DotNetStarter.ApplicationContext.Startup():
+var builder = DotNetStarter.Configure.StartupBuilder.Create();
+builder
+	// configure the assemblies to scan
+    .ConfigureAssemblies(assemblies =>
+    {
+        assemblies
+			// Filters assemblies for ones using the [assembly: DotNetStarter.Abstractions.DiscoverableAssembly] 
+            .WithDiscoverableAssemblies() // for ASP.NET Core projects an initial list of assemblies must be provided
+            .WithAssemblyFromType<RegistrationConfiguration>()
+            .WithAssembliesFromTypes(typeof(StartupBuilder), typeof(BadStartupModule));
+    })
+    .ConfigureStartupModules(modules =>
+    {
+        modules
+            // ability to manually add ILocatorConfigure modules after the scanned ones
+			.ConfigureLocatorModuleCollection(configureModules =>
+            {
+                configureModules.Add(sut);
+            })
+			// ability to manually add IStartupModule modules after the scanned ones
+			.ConfigureStartupModuleCollection(collection =>
+            {
+                collection.AddType<TestStartupModule>();
+            })
+			// if there are any modules that are acting badly or if you want to customize remove some to insert customized versions.
+            .RemoveStartupModule<BadStartupModule>()
+            .RemoveConfigureModule<BadConfigureModule>();
+    })
+    // ability to customize environment object, which can be used make registration decisions based on environment
+    .UseEnvironment(new StartupEnvironment("UnitTest1", ""))
+    // override default objects
+	.OverrideDefaults(defaults =>
+    {
+        defaults
+            .UseLogger(new StringLogger(LogLevel.Info));
+    })
+    .Build() // configures the ILocator
+    .Run() // Runs IStartupModule registrations;
+```
+
+The StartupBuilder provides a fluent API to change almost every aspect of the startup process, but can also be as simple as:
+
+```cs
+DotNetStarter.Configure.StartupBuilder.Create().Run();
 ```
 
 ### Inversion of Control / Dependency Injection

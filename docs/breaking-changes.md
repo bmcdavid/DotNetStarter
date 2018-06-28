@@ -8,6 +8,12 @@ This page is used to note each versions breaking changes and list future breakin
 ## Important Note
 The read-only locator was introduced in 1.x since registrations after OnLocatorStartupComplete required casting as ILocatorRegistry.
 
+## 2.x - 3.x (Proposed)
+* Remove IStartupObjectFactory
+* Merge IlocatorDefaultRegistrationsWithCollections into IlocatorDefaultRegistrations.
+* Remove DotNetStarter.ApplicationContext.Startup methods
+* Remove IStartupConfigurationWithEnvironment
+
 ## 1.x - 2.x
 * Added IStartupEnvironment to IStartupConfiguration, and set by passing an implementation to DotNetStarter.ApplicationContext.Startup
 * Added LightInject and StructureMapSigned locators
@@ -19,7 +25,6 @@ The read-only locator was introduced in 1.x since registrations after OnLocatorS
 * Renamed IShutdownHandler.InvokeShutdown to Shutdown
 * Removed IStartupModule.Shutdown IStartupEngine arguments
 * Removed RegisterAttribute, replaced with RegistrationAttribute
-* Removed IStartupConfigurationWithEnvironment
 * Removed LifeTime and ConstructorType enums
 * Moved RegistrationConfiguration to DotNetStarter.Abstractions
 * Changed ILocator

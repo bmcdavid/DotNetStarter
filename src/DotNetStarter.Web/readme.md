@@ -1,6 +1,6 @@
 # DotNetStarter.Web Read Me
 
-This package supports native .netframeworks 3.5+ for System.Web and is intended for IIS compatible sites.
+This package supports native .netframeworks 4.0+ for System.Web and is intended for IIS compatible sites.
 
 For netstandard1.3+ there are a few extensions at this point.
 
