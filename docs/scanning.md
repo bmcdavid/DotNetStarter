@@ -3,7 +3,7 @@ title: DotNetStarter - Assembly Scanning
 ---
 # DotNetStarter - Assembly Scanning
 
-Assembly scanning occurs to discover IStartupModule and ILocatorConfigure modules,
+Assembly scanning occurs to discover service registrations (RegistrationAttribute) and IStartupModule/ILocatorConfigure modules,
  but can also be extended with the DiscoverTypesAttribute for assemblies. 
 
 #### Below is the default for DotNetStarter to discover its needed types:
@@ -28,7 +28,7 @@ public class RegistrationConfiguration : ILocatorConfigure
     public void Configure(ILocatorRegistry container, IStartupEngine engine)
     {
         // access to default configuration's to get its AssemblyScanner
-        var configuration = container.Get<IStartupConfiguration>() ?? engine.Configuration;
+        var configuration = engine.Configuration;
         var serviceType = typeof(RegistrationAttribute);
         
         // get all types found for RegistrationAttribute
@@ -55,4 +55,3 @@ public class RegistrationConfiguration : ILocatorConfigure
     }
 }
 ```
-
