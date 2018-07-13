@@ -5,82 +5,74 @@ title: DotNetStarter - Episerver locator and Depencency Resolver
 
 Below is an example of how to wireup with Episerver's structuremap configured container.
 
-This example works for Episerver 9 and 10.
-
 ## Required NuGet packages
 
-* DotNetStarter.Locators.StructureMapSigned - for Epi 9 or 10
+* DotNetStarter
+* DotNetStarter.Extensions.Mvc - for MVC depencency resolving
+* DotNetStarter.Structuremap - for Epi 11
+* or DotNetStarter.Locators.StructureMapSigned - for Epi 9 or 10
 
 ```cs
+using DotNetStarter;
 using DotNetStarter.Abstractions;
+using DotNetStarter.Configure;
+using DotNetStarter.Web;
 using EPiServer.Framework;
 using EPiServer.Framework.Initialization;
 using EPiServer.ServiceLocation;
-using System;
+using System.Collections;
 using System.Configuration;
-using System.Linq;
-using System.Reflection;
 
-// instructs DotNetStarter to use this to create ILocatorRegistry
-[assembly: LocatorRegistryFactory(typeof(ExampleNamespace.Business.Initialization.WireupDotNetStarter),
-    typeof(DotNetStarter.Locators.StructureMapSignedFactory))]
-
-namespace ExampleNamespace.Business.Initialization
+namespace Example.Business.Initialization
 {
     /// <summary>
     /// Episerver initalization module to hook in DotNetStarter into the startup process
     /// </summary>
-    [ModuleDependency] // important to have no dependencies
+    [ModuleDependency]
     public class WireupDotNetStarter : IConfigurableModule, ILocatorRegistryFactory
     {
-        private static ILocatorRegistry _Registry; // static so DotNetStarter can retrieve it
+        private ILocatorRegistry _registry;
+        private StartupBuilder _startupBuilder;
 
         public void ConfigureContainer(ServiceConfigurationContext context)
         {
-            _Registry = new DotNetStarter.StructureMapSignedLocator(context.StructureMap());
-
-            var scannableAssemblies = DotNetStarter.ApplicationContext.GetScannableAssemblies();
-            var additionalAssemblies = new Assembly[]
-            {
-                typeof(WireupDotNetStarter).Assembly, // types in this assembly
-            };
-
-            var startupConfiguration = new DotNetStarter.StartupConfiguration
-            (
-                scannableAssemblies.Union(additionalAssemblies),
-                null, // no assembly filter, as we prefiltered above
-                new DotNetStarter.AssemblyScanner(),
-                new DotNetStarter.DependencyFinder(),
-                new DotNetStarter.DependencySorter(CreateDependencyNode), // pass delegate to create dependency nodes
-                new DotNetStarter.StringLogger(LogLevel.Error), // logs to a string builder
-                new DotNetStarter.StartupModuleFilter(), // can be customized to remove startup modules,
-                new DotNetStarter.TimedTaskManager(CreateRequestSettingsProvider), // pass delegate to create request provider settings
-                new DotNetStarter.StartupEnvironment
-                (
-                    // example values should be: Production, Development, Staging, Local, Testing
-                    ConfigurationManager.AppSettings["ApplicationEnvironment"], // can be assigned from anything, but simplest solution is app setting
-                    AppDomain.CurrentDomain.BaseDirectory
-                )
-            );
-
-            // startup with our custom startup configuration
-            DotNetStarter.ApplicationContext.Startup(configuration: startupConfiguration);
+            // for Episerver 9/10 use DotNetStarter.Locators.StructuremapSigned package
+            // for Episerver 11 use DotNetStarter.Structuremap package
+            _registry = new DotNetStarter.Locators.StructureMapLocator(context.StructureMap());
+            _startupBuilder = StartupBuilder
+                .Create()
+                // create an environment, values are typically Local, Development, Staging or Production
+                // can be used to make conditional registrations in ILocatorConfigure modules
+                .UseEnvironment(new StartupEnvironmentWeb(ConfigurationManager.AppSettings["DotNetStarter.Environment"]))
+                .ConfigureAssemblies(assemblies =>
+                {
+                    assemblies
+                        .WithDiscoverableAssemblies()
+                        .WithAssemblyFromType<WireupDotNetStarter>() // this project, for controllers, services, etc
+                        ;
+                })
+                .OverrideDefaults(defaults =>
+                {
+                    defaults
+                        .UseLocatorRegistryFactory(this)
+                        .UseLogger(new StringLogger(LogLevel.Error, 1024000))
+                        .UseTimedTaskManager(new TimedTaskManager(() => new ApplicationRequestSettingsProvider()));
+                })
+                .Build();
         }
 
-        public ILocatorRegistry CreateRegistry() => _Registry;
+        public ILocatorRegistry CreateRegistry() => _registry;
 
-        public void Initialize(InitializationEngine context) { }
+        // run the IStartupModule instances here to avoid any resolving too early in Episerver process
+        public void Initialize(InitializationEngine context) => _startupBuilder.Run();
 
         public void Uninitialize(InitializationEngine context) { }
 
-        IDependencyNode CreateDependencyNode(object nodeType, Type attributeType)
+        private class ApplicationRequestSettingsProvider : IRequestSettingsProvider
         {
-            return new DotNetStarter.DependencyNode(nodeType, attributeType);
-        }
+            public IDictionary Items => System.Web.HttpContext.Current.Items;
 
-        IRequestSettingsProvider CreateRequestSettingsProvider()
-        {
-            return new DotNetStarter.RequestSettingsProvider();
+            public bool IsDebugMode => System.Web.HttpContext.Current.IsDebuggingEnabled;
         }
     }
 }
