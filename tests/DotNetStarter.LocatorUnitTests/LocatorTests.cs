@@ -74,6 +74,23 @@ namespace DotNetStarter.UnitTests
         }
 
         [TestMethod]
+        public void ShouldHaveAmbientLocatorInScope()
+        {
+            var ambientLocator = _Context.Service.Locator.Get<ILocatorAmbient>();
+            Assert.AreSame(_Context.Service.Locator, ambientLocator.Current);
+            Assert.IsFalse(ambientLocator.IsScoped);
+
+            using (var scope = _Context.Service.Locator.Get<ILocatorScopedFactory>().CreateScope())
+            {
+                Assert.AreSame(scope, ambientLocator.Current);
+                Assert.IsTrue(ambientLocator.IsScoped);
+            }
+
+            Assert.AreSame(_Context.Service.Locator, ambientLocator.Current);
+            Assert.IsFalse(ambientLocator.IsScoped);
+        }
+
+        [TestMethod]
         public void ShouldCreateLocatorScope()
         {
             var locator = _Context.Service.Locator;

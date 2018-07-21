@@ -4,7 +4,7 @@
     using Abstractions.Internal;
     using System;
 
-#if NETSTANDARD1_0 || NETSTANDARD1_1 || NETSTANDARD2_0
+#if NETSTANDARD1_0 || NETSTANDARD1_1 || NETSTANDARD1_3 || NETSTANDARD2_0
     using Microsoft.Extensions.DependencyInjection;
 #endif
 
@@ -37,13 +37,24 @@
         private readonly IServiceProviderTypeChecker _ServiceProviderTypeChecker;
 
         /// <summary>
-        /// Scoped Constructor
+        /// Scoped Constructor for OWIN and netcore
         /// </summary>
         /// <param name="serviceProviderTypeChecker"></param>
         /// <param name="locatorScopedAccessor"></param>
         public ServiceProvider(IServiceProviderTypeChecker serviceProviderTypeChecker, ILocatorScopedAccessor locatorScopedAccessor)
         {
             Locator = locatorScopedAccessor.CurrentScope;
+            _ServiceProviderTypeChecker = serviceProviderTypeChecker;
+        }
+
+        /// <summary>
+        /// For IServiceCollection Func
+        /// </summary>
+        /// <param name="serviceProviderTypeChecker"></param>
+        /// <param name="locatorAmbient"></param>
+        public ServiceProvider(IServiceProviderTypeChecker serviceProviderTypeChecker, ILocatorAmbient locatorAmbient)
+        {
+            Locator = locatorAmbient.Current;
             _ServiceProviderTypeChecker = serviceProviderTypeChecker;
         }
 
@@ -104,7 +115,9 @@
             var service = Locator.Get(serviceType);
 
             if (service == null)
+            {
                 throw new NullReferenceException($"{serviceType.FullName} cannot be null and couldn't be resolved!");
+            }
 
             return service;
         }

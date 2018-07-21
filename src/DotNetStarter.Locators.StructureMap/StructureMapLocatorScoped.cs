@@ -1,13 +1,16 @@
 ﻿using DotNetStarter.Abstractions;
 using StructureMap;
+using System;
 
 namespace DotNetStarter.Locators
 {
     /// <summary>
     /// Scoped structuremap locator
     /// </summary>
-    public sealed class StructureMapLocatorScoped : StructureMapLocatorBase, ILocatorScoped
+    public sealed class StructureMapLocatorScoped : StructureMapLocatorBase, ILocatorScoped, ILocatorScopedWithDisposeAction
     {
+        private Action _onDispose;
+
         /// <summary>
         /// Constructor
         /// </summary>
@@ -27,5 +30,23 @@ namespace DotNetStarter.Locators
         /// Parent scope or null
         /// </summary>
         public ILocatorScoped Parent { get; }
+
+        /// <summary>
+        /// Action to perform on disposing
+        /// </summary>
+        /// <param name="disposeAction"></param>
+        public void OnDispose(Action disposeAction)
+        {
+            _onDispose += disposeAction;
+        }
+
+        /// <summary>
+        /// Dispose ILocatorScoped
+        /// </summary>
+        public override void Dispose()
+        {
+            _onDispose?.Invoke();
+            base.Dispose();
+        }
     }
 }

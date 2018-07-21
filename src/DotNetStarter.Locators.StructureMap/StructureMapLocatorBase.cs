@@ -49,7 +49,7 @@
         /// <summary>
         /// Dispose
         /// </summary>
-        public void Dispose()
+        public virtual void Dispose()
         {
             _Container.Dispose();
         }

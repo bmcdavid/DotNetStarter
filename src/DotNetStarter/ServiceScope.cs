@@ -1,7 +1,6 @@
 ﻿using System;
-using DotNetStarter.Abstractions;
 
-#if NETSTANDARD1_0 || NETSTANDARD1_1 || NETSTANDARD2_0
+#if NETSTANDARD1_0 || NETSTANDARD1_1 || NETSTANDARD1_3 || NETSTANDARD2_0
 using Microsoft.Extensions.DependencyInjection;
 #endif
 
@@ -25,7 +24,7 @@ namespace DotNetStarter
     /// </summary>
     public class ServiceScope : IServiceScope
     {
-        IServiceProvider Provider;
+        private readonly IServiceProvider _provider;
 
         /// <summary>
         /// Constructor
@@ -33,20 +32,20 @@ namespace DotNetStarter
         /// <param name="provider"></param>
         public ServiceScope(IServiceProvider provider)
         {
-            Provider = provider;
+            _provider = provider;
         }
 
         /// <summary>
         /// Scoped IServiceProvider
         /// </summary>
-        public IServiceProvider ServiceProvider => Provider;
+        public IServiceProvider ServiceProvider => _provider;
 
         /// <summary>
         /// Dispose service provider
         /// </summary>
         public void Dispose()
         {
-            (Provider as IDisposable)?.Dispose();
+            (_provider as IDisposable)?.Dispose();
         }
     }
 }

@@ -70,7 +70,7 @@ namespace DotNetStarter.Internal
         }
 #endif
 
-#if NETSTANDARD1_0 || NETSTANDARD1_1 || NETSTANDARD2_0
+#if NETSTANDARD
         /// <summary>
         /// Assembly loader not implemented for netstandard
         /// </summary>

@@ -8,8 +8,10 @@ namespace DotNetStarter.Locators
     /// <summary>
     /// LightInject ILocatorScoped
     /// </summary>
-    public sealed class LightInjectLocatorScoped : ILocatorScoped, ILocatorCreateScope
+    public sealed class LightInjectLocatorScoped : ILocatorScoped, ILocatorCreateScope, ILocatorScopedWithDisposeAction
     {
+        private Action _disposeAction;
+
         /// <summary>
         /// Constructor
         /// </summary>
@@ -45,6 +47,7 @@ namespace DotNetStarter.Locators
         {
             if (!_Scope.IsDisposed)
             {
+                _disposeAction?.Invoke();
                 _Scope.Dispose();
                 _Scope.IsDisposed = true;
             }
@@ -101,6 +104,15 @@ namespace DotNetStarter.Locators
         public ILocatorScoped CreateScope()
         {
             return new LightInjectLocatorScoped(_Scope.BeginScope(), this);
+        }
+
+        /// <summary>
+        /// Action to perform on disposing
+        /// </summary>
+        /// <param name="disposeAction"></param>
+        public void OnDispose(Action disposeAction)
+        {
+            _disposeAction += disposeAction;
         }
     }
 }
