@@ -78,7 +78,7 @@
         }
 
         /// <summary>
-        /// Default context instance, swapped out by ObjectFactory.CreateStartupHandler();
+        /// Default context instance
         /// </summary>
         public static IStartupContext Default
         {

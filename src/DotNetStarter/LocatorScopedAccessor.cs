@@ -8,18 +8,16 @@ namespace DotNetStarter
     [Registration(typeof(ILocatorScopedAccessor), Lifecycle.Scoped)]
     public sealed class LocatorScopedAccessor : ILocatorScopedAccessor, ILocatorScopedSetter
     {
-        private ILocatorScoped _Current;
-
         /// <summary>
         /// Access to current scoped locator
         /// </summary>
-        public ILocatorScoped CurrentScope => _Current;
+        public ILocatorScoped CurrentScope { get; private set; }
 
         void ILocatorScopedSetter.SetCurrentScopedLocator(ILocatorScoped locatorScoped)
         {
-            if (_Current == null)
+            if (CurrentScope == null)
             {
-                _Current = locatorScoped;
+                CurrentScope = locatorScoped;
             }
         }
     }

@@ -45,9 +45,7 @@ namespace DotNetStarter
 
         private ILocatorScoped _Create(ILocator locator)
         {
-            var creator = locator as ILocatorCreateScope;
-
-            if (creator == null)
+            if (!(locator is ILocatorCreateScope creator))
             {
                 throw new ArgumentException($"{locator.GetType().FullName} doesn't implement {typeof(ILocatorCreateScope).FullName}!");
             }

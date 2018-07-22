@@ -6,10 +6,12 @@
     using System;
     using System.Linq;
 
+#pragma warning disable CS0612 // Type or member is obsolete
     /// <summary>
     /// Creates a locator based on DryIoc.dll
     /// </summary>
     public class DryIocLocator : DryIocLocatorBase, ILocatorRegistry, ILocatorSetContainer, ILocatorRegistryWithContains, ILocatorRegistryWithRemove
+#pragma warning restore CS0612 // Type or member is obsolete
     {
         /// <summary>
         /// Constructor

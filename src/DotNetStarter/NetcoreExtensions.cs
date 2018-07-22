@@ -9,6 +9,7 @@ namespace DotNetStarter
     /// <summary>
     /// Netcore extensions
     /// </summary>
+    [Obsolete]
     public static class NetcoreExtensions
     {
         /// <summary>

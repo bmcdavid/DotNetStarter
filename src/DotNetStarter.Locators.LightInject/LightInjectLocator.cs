@@ -12,7 +12,9 @@ namespace DotNetStarter.Locators
     /// </summary>
     public class LightInjectLocator : ILocatorRegistry, ILocator, ILocatorVerification, ILocatorCreateScope,
         ILocatorRegistryWithContains, ILocatorResolveConfigureModules, ILocatorRegistryWithRemove,
+#pragma warning disable CS0612 // Type or member is obsolete
         ILocatorSetContainer
+#pragma warning restore CS0612 // Type or member is obsolete
     {
         private IServiceContainer _Container;
         private ContainerRegistrationCollection _Registrations;
@@ -329,9 +331,7 @@ namespace DotNetStarter.Locators
          */
         private void SortList<T>(ref IEnumerable<T> list, Type service)
         {
-            List<ContainerRegistration> sourceList;
-
-            if (_Registrations.TryGetValue(service, out sourceList))
+            if (_Registrations.TryGetValue(service, out List<ContainerRegistration> sourceList))
             {
                 var typed = from o in sourceList.Select(x => x.ServiceImplementation)
                             join i in list

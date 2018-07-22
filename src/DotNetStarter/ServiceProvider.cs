@@ -34,7 +34,8 @@
         /// </summary>
         public ILocator Locator { get; }
 
-        private readonly IServiceProviderTypeChecker _ServiceProviderTypeChecker;
+        private readonly IServiceProviderTypeChecker _serviceProviderTypeChecker;
+        private readonly bool _isScoped;
 
         /// <summary>
         /// Scoped Constructor for OWIN and netcore
@@ -44,7 +45,8 @@
         public ServiceProvider(IServiceProviderTypeChecker serviceProviderTypeChecker, ILocatorScopedAccessor locatorScopedAccessor)
         {
             Locator = locatorScopedAccessor.CurrentScope;
-            _ServiceProviderTypeChecker = serviceProviderTypeChecker;
+            _isScoped = true;
+            _serviceProviderTypeChecker = serviceProviderTypeChecker;
         }
 
         /// <summary>
@@ -55,7 +57,8 @@
         public ServiceProvider(IServiceProviderTypeChecker serviceProviderTypeChecker, ILocatorAmbient locatorAmbient)
         {
             Locator = locatorAmbient.Current;
-            _ServiceProviderTypeChecker = serviceProviderTypeChecker;
+            _isScoped = locatorAmbient.IsScoped;
+            _serviceProviderTypeChecker = serviceProviderTypeChecker;
         }
 
         /// <summary>
@@ -67,7 +70,7 @@
         public ServiceProvider(ILocator locator, IServiceProviderTypeChecker serviceProviderTypeChecker, IStartupConfiguration startupConfiguration)
         {
             Locator = locator;
-            _ServiceProviderTypeChecker = serviceProviderTypeChecker;
+            _serviceProviderTypeChecker = serviceProviderTypeChecker;
         }
 
         /// <summary>
@@ -83,7 +86,7 @@
             }
             catch (Exception e)
             {
-                if (_ServiceProviderTypeChecker.IsScannedAssembly(serviceType, e))
+                if (_serviceProviderTypeChecker.IsScannedAssembly(serviceType, e))
                 {
                     throw;
                 }
@@ -102,7 +105,10 @@
         /// </summary>
         public void Dispose()
         {
-           Locator.Dispose();
+            if (_isScoped)
+            {
+                Locator.Dispose();
+            }
         }
 
         /// <summary>

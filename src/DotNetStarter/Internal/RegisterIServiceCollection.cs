@@ -1,7 +1,6 @@
 ﻿#if NETSTANDARD
 using DotNetStarter.Abstractions;
 using Microsoft.Extensions.DependencyInjection;
-using System;
 
 namespace DotNetStarter.Internal
 {
