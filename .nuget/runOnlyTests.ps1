@@ -1,0 +1,1 @@
+Get-ChildItem ".\tests\" -recurse | where {$_.extension -eq ".csproj"} | % { dotnet test $_.FullName }
