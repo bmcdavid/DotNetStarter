@@ -18,7 +18,7 @@ namespace DotNetStarter.UnitTests
         }
 
 #if NETSTANDARD
-        [ExpectedException(typeof(Exception), AllowDerivedTypes = true)]
+        //[ExpectedException(typeof(Exception), AllowDerivedTypes = true)]
 #endif
         [TestMethod]
         public void ShouldFilterAssembliesForScannableAttributeGivenNullExceptForNetstandard()

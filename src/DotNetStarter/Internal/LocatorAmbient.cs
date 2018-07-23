@@ -68,7 +68,7 @@ namespace DotNetStarter.Internal
         {
             System.Runtime.Remoting.Messaging.CallContext.SetData(Key, stack);
         }
-#elif NETSTANDARD2_0 || NETSTANDARD1_3
+#elif NETSTANDARD2_0 || NETSTANDARD1_3 || NETSTANDARD1_6
         // based on httpcontextaccessor
         private static readonly System.Threading.AsyncLocal<Stack<ILocatorScoped>> LocatorScopedContext = new System.Threading.AsyncLocal<Stack<ILocatorScoped>>();
 
