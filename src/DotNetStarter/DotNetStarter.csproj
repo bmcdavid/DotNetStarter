@@ -6,7 +6,7 @@
 
   <PropertyGroup>
     <PackageId>DotNetStarter</PackageId>
-    <TargetFrameworks>net35;net40;net45;netstandard1.0;netstandard1.1;netstandard1.3;netstandard2.0</TargetFrameworks>
+    <TargetFrameworks>net35;net40;net45;netstandard1.0;netstandard1.1;netstandard1.3;netstandard1.6;netstandard2.0</TargetFrameworks>
     <Authors>Brad McDavid</Authors>
     <Copyright>Copyright $(CurrentYear)</Copyright>
     <Description>Startup system and service registration for a DI container.</Description>
@@ -33,8 +33,14 @@
     <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="1.0.0" />
   </ItemGroup>
 
+  <ItemGroup Condition="'$(TargetFramework)' == 'netstandard1.6'">
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="1.0.0" />
+    <PackageReference Include="Microsoft.Extensions.DependencyModel" Version="2.1.0" />
+  </ItemGroup>
+
   <ItemGroup Condition="'$(TargetFramework)' == 'netstandard2.0'">
     <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="2.0.0" />
+    <PackageReference Include="Microsoft.Extensions.DependencyModel" Version="2.1.0" />
   </ItemGroup>
 
   <ItemGroup>
@@ -54,6 +60,10 @@
     <DefineConstants>$(DefineConstants);NETSTANDARD</DefineConstants>
   </PropertyGroup>
 
+  <PropertyGroup Condition=" '$(TargetFramework)' == 'netstandard1.6'">
+    <DefineConstants>$(DefineConstants);NETSTANDARD</DefineConstants>
+  </PropertyGroup>
+  
   <PropertyGroup Condition=" '$(TargetFramework)' == 'netstandard2.0'">
     <DefineConstants>$(DefineConstants);NETSTANDARD</DefineConstants>
   </PropertyGroup>

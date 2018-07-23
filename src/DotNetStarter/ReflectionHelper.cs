@@ -1,7 +1,6 @@
 ﻿namespace DotNetStarter
 {
     using Abstractions;
-    using DotNetStarter.Abstractions.Internal;
     using System;
     using System.Collections.Generic;
     using System.Reflection;
@@ -17,28 +16,28 @@
         /// </summary>
         /// <param name="type"></param>
         /// <returns></returns>
-        public virtual IEnumerable<ConstructorInfo> Constructors(Type type) => TypeExtensions.Constructors(type);
+        public virtual IEnumerable<ConstructorInfo> Constructors(Type type) => Abstractions.Internal.TypeExtensions.Constructors(type);
 
         /// <summary>
         /// Gets given types assembly
         /// </summary>
         /// <param name="type"></param>
         /// <returns></returns>
-        public virtual Assembly GetAssembly(Type type) => TypeExtensions.Assembly(type);
+        public virtual Assembly GetAssembly(Type type) => Abstractions.Internal.TypeExtensions.Assembly(type);
 
         /// <summary>
         /// Gets a types base type
         /// </summary>
         /// <param name="type"></param>
         /// <returns></returns>
-        public virtual Type GetBaseType(Type type) => TypeExtensions.BaseType(type);
+        public virtual Type GetBaseType(Type type) => Abstractions.Internal.TypeExtensions.BaseType(type);
 
         /// <summary>
         /// Gets all types base implementations
         /// </summary>
         /// <param name="type"></param>
         /// <returns></returns>
-        public virtual IEnumerable<Type> GetBaseTypes(Type type) => TypeExtensions.GetBaseTypes(type);
+        public virtual IEnumerable<Type> GetBaseTypes(Type type) => Abstractions.Internal.TypeExtensions.GetBaseTypes(type);
 
         /// <summary>
         /// Get custom attribute
@@ -48,7 +47,7 @@
         /// <param name="inherit"></param>
         /// <returns></returns>
         public virtual IEnumerable<Attribute> GetCustomAttribute(Assembly assembly, Type attrType, bool inherit) =>
-            TypeExtensions.CustomAttribute(assembly, attrType, inherit);
+            Abstractions.Internal.TypeExtensions.CustomAttribute(assembly, attrType, inherit);
 
         /// <summary>
         /// Get custom attribute if assigned
@@ -58,7 +57,7 @@
         /// <param name="inherit"></param>
         /// <returns></returns>
         public virtual IEnumerable<Attribute> GetCustomAttribute(Type type, Type attrType, bool inherit) =>
-            TypeExtensions.CustomAttribute(type, attrType, inherit);
+            Abstractions.Internal.TypeExtensions.CustomAttribute(type, attrType, inherit);
 
         /// <summary>
         /// Get custom attribute if assigned
@@ -67,7 +66,7 @@
         /// <param name="inherit"></param>
         /// <returns></returns>
         public virtual IEnumerable<Attribute> GetCustomAttributes(Assembly assembly, bool inherit) =>
-            TypeExtensions.CustomAttributes(assembly, inherit);
+            Abstractions.Internal.TypeExtensions.CustomAttributes(assembly, inherit);
 
         /// <summary>
         /// Gets all custom attributes
@@ -76,56 +75,56 @@
         /// <param name="inherit"></param>
         /// <returns></returns>
         public virtual IEnumerable<Attribute> GetCustomAttributes(Type type, bool inherit) =>
-            TypeExtensions.CustomAttribute(type, inherit);
+            Abstractions.Internal.TypeExtensions.CustomAttribute(type, inherit);
 
         /// <summary>
         /// Get types events
         /// </summary>
         /// <param name="type"></param>
         /// <returns></returns>
-        public virtual IEnumerable<EventInfo> GetEvents(Type type) => TypeExtensions.GetEventsCheck(type);
+        public virtual IEnumerable<EventInfo> GetEvents(Type type) => Abstractions.Internal.TypeExtensions.GetEventsCheck(type);
 
         /// <summary>
         /// Get types fields
         /// </summary>
         /// <param name="type"></param>
         /// <returns></returns>
-        public virtual IEnumerable<FieldInfo> GetFields(Type type) => TypeExtensions.GetFieldsCheck(type);
+        public virtual IEnumerable<FieldInfo> GetFields(Type type) => Abstractions.Internal.TypeExtensions.GetFieldsCheck(type);
 
         /// <summary>
         /// Gets all interfaces for the type
         /// </summary>
         /// <param name="type"></param>
         /// <returns></returns>
-        public virtual IEnumerable<Type> GetInterfaces(Type type) => TypeExtensions.Interfaces(type);
+        public virtual IEnumerable<Type> GetInterfaces(Type type) => Abstractions.Internal.TypeExtensions.Interfaces(type);
 
         /// <summary>
         /// Gets types members
         /// </summary>
         /// <param name="type"></param>
         /// <returns></returns>
-        public virtual IEnumerable<MemberInfo> GetMembers(Type type) => TypeExtensions.GetMembersCheck(type);
+        public virtual IEnumerable<MemberInfo> GetMembers(Type type) => Abstractions.Internal.TypeExtensions.GetMembersCheck(type);
 
         /// <summary>
         /// Get types methods
         /// </summary>
         /// <param name="type"></param>
         /// <returns></returns>
-        public virtual IEnumerable<MethodInfo> GetMethods(Type type) => TypeExtensions.GetMethodsCheck(type);
+        public virtual IEnumerable<MethodInfo> GetMethods(Type type) => Abstractions.Internal.TypeExtensions.GetMethodsCheck(type);
 
         /// <summary>
         /// Get types properties
         /// </summary>
         /// <param name="type"></param>
         /// <returns></returns>
-        public virtual IEnumerable<PropertyInfo> GetProperties(Type type) => TypeExtensions.GetPropertiesCheck(type);
+        public virtual IEnumerable<PropertyInfo> GetProperties(Type type) => Abstractions.Internal.TypeExtensions.GetPropertiesCheck(type);
 
         /// <summary>
         /// Gets true type, if nullable underlying type is returned
         /// </summary>
         /// <param name="type"></param>
         /// <returns></returns>
-        public virtual Type GetTrueType(Type type) => TypeExtensions.GetTrueType(type);
+        public virtual Type GetTrueType(Type type) => Abstractions.Internal.TypeExtensions.GetTrueType(type);
 
         /// <summary>
         /// Gets all types for the assembly.
@@ -134,7 +133,7 @@
         /// <param name="exportedTypesOnly"></param>
         /// <returns></returns>
         public virtual IEnumerable<Type> GetTypes(Assembly assembly, bool exportedTypesOnly = false) =>
-            TypeExtensions.GetTypesCheck(assembly, exportedTypesOnly);
+            Abstractions.Internal.TypeExtensions.GetTypesCheck(assembly, exportedTypesOnly);
 
         /// <summary>
         /// Determines if type has interface
@@ -142,14 +141,14 @@
         /// <param name="type"></param>
         /// <param name="interfaceType"></param>
         /// <returns></returns>
-        public virtual bool HasInterface(Type type, Type interfaceType) => TypeExtensions.HasInterface(type, interfaceType);
+        public virtual bool HasInterface(Type type, Type interfaceType) => Abstractions.Internal.TypeExtensions.HasInterface(type, interfaceType);
 
         /// <summary>
         /// Determines if type is abstract
         /// </summary>
         /// <param name="type"></param>
         /// <returns></returns>
-        public virtual bool IsAbstract(Type type) => TypeExtensions.IsAbstract(type);
+        public virtual bool IsAbstract(Type type) => Abstractions.Internal.TypeExtensions.IsAbstract(type);
 
         /// <summary>
         /// Determines if checkType is assignable from given type
@@ -157,14 +156,14 @@
         /// <param name="type"></param>
         /// <param name="checkType"></param>
         /// <returns></returns>
-        public virtual bool IsAssignableFrom(Type type, Type checkType) => TypeExtensions.IsAssignableFromCheck(type, checkType);
+        public virtual bool IsAssignableFrom(Type type, Type checkType) => Abstractions.Internal.TypeExtensions.IsAssignableFromCheck(type, checkType);
 
         /// <summary>
         /// Determines if type is an enum
         /// </summary>
         /// <param name="type"></param>
         /// <returns></returns>
-        public virtual bool IsEnum(Type type) => TypeExtensions.IsEnumCheck(type);
+        public virtual bool IsEnum(Type type) => Abstractions.Internal.TypeExtensions.IsEnumCheck(type);
 
         /// <summary>
         /// Determines if type is a generic interface
@@ -172,34 +171,34 @@
         /// <param name="type"></param>
         /// <param name="checkType"></param>
         /// <returns></returns>
-        public virtual bool IsGenericInterface(Type type, Type checkType) => TypeExtensions.IsGenericInterface(type, checkType);
+        public virtual bool IsGenericInterface(Type type, Type checkType) => Abstractions.Internal.TypeExtensions.IsGenericInterface(type, checkType);
 
         /// <summary>
         /// Determines if type is generic
         /// </summary>
         /// <param name="type"></param>
         /// <returns></returns>
-        public virtual bool IsGenericType(Type type) => TypeExtensions.IsGenericType(type);
+        public virtual bool IsGenericType(Type type) => Abstractions.Internal.TypeExtensions.IsGenericType(type);
 
         /// <summary>
         /// Determines if type is interface
         /// </summary>
         /// <param name="type"></param>
         /// <returns></returns>
-        public virtual bool IsInterface(Type type) => TypeExtensions.IsInterface(type);
+        public virtual bool IsInterface(Type type) => Abstractions.Internal.TypeExtensions.IsInterface(type);
 
         /// <summary>
         /// Determines if type is nullable
         /// </summary>
         /// <param name="type"></param>
         /// <returns></returns>
-        public virtual bool IsNullableType(Type type) => TypeExtensions.IsNullableType(type);
+        public virtual bool IsNullableType(Type type) => Abstractions.Internal.TypeExtensions.IsNullableType(type);
 
         /// <summary>
         /// Determines if type is a value type
         /// </summary>
         /// <param name="type"></param>
         /// <returns></returns>
-        public virtual bool IsValueType(Type type) => TypeExtensions.IsValueType(type);
+        public virtual bool IsValueType(Type type) => Abstractions.Internal.TypeExtensions.IsValueType(type);
     }
 }

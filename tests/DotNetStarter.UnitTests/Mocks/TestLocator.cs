@@ -12,7 +12,7 @@ namespace DotNetStarter.UnitTests.Mocks
     {
         private List<Type> modules = new List<Type>();
 
-        private Dictionary<Type, object> instances = new Dictionary<Type, object>();
+        private readonly Dictionary<Type, object> instances = new Dictionary<Type, object>();
 
         private IEnumerable<Type> allowedTypes = new Type[] { typeof(IStartupModule), typeof(ILocatorConfigure), typeof(IReflectionHelper) };
 

@@ -1,6 +1,6 @@
 ﻿using System;
 
-#if !NETSTANDARD1_0 && !NETSTANDARD1_1 && !NETSTANDARD1_3
+#if !NETSTANDARD1_0 && !NETSTANDARD1_1 && !NETSTANDARD1_3 && !NETSTANDARD1_6
 
 namespace DotNetStarter.Abstractions.Internal
 {
