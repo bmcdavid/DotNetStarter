@@ -79,9 +79,9 @@ namespace DotNetStarter.Internal
         {
             throw new AssembliesNotConfiguredException();
         }
-#elif NETSTANDARD
+#elif NETSTANDARD1_6 || NETSTANDARD2_0
         /// <summary>
-        /// Assembly loader not implemented for netstandard
+        /// Assembly loader for netstandard1.6+
         /// </summary>
         /// <returns></returns>
         public virtual IEnumerable<Assembly> GetAssemblies()
@@ -91,6 +91,7 @@ namespace DotNetStarter.Internal
                 Microsoft.Extensions.DependencyModel.DependencyContext.Default,
                 Microsoft.DotNet.PlatformAbstractions.RuntimeEnvironment.GetRuntimeIdentifier()
             );
+
             return libraries.Select(x => Assembly.Load(new AssemblyName(x.Name)));
         }
 #else

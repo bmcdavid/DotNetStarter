@@ -95,7 +95,6 @@ namespace DotNetStarter.Configure.Expressions
         
         /// <summary>
         /// Gets all assemblies with DotNetStarter.Abstractions.DiscoverableAssemblyAttribute, which is generally a good starting point.
-        /// <para>IMPORTANT: For ASP.Net Core applications, assemblies must be provided as there is no default assembly loader!</para>
         /// </summary>
         /// <returns></returns>
         public AssemblyExpression WithDiscoverableAssemblies(IEnumerable<Assembly> assemblies = null, Func<Assembly, Type, IEnumerable<Attribute>> attributeChecker = null)
