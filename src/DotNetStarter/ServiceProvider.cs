@@ -4,7 +4,7 @@
     using Abstractions.Internal;
     using System;
 
-#if NETSTANDARD1_0 || NETSTANDARD1_1 || NETSTANDARD1_3 || NETSTANDARD2_0
+#if NETSTANDARD
     using Microsoft.Extensions.DependencyInjection;
 #endif
 
