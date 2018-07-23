@@ -68,7 +68,7 @@ namespace DotNetStarter.Internal
         {
             System.Runtime.Remoting.Messaging.CallContext.SetData(Key, stack);
         }
-#elif NETSTANDARD2_0 || NETSTANDARD1_3
+#elif NETSTANDARD2_0 || NETSTANDARD1_3 || NETSTANDARD1_6
         // based on httpcontextaccessor
         private static readonly System.Threading.AsyncLocal<Stack<ILocatorScoped>> LocatorScopedContext = new System.Threading.AsyncLocal<Stack<ILocatorScoped>>();
 
@@ -84,7 +84,6 @@ namespace DotNetStarter.Internal
 #else
         private static Stack<ILocatorScoped> GetStack()
         {
-            //todo: determine how to handle netstandard1.0 and 1.1 for ambient locator
             throw new NotSupportedException("ILocatorAmbient not supported in netstandard1.0 and netstandard1.1!");
         }
 
