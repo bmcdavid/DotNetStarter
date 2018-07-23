@@ -1,5 +1,5 @@
-﻿#if NETSTANDARD1_0 || NETSTANDARD1_1
-
+﻿#if NETSTANDARD
+//todo: remove NetcoreExtensions on breaking change.
 namespace DotNetStarter
 {
     using DotNetStarter.Abstractions;
@@ -9,6 +9,7 @@ namespace DotNetStarter
     /// <summary>
     /// Netcore extensions
     /// </summary>
+    [Obsolete]
     public static class NetcoreExtensions
     {
         /// <summary>
@@ -27,13 +28,14 @@ namespace DotNetStarter
         /// <param name="serviceCollection"></param>
         /// <param name="startupDotNetStarter">delegate function to invoke DotNetStarter.ApplicationContext.Startup</param>
         /// <param name="serviceProviderFactory">delegate function to create an IServiceProvider</param>
-        public static IServiceProvider WithDotNetStarter(this IServiceCollection serviceCollection, Action startupDotNetStarter, Func<ILocator,IServiceProvider> serviceProviderFactory = null)
+        public static IServiceProvider WithDotNetStarter(this IServiceCollection serviceCollection, Action startupDotNetStarter, Func<ILocator, IServiceProvider> serviceProviderFactory = null)
         {
             if (startupDotNetStarter == null)
                 throw new ArgumentNullException(nameof(startupDotNetStarter));
 
             Func<ILocator, IServiceProvider> fallbackFactory = locator => locator.Get<IServiceProvider>();
 
+            //todo rework startup action
             WithDotNetStarter(serviceCollection); // add services
             startupDotNetStarter();
 
@@ -58,13 +60,13 @@ namespace DotNetStarter
             }
         }
 
-        void AddServicesToLocator(IServiceCollection services, ILocatorRegistry locator)
+        internal static void AddServicesToLocator(IServiceCollection services, ILocatorRegistry locator)
         {
             // map .net services to locator
             for (int i = 0; i < services.Count; i++)
             {
                 var service = services[i];
-                var lifetime = ConvertLifeTime(service.Lifetime);
+                var lifetime = Internal.RegisterIServiceCollection.ConvertLifeTime(service.Lifetime);
 
                 if (service.ImplementationType != null)
                 {
@@ -81,19 +83,6 @@ namespace DotNetStarter
             }
         }
 
-        private static Lifecycle ConvertLifeTime(ServiceLifetime lifetime)
-        {
-            switch (lifetime)
-            {
-                case ServiceLifetime.Scoped:
-                    return Lifecycle.Scoped;
-                case ServiceLifetime.Singleton:
-                    return Lifecycle.Singleton;
-                case ServiceLifetime.Transient:
-                default:
-                    return Lifecycle.Transient;
-            }
-        }
     }
 }
 #endif

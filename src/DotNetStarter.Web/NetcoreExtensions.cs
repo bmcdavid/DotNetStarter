@@ -11,6 +11,7 @@ namespace DotNetStarter.Web
     /// <summary>
     /// Netcore Extensions
     /// </summary>
+    [Obsolete]//todo: remove on breaking change, along with netstandard support from this csproj
     public static class NetcoreExtensions
     {
         /// <summary>

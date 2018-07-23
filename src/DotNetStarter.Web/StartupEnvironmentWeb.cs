@@ -9,6 +9,8 @@ using System.Configuration;
 
 namespace DotNetStarter.Web
 {
+    //todo: change netstandard constructor to take contentrootpath and webroot path to arguments and move to DotNetStarter project
+
     /// <summary>
     /// Startup Environment for web
     /// </summary>

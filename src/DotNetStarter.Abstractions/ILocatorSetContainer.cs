@@ -1,8 +1,11 @@
-﻿namespace DotNetStarter.Abstractions
+﻿using System;
+
+namespace DotNetStarter.Abstractions
 {
     /// <summary>
     /// Sets locator's container
     /// </summary>
+    [Obsolete]
     public interface ILocatorSetContainer
     {
         /// <summary>

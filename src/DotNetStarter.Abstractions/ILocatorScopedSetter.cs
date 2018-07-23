@@ -1,5 +1,7 @@
 ﻿namespace DotNetStarter.Abstractions
 {
+    //todo: move to internal namespace on breaking change
+
     /// <summary>
     /// Sets current scope of ILocatorScopedAccessor, must be implemented on same type as ILocatorScopedAccessor
     /// </summary>

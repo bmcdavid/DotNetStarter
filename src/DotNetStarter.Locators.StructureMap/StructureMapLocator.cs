@@ -6,10 +6,12 @@
     using StructureMap.Pipeline;
     using System;
 
+#pragma warning disable CS0612 // Type or member is obsolete
     /// <summary>
     /// Structuremap Locator
     /// </summary>
     public class StructureMapLocator : StructureMapLocatorBase, ILocatorRegistry, ILocatorSetContainer, ILocatorRegistryWithContains, ILocatorRegistryWithRemove
+#pragma warning restore CS0612 // Type or member is obsolete
     {
         /// <summary>
         /// Constructor

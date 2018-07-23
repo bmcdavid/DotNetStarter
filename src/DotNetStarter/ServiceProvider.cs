@@ -4,7 +4,7 @@
     using Abstractions.Internal;
     using System;
 
-#if NETSTANDARD1_0 || NETSTANDARD1_1 || NETSTANDARD2_0
+#if NETSTANDARD1_0 || NETSTANDARD1_1 || NETSTANDARD1_3 || NETSTANDARD2_0
     using Microsoft.Extensions.DependencyInjection;
 #endif
 
@@ -34,17 +34,31 @@
         /// </summary>
         public ILocator Locator { get; }
 
-        private readonly IServiceProviderTypeChecker _ServiceProviderTypeChecker;
+        private readonly IServiceProviderTypeChecker _serviceProviderTypeChecker;
+        private readonly bool _isScoped;
 
         /// <summary>
-        /// Scoped Constructor
+        /// Scoped Constructor for OWIN and netcore
         /// </summary>
         /// <param name="serviceProviderTypeChecker"></param>
         /// <param name="locatorScopedAccessor"></param>
         public ServiceProvider(IServiceProviderTypeChecker serviceProviderTypeChecker, ILocatorScopedAccessor locatorScopedAccessor)
         {
             Locator = locatorScopedAccessor.CurrentScope;
-            _ServiceProviderTypeChecker = serviceProviderTypeChecker;
+            _isScoped = true;
+            _serviceProviderTypeChecker = serviceProviderTypeChecker;
+        }
+
+        /// <summary>
+        /// For IServiceCollection Func
+        /// </summary>
+        /// <param name="serviceProviderTypeChecker"></param>
+        /// <param name="locatorAmbient"></param>
+        public ServiceProvider(IServiceProviderTypeChecker serviceProviderTypeChecker, ILocatorAmbient locatorAmbient)
+        {
+            Locator = locatorAmbient.Current;
+            _isScoped = locatorAmbient.IsScoped;
+            _serviceProviderTypeChecker = serviceProviderTypeChecker;
         }
 
         /// <summary>
@@ -56,7 +70,7 @@
         public ServiceProvider(ILocator locator, IServiceProviderTypeChecker serviceProviderTypeChecker, IStartupConfiguration startupConfiguration)
         {
             Locator = locator;
-            _ServiceProviderTypeChecker = serviceProviderTypeChecker;
+            _serviceProviderTypeChecker = serviceProviderTypeChecker;
         }
 
         /// <summary>
@@ -72,7 +86,7 @@
             }
             catch (Exception e)
             {
-                if (_ServiceProviderTypeChecker.IsScannedAssembly(serviceType, e))
+                if (_serviceProviderTypeChecker.IsScannedAssembly(serviceType, e))
                 {
                     throw;
                 }
@@ -91,7 +105,10 @@
         /// </summary>
         public void Dispose()
         {
-           Locator.Dispose();
+            if (_isScoped)
+            {
+                Locator.Dispose();
+            }
         }
 
         /// <summary>
@@ -104,7 +121,9 @@
             var service = Locator.Get(serviceType);
 
             if (service == null)
+            {
                 throw new NullReferenceException($"{serviceType.FullName} cannot be null and couldn't be resolved!");
+            }
 
             return service;
         }

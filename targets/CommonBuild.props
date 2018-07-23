@@ -7,8 +7,8 @@
 
     <!--otherwise use VSTS-->
     <CIBuildNumber Condition="'$(BUILD_SOURCEVERSION)' != ''">$(BUILD_BUILDNUMBER)</CIBuildNumber>
-    <RepositoryBranch Condition="'$(BUILD_SOURCEVERSION)' != ''">$(BUILD_SOURCEVERSION)</RepositoryBranch>
-    <RepositoryCommit Condition="'$(BUILD_SOURCEVERSION)' != ''">$(BUILD_SOURCEBRANCHNAME)</RepositoryCommit>
+    <RepositoryBranch Condition="'$(BUILD_SOURCEVERSION)' != ''">$(BUILD_SOURCEBRANCHNAME)</RepositoryBranch>
+    <RepositoryCommit Condition="'$(BUILD_SOURCEVERSION)' != ''">$(BUILD_SOURCEVERSION)</RepositoryCommit>
 
     <CurrentYear>$([System.DateTime]::Now.ToString(yyyy))</CurrentYear>
 

@@ -1,6 +1,6 @@
 ﻿using DotNetStarter.Abstractions;
 
-#if NETSTANDARD1_0 || NETSTANDARD1_1 || NETSTANDARD2_0
+#if NETSTANDARD1_0 || NETSTANDARD1_1 || NETSTANDARD1_3 || NETSTANDARD2_0
 using Microsoft.Extensions.DependencyInjection;
 #endif
 
@@ -26,7 +26,7 @@ namespace DotNetStarter
     [Registration(typeof(IServiceScopeFactory), Lifecycle.Singleton)]
     public class ServiceScopeFactory : IServiceScopeFactory
     {
-        private readonly ILocatorScopedFactory _LocatorScopeFactory;
+        private readonly ILocatorScopedFactory _locatorScopeFactory;
 
         /// <summary>
         /// Constructor
@@ -34,7 +34,7 @@ namespace DotNetStarter
         /// <param name="locatorScopedFactory"></param>
         public ServiceScopeFactory(ILocatorScopedFactory locatorScopedFactory)
         {
-            _LocatorScopeFactory = locatorScopedFactory;
+            _locatorScopeFactory = locatorScopedFactory;
         }
 
         /// <summary>
@@ -43,7 +43,7 @@ namespace DotNetStarter
         /// <returns></returns>
         public IServiceScope CreateScope()
         {
-            var scope = _LocatorScopeFactory.CreateScope();
+            var scope = _locatorScopeFactory.CreateScope();
 
             return new ServiceScope
             (

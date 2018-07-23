@@ -24,7 +24,7 @@ namespace DotNetStarter.Configure
         public IEnumerable<Assembly> Assemblies { get; }
         public IAssemblyFilter AssemblyFilter { get; }
         public IAssemblyScanner AssemblyScanner { get; }
-        public Action DelayedStartup { get; set; }
+        Action IStartupDelayed.DelayedStartup { get; set; }
         public IDependencyFinder DependencyFinder { get; }
         public IDependencySorter DependencySorter { get; }
         public bool EnableDelayedStartup => true;

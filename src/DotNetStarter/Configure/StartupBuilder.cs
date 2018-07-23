@@ -123,12 +123,13 @@ namespace DotNetStarter.Configure
 
             _runOnce = true;
             Build(); // just in case its not called fluently
-            if (!(StartupContext.Configuration is StartupBuilderConfiguration delayed))
+            if (!(StartupContext.Configuration is Abstractions.Internal.IStartupDelayed delayed))
             {
-                throw new Exception($"{StartupContext.Configuration.GetType().FullName} does not implement {typeof(StartupBuilderConfiguration).FullName}!");
+                throw new Exception($"{StartupContext.Configuration.GetType().FullName} does not implement {typeof(Abstractions.Internal.IStartupDelayed).FullName}!");
             }
 
             delayed.DelayedStartup();
+            delayed.DelayedStartup = null;
         }
 
         /// <summary>

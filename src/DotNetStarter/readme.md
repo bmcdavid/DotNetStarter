@@ -1,8 +1,10 @@
 # DotNetStarter Read Me
 
-This package supports native .netframeworks 3.5, 4.0, and 4.5 and netstandard 1.0.
+DotNetStarter is a framework for composing applications where many components are provided by NuGet packages. There are two main audiences: package authors and application owners.
 
-The goal of this package to create a startup framework for any dotnet project where everything is swappable via Inversion Of Control (IoC) or object factories (AssemblyFactoryBaseAttribute).
+Package authors can depend on either the [configuration and startup abstractions](https://www.nuget.org/packages/DotNetStarter.Abstractions/) or the [registration attribute abstractions](https://www.nuget.org/packages/DotNetStarter.RegistrationAbstractions/) to create their components. The components can then be designed with constructor dependency injection in mind. These classes can then be registered by using the [RegistrationAttribute](https://bmcdavid.github.io/DotNetStarter/register.html) or in a startup module implementing [ILocatorConfigure](https://bmcdavid.github.io/DotNetStarter/register.html). Packages may also perform tasks during startup and shutdown using the [IStartupModule](https://bmcdavid.github.io/DotNetStarter/modules.html) interface.
+
+Application owners can install the DotNetStarter package, a locator (container wrapper) package, any extension such as MVC for the full ASP.Net framework, and any NuGet packages utilizing the abstractions. Owners have full control over the [startup process](https://bmcdavid.github.io/DotNetStarter/custom-objectfactory.html) which can be customized through code configuration at almost every level using a fluent configuration API. The framework also supports a wide variety of .NET frameworks from ASP.NET version 3.5 and up, as well as the [.NET Standard](https://docs.microsoft.com/en-us/dotnet/standard/net-standard) starting at 1.0.
 
 * [**Important:** Breaking Changes](https://bmcdavid.github.io/DotNetStarter/breaking-changes.html)
 
@@ -42,7 +44,7 @@ Func<IEnumerable<Assembly>> assemblyLoader = () =>
     return libraries.Select(x => Assembly.Load(new AssemblyName(x.Name)));
 };
 
-DotNetStarter.ApplicationContext.Startup(assemblies: assemblyLoader());
+// pass loaded assemblies to the StartupBuilder.ConfigureAssemblies callback.
 ```
 
 ## Abstractions
@@ -57,7 +59,7 @@ public interface ITest
     string SayHi(string n);
 }
 
-[Register(typeof(ITest))]
+[Registration(typeof(ITest), Lifecycle.Transient)]
 public class Test : ITest
 {
     public string SayHi(string n) => "Hello " + n;

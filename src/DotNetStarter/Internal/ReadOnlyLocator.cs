@@ -6,7 +6,9 @@ using System.Collections.Generic;
 
 namespace DotNetStarter.Internal
 {
+#pragma warning disable CS0612 // Type or member is obsolete
     public sealed class ReadOnlyLocator : IReadOnlyLocator, ILocatorSetContainer, ILocatorCreateScope, ILocatorWithPropertyInjection
+#pragma warning restore CS0612 // Type or member is obsolete
     {
         private readonly ILocator _ConfiguredLocator;
 
@@ -46,10 +48,10 @@ namespace DotNetStarter.Internal
 
         public ILocatorScoped CreateScope()
         {
-            var scopedCreator = _ConfiguredLocator as ILocatorCreateScope;
-
-            if (scopedCreator == null)
+            if (!(_ConfiguredLocator is ILocatorCreateScope scopedCreator))
+            {
                 throw new NullReferenceException($"{_ConfiguredLocator.GetType().FullName} doesn't support {typeof(ILocatorCreateScope).FullName}!");
+            }
 
             return (_ConfiguredLocator as ILocatorCreateScope).CreateScope();
         }
@@ -88,7 +90,9 @@ namespace DotNetStarter.Internal
         {
             ThrowIfLocked();
             EnsureLocked();
+#pragma warning disable CS0612 // Type or member is obsolete
             (_ConfiguredLocator as ILocatorSetContainer)?.SetContainer(container);
+#pragma warning restore CS0612 // Type or member is obsolete
         }
 
         private void ThrowIfLocked()

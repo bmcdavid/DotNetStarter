@@ -12,9 +12,7 @@ namespace DotNetStarter.UnitTests
         void IStartupModule.Startup(IStartupEngine engine)
         {
 #if LIGHTINJECT_LOCATOR
-            var lightInjectContainer = engine.Locator.InternalContainer as LightInject.IServiceContainer;
-
-            if (lightInjectContainer != null)
+            if (engine.Locator.InternalContainer is LightInject.IServiceContainer lightInjectContainer)
             {
                 // hack: needed for injecting func params
                 lightInjectContainer.RegisterConstructorDependency((factory, info, runtimeArgs) => (IInjectable)(runtimeArgs[0]));
