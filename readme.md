@@ -25,6 +25,7 @@ Package  | Version
 
 * [**Important:** Breaking Changes](https://bmcdavid.github.io/DotNetStarter/breaking-changes.html)
 * [Full Documentation](https://bmcdavid.github.io/DotNetStarter/)
+* [Known Issues](https://bmcdavid.github.io/DotNetStarter/known-issues.html)
 
 To kickoff the startup modules and configure the locator please execute the following early in the project startup, for example global.asax class constructor for ASP.Net Framework web applications.
 
@@ -84,47 +85,6 @@ They can also be swapped at runtime via the assembly attribute as noted below fo
 [assembly: DotNetStarter.Abstractions.LocatorRegistryFactory(typeof(DotNetStarter.DryIocLocatorFactory))]
 ```
 
-## Known Issues
-
-* IStartupModule.Shutdown doesn't execute in netcoreapps. Workaround is attach to unloading event using an IStartup module to resolve the IShutdownHandler as noted below:
-```cs
-[StartupModule(typeof(RegistrationConfiguration))]
-public class ShutdownHook : IStartupModule
-{
-    IShutdownHandler _ShutdownHandler;
-
-    void IStartupModule.Shutdown()
-    {
-        System.Runtime.Loader.AssemblyLoadContext.Default.Unloading -= Default_Unloading;
-    }
-
-    void IStartupModule.Startup(IStartupEngine engine)
-    {
-        _ShutdownHandler = engine.Locator.Get<IShutdownHandler>(); // cannot inject it, to avoid recursion
-        System.Runtime.Loader.AssemblyLoadContext.Default.Unloading -= Default_Unloading;
-        System.Runtime.Loader.AssemblyLoadContext.Default.Unloading += Default_Unloading;
-    }
-
-    void Default_Unloading(System.Runtime.Loader.AssemblyLoadContext obj)
-    {
-        _ShutdownHandler.Shutdown();
-    }
-}
-```
-
-* netcoreapps require custom assembly loading noted below:
-```cs
-// Add the following lines in the Startup class constructor, for netcore assembly loading
-Func<IEnumerable<Assembly>> assemblyLoader = () =>
-{
-    var runtimeId = Microsoft.DotNet.PlatformAbstractions.RuntimeEnvironment.GetRuntimeIdentifier();
-    var libraries = Microsoft.Extensions.DependencyModel.DependencyContextExtensions.GetRuntimeAssemblyNames(Microsoft.Extensions.DependencyModel.DependencyContext.Default, runtimeId);
-
-    return libraries.Select(x => Assembly.Load(new AssemblyName(x.Name)));
-};
-
-// pass loaded assemblies to the StartupBuilder.ConfigureAssemblies callback.
-```
 ## Examples of DI/IOC, requires an ILocator package such as DotNetStarter.DryIoc or DotNetStarter.StructureMap
 ### Registration
 ```cs
