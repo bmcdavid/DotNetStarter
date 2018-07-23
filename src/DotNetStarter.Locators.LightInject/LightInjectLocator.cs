@@ -11,10 +11,7 @@ namespace DotNetStarter.Locators
     /// Default LightInject ILocatoryRegistry
     /// </summary>
     public class LightInjectLocator : ILocatorRegistry, ILocator, ILocatorVerification, ILocatorCreateScope,
-        ILocatorRegistryWithContains, ILocatorResolveConfigureModules, ILocatorRegistryWithRemove,
-#pragma warning disable CS0612 // Type or member is obsolete
-        ILocatorSetContainer
-#pragma warning restore CS0612 // Type or member is obsolete
+        ILocatorRegistryWithContains, ILocatorResolveConfigureModules, ILocatorRegistryWithRemove
     {
         private IServiceContainer _Container;
         private ContainerRegistrationCollection _Registrations;
@@ -223,16 +220,6 @@ namespace DotNetStarter.Locators
                     yield return (ILocatorConfigure)Activator.CreateInstance(module.ServiceImplementation);
                 }
             }
-        }
-
-        /// <summary>
-        /// Allows container to be set externally, example is ConfigureServices in a netcore app
-        /// </summary>
-        /// <param name="container"></param>
-        public void SetContainer(object container)
-        {
-            var tempContainer = container as IServiceContainer;
-            _Container = tempContainer ?? throw new ArgumentException($"{container} doesn't implement {typeof(IServiceContainer).FullName}!");
         }
 
         /// <summary>

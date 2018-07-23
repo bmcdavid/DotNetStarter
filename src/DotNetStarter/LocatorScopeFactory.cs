@@ -62,13 +62,8 @@ namespace DotNetStarter
 
 #if !NETSTANDARD1_0 && !NETSTANDARD1_1
             if (_locatorAmbient is ILocatorAmbientWithSet settable)
-            {
-                if (!(scope is ILocatorScopedWithDisposeAction disposeAction))
-                {
-                    throw new ArgumentException($"{scope.GetType().FullName} must implement {typeof(ILocatorScopedWithDisposeAction).FullName}!");
-                }
-
-                disposeAction.OnDispose(() => settable.SetCurrentScopedLocator(null));
+            {       
+                scope.OnDispose(() => settable.SetCurrentScopedLocator(null));
                 settable.SetCurrentScopedLocator(scope);
             }
 #endif

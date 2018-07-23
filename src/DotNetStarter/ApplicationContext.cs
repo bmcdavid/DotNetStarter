@@ -1,6 +1,7 @@
 ﻿namespace DotNetStarter
 {
     using Abstractions;
+    using DotNetStarter.Configure;
     using System;
     using System.Collections.Generic;
     using System.Linq;
@@ -52,31 +53,6 @@
             return filteredAssemblies.ToList();
         }
 
-        // todo: Remove Startup methods on breaking change
-
-        /// <summary>
-        /// Entry point for startup process
-        /// </summary>
-        /// <param name="configuration"></param>
-        /// <param name="objectFactory"></param>
-        [Obsolete("Please use DotNetStarter.Configure.StartupBuilder.Create().Run() instead!, This will be removed next breaking change!", false)]
-        public static void Startup(IStartupConfiguration configuration, IStartupObjectFactory objectFactory = null)
-        {
-            EnsureStartup(configuration: configuration, objectFactory: objectFactory);
-        }
-
-        /// <summary>
-        /// Entry point for startup process
-        /// </summary>
-        /// <param name="environment"></param>
-        /// <param name="assemblies"></param>
-        /// <param name="objectFactory"></param>
-        [Obsolete("Please use DotNetStarter.Configure.StartupBuilder.Create().Run() instead!, This will be removed next breaking change!", false)]
-        public static void Startup(IStartupEnvironment environment = null, IEnumerable<Assembly> assemblies = null, IStartupObjectFactory objectFactory = null)
-        {
-            EnsureStartup(environment: environment, objectFactory: objectFactory, assemblies: assemblies);
-        }
-
         /// <summary>
         /// Default context instance
         /// </summary>
@@ -93,9 +69,7 @@
             }
         }
 
-#pragma warning disable CS0612 // Type or member is obsolete
-        internal static void EnsureStartup(IStartupEnvironment environment = null, IStartupConfiguration configuration = null, IStartupObjectFactory objectFactory = null, IEnumerable<Assembly> assemblies = null)
-#pragma warning restore CS0612 // Type or member is obsolete
+        internal static void EnsureStartup(StartupBuilderObjectFactory factory, IStartupEnvironment environment = null, IStartupConfiguration configuration = null, IEnumerable<Assembly> assemblies = null)
         {
             if (!Started)
             {
@@ -110,7 +84,6 @@
                     {
                         _Starting = true;
                         var assembliesForStartup = configuration?.Assemblies ?? assemblies ?? new Internal.AssemblyLoader().GetAssemblies();
-                        var factory = objectFactory ?? new StartupObjectFactory();
                         var startupConfig = configuration ?? factory.CreateStartupConfiguration(assembliesForStartup, environment);
                         _Default = RunStartup(factory, startupConfig);
                         Started = _Default != null;
@@ -120,17 +93,13 @@
             }
         }
 
-#pragma warning disable CS0612 // Type or member is obsolete
-        internal static IStartupContext RunStartup(IStartupObjectFactory startupObjectFactory, IStartupConfiguration startupConfiguration)
-#pragma warning restore CS0612 // Type or member is obsolete
+        internal static IStartupContext RunStartup(StartupBuilderObjectFactory objFactory, IStartupConfiguration startupConfiguration)
         {
-            if (startupObjectFactory == null) throw new ArgumentNullException(nameof(startupObjectFactory));
+            if (objFactory == null) throw new ArgumentNullException(nameof(objFactory));
             if (startupConfiguration == null) throw new ArgumentNullException(nameof(startupConfiguration));
-            var handler = startupObjectFactory.CreateStartupHandler() ?? throw new NullReferenceException($"{startupObjectFactory.GetType().FullName} returned a null for {nameof(startupObjectFactory.CreateStartupHandler)}!");
+            var handler = new StartupHandler(objFactory.CreateTimedTask, objFactory.CreateRegistry(startupConfiguration), objFactory.CreateContainerDefaults());
 
-            handler.Startup(startupConfiguration, startupObjectFactory, out var startupContext);
-
-            return startupContext;
+            return handler.Startup(startupConfiguration);
         }
 
         internal static TFactoryType GetAssemblyFactory<TFactoryAttr, TFactoryType>(IStartupConfiguration config) where TFactoryAttr : AssemblyFactoryBaseAttribute

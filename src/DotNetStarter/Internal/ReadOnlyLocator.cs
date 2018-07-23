@@ -6,9 +6,7 @@ using System.Collections.Generic;
 
 namespace DotNetStarter.Internal
 {
-#pragma warning disable CS0612 // Type or member is obsolete
-    public sealed class ReadOnlyLocator : IReadOnlyLocator, ILocatorSetContainer, ILocatorCreateScope, ILocatorWithPropertyInjection
-#pragma warning restore CS0612 // Type or member is obsolete
+    public sealed class ReadOnlyLocator : IReadOnlyLocator, ILocatorCreateScope, ILocatorWithPropertyInjection
     {
         private readonly ILocator _ConfiguredLocator;
 
@@ -85,16 +83,7 @@ namespace DotNetStarter.Internal
         {
             return _ConfiguredLocator.GetAll(serviceType, key);
         }
-
-        public void SetContainer(object container)
-        {
-            ThrowIfLocked();
-            EnsureLocked();
-#pragma warning disable CS0612 // Type or member is obsolete
-            (_ConfiguredLocator as ILocatorSetContainer)?.SetContainer(container);
-#pragma warning restore CS0612 // Type or member is obsolete
-        }
-
+        
         private void ThrowIfLocked()
         {
             if (IsLocked)

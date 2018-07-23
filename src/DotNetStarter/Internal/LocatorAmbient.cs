@@ -84,7 +84,6 @@ namespace DotNetStarter.Internal
 #else
         private static Stack<ILocatorScoped> GetStack()
         {
-            //todo: determine how to handle netstandard1.0 and 1.1 for ambient locator
             throw new NotSupportedException("ILocatorAmbient not supported in netstandard1.0 and netstandard1.1!");
         }
 

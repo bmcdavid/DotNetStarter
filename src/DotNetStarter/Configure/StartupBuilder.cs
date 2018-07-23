@@ -76,7 +76,7 @@ namespace DotNetStarter.Configure
             {
                 // if no assemblies have been configured follow the default scanner rule
                 var assemblies = assemblyExp.Assemblies.Count > 0 ? assemblyExp.Assemblies : null;
-                ApplicationContext.EnsureStartup(objectFactory: objFactory, assemblies: assemblies);
+                ApplicationContext.EnsureStartup(objFactory, assemblies: assemblies);
                 StartupContext = ApplicationContext.Default;
                 return this;
             }
@@ -88,7 +88,10 @@ namespace DotNetStarter.Configure
 
             // allows for non static execution
             var startupConfig = objFactory.CreateStartupConfiguration(assemblyExp.Assemblies, startupEnvironment: null);
-            StartupContext = ApplicationContext.RunStartup(objFactory, startupConfig);
+            // change StartupHandler in override to Func<IStartupConfig,IStartupHandler>
+            var startupHandler = overrideExp.StartupHandler ?? new StartupHandler(objFactory.CreateTimedTask, objFactory.CreateRegistry(startupConfig), objFactory.CreateContainerDefaults());
+
+            StartupContext = startupHandler.Startup(startupConfig);
             return this;
         }
 

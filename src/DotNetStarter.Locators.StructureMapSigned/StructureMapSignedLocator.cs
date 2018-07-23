@@ -6,12 +6,10 @@
     using StructureMap.Pipeline;
     using System;
 
-#pragma warning disable CS0612 // Type or member is obsolete
     /// <summary>
     /// Structuremap Locator
     /// </summary>
-    public class StructureMapSignedLocator : StructureMapSignedLocatorBase, ILocatorRegistry, ILocatorSetContainer, ILocatorRegistryWithContains, ILocatorRegistryWithRemove
-#pragma warning restore CS0612 // Type or member is obsolete
+    public class StructureMapSignedLocator : StructureMapSignedLocatorBase, ILocatorRegistry, ILocatorRegistryWithContains, ILocatorRegistryWithRemove
     {
         /// <summary>
         /// Constructor
@@ -116,16 +114,6 @@
                     return serviceImplementation.IsAssignableFromCheck(type);
                 });
             }
-        }
-
-        /// <summary>
-        /// Allows container to be set externally, example is ConfigureServices in a netcore app
-        /// </summary>
-        /// <param name="container"></param>
-        public void SetContainer(object container)
-        {
-            var tempContainer = container as IContainer;
-            _Container = tempContainer ?? throw new ArgumentException($"{container} doesn't implement {typeof(IContainer).FullName}!");
         }
     }
 }

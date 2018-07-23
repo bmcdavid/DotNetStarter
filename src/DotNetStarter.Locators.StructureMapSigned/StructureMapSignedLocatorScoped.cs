@@ -7,7 +7,7 @@ namespace DotNetStarter.Locators
     /// <summary>
     /// Scoped structuremap locator
     /// </summary>
-    public sealed class StructureMapSignedLocatorScoped : StructureMapSignedLocatorBase, ILocatorScoped, ILocatorScopedWithDisposeAction
+    public sealed class StructureMapSignedLocatorScoped : StructureMapSignedLocatorBase, ILocatorScoped
     {
         private Action _onDispose;
 

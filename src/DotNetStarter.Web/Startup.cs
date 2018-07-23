@@ -1,6 +1,4 @@
-﻿#if !NETSTANDARD
-
-using DotNetStarter.Abstractions;
+﻿using DotNetStarter.Abstractions;
 
 namespace DotNetStarter.Web
 {
@@ -42,7 +40,7 @@ namespace DotNetStarter.Web
             catch (System.InvalidOperationException)
             {
 #if NET40 || NET45
-                throw new System.InvalidOperationException($"Please execute {typeof(ApplicationContext).FullName}.{nameof(ApplicationContext.Startup)} in a {typeof(System.Web.PreApplicationStartMethodAttribute)} startup method or the global asax constructor!");
+                throw new System.InvalidOperationException($"Please execute {typeof(DotNetStarter.Configure.StartupBuilder).FullName} in a {typeof(System.Web.PreApplicationStartMethodAttribute)} startup method or the global asax constructor!");
 #endif
             }
 
@@ -50,4 +48,3 @@ namespace DotNetStarter.Web
         }
     }
 }
-#endif

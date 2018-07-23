@@ -1,1 +1,1 @@
-﻿Updated obsolete notices.
+﻿Removed netstandard support.

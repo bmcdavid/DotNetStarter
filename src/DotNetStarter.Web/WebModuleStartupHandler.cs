@@ -1,6 +1,4 @@
-﻿#if !NETSTANDARD
-
-namespace DotNetStarter.Web
+﻿namespace DotNetStarter.Web
 {
     using DotNetStarter.Abstractions;
     using System.Collections.Generic;
@@ -79,4 +77,3 @@ namespace DotNetStarter.Web
         }
     }
 }
-#endif

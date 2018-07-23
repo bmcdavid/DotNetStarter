@@ -24,25 +24,7 @@ namespace DotNetStarter.UnitTests
 
             Assert.IsNotNull(task);
         }
-
-        [ExpectedException(typeof(LocatorLockedException))]
-        [TestMethod]
-        public void ShouldThrowLockedLocatorException()
-        {
-            var locator = Context.Service.Locator;
-            var temp = Context.Service.Locator.InternalContainer;
-            var lockedPreSet = (locator as IReadOnlyLocator).IsLocked;
-#pragma warning disable CS0612 // Type or member is obsolete
-            (locator as ILocatorSetContainer).SetContainer(temp);
-#pragma warning restore CS0612 // Type or member is obsolete
-            var lockedPostSet = (locator as IReadOnlyLocator).IsLocked;
-
-            Assert.IsFalse(lockedPreSet);
-            Assert.IsTrue(lockedPostSet);
-            Assert.IsNotNull(Context.Service.Locator.InternalContainer); // triggers exception
-
-        }
-
+        
         [TestMethod]
         public void ShouldBeReadOnlyLocatorInAppContext()
         {

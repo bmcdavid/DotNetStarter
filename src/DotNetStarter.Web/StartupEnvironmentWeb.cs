@@ -36,10 +36,10 @@ namespace DotNetStarter.Web
         /// <param name="applicationBasePath"></param>
         /// <param name="webRootPath"></param>
         /// <param name="contentRootPath"></param>
-        public StartupEnvironmentWeb(string environmentName = null, string applicationBasePath = null, string webRootPath = null, string contentRootPath = null) :
+        public StartupEnvironmentWeb(string environmentName, string applicationBasePath = null, string webRootPath = null, string contentRootPath = null) :
             base
             (
-                environmentName ?? ConfigurationManager.AppSettings[$"{typeof(IStartupEnvironment).FullName}.{nameof(IStartupEnvironment.EnvironmentName)}"]?.ToString(),
+                environmentName,
                 applicationBasePath ?? AppDomain.CurrentDomain.BaseDirectory
             )
         {

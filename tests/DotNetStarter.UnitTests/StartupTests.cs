@@ -7,15 +7,7 @@ using System.Linq;
 using System.Reflection;
 
 namespace DotNetStarter.UnitTests
-{
-    public class NullLocatorObjectFactory : StartupObjectFactory
-    {
-        public override ILocatorRegistry CreateRegistry(IStartupConfiguration config)
-        {
-            return null;
-        }
-    }
-
+{    
     [TestClass]
     public class StartupModuleTests
     {
@@ -97,12 +89,12 @@ namespace DotNetStarter.UnitTests
         public void ShouldSetCustomIsAbstractCheckForAseemblyFactoryBaseAttribute()
         {
             bool test = false;
-            Func<Type, bool> sut = (type) =>
+            bool sut(Type type)
             {
                 test = true;
 
                 return type.IsAbstract();
-            };
+            }
 
             var prev = AssemblyFactoryBaseAttribute.FactoryIsAbstract;
             AssemblyFactoryBaseAttribute.FactoryIsAbstract = sut;
@@ -134,12 +126,13 @@ namespace DotNetStarter.UnitTests
             var check = new LocatorRegistryFactoryAttribute(typeof(object));
         }
 
-        [ExpectedException(typeof(NullLocatorException))]
-        [TestMethod]
-        public void ShouldThrowNullLocatorExceptionInDefaultHandler()
-        {
-            new StartupHandler().Startup(ApplicationContext.Default.Configuration, new NullLocatorObjectFactory(), out IStartupContext x);
-        }
+        //todo: decide if rewriting or ditching
+        //[ExpectedException(typeof(NullLocatorException))]
+        //[TestMethod]
+        //public void ShouldThrowNullLocatorExceptionInDefaultHandler()
+        //{
+        //    //new StartupHandler().Startup(ApplicationContext.Default.Configuration, new NullLocatorObjectFactory(), out IStartupContext x);
+        //}
 
         internal class MockFactory : ILocatorRegistryFactory
         {

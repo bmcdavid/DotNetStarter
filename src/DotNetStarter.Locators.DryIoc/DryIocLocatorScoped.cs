@@ -8,7 +8,7 @@
     /// <summary>
     /// Scoped DryIoc locator
     /// </summary>
-    public sealed class DryIocLocatorScoped : ILocatorScoped, ILocatorCreateScope, ILocatorScopedWithDisposeAction
+    public sealed class DryIocLocatorScoped : ILocatorScoped, ILocatorCreateScope
     {
         // for v3
         private readonly IResolverContext _resolveContext;

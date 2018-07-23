@@ -11,35 +11,6 @@ namespace DotNetStarter.Web.Tests
         Import<IWebModuleStartupHandler> _WebModuleHandler;
 
         [TestMethod]
-        public void ShouldCreateStartupEnvironmentWeb()
-        {
-#pragma warning disable CS0612 // Type or member is obsolete
-            var x = new StartupConfigurationWithWebEnvironment(
-#pragma warning restore CS0612 // Type or member is obsolete
-                System.AppDomain.CurrentDomain.GetAssemblies(),
-                new StartupEnvironmentWeb("UnitTest"),
-                new AssemblyFilter(),
-                new AssemblyScanner(),
-                new DependencyFinder(),
-                new DependencySorter(new StartupObjectFactory().CreateDependencyNode),
-                new StringLogger(LogLevel.Error, 10000),
-                new StartupModuleFilter(),
-                new TimedTaskManager(new StartupObjectFactory().CreateRequestSettingsProvider)
-            );
-
-            Assert.AreSame(x.Environment.EnvironmentName, "UnitTest");
-
-            Assert.IsNotNull(x.Assemblies);
-            Assert.IsNotNull(x.AssemblyFilter);
-            Assert.IsNotNull(x.AssemblyScanner);
-            Assert.IsNotNull(x.DependencyFinder);
-            Assert.IsNotNull(x.DependencySorter);
-            Assert.IsNotNull(x.Logger);
-            Assert.IsNotNull(x.ModuleFilter);
-            Assert.IsNotNull(x.TimedTaskManager);
-        }
-
-        [TestMethod]
         public void ShouldDefaultToRegisterHttpContextBase()
         {
             Assert.IsTrue(DotNetStarter.Web.WebConfiguration.RegisterScopedHttpContext);

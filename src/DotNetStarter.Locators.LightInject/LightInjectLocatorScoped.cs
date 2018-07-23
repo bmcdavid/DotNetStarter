@@ -8,7 +8,7 @@ namespace DotNetStarter.Locators
     /// <summary>
     /// LightInject ILocatorScoped
     /// </summary>
-    public sealed class LightInjectLocatorScoped : ILocatorScoped, ILocatorCreateScope, ILocatorScopedWithDisposeAction
+    public sealed class LightInjectLocatorScoped : ILocatorScoped, ILocatorCreateScope
     {
         private Action _disposeAction;
 

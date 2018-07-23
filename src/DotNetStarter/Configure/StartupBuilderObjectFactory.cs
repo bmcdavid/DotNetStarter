@@ -7,9 +7,7 @@ using System.Reflection;
 
 namespace DotNetStarter.Configure
 {
-#pragma warning disable CS0612 // Type or member is obsolete
-    internal class StartupBuilderObjectFactory : IStartupObjectFactory
-#pragma warning restore CS0612 // Type or member is obsolete
+    internal class StartupBuilderObjectFactory
     {
         public AssemblyExpression AssemblyExpression { get; set; }
         public IStartupEnvironment Environment { get; set; }
@@ -32,12 +30,8 @@ namespace DotNetStarter.Configure
         public ILocatorDefaultRegistrations CreateContainerDefaults()
         {
             var defaults = OverrideExpression.ContainerDefaults ?? new ContainerDefaults();
-
-            if (defaults is ILocatorDefaultRegistrationsWithCollections defaultWithCollections)
-            {
-                defaultWithCollections.LocatorConfigureModuleCollection = StartupModulesExpression.InternalConfigureModules;
-                defaultWithCollections.StartupModuleCollection = StartupModulesExpression.InternalStartupModules;
-            }
+            defaults.LocatorConfigureModuleCollection = StartupModulesExpression.InternalConfigureModules;
+            defaults.StartupModuleCollection = StartupModulesExpression.InternalStartupModules;
 
             return defaults;
         }
@@ -87,12 +81,7 @@ namespace DotNetStarter.Configure
         {
             return new StartupContext(locator, allModules, filteredModules, startupConfiguration);
         }
-
-        public IStartupHandler CreateStartupHandler()
-        {
-            return OverrideExpression.StartupHandler ?? new StartupHandler();
-        }
-
+        
         public IStartupLogger CreateStartupLogger()
         {
             return OverrideExpression.Logger ?? new StringLogger(LogLevel.Error, 1024000);

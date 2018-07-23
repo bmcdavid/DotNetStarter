@@ -6,12 +6,10 @@
     using System;
     using System.Linq;
 
-#pragma warning disable CS0612 // Type or member is obsolete
     /// <summary>
     /// Creates a locator based on DryIoc.dll
     /// </summary>
-    public class DryIocLocator : DryIocLocatorBase, ILocatorRegistry, ILocatorSetContainer, ILocatorRegistryWithContains, ILocatorRegistryWithRemove
-#pragma warning restore CS0612 // Type or member is obsolete
+    public class DryIocLocator : DryIocLocatorBase, ILocatorRegistry, ILocatorRegistryWithContains, ILocatorRegistryWithRemove
     {
         /// <summary>
         /// Constructor
@@ -90,16 +88,6 @@
             }
         }
 
-        /// <summary>
-        /// Allows container to be set externally, example is ConfigureServices in a netcore app
-        /// </summary>
-        /// <param name="container"></param>
-        public void SetContainer(object container)
-        {
-            var tempContainer = container as IContainer;
-            _Container = tempContainer ?? throw new ArgumentException($"{container} doesn't implement {typeof(IContainer).FullName}!");
-        }
-
         private static IReuse ConvertLifeTime(Lifecycle lifetime)
         {
             switch (lifetime)
@@ -116,7 +104,7 @@
             return Reuse.Transient;
         }
 
-        private static Made GetConstructorFor(DryIoc.IContainer register, Type implementationType)
+        private static Made GetConstructorFor(IContainer register, Type implementationType)
         {
             var allConstructors = implementationType.Constructors()
                 .Where(x => x.IsConstructor && x.IsPublic)
@@ -125,7 +113,7 @@
             return Made.Of(allConstructors.FirstOrDefault());
         }
 
-        private static void RegisterSimple<TInterface, TImplementation>(DryIoc.IContainer register, IReuse reuse = null, string key = null)
+        private static void RegisterSimple<TInterface, TImplementation>(IContainer register, IReuse reuse = null, string key = null)
             where TImplementation : TInterface
         {
             register.Register<TInterface, TImplementation>(reuse: reuse,
@@ -133,7 +121,7 @@
                 serviceKey: key);
         }
 
-        private static void RegisterSimple(DryIoc.IContainer register, Type service, Type implementation, IReuse reuse = null, string key = null)
+        private static void RegisterSimple(IContainer register, Type service, Type implementation, IReuse reuse = null, string key = null)
         {
             //note: evaluate how these can be better, example in netcore has issue
             //   Microsoft.AspNetCore.Server.Kestrel.Internal.KestrelServerOptionsSetup cannot be converted to Microsoft.Extensions.Options.IConfigureOptions`1[[Microsoft.AspNetCore.Server.Kestrel.KestrelServerOptions, Microsoft.AspNetCore.Server.Kestrel, Version=1.0.1.0, Culture=neutral, PublicKeyToken=adb9793829ddae60]]!

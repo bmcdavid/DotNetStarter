@@ -1,6 +1,4 @@
-﻿#if !NETSTANDARD
-
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Web;
 
 namespace DotNetStarter.Web
@@ -36,4 +34,3 @@ namespace DotNetStarter.Web
         void OpenLocatorScope(HttpApplication applicationContext);
     }
 }
-#endif
