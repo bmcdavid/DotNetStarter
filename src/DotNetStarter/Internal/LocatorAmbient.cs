@@ -48,10 +48,6 @@ namespace DotNetStarter.Internal
             if (scopedLocator == null && stack.Count > 0) { stack.Pop(); }
             // push newest scope to top
             else if (scopedLocator != null) { stack.Push(scopedLocator); }
-            else
-            {
-                throw new Exception("Null locator tried to add to remove from empty stack, or null tried to add to stack!");
-            }
             SetStack(stack);
         }
 
@@ -68,7 +64,7 @@ namespace DotNetStarter.Internal
         {
             System.Runtime.Remoting.Messaging.CallContext.SetData(Key, stack);
         }
-#elif NETSTANDARD2_0 || NETSTANDARD1_3 || NETSTANDARD1_6
+#elif NETSTANDARD2_0 || NETSTANDARD1_6
         // based on httpcontextaccessor
         private static readonly System.Threading.AsyncLocal<Stack<ILocatorScoped>> LocatorScopedContext = new System.Threading.AsyncLocal<Stack<ILocatorScoped>>();
 
@@ -84,12 +80,12 @@ namespace DotNetStarter.Internal
 #else
         private static Stack<ILocatorScoped> GetStack()
         {
-            throw new NotSupportedException("ILocatorAmbient not supported in netstandard1.0 and netstandard1.1!");
+            throw new NotSupportedException("ILocatorAmbient not supported in netstandard1.0!");
         }
 
         private static void SetStack(Stack<ILocatorScoped> stack)
         {
-            throw new NotSupportedException("ILocatorAmbient not supported in netstandard1.0 and netstandard1.1!");
+            throw new NotSupportedException("ILocatorAmbient not supported in netstandard1.0!");
         }
 #endif
     }
