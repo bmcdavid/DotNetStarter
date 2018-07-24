@@ -1,2 +1,2 @@
-﻿Added netstandard 1.6 support.
-Fixing known issues for netcore applications.
+﻿Removed exception in default ILocatorAmbient implementation.
+Removed netstandard1.1 and netstandard1.3 from DotNetStarter as they were redundant in the matrix.

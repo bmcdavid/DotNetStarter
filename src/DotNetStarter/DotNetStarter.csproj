@@ -6,12 +6,12 @@
 
   <PropertyGroup>
     <PackageId>DotNetStarter</PackageId>
-    <TargetFrameworks>net35;net40;net45;netstandard1.0;netstandard1.1;netstandard1.3;netstandard1.6;netstandard2.0</TargetFrameworks>
+    <TargetFrameworks>net35;net40;net45;netstandard1.0;netstandard1.6;netstandard2.0</TargetFrameworks>
     <Authors>Brad McDavid</Authors>
     <Copyright>Copyright $(CurrentYear)</Copyright>
     <Description>Startup system and service registration for a DI container.</Description>
     <!--follow semantic versioning may include prelease information too-->
-    <PackageVersion>2.2.1</PackageVersion>
+    <PackageVersion>2.2.2</PackageVersion>
     <PackageTags>Startup Modules DI</PackageTags>
 
     <!--do not change unless you want to deal with assembly redirects-->
@@ -22,14 +22,6 @@
   <Import Project="..\..\targets\CommonNuGetPackage.props" />
 
   <ItemGroup Condition="'$(TargetFramework)' == 'netstandard1.0'">
-    <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="1.0.0" />
-  </ItemGroup>
-  
-  <ItemGroup Condition="'$(TargetFramework)' == 'netstandard1.1'">
-    <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="1.0.0" />
-  </ItemGroup>
-
-  <ItemGroup Condition="'$(TargetFramework)' == 'netstandard1.3'">
     <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="1.0.0" />
   </ItemGroup>
 
@@ -51,14 +43,6 @@
 
   <PropertyGroup Condition=" '$(TargetFramework)' == 'netstandard1.0'">
     <DefineConstants>$(DefineConstants);NETSTANDARD;</DefineConstants>
-  </PropertyGroup>
-
-  <PropertyGroup Condition=" '$(TargetFramework)' == 'netstandard1.1'">
-    <DefineConstants>$(DefineConstants);NETSTANDARD</DefineConstants>
-  </PropertyGroup>
-
-  <PropertyGroup Condition=" '$(TargetFramework)' == 'netstandard1.3'">
-    <DefineConstants>$(DefineConstants);NETSTANDARD</DefineConstants>
   </PropertyGroup>
 
   <PropertyGroup Condition=" '$(TargetFramework)' == 'netstandard1.6'">
