@@ -70,9 +70,9 @@ namespace DotNetStarter.Internal
         }
 #endif
 
-#if NETSTANDARD1_0 || NETSTANDARD1_1 || NETSTANDARD1_3
+#if NETSTANDARD1_0
         /// <summary>
-        /// Assembly loader not implemented for netstandard
+        /// Assembly loader not implemented for netstandard 1.0
         /// </summary>
         /// <returns></returns>
         public virtual IEnumerable<Assembly> GetAssemblies()
