@@ -1,8 +1,8 @@
-﻿using System;
+﻿using DotNetStarter.Abstractions;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using DotNetStarter.Abstractions;
 
 namespace DotNetStarter.Internal
 {
@@ -11,7 +11,7 @@ namespace DotNetStarter.Internal
     /// </summary>
     public class AssemblyLoader : IAssemblyLoader
     {
-        private static HashSet<Assembly> _LoadedAssemblies = new HashSet<Assembly>();
+        private static readonly HashSet<Assembly> LoadedAssemblies = new HashSet<Assembly>();
 
         private static readonly object _Lock = new object();
 
@@ -101,11 +101,11 @@ namespace DotNetStarter.Internal
         /// <returns></returns>
         public virtual IEnumerable<Assembly> GetAssemblies()
         {
-            if (_LoadedAssemblies.Count == 0)
+            if (LoadedAssemblies.Count == 0)
             {
                 lock (_Lock)
                 {
-                    if (_LoadedAssemblies.Count == 0)
+                    if (LoadedAssemblies.Count == 0)
                     {
                         var files = GetAssemblyFiles();
 
@@ -119,7 +119,7 @@ namespace DotNetStarter.Internal
                                 //assembly = Assembly.Load(AssemblyName.GetAssemblyName(file));
                                 assembly = Assembly.Load(new AssemblyName(fileInfo.Name.Replace(fileInfo.Extension, string.Empty)));
 
-                                _LoadedAssemblies.Add(assembly);
+                                LoadedAssemblies.Add(assembly);
                             }
                             catch (BadImageFormatException)
                             {
@@ -135,7 +135,7 @@ namespace DotNetStarter.Internal
                 }
             }
 
-            return _LoadedAssemblies;
+            return LoadedAssemblies;
         }
 #endif
     }

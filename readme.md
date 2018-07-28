@@ -78,14 +78,23 @@ builder
 ```
 
 ### Inversion of Control / Dependency Injection
-An IoC/DI package must be installed to enable the ILocator, two are provided by default DotNetStarter.DryIoc and DotNetStarter.Structuremap.
-They can also be swapped at runtime via the assembly attribute as noted below for DryIoc:
+An IoC/DI package must be installed to enable the ILocator. There are several provided by default:
+
+* [DotNetStarter.DryIoc](https://www.nuget.org/packages/DotNetStarter.DryIoc/)
+* [DotNetStarter.LightInject](https://www.nuget.org/packages/DotNetStarter.Locators.LightInject/)
+* [DotNetStarter.Structuremap](https://www.nuget.org/packages/DotNetStarter.StructureMap/)
+
+They can also be swapped at runtime by the application owner by overriding the default:
 
 ```cs
-[assembly: DotNetStarter.Abstractions.LocatorRegistryFactory(typeof(DotNetStarter.DryIocLocatorFactory))]
+DotNetStarter.Configure.StartupBuilder.Create()
+    .ConfigureAssemblies(a => a.WithDiscoverableAssemblies())
+    .OverrideDefaults(d => d.UseLocatorRegistryFactory(new DotNetStarter.Locators.DryIocLocatorFactory())) //uses DryIoc
+    .Build()
+    .Run();
 ```
 
-## Examples of DI/IOC, requires an ILocator package such as DotNetStarter.DryIoc or DotNetStarter.StructureMap
+## Examples of DI/IOC
 ### Registration
 ```cs
 public interface ITest
@@ -99,14 +108,34 @@ public class Test : ITest
     public string SayHi(string n) => "Hello " + n;
 }
 ```
-### Usage
+### Usage 
+Constructor injection is the preferred method of consuming services as shown below.
 ```cs
-// Import<T> is a struct wrapper for DotNetStarter.ApplicationContext.Default.Locator and can be used when scoping isn't required.
-// Also, Import<T> should only be used when Construction Injection is not available.
-public Import<ITest> TestService { get; set; }
-
-public void ExampleMethod()
+public class TestService
 {
-    string message = TestService.Service.SayHi("User");
+    private readonly ITest _test;
+    
+    public TestService(ITest test)
+    {
+        _test = test;
+    }
+
+    public void ExampleMethod()
+    {
+        string message = _test.SayHi("User");
+    }
+}
+```
+Cases may exist where constructor injection is not available, in these cases an Import&lt;T> could be used to resolve services. A best practice is if Import &lt;T> is used, to make the dependency known by using a public property, which may be overridden using Import<T>.Accessor.
+
+```cs
+public class TestService
+{
+    public Import<ITest> TestImple { get; set; }
+
+    public void ExampleMethod()
+    {
+        string message = TestImple.Service.SayHi("User");
+    }
 }
 ```

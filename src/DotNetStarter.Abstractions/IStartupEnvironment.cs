@@ -1,4 +1,6 @@
-﻿namespace DotNetStarter.Abstractions
+﻿using System.Collections.Generic;
+
+namespace DotNetStarter.Abstractions
 {
     /// <summary>
     /// Information about current environment
@@ -14,6 +16,11 @@
         /// Current environment name
         /// </summary>
         string EnvironmentName { get; }
+
+        /// <summary>
+        /// Environment Items
+        /// </summary>
+        IDictionary<string, object> Items { get; }
 
         /// <summary>
         /// Determines if environment name is 'Development'
@@ -57,6 +64,12 @@
         /// </summary>
         /// <returns></returns>
         bool IsTesting();
+
+        /// <summary>
+        /// Determines if environment name is 'UnitTest'
+        /// </summary>
+        /// <returns></returns>
+        bool IsUnitTest();
 
         /// <summary>
         /// Determines if environment name is 'UserAcceptanceTesting'

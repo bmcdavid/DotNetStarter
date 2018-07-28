@@ -12,7 +12,7 @@
     <Copyright>Copyright $(CurrentYear)</Copyright>
     <Description>Enables support for DI/IOC in startup.</Description>
     <!--follow semantic versioning may include prelease information too-->
-    <PackageVersion>1.1.0</PackageVersion>
+    <PackageVersion>3.0.0-pre001</PackageVersion>
     <PackageTags>Startup Modules DI IOC</PackageTags>
     <!--do not change unless you want to deal with assembly redirects-->
     <AssemblyVersion>1.0.0</AssemblyVersion>

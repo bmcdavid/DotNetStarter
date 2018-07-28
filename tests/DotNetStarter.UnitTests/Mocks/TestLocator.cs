@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using DotNetStarter.Abstractions;
+using DotNetStarter.Internal;
 
 namespace DotNetStarter.UnitTests.Mocks
 {
@@ -64,6 +65,8 @@ namespace DotNetStarter.UnitTests.Mocks
 
         public T Get<T>(string key = null)
         {
+            if (typeof(T) == typeof(ILocatorAmbient)) { return new object[] { new LocatorAmbient(this) }.OfType<T>().Last(); }
+
             if (typeof(T) == typeof(IShutdownHandler))
             {
                 IShutdownHandler x = new Internal.ShutdownHandler(instances[typeof(ILocator)] as ILocator, instances[typeof(IStartupConfiguration)] as IStartupConfiguration);

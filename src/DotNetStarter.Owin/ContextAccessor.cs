@@ -10,29 +10,26 @@ namespace DotNetStarter.Owin
     [Registration(typeof(IContextAccessor), Lifecycle.Scoped)]
     public sealed class ContextAccessor : IContextAccessor, IContextSetter
     {
-        private IDictionary<string, object> _Dictionary;
-        private IMiddlewareContext _Middleware;
-
         /// <summary>
         /// Current dictionary
         /// </summary>
-        public IDictionary<string, object> CurrentDictionaryContext => _Dictionary;
+        public IDictionary<string, object> CurrentDictionaryContext { get; private set; }
 
         /// <summary>
         /// Current middleware context
         /// </summary>
-        public IMiddlewareContext CurrentMiddlewareContext => _Middleware;
+        public IMiddlewareContext CurrentMiddlewareContext { get; private set; }
 
         void IContextSetter.SetContexts(IMiddlewareContext middleware, IDictionary<string, object> dictionary)
         {
-            if (_Middleware == null)
+            if (CurrentMiddlewareContext == null)
             {
-                _Middleware = middleware;
+                CurrentMiddlewareContext = middleware;
             }
 
-            if (_Dictionary == null)
+            if (CurrentDictionaryContext == null)
             {
-                _Dictionary = dictionary;
+                CurrentDictionaryContext = dictionary;
             }
         }
     }

@@ -10,24 +10,8 @@
     /// </summary>
     public sealed class DryIocLocatorScoped : ILocatorScoped, ILocatorCreateScope
     {
-        // for v3
-        private readonly IResolverContext _resolveContext;
-
-        // for v2
-        private readonly IContainer _container;
-
+        private readonly IResolverContext _resolveContext;        
         private Action _onDispose;
-
-        /// <summary>
-        /// Constructor
-        /// </summary>
-        /// <param name="container"></param>
-        /// <param name="locator"></param>
-        public DryIocLocatorScoped(IContainer container, ILocator locator)
-        {
-            _container = container;
-            Parent = locator as ILocatorScoped;
-        }
 
         /// <summary>
         /// Constructor
@@ -49,6 +33,7 @@
         /// Denies access to base container
         /// </summary>
         public object InternalContainer => throw new LocatorLockedException();
+
         /// <summary>
         /// Parent scope or null
         /// </summary>
@@ -60,7 +45,7 @@
         /// <returns></returns>
         public ILocatorScoped CreateScope()
         {
-            return new DryIocLocatorScoped(_container.OpenScope(), this);
+            return new DryIocLocatorScoped(_resolveContext.OpenScope(), this);
         }
 
         /// <summary>
@@ -69,7 +54,7 @@
         public void Dispose()
         {
             _onDispose?.Invoke();
-            _container.Dispose();
+            _resolveContext.Dispose();
         }
 
         /// <summary>
@@ -80,7 +65,7 @@
         /// <returns></returns>
         public object Get(Type serviceType, string key = null)
         {
-            return _container.Resolve(serviceType);
+            return _resolveContext.Resolve(serviceType);
         }
 
         /// <summary>
@@ -91,7 +76,7 @@
         /// <returns></returns>
         public T Get<T>(string key = null)
         {
-            return _container.Resolve<T>();
+            return _resolveContext.Resolve<T>();
         }
 
         /// <summary>
@@ -102,7 +87,7 @@
         /// <returns></returns>
         public IEnumerable<T> GetAll<T>(string key = null)
         {
-            return _container.ResolveMany<T>();
+            return _resolveContext.ResolveMany<T>();
         }
 
         /// <summary>
@@ -113,7 +98,7 @@
         /// <returns></returns>
         public IEnumerable<object> GetAll(Type serviceType, string key = null)
         {
-            return _container.ResolveMany(serviceType);
+            return _resolveContext.ResolveMany(serviceType);
         }
 
         /// <summary>

@@ -5,7 +5,7 @@
     /// <summary>
     /// Provides access to locator services
     /// <para>Important: Import&lt;T> should only be used when constructor injection is not an option; 
-    /// when used it should be public to disclose the dependency to consumers. Import also does not support scoped services.</para>
+    /// when used it should be public to disclose the dependency to consumers.</para>
     /// </summary>
     /// <typeparam name="TService"></typeparam>
     public struct Import<TService> where TService : class
@@ -22,10 +22,9 @@
         {
             get
             {
-                if (Accessor != null)
-                    return Accessor.Service;
+                if (Accessor != null) { return Accessor.Service; }
 
-                return ImportHelper.Locator.Get<TService>();
+                return ResolveLocator().Get<TService>();
             }
         }
 
@@ -36,11 +35,12 @@
         {
             get
             {
-                if (Accessor != null)
-                    return Accessor.AllServices;
+                if (Accessor != null) { return Accessor.AllServices; }
 
-                return ImportHelper.Locator.GetAll<TService>();
+                return ResolveLocator().GetAll<TService>();
             }
         }
+
+        private ILocator ResolveLocator() => ImportHelper.Locator.Get<ILocatorAmbient>().Current;
     }
 }

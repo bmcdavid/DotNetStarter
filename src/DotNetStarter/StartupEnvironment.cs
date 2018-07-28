@@ -1,4 +1,5 @@
-﻿using DotNetStarter.Abstractions;
+﻿using System.Collections.Generic;
+using DotNetStarter.Abstractions;
 
 namespace DotNetStarter
 {
@@ -7,17 +8,18 @@ namespace DotNetStarter
     /// </summary>
     public class StartupEnvironment : IStartupEnvironment
     {
-        private bool? _IsLocal, _IsDev, _IsProd, _IsStage, _IsQA, _IsUAT, _IsTest;
+        private bool? _IsLocal, _IsDev, _IsProd, _IsStage, _IsQA, _IsUAT, _IsTest, _IsUnitTest;
 
         /// <summary>
         /// Constructor
         /// </summary>
         /// <param name="environmentName"></param>
         /// <param name="applicationBasePath"></param>
-        public StartupEnvironment(string environmentName, string applicationBasePath)
+        public StartupEnvironment(string environmentName, string applicationBasePath = null)
         {
             EnvironmentName = environmentName ?? throw new System.ArgumentNullException(nameof(environmentName));
             ApplicationBasePath = applicationBasePath ?? string.Empty;
+            Items = new Dictionary<string, object>();
         }
 
         /// <summary>
@@ -29,6 +31,11 @@ namespace DotNetStarter
         /// Current environment name
         /// </summary>
         public virtual string EnvironmentName { get; }
+
+        /// <summary>
+        /// Current environment items
+        /// </summary>
+        public IDictionary<string, object> Items { get; }
 
         /// <summary>
         /// Determines if environment name is 'Development'
@@ -119,6 +126,20 @@ namespace DotNetStarter
             }
 
             return _IsTest.Value;
+        }
+
+        /// <summary>
+        /// Determines if environment name is 'UnitTest'
+        /// </summary>
+        /// <returns></returns>
+        public bool IsUnitTest()
+        {
+            if (_IsUnitTest == null)
+            {
+                _IsUnitTest = IsEnvironment("UnitTest");
+            }
+
+            return _IsUnitTest.Value;
         }
 
         /// <summary>

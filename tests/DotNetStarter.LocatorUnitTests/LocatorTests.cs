@@ -65,12 +65,23 @@ namespace DotNetStarter.UnitTests
     {
         public Import<IStartupContext> _Context { get; set; }
 
+        public Import<ILocatorScopedAccessor> ScopeAccessor { get; set; }
+
         private ILocatorScoped CreateScope(ILocator locator = null)
         {
             var l = locator ?? _Context.Service.Locator;
 
             // hack: LightInject cannot resolve scoped objects when no scope is open
             return (l as ILocatorCreateScope).CreateScope();
+        }
+
+        [TestMethod]
+        public void ShouldHaveScopeAccessInScope()
+        {
+            using (var scope = _Context.Service.Locator.Get<ILocatorScopedFactory>().CreateScope())
+            {
+                Assert.IsNotNull(ScopeAccessor.Service.CurrentScope);
+            }
         }
 
         [TestMethod]

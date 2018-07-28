@@ -52,11 +52,3 @@ builder
     .Build() // configures the ILocator
     .Run() // Runs IStartupModule registrations;
 ```
-
-## Custom IStartupObjectFactory (older and will be deprecated)
-
-The object factory is responsible for creating objects before the Ioc/DI container is setup. 
-Implementations must use the IStartupObjectFactory interface.
-
- ## Startup Assignment
- To create a custom object factory, an implementation of IStartupObjectFactory can be passed to **DotNetStarter.ApplicationContext.Startup()**

@@ -25,7 +25,6 @@
                 .WithoutThrowIfDependencyHasShorterReuseLifespan()
                 .WithFactorySelector(Rules.SelectLastRegisteredFactory())
                 .WithTrackingDisposableTransients() //used in transient delegate cases
-                .WithImplicitRootOpenScope() // removed in V3
                 ;
 
             _Container = container ?? new Container(rules);
@@ -114,7 +113,6 @@
         {
             return new DryIocLocatorScoped(
                 _Container
-                //.CreateFacade() // allows registrations to only exist in the instance
                 .OpenScope(),
                 this
             );

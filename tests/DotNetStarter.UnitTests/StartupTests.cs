@@ -126,13 +126,12 @@ namespace DotNetStarter.UnitTests
             var check = new LocatorRegistryFactoryAttribute(typeof(object));
         }
 
-        //todo: decide if rewriting or ditching
-        //[ExpectedException(typeof(NullLocatorException))]
-        //[TestMethod]
-        //public void ShouldThrowNullLocatorExceptionInDefaultHandler()
-        //{
-        //    //new StartupHandler().Startup(ApplicationContext.Default.Configuration, new NullLocatorObjectFactory(), out IStartupContext x);
-        //}
+        [ExpectedException(typeof(NullLocatorException))]
+        [TestMethod]
+        public void ShouldThrowNullLocatorExceptionInDefaultHandler()
+        {
+            new StartupHandler(() => new TimedTask(), null, null).Startup(ApplicationContext.Default.Configuration);
+        }
 
         internal class MockFactory : ILocatorRegistryFactory
         {
