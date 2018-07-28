@@ -3,6 +3,7 @@ using DotNetStarter.Configure.Expressions;
 using DotNetStarter.Internal;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
 
 namespace DotNetStarter.Configure
@@ -59,7 +60,7 @@ namespace DotNetStarter.Configure
         public ILocatorRegistry CreateRegistry(IStartupConfiguration config)
         {
             return OverrideExpression.RegistryFactory?.CreateRegistry() ??
-                ApplicationContext.GetAssemblyFactory<LocatorRegistryFactoryAttribute, ILocatorRegistryFactory>(config)?.CreateRegistry();
+                GetAssemblyFactory<LocatorRegistryFactoryAttribute, ILocatorRegistryFactory>(config)?.CreateRegistry();
         }
 
         public IRequestSettingsProvider CreateRequestSettingsProvider()
@@ -95,6 +96,17 @@ namespace DotNetStarter.Configure
         public ITimedTaskManager CreateTimedTaskManager()
         {
             return OverrideExpression.TimedTaskManager ?? new TimedTaskManager(CreateRequestSettingsProvider);
+        }
+
+        private static TFactoryType GetAssemblyFactory<TFactoryAttr, TFactoryType>(IStartupConfiguration config) where TFactoryAttr : AssemblyFactoryBaseAttribute
+        {
+            var dependents = config.DependencyFinder.Find<TFactoryAttr>(config.Assemblies);
+            var sorted = config.DependencySorter.Sort<TFactoryAttr>(dependents);
+
+            if (!(sorted.LastOrDefault()?.NodeAttribute is AssemblyFactoryBaseAttribute attr))
+                return default(TFactoryType);
+
+            return (TFactoryType)Activator.CreateInstance(attr.FactoryType);
         }
     }
 }

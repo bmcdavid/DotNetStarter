@@ -23,7 +23,7 @@ namespace DotNetStarter.UnitTests
         [TestMethod]
         public void ShouldFilterAssembliesForScannableAttributeGivenNullExceptForNetstandard()
         {
-            var filter = ApplicationContext.GetScannableAssemblies(assemblies: null);
+            var filter = DotNetStarter.Configure.Expressions.AssemblyExpression.GetScannableAssemblies(assemblies: null);
 
             Assert.IsTrue(filter.Any());
         }
@@ -36,7 +36,7 @@ namespace DotNetStarter.UnitTests
                 Abstractions.Internal.TypeExtensions.Assembly(typeof(StartupModuleTests))
             };
 
-            var filter = ApplicationContext.GetScannableAssemblies(assemblies: assemblies);
+            var filter = DotNetStarter.Configure.Expressions.AssemblyExpression.GetScannableAssemblies(assemblies: assemblies);
 
             Assert.IsTrue(filter.Count() == 1);
         }
@@ -130,7 +130,7 @@ namespace DotNetStarter.UnitTests
         [TestMethod]
         public void ShouldThrowNullLocatorExceptionInDefaultHandler()
         {
-            new StartupHandler(() => new TimedTask(), null, null).Startup(ApplicationContext.Default.Configuration);
+            new StartupHandler(() => new TimedTask(), null, null).ConfigureLocator(ApplicationContext.Default.Configuration);
         }
 
         internal class MockFactory : ILocatorRegistryFactory

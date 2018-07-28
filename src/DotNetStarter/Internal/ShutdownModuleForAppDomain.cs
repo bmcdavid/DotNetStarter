@@ -10,9 +10,9 @@
 
         void IStartupModule.Shutdown()
         {
-#if NET35 || NET40 || NET45 || NETSTANDARD2_0
+#if HAS_APP_DOMAIN
             System.AppDomain.CurrentDomain.DomainUnload -= (s,e) => CurrentDomain_DomainUnload();
-#elif NETSTANDARD1_6
+#elif HAS_ASSEMBLY_LOAD_CONTEXT
             System.Runtime.Loader.AssemblyLoadContext.Default.Unloading -= (context) => CurrentDomain_DomainUnload();
 #endif
         }
@@ -21,10 +21,10 @@
         {
             _ShutdownHandler = engine.Locator.Get<IShutdownHandler>(); // cannot inject it, to avoid recursion
 
-#if NET35 || NET40 || NET45 || NETSTANDARD2_0
+#if HAS_APP_DOMAIN
             System.AppDomain.CurrentDomain.DomainUnload -= (s, e) => CurrentDomain_DomainUnload();
             System.AppDomain.CurrentDomain.DomainUnload += (s, e) => CurrentDomain_DomainUnload();
-#elif NETSTANDARD1_6
+#elif HAS_ASSEMBLY_LOAD_CONTEXT
             System.Runtime.Loader.AssemblyLoadContext.Default.Unloading -= (context) => CurrentDomain_DomainUnload();
             System.Runtime.Loader.AssemblyLoadContext.Default.Unloading += (context) => CurrentDomain_DomainUnload();
 #endif

@@ -53,20 +53,18 @@ namespace DotNetStarter
             var scope = creator.CreateScope();
             var accessor = scope.Get<ILocatorScopedAccessor>();
 
-            if (!(accessor is ILocatorScopedSetter setter))
+            if (!(accessor is ILocatorScopedWithSet setter))
             {
-                throw new Exception($"{accessor.GetType().FullName} must implement {typeof(ILocatorScopedSetter).FullName}!");
+                throw new Exception($"{accessor.GetType().FullName} must implement {typeof(ILocatorScopedWithSet).FullName}!");
             }
 
             setter.SetCurrentScopedLocator(scope);
 
-#if !NETSTANDARD1_0 && !NETSTANDARD1_1
             if (_locatorAmbient is ILocatorAmbientWithSet settable)
             {       
                 scope.OnDispose(() => settable.SetCurrentScopedLocator(null));
                 settable.SetCurrentScopedLocator(scope);
             }
-#endif
 
             return scope;
         }

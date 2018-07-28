@@ -1,4 +1,5 @@
-﻿using DotNetStarter.Abstractions.Internal;
+﻿using DotNetStarter.Abstractions;
+using DotNetStarter.Abstractions.Internal;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -99,7 +100,7 @@ namespace DotNetStarter.Configure.Expressions
         /// <returns></returns>
         public AssemblyExpression WithDiscoverableAssemblies(IEnumerable<Assembly> assemblies = null, Func<Assembly, Type, IEnumerable<Attribute>> attributeChecker = null)
         {
-            AddAssemblyRange(ApplicationContext.GetScannableAssemblies(assemblies, attributeChecker));
+            AddAssemblyRange(GetScannableAssemblies(assemblies, attributeChecker));
             return this;
         }
 
@@ -110,5 +111,23 @@ namespace DotNetStarter.Configure.Expressions
                 Assemblies.Add(assembly);
             }
         }
+
+
+        /// <summary>
+        /// Filters a list of assemblies for DiscoverableAssemblyAttribute.
+        /// </summary>
+        /// <param name="assemblies">If null, calls internal assembly loader</param>
+        /// <param name="attributeChecker"></param>
+        /// <returns></returns>
+        public static IList<Assembly> GetScannableAssemblies(IEnumerable<Assembly> assemblies = null, Func<Assembly, Type, IEnumerable<Attribute>> attributeChecker = null)
+        {
+            Func<Assembly, Type, IEnumerable<Attribute>> defaultChecker = (assembly, type) => Abstractions.Internal.TypeExtensions.CustomAttribute(assembly, type, false);
+            attributeChecker = attributeChecker ?? defaultChecker;
+            assemblies = assemblies ?? new Internal.AssemblyLoader().GetAssemblies();
+            var filteredAssemblies = assemblies.Where(x => attributeChecker(x, typeof(DiscoverableAssemblyAttribute)).Any());
+
+            return filteredAssemblies.ToList();
+        }
+
     }
 }

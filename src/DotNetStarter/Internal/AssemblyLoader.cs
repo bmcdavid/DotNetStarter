@@ -15,7 +15,7 @@ namespace DotNetStarter.Internal
 
         private static readonly object _Lock = new object();
 
-#if NET35 || NET40 || NET45
+#if NETFULLFRAMEWORK
         /// <summary>
         /// Gets assembly dll folder
         /// </summary>

@@ -42,7 +42,7 @@ namespace DotNetStarter.Internal
                     locator.Add(service.ServiceType,
                     l =>
                     {
-                        var provider = new ServiceProvider(l.Get<IServiceProviderTypeChecker>(), l.Get<ILocatorAmbient>());
+                        var provider = new ServiceProvider(l.Get<ILocatorAmbient>(), l.Get<IServiceProviderTypeChecker>(), l.Get<IStartupConfiguration>());
                         return service.ImplementationFactory(provider);
                     },
                     lifetime);

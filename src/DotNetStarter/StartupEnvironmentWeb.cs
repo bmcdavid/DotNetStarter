@@ -37,7 +37,7 @@ namespace DotNetStarter
 
         private static string GetBaseDirectory()
         {
-#if NETSTANDARD1_0 || NETSTANDARD1_6
+#if !HAS_APP_DOMAIN
             return null;
 #else
             return System.AppDomain.CurrentDomain.BaseDirectory;
@@ -46,11 +46,11 @@ namespace DotNetStarter
 
         private static string GetWebRootPath()
         {
-#if NETSTANDARD
-            return null;
-#else
+#if NETFULLFRAMEWORK
             var appDomain = System.AppDomain.CurrentDomain;
             return !string.IsNullOrEmpty(appDomain.SetupInformation.PrivateBinPath) ? appDomain.BaseDirectory : null;
+#else
+            return null;
 #endif
         }
     }

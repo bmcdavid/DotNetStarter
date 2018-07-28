@@ -1,6 +1,5 @@
 ﻿using DotNetStarter.Abstractions;
 using DotNetStarter.Abstractions.Internal;
-using System;
 using System.Collections.Generic;
 
 namespace DotNetStarter.Internal
@@ -50,21 +49,7 @@ namespace DotNetStarter.Internal
             else if (scopedLocator != null) { stack.Push(scopedLocator); }
             SetStack(stack);
         }
-
-#if NET45 || NET40 || NET35
-        //based on httpcontext
-        private static readonly string Key = typeof(LocatorAmbient).FullName;
-
-        private static Stack<ILocatorScoped> GetStack()
-        {
-            return System.Runtime.Remoting.Messaging.CallContext.GetData(Key) as Stack<ILocatorScoped>;
-        }
-
-        private static void SetStack(Stack<ILocatorScoped> stack)
-        {
-            System.Runtime.Remoting.Messaging.CallContext.SetData(Key, stack);
-        }
-#elif NETSTANDARD2_0 || NETSTANDARD1_6
+#if HAS_ASYNC_LOCAL
         // based on httpcontextaccessor
         private static readonly System.Threading.AsyncLocal<Stack<ILocatorScoped>> LocatorScopedContext = new System.Threading.AsyncLocal<Stack<ILocatorScoped>>();
 
@@ -77,16 +62,23 @@ namespace DotNetStarter.Internal
         {
             LocatorScopedContext.Value = stack;
         }
-#else
+#elif NETFULLFRAMEWORK
+        //based on httpcontext
+        private static readonly string Key = typeof(LocatorAmbient).FullName;
+
         private static Stack<ILocatorScoped> GetStack()
         {
-            throw new NotSupportedException("ILocatorAmbient not supported in netstandard1.0!");
+            return System.Runtime.Remoting.Messaging.CallContext.GetData(Key) as Stack<ILocatorScoped>;
         }
 
         private static void SetStack(Stack<ILocatorScoped> stack)
         {
-            throw new NotSupportedException("ILocatorAmbient not supported in netstandard1.0!");
+            System.Runtime.Remoting.Messaging.CallContext.SetData(Key, stack);
         }
+#else
+        private static Stack<ILocatorScoped> GetStack() { return null; }
+
+        private static void SetStack(Stack<ILocatorScoped> stack) { }
 #endif
     }
 }

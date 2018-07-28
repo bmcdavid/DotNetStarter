@@ -8,7 +8,7 @@
     using Microsoft.Extensions.DependencyInjection;
 #endif
 
-#if NET45 || NET40 || NET35
+#if NETFULLFRAMEWORK && !NETSTANDARD
     /// <summary>
     /// Service provider that throws exceptions if type cannot be found
     /// </summary>
@@ -32,10 +32,11 @@
         /// <summary>
         /// Scoped locator reference
         /// </summary>
-        public ILocator Locator { get; }
+        public ILocator Locator => _scopeAccessor?.CurrentScope ?? _locatorAmbient.Current;
 
         private readonly IServiceProviderTypeChecker _serviceProviderTypeChecker;
-        private readonly bool _isScoped;
+        private readonly ILocatorScopedAccessor _scopeAccessor;
+        private readonly ILocatorAmbient _locatorAmbient;
 
         /// <summary>
         /// Scoped Constructor for OWIN and netcore
@@ -44,32 +45,19 @@
         /// <param name="locatorScopedAccessor"></param>
         public ServiceProvider(IServiceProviderTypeChecker serviceProviderTypeChecker, ILocatorScopedAccessor locatorScopedAccessor)
         {
-            Locator = locatorScopedAccessor.CurrentScope;
-            _isScoped = true;
-            _serviceProviderTypeChecker = serviceProviderTypeChecker;
-        }
-
-        /// <summary>
-        /// For IServiceCollection Func
-        /// </summary>
-        /// <param name="serviceProviderTypeChecker"></param>
-        /// <param name="locatorAmbient"></param>
-        public ServiceProvider(IServiceProviderTypeChecker serviceProviderTypeChecker, ILocatorAmbient locatorAmbient)
-        {
-            Locator = locatorAmbient.Current;
-            _isScoped = locatorAmbient.IsScoped;
+            _scopeAccessor = locatorScopedAccessor;
             _serviceProviderTypeChecker = serviceProviderTypeChecker;
         }
 
         /// <summary>
         /// Singleton Constructor, greediest one to use
         /// </summary>
-        /// <param name="locator"></param>
+        /// <param name="locatorAmbient"></param>
         /// <param name="serviceProviderTypeChecker"></param>
         /// <param name="startupConfiguration"></param>
-        public ServiceProvider(ILocator locator, IServiceProviderTypeChecker serviceProviderTypeChecker, IStartupConfiguration startupConfiguration)
+        public ServiceProvider(ILocatorAmbient locatorAmbient, IServiceProviderTypeChecker serviceProviderTypeChecker, IStartupConfiguration startupConfiguration)
         {
-            Locator = locator;
+            _locatorAmbient = locatorAmbient;
             _serviceProviderTypeChecker = serviceProviderTypeChecker;
         }
 
@@ -105,9 +93,14 @@
         /// </summary>
         public void Dispose()
         {
-            if (_isScoped)
+            if (_scopeAccessor?.CurrentScope != null)
             {
-                Locator.Dispose();
+                _scopeAccessor?.CurrentScope.Dispose();
+            }
+
+            if (_locatorAmbient?.Current is ILocatorScoped scoped)
+            {
+                scoped.Dispose();
             }
         }
 

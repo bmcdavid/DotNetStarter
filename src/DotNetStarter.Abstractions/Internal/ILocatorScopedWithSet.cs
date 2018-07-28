@@ -3,7 +3,7 @@
     /// <summary>
     /// Sets current scope of ILocatorScopedAccessor, must be implemented on same type as ILocatorScopedAccessor
     /// </summary>
-    public interface ILocatorScopedSetter
+    public interface ILocatorScopedWithSet
     {
         /// <summary>
         /// Sets current scoped locator

@@ -13,10 +13,12 @@
     /// </summary>
     public class StartupHandler : IStartupHandler, IStartupEngine
     {
-        private bool _LocatorStartupInvoked = false;
-        private readonly Func<ITimedTask> _timedTaskFactory;
-        private readonly ILocatorRegistry _locatorRegistry;
+        private readonly bool _enableDelayedStartupModules = false;
         private readonly ILocatorDefaultRegistrations _locatorDefaultRegistrations;
+        private readonly ILocatorRegistry _locatorRegistry;
+        private readonly Func<ITimedTask> _timedTaskFactory;
+        private Action _delayedStartupModules;
+        private bool _LocatorStartupInvoked = false;
 
         /// <summary>
         /// Constructor
@@ -24,11 +26,13 @@
         /// <param name="timedTaskFactory"></param>
         /// <param name="locatorRegistry"></param>
         /// <param name="locatorDefaultRegistrations"></param>
-        public StartupHandler(Func<ITimedTask> timedTaskFactory, ILocatorRegistry locatorRegistry, ILocatorDefaultRegistrations locatorDefaultRegistrations)
+        /// <param name="enableDelayedStartupModules">If true, doesn't run IStartupModules until IStartupHandler.StartupModules is invoked, default is true</param>
+        public StartupHandler(Func<ITimedTask> timedTaskFactory, ILocatorRegistry locatorRegistry, ILocatorDefaultRegistrations locatorDefaultRegistrations, bool enableDelayedStartupModules = true)
         {
             _timedTaskFactory = timedTaskFactory;
             _locatorRegistry = locatorRegistry;
             _locatorDefaultRegistrations = locatorDefaultRegistrations;
+            _enableDelayedStartupModules = enableDelayedStartupModules;
         }
 
         /// <summary>
@@ -73,7 +77,7 @@
         /// </summary>
         /// <param name="config"></param>
         /// <returns></returns>
-        public virtual IStartupContext Startup(IStartupConfiguration config)
+        public virtual IStartupContext ConfigureLocator(IStartupConfiguration config)
         {
             Configuration = config;
             Locator = _locatorRegistry as ILocator;// objectFactory.CreateRegistry(config) as ILocator;
@@ -162,12 +166,11 @@
             config.TimedTaskManager.Execute(containerSetup);
 
             // optionally allows delaying startup until later, must be implemented on IStartupConfiguration instances
-            var delayedStart = config as IStartupDelayed;
             void startup() => config.TimedTaskManager.Execute(startupModulesTask);
 
-            if (delayedStart?.EnableDelayedStartup == true)
+            if (_enableDelayedStartupModules)
             {
-                delayedStart.DelayedStartup = startup;
+                _delayedStartupModules = startup;
             }
             else
             {
@@ -176,6 +179,11 @@
 
             return startupContext;
         }
+
+        /// <summary>
+        /// MUST execute after Startup, used to run IStartupModules when enableDelayedStartup is used
+        /// </summary>
+        public void StartupModules() => _delayedStartupModules.Invoke();
 
         /// <summary>
         /// Creates default startup context

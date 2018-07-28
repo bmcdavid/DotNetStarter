@@ -6,7 +6,7 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace DotNetStarter
 {
-#if NET45 || NET35 || NET40
+#if NETFULLFRAMEWORK && !NETSTANDARD
     /// <summary>
     /// Factory to create scoped service providers
     /// </summary>

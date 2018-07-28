@@ -1,12 +1,10 @@
 ﻿using DotNetStarter.Abstractions;
-using DotNetStarter.Abstractions.Internal;
-using System;
 using System.Collections.Generic;
 using System.Reflection;
 
 namespace DotNetStarter.Configure
 {
-    internal class StartupBuilderConfiguration : IStartupConfiguration, IStartupDelayed
+    internal class StartupBuilderConfiguration : IStartupConfiguration
     {
         public StartupBuilderConfiguration(StartupBuilderObjectFactory objectFactory, IEnumerable<Assembly> assemblies, IStartupEnvironment environment)
         {
@@ -24,10 +22,8 @@ namespace DotNetStarter.Configure
         public IEnumerable<Assembly> Assemblies { get; }
         public IAssemblyFilter AssemblyFilter { get; }
         public IAssemblyScanner AssemblyScanner { get; }
-        Action IStartupDelayed.DelayedStartup { get; set; }
         public IDependencyFinder DependencyFinder { get; }
         public IDependencySorter DependencySorter { get; }
-        public bool EnableDelayedStartup => true;
         public IStartupEnvironment Environment { get; }
         public IStartupLogger Logger { get; }
         public IStartupModuleFilter ModuleFilter { get; }

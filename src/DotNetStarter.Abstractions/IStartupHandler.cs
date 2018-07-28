@@ -1,4 +1,6 @@
-﻿namespace DotNetStarter.Abstractions
+﻿using System;
+
+namespace DotNetStarter.Abstractions
 {
     /// <summary>
     /// Main hook for startup
@@ -10,6 +12,11 @@
         /// </summary>
         /// <param name="startupConfiguration"></param>
         /// <returns></returns>
-        IStartupContext Startup(IStartupConfiguration startupConfiguration);
+        IStartupContext ConfigureLocator(IStartupConfiguration startupConfiguration);
+
+        /// <summary>
+        /// Action to execute IStartupModules
+        /// </summary>
+        void StartupModules();
     }
 }
