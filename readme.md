@@ -6,8 +6,7 @@ DotNetStarter is a framework for composing applications where many components ar
 
 Package authors can depend on either the [configuration and startup abstractions](https://www.nuget.org/packages/DotNetStarter.Abstractions/) or the [registration attribute abstractions](https://www.nuget.org/packages/DotNetStarter.RegistrationAbstractions/) to create their components. The components can then be designed with constructor dependency injection in mind. These classes can then be registered by using the [RegistrationAttribute](https://bmcdavid.github.io/DotNetStarter/register.html) or in a startup module implementing [ILocatorConfigure](https://bmcdavid.github.io/DotNetStarter/register.html). Packages may also perform tasks during startup and shutdown using the [IStartupModule](https://bmcdavid.github.io/DotNetStarter/modules.html) interface.
 
-Application owners can install the DotNetStarter package, a locator (container wrapper) package, any extension such as MVC for the full ASP.Net framework, and any NuGet packages utilizing the abstractions. Owners have full control over the [startup process](https://bmcdavid.github.io/DotNetStarter/custom-objectfactory.html) which can be customized through code configuration at almost every level using a fluent configuration API. The framework also supports a wide variety of .NET frameworks from ASP.NET version 3.5 and up, as well as the [.NET Standard](https://docs.microsoft.com/en-us/dotnet/standard/net-standard) starting at 1.0.
-
+Application owners can install the DotNetStarter package, a locator (container wrapper) package, any extension such as [MVC](https://www.nuget.org/packages/DotNetStarter.Extensions.Mvc/) for the full ASP.Net framework, and any NuGet packages utilizing the abstractions. Owners have full control over the [startup process](https://bmcdavid.github.io/DotNetStarter/custom-objectfactory.html) which can be customized through code configuration at almost every level using a fluent configuration API. The framework also supports a wide variety of .NET frameworks from ASP.NET version 3.5 and up, as well as the [.NET Standard](https://docs.microsoft.com/en-us/dotnet/standard/net-standard) starting at 1.0.
 
 Package  | Version 
 -------- | :------------ 
@@ -18,6 +17,7 @@ Package  | Version
 [DotNetStarter.Owin](https://www.nuget.org/packages/DotNetStarter.Owin/) |  [![NuGet version](https://badge.fury.io/nu/DotNetStarter.Owin.svg)](https://badge.fury.io/nu/DotNetStarter.Owin)
 [DotNetStarter.DryIoc](https://www.nuget.org/packages/DotNetStarter.DryIoc/) |  [![NuGet version](https://badge.fury.io/nu/DotNetStarter.DryIoc.svg)](https://badge.fury.io/nu/DotNetStarter.DryIoc)
 [DotNetStarter.Structuremap](https://www.nuget.org/packages/DotNetStarter.Structuremap/) |  [![NuGet version](https://badge.fury.io/nu/DotNetStarter.Structuremap.svg)](https://badge.fury.io/nu/DotNetStarter.Structuremap)
+[DotNetStarter.Locators.LightInject](https://www.nuget.org/packages/DotNetStarter.Locators.LightInject/) |  [![NuGet version](https://badge.fury.io/nu/DotNetStarter.Locators.LightInject.svg)](https://badge.fury.io/nu/DotNetStarter.Locators.LightInject)
 [DotNetStarter.Extensions.Mvc](https://www.nuget.org/packages/DotNetStarter.Extensions.Mvc/) |  [![NuGet version](https://badge.fury.io/nu/DotNetStarter.Extensions.Mvc.svg)](https://badge.fury.io/nu/DotNetStarter.Extensions.Mvc)
 [DotNetStarter.Extensions.WebApi](https://www.nuget.org/packages/DotNetStarter.Extensions.WebApi/) |  [![NuGet version](https://badge.fury.io/nu/DotNetStarter.Extensions.WebApi.svg)](https://badge.fury.io/nu/DotNetStarter.Extensions.WebApi)
 
@@ -93,9 +93,13 @@ DotNetStarter.Configure.StartupBuilder.Create()
     .Build()
     .Run();
 ```
+If the default isn't overridden a locator is discovered in the configured assemblies by an assembly attribute as noted below for DryIoc.
+```cs
+[assembly: DotNetStarter.Abstractions.LocatorRegistryFactory(typeof(DotNetStarter.DryIocLocatorFactory))]
+```
 
 ## Examples of DI/IOC
-### Registration
+### Service Registration
 ```cs
 public interface ITest
 {
@@ -111,6 +115,7 @@ public class Test : ITest
 ### Usage 
 Constructor injection is the preferred method of consuming services as shown below.
 ```cs
+[Registration(typeof(TestService), Lifecycle.Transient)]
 public class TestService
 {
     private readonly ITest _test;
@@ -126,7 +131,7 @@ public class TestService
     }
 }
 ```
-Cases may exist where constructor injection is not available, in these cases an Import&lt;T> could be used to resolve services. A best practice is if Import &lt;T> is used, to make the dependency known by using a public property, which may be overridden using Import<T>.Accessor.
+Cases may exist where constructor injection is not available, in these cases an Import&lt;T> could be used to resolve services. A best practice is when using Import &lt;T> make the dependency known by using a public property, which may be overridden using Import<T>.Accessor by any consumers.
 
 ```cs
 public class TestService
