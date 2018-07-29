@@ -58,14 +58,18 @@ namespace DotNetStarter.Configure
             _overrideExpression?.Invoke(overrideExp);
             objFactory.OverrideExpression = overrideExp;
 
-            //todo: need to store IStartupHandler to invoke delayed startup.
 
             // default way using the static startup
             if (useApplicationContext)
             {
+                //todo: need to store IStartupHandler to invoke delayed startup.
                 // if no assemblies have been configured follow the default scanner rule
                 var assemblies = assemblyExp.Assemblies.Count > 0 ? assemblyExp.Assemblies : null;
-                EnsureStartup(a => objFactory.CreateStartupConfiguration(a,objFactory.Environment), null, assemblies: assemblies);
+                EnsureStartup
+                    (
+                        a => objFactory.CreateStartupConfiguration(a, objFactory.Environment),
+                        config => new StartupHandler(objFactory.CreateTimedTask, objFactory.CreateRegistry(config), objFactory.CreateContainerDefaults()),
+                        assemblies: assemblies);
                 StartupContext = ApplicationContext.Default;
                 return this;
             }
@@ -156,11 +160,9 @@ namespace DotNetStarter.Configure
                         _appStarting = true;
                         var assembliesForStartup = assemblies ?? new Internal.AssemblyLoader().GetAssemblies();
                         var startupConfig = configurationFactory.Invoke(assemblies);
-                        var handler = handlerFactory.Invoke(startupConfig);
+                        _startupHandler = handlerFactory.Invoke(startupConfig);
 
-                        //new StartupHandler(factory.CreateTimedTask, factory.CreateRegistry(startupConfig), factory.CreateContainerDefaults());
-
-                        ApplicationContext._Default = handler.ConfigureLocator(startupConfig);
+                        ApplicationContext._Default = _startupHandler.ConfigureLocator(startupConfig);
                         ApplicationContext.Started = ApplicationContext._Default != null;
                         _appStarting = false;
                     }
