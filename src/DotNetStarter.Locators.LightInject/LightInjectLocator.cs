@@ -304,6 +304,8 @@ namespace DotNetStarter.Locators
                     return new PerContainerLifetime();
                 case Lifecycle.Transient:
                     return null; // todo: understand PerRequestLifeTime();
+                    // if not null, cannot pass args to a func<arg,tresult> factory
+                    // System.IndexOutOfRangeException: 'Index was outside the bounds of the array.' is thrown
                     //return new PerRequestLifeTime();
             }
 

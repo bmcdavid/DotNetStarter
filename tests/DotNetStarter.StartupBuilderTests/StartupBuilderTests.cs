@@ -97,7 +97,6 @@ namespace DotNetStarter.StartupBuilderTests
 
             Assert.IsTrue(builder.StartupContext.Configuration.Environment.IsEnvironment("UnitTest1"));
             Assert.IsNotNull(logger);
-            Assert.IsFalse(ApplicationContext.Started);
             Assert.IsNotNull(new TestFooImport().FooImport.Service);
             // ran when test assembly is initialized
             Assert.IsTrue(SetupTests.TestImport is NullReferenceException);
@@ -106,6 +105,9 @@ namespace DotNetStarter.StartupBuilderTests
         [TestMethod]
         public void ShouldStartupUsingAppContext()
         {
+            // test we haven't started yet
+            Assert.IsFalse(ApplicationContext.Started);
+
             var builder = StartupBuilder.Create();
             builder
                 .ConfigureAssemblies(assemblies =>
@@ -132,7 +134,6 @@ namespace DotNetStarter.StartupBuilderTests
                 .Run();
 
             var logger = builder.StartupContext.Locator.Get<IStartupLogger>();
-
             Assert.IsNotNull(logger);
             Assert.IsNotNull(ApplicationContext.Default);
             Assert.IsTrue(ApplicationContext.Started);

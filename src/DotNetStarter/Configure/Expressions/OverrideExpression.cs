@@ -16,7 +16,7 @@ namespace DotNetStarter.Configure.Expressions
         internal IStartupLogger Logger { get; private set; }
         internal ILocatorRegistryFactory RegistryFactory { get; private set; }
         internal Func<IRequestSettingsProvider> RequestSettingsProviderFactory { get; private set; }
-        internal IStartupHandler StartupHandler { get; private set; }
+        internal Func<IStartupConfiguration,IStartupHandler> StartupHandlerFactory { get; private set; }
         internal Func<ITimedTask> TimedTaskFactory { get; private set; }
         internal ITimedTaskManager TimedTaskManager { get; private set; }
 
@@ -112,11 +112,11 @@ namespace DotNetStarter.Configure.Expressions
         /// <summary>
         /// CAUTION: Advanced usage to override the startup handler, do so with extreme caution.
         /// </summary>
-        /// <param name="startupHandler"></param>
+        /// <param name="startupHandlerFactory"></param>
         /// <returns></returns>
-        public OverrideExpression UseStartupHandler(IStartupHandler startupHandler)
+        public OverrideExpression UseStartupHandler(Func<IStartupConfiguration,IStartupHandler> startupHandlerFactory)
         {
-            StartupHandler = startupHandler ?? throw new ArgumentNullException(nameof(startupHandler));
+            StartupHandlerFactory = startupHandlerFactory ?? throw new ArgumentNullException(nameof(startupHandlerFactory));
             return this;
         }
 

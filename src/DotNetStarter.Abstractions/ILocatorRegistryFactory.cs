@@ -1,5 +1,7 @@
 ﻿namespace DotNetStarter.Abstractions
 {
+    //todo: can this be removed?
+
     /// <summary>
     /// Creates an ILocatorRegistry
     /// </summary>

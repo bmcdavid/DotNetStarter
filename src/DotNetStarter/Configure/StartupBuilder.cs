@@ -27,6 +27,7 @@ namespace DotNetStarter.Configure
         /// The IStartupContext result after Run has been called
         /// </summary>
         public IStartupContext StartupContext { get; private set; }
+
         /// <summary>
         /// Creates a new instance of a StartupBuilder object
         /// </summary>
@@ -57,35 +58,39 @@ namespace DotNetStarter.Configure
             var overrideExp = new OverrideExpression();
             _overrideExpression?.Invoke(overrideExp);
             objFactory.OverrideExpression = overrideExp;
-
+            
+            // if no assemblies have been configured follow the default scanner rule
+            // will throw exception for netstandard1.0 applications
+            var assembliesForStartup = assemblyExp.Assemblies.Count > 0 ? assemblyExp.Assemblies : new Internal.AssemblyLoader().GetAssemblies();
 
             // default way using the static startup
             if (useApplicationContext)
             {
-                //todo: need to store IStartupHandler to invoke delayed startup.
-                // if no assemblies have been configured follow the default scanner rule
-                var assemblies = assemblyExp.Assemblies.Count > 0 ? assemblyExp.Assemblies : null;
-                EnsureStartup
-                    (
-                        a => objFactory.CreateStartupConfiguration(a, objFactory.Environment),
-                        config => new StartupHandler(objFactory.CreateTimedTask, objFactory.CreateRegistry(config), objFactory.CreateContainerDefaults()),
-                        assemblies: assemblies);
-                StartupContext = ApplicationContext.Default;
+                if (!ApplicationContext.Started)
+                {
+                    if (_appStarting)
+                    {
+                        throw new Exception($"Do not access {typeof(ApplicationContext).FullName}.{nameof(ApplicationContext.Default)} during startup!");
+                    }
+
+                    lock (_objLock)
+                    {
+                        if (!ApplicationContext.Started)
+                        {
+                            _appStarting = true;
+                            ExecuteBuild(objFactory, assembliesForStartup, overrideExp);
+
+                            ApplicationContext._Default = StartupContext;
+                            ApplicationContext.Started = ApplicationContext._Default != null;
+                            _appStarting = false;
+                        }
+                    }
+                }
+
                 return this;
             }
 
-            if (assemblyExp.Assemblies.Count == 0)
-            {
-                throw new Internal.AssembliesNotConfiguredException();
-            }
-
-            // allows for non static execution
-            var startupConfig = objFactory.CreateStartupConfiguration(assemblyExp.Assemblies, startupEnvironment: null);
-            // change StartupHandler in override to Func<IStartupConfig,IStartupHandler>
-            _startupHandler = overrideExp.StartupHandler ??
-                new StartupHandler(objFactory.CreateTimedTask, objFactory.CreateRegistry(startupConfig), objFactory.CreateContainerDefaults());
-
-            StartupContext = _startupHandler.ConfigureLocator(startupConfig);
+            ExecuteBuild(objFactory, assembliesForStartup, overrideExp);
             return this;
         }
 
@@ -99,6 +104,7 @@ namespace DotNetStarter.Configure
             _assemblyExpression += assemblyExpression;
             return this;
         }
+
         /// <summary>
         /// Customize IStartupModule and ILocatorConfigure types in the startup process
         /// </summary>
@@ -126,7 +132,7 @@ namespace DotNetStarter.Configure
         /// </summary>
         public void Run()
         {
-            if (_runOnce) return;
+            if (_runOnce) { return; }
 
             _runOnce = true;
             Build(); // just in case its not called fluently
@@ -144,30 +150,14 @@ namespace DotNetStarter.Configure
             return this;
         }
 
-        internal void EnsureStartup(Func<IEnumerable<Assembly>, IStartupConfiguration> configurationFactory, Func<IStartupConfiguration, IStartupHandler> handlerFactory, IEnumerable<Assembly> assemblies = null)
+        private void ExecuteBuild(StartupBuilderObjectFactory objFactory, IEnumerable<Assembly> assemblies, OverrideExpression overrideExpression)
         {
-            if (!ApplicationContext.Started)
-            {
-                if (_appStarting)
-                {
-                    throw new Exception($"Do not access {typeof(ApplicationContext).FullName}.{nameof(ApplicationContext.Default)} during startup!");
-                }
+            var startupConfig = objFactory.CreateStartupConfiguration(assemblies);
+            IStartupHandler localStartupHandlerFactory(IStartupConfiguration config) =>
+                new StartupHandler(objFactory.CreateTimedTask, objFactory.CreateRegistry(config), objFactory.CreateContainerDefaults());
+            _startupHandler = (overrideExpression.StartupHandlerFactory ?? localStartupHandlerFactory).Invoke(startupConfig);
 
-                lock (_objLock)
-                {
-                    if (!ApplicationContext.Started)
-                    {
-                        _appStarting = true;
-                        var assembliesForStartup = assemblies ?? new Internal.AssemblyLoader().GetAssemblies();
-                        var startupConfig = configurationFactory.Invoke(assemblies);
-                        _startupHandler = handlerFactory.Invoke(startupConfig);
-
-                        ApplicationContext._Default = _startupHandler.ConfigureLocator(startupConfig);
-                        ApplicationContext.Started = ApplicationContext._Default != null;
-                        _appStarting = false;
-                    }
-                }
-            }
+            StartupContext = _startupHandler.ConfigureLocator(startupConfig);
         }
     }
 }

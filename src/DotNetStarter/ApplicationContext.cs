@@ -35,6 +35,7 @@
         {
             get
             {
+                //todo: should a default be ran here? or throw exception to note startup hasn't been ran!
                 if (_Default == null) { StartupBuilder.Create().Run(); }
 
                 return _Default;

@@ -18,7 +18,8 @@
         private readonly ILocatorRegistry _locatorRegistry;
         private readonly Func<ITimedTask> _timedTaskFactory;
         private Action _delayedStartupModules;
-        private bool _LocatorStartupInvoked = false;
+        private bool _locatorStartupInvoked = false;
+        private bool _ranConfigure = false;
 
         /// <summary>
         /// Constructor
@@ -42,7 +43,7 @@
         {
             add
             {
-                if (_LocatorStartupInvoked == true)
+                if (_locatorStartupInvoked == true)
                 {
                     throw new Exception($"Locator startup complete has already been invoked, try {nameof(OnStartupComplete)} instead!");
                 }
@@ -146,7 +147,7 @@
                 ImportHelper.OnEnsureLocator += (() => readOnlyLocator); // configure import<T> locator
 
                 _OnLocatorStartupComplete?.Invoke(); //execute locator complete before verification since last minute additions can occur here.
-                _LocatorStartupInvoked = true;
+                _locatorStartupInvoked = true;
                 (registry as ILocatorVerification)?.Verify();
             };
 
@@ -183,7 +184,13 @@
         /// <summary>
         /// MUST execute after Startup, used to run IStartupModules when enableDelayedStartup is used
         /// </summary>
-        public void StartupModules() => _delayedStartupModules.Invoke();
+        public void StartupModules()
+        {
+            //todo: how to fix delayed start, seems odd to split in a dependent call
+
+            _delayedStartupModules.Invoke();
+            _delayedStartupModules = null;
+        }
 
         /// <summary>
         /// Creates default startup context

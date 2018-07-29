@@ -68,11 +68,10 @@ namespace DotNetStarter.Configure
             return OverrideExpression.RequestSettingsProviderFactory?.Invoke() ?? new RequestSettingsProvider();
         }
 
-        public IStartupConfiguration CreateStartupConfiguration(IEnumerable<Assembly> assemblies, IStartupEnvironment startupEnvironment)
+        public IStartupConfiguration CreateStartupConfiguration(IEnumerable<Assembly> assemblies)
         {
-            var environment = Environment ?? startupEnvironment ?? new StartupEnvironment("Local", string.Empty);
-            var assemblyArg = AssemblyExpression.Assemblies.Count > 0 ? AssemblyExpression.Assemblies : assemblies;
-            var config = new StartupBuilderConfiguration(this, assemblyArg, environment);
+            var environment = Environment ?? new StartupEnvironment("Local", string.Empty);
+            var config = new StartupBuilderConfiguration(this, assemblies, environment);
 
             return config;
         }

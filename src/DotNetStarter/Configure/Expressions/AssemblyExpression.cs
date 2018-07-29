@@ -96,6 +96,7 @@ namespace DotNetStarter.Configure.Expressions
         
         /// <summary>
         /// Gets all assemblies with DotNetStarter.Abstractions.DiscoverableAssemblyAttribute, which is generally a good starting point.
+        /// <para>For netstandard1.0 assemblies MUST be provided!</para>
         /// </summary>
         /// <returns></returns>
         public AssemblyExpression WithDiscoverableAssemblies(IEnumerable<Assembly> assemblies = null, Func<Assembly, Type, IEnumerable<Attribute>> attributeChecker = null)
