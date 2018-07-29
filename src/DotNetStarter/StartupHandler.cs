@@ -19,7 +19,6 @@
         private readonly Func<ITimedTask> _timedTaskFactory;
         private Action _delayedStartupModules;
         private bool _locatorStartupInvoked = false;
-        private bool _ranConfigure = false;
 
         /// <summary>
         /// Constructor
