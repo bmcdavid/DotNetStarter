@@ -13,9 +13,9 @@ namespace DotNetStarter.Locators
     public class LightInjectLocator : ILocatorRegistry, ILocator, ILocatorVerification, ILocatorCreateScope,
         ILocatorRegistryWithContains, ILocatorResolveConfigureModules, ILocatorRegistryWithRemove
     {
-        private IServiceContainer _Container;
-        private ContainerRegistrationCollection _Registrations;
-        private bool _Verified;
+        private IServiceContainer _container;
+        private ContainerRegistrationCollection _registrations;
+        private bool _verified;
 
         /// <summary>
         /// Constructor
@@ -23,26 +23,26 @@ namespace DotNetStarter.Locators
         /// <param name="serviceContainer"></param>
         public LightInjectLocator(IServiceContainer serviceContainer = null)
         {
-            _Container = serviceContainer ?? new ServiceContainer
+            _container = serviceContainer ?? new ServiceContainer
                 (
                     new ContainerOptions()
                     {
                         EnablePropertyInjection = false, // for netcore support
                     }
                 );
-            _Registrations = new ContainerRegistrationCollection();
-            _Verified = false;
+            _registrations = new ContainerRegistrationCollection();
+            _verified = false;
         }
 
         /// <summary>
         /// DebugInfo
         /// </summary>
-        public string DebugInfo => _Registrations.DebugInformation();
+        public string DebugInfo => _registrations.DebugInformation();
 
         /// <summary>
         /// Access to IServiceContainer
         /// </summary>
-        public object InternalContainer => _Container;
+        public object InternalContainer => _container;
 
         /// <summary>
         /// Adds service type for service implementation
@@ -114,9 +114,9 @@ namespace DotNetStarter.Locators
         /// <returns></returns>
         public bool ContainsService(Type serviceType, string key = null)
         {
-            return _Verified ?
-                _Container.CanGetInstance(serviceType, ConvertKey(key)) : // only from container once Registrations are set
-                _Registrations.ContainsKey(serviceType);
+            return _verified ?
+                _container.CanGetInstance(serviceType, ConvertKey(key)) : // only from container once Registrations are set
+                _registrations.ContainsKey(serviceType);
         }
 
         /// <summary>
@@ -127,7 +127,7 @@ namespace DotNetStarter.Locators
         {
             return new LightInjectLocatorScoped
             (
-                _Container.BeginScope(),
+                _container.BeginScope(),
                 this
             );
         }
@@ -149,7 +149,7 @@ namespace DotNetStarter.Locators
         /// <returns></returns>
         public object Get(Type serviceType, string key = null)
         {
-            return _Container.GetInstance(serviceType);
+            return _container.GetInstance(serviceType);
         }
 
         /// <summary>
@@ -160,7 +160,7 @@ namespace DotNetStarter.Locators
         /// <returns></returns>
         public T Get<T>(string key = null)
         {
-            return _Container.GetInstance<T>();
+            return _container.GetInstance<T>();
         }
 
         /// <summary>
@@ -171,7 +171,7 @@ namespace DotNetStarter.Locators
         /// <returns></returns>
         public IEnumerable<T> GetAll<T>(string key = null)
         {
-            var list = _Container.GetAllInstances<T>();
+            var list = _container.GetAllInstances<T>();
             SortList(ref list, typeof(T));
 
             return list;
@@ -185,7 +185,7 @@ namespace DotNetStarter.Locators
         /// <returns></returns>
         public IEnumerable<object> GetAll(Type serviceType, string key = null)
         {
-            var list = _Container.GetAllInstances(serviceType);
+            var list = _container.GetAllInstances(serviceType);
             SortList(ref list, serviceType);
 
             return list;
@@ -199,7 +199,7 @@ namespace DotNetStarter.Locators
         /// <param name="serviceImplementation"></param>
         public void Remove(Type serviceType, string key = null, Type serviceImplementation = null)
         {
-            _Registrations.Remove(serviceType);
+            _registrations.Remove(serviceType);
         }
 
         /// <summary>
@@ -210,7 +210,7 @@ namespace DotNetStarter.Locators
         /// <returns></returns>
         public IEnumerable<ILocatorConfigure> ResolveConfigureModules(IEnumerable<IDependencyNode> filteredModules, IStartupConfiguration config)
         {
-            if (_Registrations.TryGetValue(typeof(ILocatorConfigure), out List<ContainerRegistration> locatorConfTypes))
+            if (_registrations.TryGetValue(typeof(ILocatorConfigure), out List<ContainerRegistration> locatorConfTypes))
             {
                 foreach (var module in locatorConfTypes)
                 {
@@ -227,7 +227,7 @@ namespace DotNetStarter.Locators
         /// </summary>
         public void Verify()
         {
-            foreach (var item in _Registrations)
+            foreach (var item in _registrations)
             {
                 var count = item.Value.Count;
 
@@ -240,20 +240,20 @@ namespace DotNetStarter.Locators
 
                     if (registration.ServiceInstance != null)
                     {
-                        _Container.RegisterInstance(registration.ServiceType, registration.ServiceInstance);
+                        _container.RegisterInstance(registration.ServiceType, registration.ServiceInstance);
                     }
                     else if (registration.ServiceFactory != null)
                     {
-                        _Container.RegisterFallback((type, key) => type == registration.ServiceType, r => registration.ServiceFactory.Invoke(this), ConvertLifetime(registration.Lifecycle));
+                        _container.RegisterFallback((type, key) => type == registration.ServiceType, r => registration.ServiceFactory.Invoke(_container.GetInstance<ILocatorAmbient>().Current), ConvertLifetime(registration.Lifecycle));
                     }
                     else
                     {
-                        _Container.Register(registration.ServiceType, registration.ServiceImplementation, serviceKey, ConvertLifetime(registration.Lifecycle));
+                        _container.Register(registration.ServiceType, registration.ServiceImplementation, serviceKey, ConvertLifetime(registration.Lifecycle));
                     }
                 }
             }
 
-            _Verified = true;
+            _verified = true;
         }
 
         private static void ThrowRegisterException(Type service, Type implementation)
@@ -283,13 +283,13 @@ namespace DotNetStarter.Locators
                 }
             }
 
-            if (!_Registrations.TryGetValue(registration.ServiceType, out List<ContainerRegistration> storedTypes))
+            if (!_registrations.TryGetValue(registration.ServiceType, out List<ContainerRegistration> storedTypes))
             {
                 storedTypes = new List<ContainerRegistration>();
             }
 
             storedTypes.Add(registration);
-            _Registrations[registration.ServiceType] = storedTypes;
+            _registrations[registration.ServiceType] = storedTypes;
         }
 
         private string ConvertKey(string key) => key ?? string.Empty;
@@ -320,7 +320,7 @@ namespace DotNetStarter.Locators
          */
         private void SortList<T>(ref IEnumerable<T> list, Type service)
         {
-            if (_Registrations.TryGetValue(service, out List<ContainerRegistration> sourceList))
+            if (_registrations.TryGetValue(service, out List<ContainerRegistration> sourceList))
             {
                 var typed = from o in sourceList.Select(x => x.ServiceImplementation)
                             join i in list

@@ -186,7 +186,7 @@
         /// </summary>
         public bool TryExecuteStartupModules()
         {
-            if(_delayedStartupModules == null) { return false; }
+            if (_delayedStartupModules == null) { return false; }
             _delayedStartupModules.Invoke();
             _delayedStartupModules = null;
             return true;

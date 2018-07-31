@@ -34,7 +34,7 @@
         /// <param name="lifeTime"></param>
         public void Add(Type serviceType, Func<ILocator, object> implementationFactory, Lifecycle lifeTime)
         {
-            _Container.Configure(x => x.For(serviceType).LifecycleIs(ConvertLifeTime(lifeTime)).Use((context) => implementationFactory.Invoke(context.GetInstance<ILocator>())));
+            _Container.Configure(x => x.For(serviceType).LifecycleIs(ConvertLifeTime(lifeTime)).Use((context) => implementationFactory.Invoke(context.GetInstance<ILocatorAmbient>().Current)));
         }
 
         /// <summary>

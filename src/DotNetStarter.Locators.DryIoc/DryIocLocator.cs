@@ -54,7 +54,7 @@
         /// <param name="lifeTime"></param>
         public virtual void Add(Type serviceType, Func<ILocator, object> implementationFactory, Lifecycle lifeTime)
         {
-            _Container.RegisterDelegate(serviceType, r => implementationFactory(r.Resolve<ILocator>()), ConvertLifeTime(lifeTime));
+            _Container.RegisterDelegate(serviceType, r => implementationFactory(r.Resolve<ILocatorAmbient>().Current), ConvertLifeTime(lifeTime));
         }
 
         /// <summary>
