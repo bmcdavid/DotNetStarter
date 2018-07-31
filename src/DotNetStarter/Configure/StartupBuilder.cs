@@ -137,7 +137,7 @@ namespace DotNetStarter.Configure
 
             _runOnce = true;
             Build(); // just in case its not called fluently
-            _startupHandler.StartupModules();
+            _startupHandler.TryExecuteStartupModules();
         }
 
         /// <summary>

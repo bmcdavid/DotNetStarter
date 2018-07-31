@@ -173,13 +173,14 @@
         }
 
         /// <summary>
-        /// MUST execute after Startup, used to run IStartupModules when enableDelayedStartup is used
+        /// Tries to run IStartupModules if delayed execute is enabled
         /// </summary>
-        public void StartupModules()
+        public bool TryExecuteStartupModules()
         {
-            //todo: how to fix delayed start, seems odd to split in a dependent call
+            if(_delayedStartupModules == null) { return false; }
             _delayedStartupModules.Invoke();
             _delayedStartupModules = null;
+            return true;
         }
 
         /// <summary>

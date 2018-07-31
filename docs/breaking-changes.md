@@ -13,6 +13,7 @@ The read-only locator was introduced in 1.x since registrations after OnLocatorS
 * Merge IlocatorDefaultRegistrationsWithCollections into IlocatorDefaultRegistrations.
 * Remove DotNetStarter.ApplicationContext.Startup methods
 * Remove IStartupConfigurationWithEnvironment
+* Changed IStartupHandler interface.
 
 ## 1.x - 2.x
 * Added IStartupEnvironment to IStartupConfiguration, and set by passing an implementation to DotNetStarter.ApplicationContext.Startup

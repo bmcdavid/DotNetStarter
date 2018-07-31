@@ -8,7 +8,7 @@ using System.Web.Http;
 using DotNetStarter.Abstractions;
 using DotNetStarter.Extensions.WebApi;
 
-namespace WSOL.Web.Business.DotNetStarterModules
+namespace Example.DotNetStarterModules
 {
     [StartupModule]
     public class WebApiConfig : IStartupModule

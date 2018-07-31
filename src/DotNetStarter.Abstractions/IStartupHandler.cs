@@ -15,8 +15,8 @@ namespace DotNetStarter.Abstractions
         IStartupContext ConfigureLocator(IStartupConfiguration startupConfiguration);
 
         /// <summary>
-        /// Action to execute IStartupModules
+        /// Action to execute IStartupModules, returns true if modules executed
         /// </summary>
-        void StartupModules();
+        bool TryExecuteStartupModules();
     }
 }
