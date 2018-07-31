@@ -80,7 +80,6 @@
         public virtual IStartupContext ConfigureLocator(IStartupConfiguration config)
         {
             Configuration = config;
-            Locator = _locatorRegistry as ILocator;// objectFactory.CreateRegistry(config) as ILocator;
             IStartupEngine startupEngine = this;
             IEnumerable<Assembly> assemblies = config.Assemblies;
             IStartupContext startupContext = null;
@@ -95,9 +94,7 @@
             {
                 var discoverTypeAttrs = assemblies.SelectMany(x => x.CustomAttribute(typeof(DiscoverTypesAttribute), false).OfType<DiscoverTypesAttribute>());
                 var discoverTypes = discoverTypeAttrs.SelectMany(x => x.DiscoverTypes);
-
-                // a custom config may set this to null
-                Func<Assembly, bool> assemblyFilter = null;
+                Func<Assembly, bool> assemblyFilter = null; // a custom config may set this to null
 
                 if (config.AssemblyFilter != null)
                 {
@@ -125,29 +122,21 @@
             containerSetup.Name = timerNameBase + ".ContainerSetup";
             containerSetup.TimedAction = () =>
             {
-                if (!(Locator is ILocatorRegistry registry))
-                    throw new NullLocatorException();
+                if (_locatorRegistry == null) { throw new NullLocatorException(); }
+                _locatorDefaultRegistrations.Configure(_locatorRegistry, filteredModules, config);
+                var locatorRegistries = (_locatorRegistry as ILocatorResolveConfigureModules)?.ResolveConfigureModules(filteredModules, config) ?? (_locatorRegistry as ILocator).GetAll<ILocatorConfigure>();
 
-                _locatorDefaultRegistrations.Configure(registry, filteredModules, config);
-                var locatorRegistries = (registry as ILocatorResolveConfigureModules)?.ResolveConfigureModules(filteredModules, config)
-                                            ?? (registry as ILocator).GetAll<ILocatorConfigure>();
+                ConfigureRegistry(_locatorRegistry, locatorRegistries);
 
-                foreach (var map in locatorRegistries ?? Enumerable.Empty<ILocatorConfigure>())
-                {
-                    map.Configure(registry, this);
-                }
-
-                var readOnlyLocator = Internal.ReadOnlyLocator.CreateReadOnlyLocator(registry as ILocator);
-                registry.Add(typeof(ILocator), readOnlyLocator);
-
+                var readOnlyLocator = ReadOnlyLocator.CreateReadOnlyLocator(_locatorRegistry as ILocator);
+                _locatorRegistry.Add(typeof(ILocator), readOnlyLocator);
                 startupContext = CreateStartupContext(readOnlyLocator, filteredModules, sortedModules, config);
-                registry.Add(typeof(IStartupContext), startupContext);
+                _locatorRegistry.Add(typeof(IStartupContext), startupContext);
 
                 ImportHelper.OnEnsureLocator += (() => readOnlyLocator); // configure import<T> locator
-
                 _OnLocatorStartupComplete?.Invoke(); //execute locator complete before verification since last minute additions can occur here.
                 _locatorStartupInvoked = true;
-                (registry as ILocatorVerification)?.Verify();
+                (_locatorRegistry as ILocatorVerification)?.Verify();
             };
 
             // startup modules
@@ -155,8 +144,11 @@
             startupModulesTask.Name = timerNameBase + ".StartupModules";
             startupModulesTask.TimedAction = () =>
             {
+                Locator = _locatorRegistry as ILocator;// objectFactory.CreateRegistry(config) as ILocator;
+                if (!(Locator is ILocatorRegistry)) { throw new NullLocatorException(); }
+
                 var modules = Locator.GetAll<IStartupModule>(); // resolve all startup modules for DI
-                Startup(modules);
+                ExecuteStartupModules(modules);
                 OnStartupComplete?.Invoke();
             };
 
@@ -186,9 +178,21 @@
         public void StartupModules()
         {
             //todo: how to fix delayed start, seems odd to split in a dependent call
-
             _delayedStartupModules.Invoke();
             _delayedStartupModules = null;
+        }
+
+        /// <summary>
+        /// Configures ILocatorConfigure modules
+        /// </summary>
+        /// <param name="registry"></param>
+        /// <param name="locatorRegistries"></param>
+        protected virtual void ConfigureRegistry(ILocatorRegistry registry, IEnumerable<ILocatorConfigure> locatorRegistries)
+        {
+            foreach (var map in locatorRegistries ?? Enumerable.Empty<ILocatorConfigure>())
+            {
+                map.Configure(registry, this);
+            }
         }
 
         /// <summary>
@@ -205,14 +209,12 @@
         }
 
         /// <summary>
-        /// Startups up given modules
+        /// Startups up given IStartupModule instances
         /// </summary>
         /// <param name="modules"></param>
-        protected virtual void Startup(IEnumerable<IStartupModule> modules)
+        protected virtual void ExecuteStartupModules(IEnumerable<IStartupModule> modules)
         {
-            var startupModules = modules ?? Enumerable.Empty<IStartupModule>();
-
-            foreach (var x in startupModules)
+            foreach (var x in modules ?? Enumerable.Empty<IStartupModule>())
             {
                 x.Startup(this);
             }

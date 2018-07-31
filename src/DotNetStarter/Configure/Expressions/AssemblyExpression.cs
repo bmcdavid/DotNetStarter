@@ -13,6 +13,18 @@ namespace DotNetStarter.Configure.Expressions
     public sealed class AssemblyExpression
     {
         internal readonly HashSet<Assembly> Assemblies = new HashSet<Assembly>();
+        internal bool WithNoScanning { get; private set; }
+
+        /// <summary>
+        /// Disables assembly scanning
+        /// </summary>
+        /// <returns></returns>
+        public AssemblyExpression WithNoAssemblyScanning()
+        {
+            WithNoScanning = true;
+            Assemblies.Clear();
+            return this;
+        }
 
         /// <summary>
         /// Removes given assemblies from the scanning process
@@ -21,7 +33,7 @@ namespace DotNetStarter.Configure.Expressions
         /// <returns></returns>
         public AssemblyExpression RemoveAssemblies(IEnumerable<Assembly> assembliesToRemove)
         {
-            if (assembliesToRemove == null) return this;
+            if (assembliesToRemove == null) { return this; }
 
             foreach (var a in assembliesToRemove)
             {
@@ -49,7 +61,7 @@ namespace DotNetStarter.Configure.Expressions
         /// <returns></returns>
         public AssemblyExpression WithAssemblies(IEnumerable<Assembly> assemblies)
         {
-            if (assemblies == null) return this;
+            if (assemblies == null) { return this; }
             AddAssemblyRange(assemblies);
             return this;
         }

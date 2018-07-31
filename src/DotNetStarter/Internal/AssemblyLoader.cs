@@ -12,8 +12,7 @@ namespace DotNetStarter.Internal
     public class AssemblyLoader : IAssemblyLoader
     {
         private static readonly HashSet<Assembly> LoadedAssemblies = new HashSet<Assembly>();
-
-        private static readonly object _Lock = new object();
+        private static readonly object _lockObj = new object();
 
 #if NETFULLFRAMEWORK
         /// <summary>
@@ -103,7 +102,7 @@ namespace DotNetStarter.Internal
         {
             if (LoadedAssemblies.Count == 0)
             {
-                lock (_Lock)
+                lock (_lockObj)
                 {
                     if (LoadedAssemblies.Count == 0)
                     {

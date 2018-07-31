@@ -13,6 +13,14 @@ namespace DotNetStarter.StartupBuilderTests
     public class StartupBuilderTests
     {
         [TestMethod]
+        public void ShouldRunFromDefaults()
+        {
+            StartupBuilder.Create().Run();
+            Assert.IsNotNull(ApplicationContext.Default);
+            StartupBuilder.ResetApplication();
+        }
+
+        [TestMethod]
         public void ShouldRegisterConfigureModuleViaConfiguration()
         {
             var sut = new ManualLocatorConfigure();
@@ -48,7 +56,8 @@ namespace DotNetStarter.StartupBuilderTests
                 {
                     assemblies
                         .WithDiscoverableAssemblies(new[] { typeof(StringLogger).Assembly(), typeof(RegistrationConfiguration).Assembly() })
-                        .WithAssemblyFromType<StructureMapFactory>();
+                        .WithAssemblyFromType<StructureMapFactory>()
+                        .WithAssemblyFromType<BadConfigureModule>();
                 })
                 .ConfigureStartupModules(modules =>
                 {
@@ -57,7 +66,9 @@ namespace DotNetStarter.StartupBuilderTests
                         {
                             collection.AddType<TestStartupModule>();
                         })
-                        .RemoveConfigureModule<BadConfigureModule>();
+                        .RemoveConfigureModule<BadConfigureModule>()
+                        .RemoveStartupModule<BadStartupModule>()
+                        ;
                 })
                 .Build(useApplicationContext: false)
                 .Run();
@@ -105,7 +116,6 @@ namespace DotNetStarter.StartupBuilderTests
         [TestMethod]
         public void ShouldStartupUsingAppContext()
         {
-            // test we haven't started yet
             Assert.IsFalse(ApplicationContext.Started);
 
             var builder = StartupBuilder.Create();
@@ -138,6 +148,7 @@ namespace DotNetStarter.StartupBuilderTests
             Assert.IsNotNull(ApplicationContext.Default);
             Assert.IsTrue(ApplicationContext.Started);
             Assert.AreEqual(builder.StartupContext, ApplicationContext.Default);
+            StartupBuilder.ResetApplication();
         }
     }
 }

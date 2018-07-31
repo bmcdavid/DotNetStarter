@@ -2,6 +2,8 @@
   <PropertyGroup>
     <TargetFrameworks>netcoreapp2.0;netcoreapp2.1;netcoreapp1.0;net45;</TargetFrameworks>
     <IsPackable>false</IsPackable>
+    <SignAssembly>true</SignAssembly>
+    <AssemblyOriginatorKeyFile>..\..\dotnetstarter.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
 
   <ItemGroup>

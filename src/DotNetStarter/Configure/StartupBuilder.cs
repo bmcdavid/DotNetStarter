@@ -2,6 +2,7 @@
 using DotNetStarter.Configure.Expressions;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
 
 namespace DotNetStarter.Configure
@@ -39,8 +40,9 @@ namespace DotNetStarter.Configure
         /// <para>IMPORTANT: Must run after all other configurations.</para>
         /// </summary>
         /// <param name="useApplicationContext">If false, the static ApplicationContext.Default will not be set after execution. Default is true.</param>
+        /// <param name="useDiscoverableAssemblies">Ignored if assemblyexpression is used! Instructs default assembly loader to filter for assemblies with DiscoverableAssemblyAttribute</param>
         /// <returns></returns>
-        public StartupBuilder Build(bool useApplicationContext = true)
+        public StartupBuilder Build(bool useApplicationContext = true, bool useDiscoverableAssemblies = true)
         {
             if (_isConfigured) { return this; }
 
@@ -58,10 +60,10 @@ namespace DotNetStarter.Configure
             var overrideExp = new OverrideExpression();
             _overrideExpression?.Invoke(overrideExp);
             objFactory.OverrideExpression = overrideExp;
-            
+
             // if no assemblies have been configured follow the default scanner rule
             // will throw exception for netstandard1.0 applications
-            var assembliesForStartup = assemblyExp.Assemblies.Count > 0 ? assemblyExp.Assemblies : new Internal.AssemblyLoader().GetAssemblies();
+            var assembliesForStartup = GetDefaultAssemblies(useDiscoverableAssemblies, assemblyExp);
 
             // default way using the static startup
             if (useApplicationContext)
@@ -79,7 +81,6 @@ namespace DotNetStarter.Configure
                         {
                             _appStarting = true;
                             ExecuteBuild(objFactory, assembliesForStartup, overrideExp);
-
                             ApplicationContext._Default = StartupContext;
                             ApplicationContext.Started = ApplicationContext._Default != null;
                             _appStarting = false;
@@ -150,6 +151,18 @@ namespace DotNetStarter.Configure
             return this;
         }
 
+        /// <summary>
+        /// Reset is for unit test purposes
+        /// </summary>
+        internal static void ResetApplication()
+        {
+            lock (_objLock)
+            {
+                ApplicationContext._Default = null;
+                ApplicationContext.Started = false;
+            }
+        }
+
         private void ExecuteBuild(StartupBuilderObjectFactory objFactory, IEnumerable<Assembly> assemblies, OverrideExpression overrideExpression)
         {
             var startupConfig = objFactory.CreateStartupConfiguration(assemblies);
@@ -158,6 +171,17 @@ namespace DotNetStarter.Configure
             _startupHandler = (overrideExpression.StartupHandlerFactory ?? localStartupHandlerFactory).Invoke(startupConfig);
 
             StartupContext = _startupHandler.ConfigureLocator(startupConfig);
+        }
+
+        private ICollection<Assembly> GetDefaultAssemblies(bool useDiscoverableAssemblies, AssemblyExpression assemblyExpression)
+        {
+            if (assemblyExpression.WithNoScanning) { return new List<Assembly>(); }
+            if (assemblyExpression.Assemblies.Count > 0) { return assemblyExpression.Assemblies; }
+            var defaultLoader = new Internal.AssemblyLoader();
+
+            return useDiscoverableAssemblies ?
+                AssemblyExpression.GetScannableAssemblies(defaultLoader.GetAssemblies()) :
+                defaultLoader.GetAssemblies().ToList();
         }
     }
 }
