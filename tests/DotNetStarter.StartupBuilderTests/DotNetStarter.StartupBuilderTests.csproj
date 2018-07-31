@@ -2,8 +2,6 @@
   <PropertyGroup>
     <TargetFrameworks>netcoreapp2.0;netcoreapp2.1;netcoreapp1.0;net45;</TargetFrameworks>
     <IsPackable>false</IsPackable>
-    <SignAssembly>true</SignAssembly>
-    <AssemblyOriginatorKeyFile>..\..\dotnetstarter.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
 
   <ItemGroup>
@@ -14,7 +12,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\src\DotNetStarter.Abstractions\DotNetStarter.Abstractions.csproj" />
-    <ProjectReference Include="..\..\src\DotNetStarter.Locators.StructureMap\DotNetStarter.Locators.StructureMap.csproj" />
+    <ProjectReference Include="..\..\src\DotNetStarter.Locators.DryIoc\DotNetStarter.Locators.DryIoc.csproj" />
     <ProjectReference Include="..\..\src\DotNetStarter.RegistrationAbstractions\DotNetStarter.RegistrationAbstractions.csproj" />
     <ProjectReference Include="..\..\src\DotNetStarter\DotNetStarter.csproj" />
   </ItemGroup>

@@ -42,7 +42,7 @@ namespace DotNetStarter.Configure
         /// <param name="useApplicationContext">If false, the static ApplicationContext.Default will not be set after execution. Default is true.</param>
         /// <param name="useDiscoverableAssemblies">Ignored if assemblyexpression is used! Instructs default assembly loader to filter for assemblies with DiscoverableAssemblyAttribute</param>
         /// <returns></returns>
-        public StartupBuilder Build(bool useApplicationContext = true, bool useDiscoverableAssemblies = true)
+        public StartupBuilder Build(bool useApplicationContext = true, bool useDiscoverableAssemblies = false)
         {
             if (_isConfigured) { return this; }
 
@@ -149,18 +149,6 @@ namespace DotNetStarter.Configure
         {
             _environment = startupEnvironment;
             return this;
-        }
-
-        /// <summary>
-        /// Reset is for unit test purposes
-        /// </summary>
-        internal static void ResetApplication()
-        {
-            lock (_objLock)
-            {
-                ApplicationContext._Default = null;
-                ApplicationContext.Started = false;
-            }
         }
 
         private void ExecuteBuild(StartupBuilderObjectFactory objFactory, IEnumerable<Assembly> assemblies, OverrideExpression overrideExpression)
