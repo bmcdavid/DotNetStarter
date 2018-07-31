@@ -22,8 +22,6 @@ namespace DotNetStarter.Abstractions
         /// </summary>
         IStartupConfiguration Configuration { get; }
 
-        //todo: consider making a new type for ILocatorConfigure that doesn't provide the locator
-
         /// <summary>
         /// Reference to locator
         /// <para>IMPORTANT: Locator will be null during the ILocatorConfigure tasks</para>

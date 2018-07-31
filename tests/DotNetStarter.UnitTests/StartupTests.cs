@@ -1,5 +1,6 @@
 ﻿using DotNetStarter.Abstractions;
 using DotNetStarter.Abstractions.Internal;
+using DotNetStarter.UnitTests.Mocks;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Collections.Generic;
@@ -7,19 +8,29 @@ using System.Linq;
 using System.Reflection;
 
 namespace DotNetStarter.UnitTests
-{    
+{
     [TestClass]
     public class StartupModuleTests
     {
         [TestMethod]
         public void ShouldCallInitCompleteEvent()
         {
-            Assert.IsTrue(StartupTest._InitCompleteCalled);
+            Assert.IsTrue(StartupModuleTest._InitCompleteCalled);
         }
 
-#if NETSTANDARD
-        //[ExpectedException(typeof(Exception), AllowDerivedTypes = true)]
-#endif
+        [TestMethod]
+        public void ShouldClearLog()
+        {
+            var sut = new StringLogger(LogLevel.Debug, 10);
+            var e = new Exception("Testing");
+            sut.LogException("Testing Clear", e, typeof(StartupModuleTest), LogLevel.Error);
+            Assert.IsFalse(string.IsNullOrEmpty(sut.ToString()));
+
+            sut.LogException("New log", e, typeof(StartupModuleTest), LogLevel.Error);
+            Assert.IsFalse(sut.ToString().Contains("Testing Clear"));
+            Assert.IsTrue(sut.ToString().Contains("New log"));
+        }
+
         [TestMethod]
         public void ShouldFilterAssembliesForScannableAttributeGivenNullExceptForNetstandard()
         {
@@ -46,11 +57,11 @@ namespace DotNetStarter.UnitTests
         {
             var sut = new StringLogger(LogLevel.Error, 10000);
             var e = new Exception("Testing");
-            sut.LogException("Test", e, typeof(StartupTest), LogLevel.Error);
+            sut.LogException("Test", e, typeof(StartupModuleTest), LogLevel.Error);
             Assert.IsFalse(string.IsNullOrEmpty(sut.ToString()));
 
             sut = new StringLogger(LogLevel.Error, 10000);
-            sut.LogException("Test", e, typeof(StartupTest), LogLevel.Fatal);
+            sut.LogException("Test", e, typeof(StartupModuleTest), LogLevel.Fatal);
             Assert.IsFalse(string.IsNullOrEmpty(sut.ToString()));
         }
 
@@ -59,21 +70,8 @@ namespace DotNetStarter.UnitTests
         {
             var sut = new StringLogger(LogLevel.Fatal, 10000);
             var e = new Exception("Testing");
-            sut.LogException("Test", e, typeof(StartupTest), LogLevel.Error);
+            sut.LogException("Test", e, typeof(StartupModuleTest), LogLevel.Error);
             Assert.IsTrue(string.IsNullOrEmpty(sut.ToString()));
-        }
-
-        [TestMethod]
-        public void ShouldClearLog()
-        {
-            var sut = new StringLogger(LogLevel.Debug, 10);
-            var e = new Exception("Testing");
-            sut.LogException("Testing Clear", e, typeof(StartupTest), LogLevel.Error);
-            Assert.IsFalse(string.IsNullOrEmpty(sut.ToString()));
-
-            sut.LogException("New log", e, typeof(StartupTest), LogLevel.Error);
-            Assert.IsFalse(sut.ToString().Contains("Testing Clear"));
-            Assert.IsTrue(sut.ToString().Contains("New log"));
         }
 
         [TestMethod]
@@ -110,13 +108,13 @@ namespace DotNetStarter.UnitTests
             var shutdown = DotNetStarter.ApplicationContext.Default.Locator.Get<IShutdownHandler>();
             shutdown.Shutdown();
 
-            Assert.IsTrue(StartupTest.ShutdownCalled);
+            Assert.IsTrue(StartupModuleTest.ShutdownCalled);
         }
 
         [TestMethod]
         public void ShouldStartup()
         {
-            Assert.IsTrue(StartupTest.InitCalled);
+            Assert.IsTrue(StartupModuleTest.InitCalled);
         }
 
         [ExpectedException(typeof(ArgumentException))]
@@ -126,6 +124,22 @@ namespace DotNetStarter.UnitTests
             var check = new LocatorRegistryFactoryAttribute(typeof(object));
         }
 
+        [ExpectedException(typeof(NullLocatorException), AllowDerivedTypes = true)]
+        [TestMethod]
+        public void ShouldThrowLocatorNotConfiguredException()
+        {
+            var builder = Configure.StartupBuilder.Create();
+            builder
+                .ConfigureAssemblies(a => a.WithNoAssemblyScanning())
+                .ConfigureStartupModules(m => m.ConfigureLocatorModuleCollection
+                    (c =>
+                    {
+                        c.Add(new Mocks.NullLocatorCheckInConfigure());
+                    })
+                )
+                .Build(useApplicationContext: false)
+                .Run();
+        }
         [ExpectedException(typeof(NullLocatorException))]
         [TestMethod]
         public void ShouldThrowNullLocatorExceptionInDefaultHandler()
@@ -139,34 +153,6 @@ namespace DotNetStarter.UnitTests
             {
                 throw new NotImplementedException();
             }
-        }
-    }
-
-    [StartupModule]
-    public class StartupTest : IStartupModule
-    {
-        internal static bool _InitCompleteCalled = false;
-        private static bool _InitCalled = false;
-
-        private static volatile bool _ShutdownCalled = false;
-        internal static bool InitCalled => _InitCalled;
-
-        internal static bool ShutdownCalled => _ShutdownCalled;
-
-        public void Shutdown()
-        {
-            _ShutdownCalled = true;
-        }
-
-        public void Startup(IStartupEngine engine)
-        {
-            _InitCalled = true;
-            engine.OnStartupComplete += Engine_OnStartupComplete;
-        }
-
-        private void Engine_OnStartupComplete()
-        {
-            _InitCompleteCalled = true;
         }
     }
 }

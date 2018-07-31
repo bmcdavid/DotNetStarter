@@ -18,6 +18,7 @@
         private readonly ILocatorRegistry _locatorRegistry;
         private readonly Func<ITimedTask> _timedTaskFactory;
         private Action _delayedStartupModules;
+        private ILocator _locator;
         private bool _locatorStartupInvoked = false;
 
         /// <summary>
@@ -70,7 +71,15 @@
         /// <summary>
         /// ILocator for IStartupEngine
         /// </summary>
-        public ILocator Locator { get; protected set; }
+        public ILocator Locator
+        {
+            get
+            {
+                if (_locator == null) { throw new LocatorNotConfiguredException(); }
+                return _locator;
+            }
+            protected set => _locator = value;
+        }
 
         /// <summary>
         /// Starup process, by default it scans assemblies, sorts modules, configures container, and runs startup for each module

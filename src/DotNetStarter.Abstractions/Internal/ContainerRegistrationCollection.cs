@@ -45,7 +45,6 @@ namespace DotNetStarter.Abstractions.Internal
     /// </summary>
     public sealed class ContainerRegistrationCollection : Dictionary<Type, List<ContainerRegistration>>
     {
-        // todo: build better debug info
         /// <summary>
         /// Debug information
         /// </summary>

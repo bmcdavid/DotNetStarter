@@ -11,10 +11,15 @@
     /// </summary>
     public class DryIocLocator : DryIocLocatorBase, ILocatorRegistry, ILocatorRegistryWithContains, ILocatorRegistryWithRemove
     {
+        private bool _withResolvedArguments;
+
         /// <summary>
         /// Constructor
         /// </summary>
-        public DryIocLocator(IContainer container = null) : base(container) { }
+        public DryIocLocator(IContainer container = null) : base(container)
+        {
+            _withResolvedArguments = container?.Rules?.FactoryMethod == FactoryMethod.ConstructorWithResolvableArguments;
+        }
 
         /// <summary>
         /// Adds service type to container, given its implementation type.
@@ -25,7 +30,7 @@
         /// <param name="lifetime"></param>
         public virtual void Add(Type serviceType, Type serviceImplementation, string key = null, Lifecycle lifetime = Lifecycle.Transient)
         {
-            RegisterSimple(_Container, serviceType, serviceImplementation, ConvertLifeTime(lifetime), key);
+            RegisterSimple(_Container, serviceType, serviceImplementation, _withResolvedArguments, ConvertLifeTime(lifetime), key);
         }
 
         /// <summary>
@@ -38,7 +43,7 @@
         public virtual void Add<TService, TImpl>(string key = null, Lifecycle lifetime = Lifecycle.Transient)
             where TImpl : TService
         {
-            RegisterSimple<TService, TImpl>(_Container, ConvertLifeTime(lifetime), key);
+            RegisterSimple<TService, TImpl>(_Container, _withResolvedArguments, ConvertLifeTime(lifetime), key);
         }
 
         /// <summary>
@@ -113,19 +118,16 @@
             return Made.Of(allConstructors.FirstOrDefault());
         }
 
-        private static void RegisterSimple<TInterface, TImplementation>(IContainer register, IReuse reuse = null, string key = null)
+        private static void RegisterSimple<TInterface, TImplementation>(IContainer register, bool withResolvedArguments, IReuse reuse = null, string key = null)
             where TImplementation : TInterface
         {
             register.Register<TInterface, TImplementation>(reuse: reuse,
-                made: GetConstructorFor(register, typeof(TImplementation)),
+                made: withResolvedArguments ? null : GetConstructorFor(register, typeof(TImplementation)),
                 serviceKey: key);
         }
 
-        private static void RegisterSimple(IContainer register, Type service, Type implementation, IReuse reuse = null, string key = null)
+        private static void RegisterSimple(IContainer register, Type service, Type implementation, bool withResolvedArguments, IReuse reuse = null, string key = null)
         {
-            //note: evaluate how these can be better, example in netcore has issue
-            //   Microsoft.AspNetCore.Server.Kestrel.Internal.KestrelServerOptionsSetup cannot be converted to Microsoft.Extensions.Options.IConfigureOptions`1[[Microsoft.AspNetCore.Server.Kestrel.KestrelServerOptions, Microsoft.AspNetCore.Server.Kestrel, Version=1.0.1.0, Culture=neutral, PublicKeyToken=adb9793829ddae60]]!
-
             if (!service.IsAssignableFromCheck(implementation))
             {
                 if (!service.IsGenericType())
@@ -141,7 +143,7 @@
                 }
             }
 
-            register.Register(service, implementation, reuse: reuse, made: GetConstructorFor(register, implementation), serviceKey: key);
+            register.Register(service, implementation, reuse: reuse, made: withResolvedArguments ? null : GetConstructorFor(register, implementation), serviceKey: key);
         }
 
         private static void ThrowRegisterException(Type service, Type implementation)
