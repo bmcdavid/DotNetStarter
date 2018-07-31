@@ -11,7 +11,7 @@ namespace DotNetStarter.Internal
     /// </summary>
     public class AssemblyLoader : IAssemblyLoader
     {
-        private static readonly HashSet<Assembly> LoadedAssemblies = new HashSet<Assembly>();
+        internal static readonly HashSet<Assembly> LoadedAssemblies = new HashSet<Assembly>();
         private static readonly object _lockObj = new object();
 
 #if NETFULLFRAMEWORK

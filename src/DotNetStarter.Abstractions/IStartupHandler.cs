@@ -5,7 +5,7 @@ namespace DotNetStarter.Abstractions
     /// <summary>
     /// Main hook for startup
     /// </summary>
-    public interface IStartupHandler : IStartupEngine
+    public interface IStartupHandler //: IStartupEngine
     {
         /// <summary>
         /// Creates the startup context

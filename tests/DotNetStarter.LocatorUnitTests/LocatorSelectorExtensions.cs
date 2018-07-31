@@ -17,5 +17,19 @@ namespace DotNetStarter.UnitTests
 #endif
             return builder;
         }
+
+        public static StartupBuilder UseTestLocator(this StartupBuilder builder)
+        {
+#if DRYIOC_LOCATOR
+            builder.OverrideDefaults(d => d.UseLocatorRegistryFactory(new DotNetStarter.Locators.DryIocLocatorFactory()));
+#elif STRUCTUREMAP_LOCATOR
+            builder.OverrideDefaults(d => d.UseLocatorRegistryFactory(new DotNetStarter.Locators.StructureMapFactory()));           
+#elif STRUCTUREMAPSIGNED_LOCATOR
+            builder.OverrideDefaults(d => d.UseLocatorRegistryFactory(new DotNetStarter.Locators.StructureMapSignedFactory()));
+#elif LIGHTINJECT_LOCATOR
+            builder.OverrideDefaults(d => d.UseLocatorRegistryFactory(new DotNetStarter.Locators.LightInjectLocatorRegistryFactory()));
+#endif
+            return builder;
+        }
     }
 }

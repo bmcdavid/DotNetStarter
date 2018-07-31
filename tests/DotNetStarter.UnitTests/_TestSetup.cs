@@ -9,7 +9,7 @@ using System.Reflection;
 namespace DotNetStarter.UnitTests
 {
     [TestClass]
-    public sealed class _TestSetup : ILocatorRegistryFactory
+    public sealed class _TestSetup
     {
         [AssemblyInitialize]
         public static void Setup(TestContext context)
@@ -27,13 +27,11 @@ namespace DotNetStarter.UnitTests
                 .OverrideDefaults(d => 
                 {
                     d
-                        .UseLocatorRegistryFactory(new _TestSetup())
+                        .UseLocatorRegistryFactory(new Mocks.TestLocatorFactory())
                         .UseAssemblyFilter(new Mocks.TestAssemblyFilter())
                         .UseLogger(new Mocks.TestLogger());
                 })
                 .Run();
         }
-
-        public ILocatorRegistry CreateRegistry() => new Mocks.TestLocator();
     }
 }

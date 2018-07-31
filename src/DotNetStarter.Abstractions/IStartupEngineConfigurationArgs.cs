@@ -3,9 +3,9 @@
 namespace DotNetStarter.Abstractions
 {
     /// <summary>
-    /// Contains event for startup complete, ILocator for resolving, and IStartupConfiguration
+    /// Contains events for ILocatorConfigure tasks and IStartupConfiguration
     /// </summary>
-    public interface IStartupEngine
+    public interface IStartupEngineConfigurationArgs
     {
         /// <summary>
         /// Executes when startup has completed tasks
@@ -18,8 +18,8 @@ namespace DotNetStarter.Abstractions
         IStartupConfiguration Configuration { get; }
 
         /// <summary>
-        /// Reference to ILocator configured
+        /// Executes when locator startup is complete
         /// </summary>
-        ILocator Locator { get; }
+        event Action OnLocatorStartupComplete;
     }
 }

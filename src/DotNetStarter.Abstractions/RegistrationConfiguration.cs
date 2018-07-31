@@ -10,7 +10,7 @@
     [StartupModule]
     public class RegistrationConfiguration : ILocatorConfigure
     {
-        void ILocatorConfigure.Configure(ILocatorRegistry registry, IStartupEngine engine)
+        void ILocatorConfigure.Configure(ILocatorRegistry registry, IStartupEngineConfigurationArgs engine)
         {
             var configuration = engine.Configuration;
             var serviceType = typeof(RegistrationAttribute);

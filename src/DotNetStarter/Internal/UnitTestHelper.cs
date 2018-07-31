@@ -1,7 +1,7 @@
 ﻿namespace DotNetStarter.Internal
 {
     /// <summary>
-    /// Allows for application context to be reset, should only be ran by unit test projects
+    /// Allows for application context to be reset, use ONLY in unit test projects
     /// </summary>
     public class UnitTestHelper
     {
@@ -16,6 +16,7 @@
             {
                 ApplicationContext._Default = null;
                 ApplicationContext.Started = false;
+                AssemblyLoader.LoadedAssemblies.Clear();
             }
         }
     }

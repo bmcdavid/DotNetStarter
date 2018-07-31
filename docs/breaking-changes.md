@@ -5,18 +5,22 @@ title: DotNetStarter - Breaking Changes
 
 This page is used to note each versions breaking changes and list future breaking changes.
 
-## Important Note
-The read-only locator was introduced in 1.x since registrations after OnLocatorStartupComplete required casting as ILocatorRegistry.
-
 ## 2.x - 3.x (Proposed)
-* Remove IStartupObjectFactory
-* Merge IlocatorDefaultRegistrationsWithCollections into IlocatorDefaultRegistrations.
-* Remove DotNetStarter.ApplicationContext.Startup methods
-* Remove IStartupConfigurationWithEnvironment
+* Changed ILocatorConfigure.Configure signature to take a new ILocatorEngineConfigurationArgs instead of ILocatorEngine to prevent access to ILocator before configuration is complete
+* Removed obsoleted code
+* Removed IStartupObjectFactory
+* Merged IlocatorDefaultRegistrationsWithCollections into IlocatorDefaultRegistrations.
+* Removed DotNetStarter.ApplicationContext.Startup methods
+* Removed IStartupConfigurationWithEnvironment
 * Changed IStartupHandler interface.
+* Removed ILocatorRegistryWithSet.
+* Removed IStartupDelayed, handled by IStartupHandler now.
+* Moved ILocatorScopedWithSet to Internal namespace.
+* Added Configure.Expresions.AssemblyExpression.WithNoAssemblyScanning() to remove all assembly scanning functionality.
 
 ## 1.x - 2.x
 * Added IStartupEnvironment to IStartupConfiguration, and set by passing an implementation to DotNetStarter.ApplicationContext.Startup
+* The read-only locator was introduced in 1.x since registrations after OnLocatorStartupComplete required casting as ILocatorRegistry.
 * Added LightInject and StructureMapSigned locators
 * Added DotNetStarter.Locators namespace for all locators
   * DryIoc and Structuremap retain their existing NuGet package Ids

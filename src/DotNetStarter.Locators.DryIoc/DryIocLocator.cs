@@ -11,7 +11,7 @@
     /// </summary>
     public class DryIocLocator : DryIocLocatorBase, ILocatorRegistry, ILocatorRegistryWithContains, ILocatorRegistryWithRemove
     {
-        private bool _withResolvedArguments;
+        private readonly bool _withResolvedArguments;
 
         /// <summary>
         /// Constructor

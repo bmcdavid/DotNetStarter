@@ -105,7 +105,7 @@ namespace DotNetStarter.UnitTests
         [TestMethod]
         public void ShouldShutdown()
         {
-            var shutdown = DotNetStarter.ApplicationContext.Default.Locator.Get<IShutdownHandler>();
+            var shutdown = ApplicationContext.Default.Locator.Get<IShutdownHandler>();
             shutdown.Shutdown();
 
             Assert.IsTrue(StartupModuleTest.ShutdownCalled);
@@ -124,22 +124,24 @@ namespace DotNetStarter.UnitTests
             var check = new LocatorRegistryFactoryAttribute(typeof(object));
         }
 
-        [ExpectedException(typeof(NullLocatorException), AllowDerivedTypes = true)]
-        [TestMethod]
-        public void ShouldThrowLocatorNotConfiguredException()
-        {
-            var builder = Configure.StartupBuilder.Create();
-            builder
-                .ConfigureAssemblies(a => a.WithNoAssemblyScanning())
-                .ConfigureStartupModules(m => m.ConfigureLocatorModuleCollection
-                    (c =>
-                    {
-                        c.Add(new Mocks.NullLocatorCheckInConfigure());
-                    })
-                )
-                .Build(useApplicationContext: false)
-                .Run();
-        }
+
+        //[ExpectedException(typeof(NullLocatorException), AllowDerivedTypes = true)]
+        //[TestMethod]
+        //public void ShouldThrowLocatorNotConfiguredException()
+        //{
+        //    var builder = Configure.StartupBuilder.Create();
+        //    builder
+        //        .ConfigureAssemblies(a => a.WithNoAssemblyScanning())
+        //        .ConfigureStartupModules(m => m.ConfigureLocatorModuleCollection
+        //            (c =>
+        //            {
+        //                c.Add(new Mocks.NullLocatorCheckInConfigure());
+        //            })
+        //        )
+        //        .Build(useApplicationContext: false)
+        //        .Run();
+        //}
+
         [ExpectedException(typeof(NullLocatorException))]
         [TestMethod]
         public void ShouldThrowNullLocatorExceptionInDefaultHandler()

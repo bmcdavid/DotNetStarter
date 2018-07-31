@@ -12,7 +12,6 @@ The following are the currently supported container implementations:
 * DotNetStarter.Locators.StructureMapSigned - support for net45+.
 
 ## Example Custom Locator with factory
-
 ```cs
 // attribute to register container with the default object factory
 [assembly: DotNetStarter.Abstractions.LocatorRegistryFactory

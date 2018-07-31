@@ -6,7 +6,7 @@ namespace DotNetStarter.StartupBuilderTests.Mocks
     {
         public bool Executed { get; private set; }
 
-        public void Configure(ILocatorRegistry registry, IStartupEngine engine)
+        public void Configure(ILocatorRegistry registry, IStartupEngineConfigurationArgs engine)
         {
             Executed = true;    
         }

@@ -6,6 +6,11 @@ using DotNetStarter.Internal;
 
 namespace DotNetStarter.UnitTests.Mocks
 {
+    internal class TestLocatorFactory : ILocatorRegistryFactory
+    {
+        public ILocatorRegistry CreateRegistry() => new Mocks.TestLocator();
+    }
+
     /// <summary>
     /// simple locator that only cares about startup modules
     /// </summary>

@@ -20,7 +20,7 @@ namespace DotNetStarter.Internal
             _serviceCollection = serviceCollection;
         }
 
-        void ILocatorConfigure.Configure(ILocatorRegistry registry, IStartupEngine engine)
+        void ILocatorConfigure.Configure(ILocatorRegistry registry, IStartupEngineConfigurationArgs engine)
         {
             AddServicesToLocator(_serviceCollection, registry);
         }

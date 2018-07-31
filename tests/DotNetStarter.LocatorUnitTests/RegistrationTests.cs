@@ -28,7 +28,7 @@ namespace DotNetStarter.UnitTests
         [TestMethod]
         public void ShouldBeReadOnlyLocatorInAppContext()
         {
-            Assert.IsInstanceOfType(ApplicationContext.Default.Locator, typeof(IReadOnlyLocator));
+            Assert.IsInstanceOfType(ApplicationContext.Default.Locator, typeof(ILocator));
         }
 
         [TestMethod]
@@ -166,7 +166,7 @@ namespace DotNetStarter.UnitTests
 
         internal static bool RegisterException = false;
 
-        public void Configure(ILocatorRegistry container, IStartupEngine engine)
+        public void Configure(ILocatorRegistry container, IStartupEngineConfigurationArgs engine)
         {
             try
             {

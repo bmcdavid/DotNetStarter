@@ -1,17 +1,16 @@
 ﻿using DotNetStarter.Abstractions;
+using DotNetStarter.UnitTests.Mocks;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Linq;
 
 namespace DotNetStarter.UnitTests
 {
-    #region Mocks
-
     [StartupModule]
     public class StartupTest2 : ILocatorConfigure
     {
         internal static bool _ContainerInitCompleteCalled = false;
 
-        public void Configure(ILocatorRegistry container, IStartupEngine engine)
+        public void Configure(ILocatorRegistry container, IStartupEngineConfigurationArgs engine)
         {
             engine.OnLocatorStartupComplete += Engine_OnContainerStarted;
         }
@@ -21,6 +20,7 @@ namespace DotNetStarter.UnitTests
             _ContainerInitCompleteCalled = true;
         }
     }
+
 
     [StartupModule]
     public class StartupTest : IStartupModule
@@ -35,17 +35,36 @@ namespace DotNetStarter.UnitTests
         }
     }
 
-    #endregion
-
     [TestClass]
     public class StartupEngineTests
     {
         [TestMethod]
         public void ShouldCallContainerInitCompleteEvent()
         {
-            var x = DotNetStarter.ApplicationContext.Default.Configuration.Assemblies.ToList();
+            var x = ApplicationContext.Default.Configuration.Assemblies.ToList();
 
             Assert.IsTrue(StartupTest2._ContainerInitCompleteCalled);
-        }        
+        }
+
+        [TestMethod]
+        public void ShouldFireEventsForILocatorConfigure()
+        {
+            var sut = new ConfigureStartupCompleteTest();
+            var builder = Configure.StartupBuilder.Create();
+            builder
+                .ConfigureAssemblies(a => a.WithNoAssemblyScanning())
+                .ConfigureStartupModules(m => m.ConfigureLocatorModuleCollection
+                    (c =>
+                    {
+                        c.Add(sut);
+                    })
+                )
+                .UseTestLocator()
+                .Build(useApplicationContext: false);
+
+            Assert.IsTrue(sut.FiredLocator);
+            builder.Run();
+            Assert.IsTrue(sut.FiredStartup);
+        }
     }
 }

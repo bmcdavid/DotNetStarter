@@ -6,7 +6,7 @@ namespace DotNetStarter.StartupBuilderTests.Mocks
     [StartupModule]
     public class BadConfigureModule : ILocatorConfigure
     {
-        public void Configure(ILocatorRegistry registry, IStartupEngine engine)
+        public void Configure(ILocatorRegistry registry, IStartupEngineConfigurationArgs engine)
         {
             throw new NotImplementedException();
         }
