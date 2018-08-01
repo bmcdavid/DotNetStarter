@@ -14,8 +14,25 @@ This works for registering type implementations but doesn't support delegate or 
 [Registration(typeof(IServiceType), LifeTime.Singleton)]
 ```
 
-## DotNetStarter.Abstractions.ILocatorConfigure
+### Customizing RegistrationAttribute lifecycles
+Application developers may modify services discovered with the RegistrationAttribute in the StartupBuilder.OverrideDefaults callback using the UseRegistrationModifier to pass a custom registration modifier. The default is null. Below is a sample registration modifier
 
+```cs
+public class AppRegistrationModifier : IRegistrationsModifier
+{
+    public void Modify(ICollection<Registration> registrations)
+    {
+        // changes all IFooService to singletons
+        registrations.Where(r => r.ServiceType == typeof(IFooService)).All(r =>
+        {
+            r.Lifecycle = Lifecycle.Singleton;
+            return true;
+        });
+    }
+}
+```
+
+## DotNetStarter.Abstractions.ILocatorConfigure
 The second method requires a class that implements DotNetStarter.Abstractions.ILocatorConfigure with a StartupModuleAttribute decoration.
 
 ```cs

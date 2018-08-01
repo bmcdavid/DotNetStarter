@@ -33,7 +33,7 @@ namespace DotNetStarter.StartupBuilderTests
                 .OverrideDefaults(defaults =>
                 {
                     defaults
-                        .UseRegistrationLifecycleModifier(new MockRegistrationModifier())
+                        .UseRegistrationModifier(new MockRegistrationModifier())
                         .UseLogger(new StringLogger(LogLevel.Info));
                 })
                 .Build(useApplicationContext: false)
@@ -220,7 +220,7 @@ namespace DotNetStarter.StartupBuilderTests
                 .OverrideDefaults(defaults =>
                 {
                     defaults
-                        .UseRegistrationLifecycleModifier(new MockRegistrationModifier())
+                        .UseRegistrationModifier(new MockRegistrationModifier())
                         .UseLogger(new StringLogger(LogLevel.Info));
                 })
                 .Build(useApplicationContext: false)

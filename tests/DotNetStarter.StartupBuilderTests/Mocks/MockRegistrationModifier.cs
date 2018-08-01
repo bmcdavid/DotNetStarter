@@ -1,17 +1,18 @@
-﻿using DotNetStarter.Abstractions;
+﻿using System.Collections.Generic;
+using System.Linq;
+using DotNetStarter.Abstractions;
 
 namespace DotNetStarter.StartupBuilderTests.Mocks
 {
-    public class MockRegistrationModifier : IRegistrationLifecycleModifier
+    public class MockRegistrationModifier : IRegistrationsModifier
     {
-        public Lifecycle? ChangeLifecycle(RegistrationAttribute registrationAttribute)
+        public void Modify(ICollection<Registration> registrations)
         {
-            if (registrationAttribute.ServiceType == typeof(TestFooImport))
+            registrations.Where(r => r.ServiceType == typeof(TestFooImport)).All(r =>
             {
-                return Lifecycle.Singleton;
-            }
-
-            return null;
+                r.Lifecycle = Lifecycle.Singleton;
+                return true;
+            });
         }
     }
 }

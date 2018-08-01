@@ -17,7 +17,7 @@ namespace DotNetStarter.Configure
             Logger = objectFactory.CreateStartupLogger();
             ModuleFilter = objectFactory.CreateModuleFilter();
             TimedTaskManager = objectFactory.CreateTimedTaskManager();
-            RegistrationLifecycleModifier = objectFactory.OverrideExpression.RegistrationLifecycleModifier;
+            RegistrationsModifier = objectFactory.OverrideExpression.RegistrationModifier;
         }
 
         public IEnumerable<Assembly> Assemblies { get; }
@@ -30,6 +30,6 @@ namespace DotNetStarter.Configure
         public IStartupModuleFilter ModuleFilter { get; }
         public ITimedTaskManager TimedTaskManager { get; }
 
-        public IRegistrationLifecycleModifier RegistrationLifecycleModifier { get; }
+        public IRegistrationsModifier RegistrationsModifier { get; }
     }
 }

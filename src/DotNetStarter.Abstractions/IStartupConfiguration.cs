@@ -56,6 +56,6 @@
         /// <summary>
         /// Registration lifecycle modifier
         /// </summary>
-        IRegistrationLifecycleModifier RegistrationLifecycleModifier { get; }
+        IRegistrationsModifier RegistrationsModifier { get; }
     }
 }
