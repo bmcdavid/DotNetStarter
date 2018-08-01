@@ -7,16 +7,19 @@ This page is used to note each versions breaking changes and list future breakin
 
 ## 2.x - 3.x (Proposed)
 * Changed ILocatorConfigure.Configure signature to take a new ILocatorEngineConfigurationArgs instead of ILocatorEngine to prevent access to ILocator before configuration is complete
-* Removed obsoleted code
+* Removed IStartupEngine.OnLocatorStartupComplete
 * Removed IStartupObjectFactory
 * Merged IlocatorDefaultRegistrationsWithCollections into IlocatorDefaultRegistrations.
 * Removed DotNetStarter.ApplicationContext.Startup methods
 * Removed IStartupConfigurationWithEnvironment
 * Changed IStartupHandler interface.
-* Removed ILocatorRegistryWithSet.
+* Removed ILocatorSet.
 * Removed IStartupDelayed, handled by IStartupHandler now.
 * Moved ILocatorScopedWithSet to Internal namespace.
 * Added Configure.Expresions.AssemblyExpression.WithNoAssemblyScanning() to remove all assembly scanning functionality.
+* Added IItemCollection for storing items in IStartupEnvironments.
+* Added IRegistrationModifier for allowing application developers ability to change discovered registrations.
+* Removed obsoleted code
 
 ## 1.x - 2.x
 * Added IStartupEnvironment to IStartupConfiguration, and set by passing an implementation to DotNetStarter.ApplicationContext.Startup
