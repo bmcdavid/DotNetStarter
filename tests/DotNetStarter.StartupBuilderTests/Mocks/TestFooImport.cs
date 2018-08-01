@@ -1,4 +1,5 @@
 ﻿using DotNetStarter.Abstractions;
+using System;
 
 namespace DotNetStarter.StartupBuilderTests.Mocks
 {
@@ -6,5 +7,7 @@ namespace DotNetStarter.StartupBuilderTests.Mocks
     public class TestFooImport
     {
         public Import<TestFooImport> FooImport { get; set; }
+
+        public DateTime DateTime { get; } = DateTime.Now;
     }
 }

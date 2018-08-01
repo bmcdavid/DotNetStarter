@@ -10,7 +10,7 @@
         /// Configure container object
         /// </summary>
         /// <param name="registry">Container instance</param>
-        /// <param name="engine">Events to subscribe too.</param>
-        void Configure(ILocatorRegistry registry, IStartupEngineConfigurationArgs engine);
+        /// <param name="configArgs">Configuration and events to subscribe to.</param>
+        void Configure(ILocatorRegistry registry, IStartupEngineConfigurationArgs configArgs);
     }
 }

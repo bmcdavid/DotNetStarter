@@ -81,7 +81,7 @@ namespace DotNetStarter.Configure
         {
             return new StartupContext(locator, allModules, filteredModules, startupConfiguration);
         }
-        
+
         public IStartupLogger CreateStartupLogger()
         {
             return OverrideExpression.Logger ?? new StringLogger(LogLevel.Error, 1024000);

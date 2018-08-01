@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using DotNetStarter.Abstractions;
+﻿using DotNetStarter.Abstractions;
 
 namespace DotNetStarter
 {
@@ -15,11 +14,12 @@ namespace DotNetStarter
         /// </summary>
         /// <param name="environmentName"></param>
         /// <param name="applicationBasePath"></param>
-        public StartupEnvironment(string environmentName, string applicationBasePath = null)
+        /// <param name="defaultItems"></param>
+        public StartupEnvironment(string environmentName, string applicationBasePath = null, IItemCollection defaultItems = null)
         {
             EnvironmentName = environmentName ?? throw new System.ArgumentNullException(nameof(environmentName));
             ApplicationBasePath = applicationBasePath ?? string.Empty;
-            Items = new Dictionary<string, object>();
+            Items = defaultItems ?? new StartupEnvironmentItemCollection();
         }
 
         /// <summary>
@@ -35,7 +35,7 @@ namespace DotNetStarter
         /// <summary>
         /// Current environment items
         /// </summary>
-        public IDictionary<string, object> Items { get; }
+        public IItemCollection Items { get; }
 
         /// <summary>
         /// Determines if environment name is 'Development'

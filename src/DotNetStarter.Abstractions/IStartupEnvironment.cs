@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-namespace DotNetStarter.Abstractions
+﻿namespace DotNetStarter.Abstractions
 {
     /// <summary>
     /// Information about current environment
@@ -20,7 +18,7 @@ namespace DotNetStarter.Abstractions
         /// <summary>
         /// Environment Items
         /// </summary>
-        IDictionary<string, object> Items { get; }
+        IItemCollection Items { get; }
 
         /// <summary>
         /// Determines if environment name is 'Development'

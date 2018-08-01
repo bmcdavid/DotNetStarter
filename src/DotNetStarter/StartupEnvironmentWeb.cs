@@ -8,17 +8,19 @@ namespace DotNetStarter
     public class StartupEnvironmentWeb : StartupEnvironment, IStartupEnvironmentWeb
     {
         /// <summary>
-        /// 
+        /// Constructor
         /// </summary>
         /// <param name="environmentName">Required, for netcore applications, assign values from Microsoft.AspNetCore.Hosting.IHostingEnvironment, for netframework pass a value from appsettings such as'DotNetStarter.Environment'.</param>
         /// <param name="applicationBasePath"></param>
         /// <param name="webRootPath"></param>
         /// <param name="contentRootPath"></param>
-        public StartupEnvironmentWeb(string environmentName, string applicationBasePath = null, string webRootPath = null, string contentRootPath = null) :
+        /// <param name="defaultItemCollection"></param>
+        public StartupEnvironmentWeb(string environmentName, string applicationBasePath = null, string webRootPath = null, string contentRootPath = null, IItemCollection defaultItemCollection = null) :
             base
             (
                 environmentName,
-                applicationBasePath ?? GetBaseDirectory()
+                applicationBasePath ?? GetBaseDirectory(),
+                defaultItemCollection
             )
         {
             WebRootPath = webRootPath ?? GetWebRootPath();

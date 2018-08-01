@@ -29,7 +29,7 @@ namespace Example.Business.Initialization
     /// Episerver initalization module to hook in DotNetStarter into the startup process
     /// </summary>
     [ModuleDependency]
-    public class WireupDotNetStarter : IConfigurableModule, ILocatorRegistryFactory
+    public class WireupDotNetStarter : IConfigurableModule
     {
         private ILocatorRegistry _registry;
         private StartupBuilder _startupBuilder;
@@ -38,7 +38,7 @@ namespace Example.Business.Initialization
         {
             // for Episerver 9/10 use DotNetStarter.Locators.StructuremapSigned package
             // for Episerver 11 use DotNetStarter.Structuremap package
-            _registry = new DotNetStarter.Locators.StructureMapLocator(context.StructureMap());
+            var registryFactory = new DotNetStarter.Locators.StructureMapFactory(context.StructureMap());
             _startupBuilder = StartupBuilder
                 .Create()
                 // create an environment, values are typically Local, Development, Staging or Production
@@ -54,26 +54,16 @@ namespace Example.Business.Initialization
                 .OverrideDefaults(defaults =>
                 {
                     defaults
-                        .UseLocatorRegistryFactory(this)
-                        .UseLogger(new StringLogger(LogLevel.Error, 1024000))
-                        .UseTimedTaskManager(new TimedTaskManager(() => new ApplicationRequestSettingsProvider()));
+                        .UseLocatorRegistryFactory(registryFactory)
+                        .UseLogger(new StringLogger(LogLevel.Error, 1024000));
                 })
                 .Build();
         }
-
-        public ILocatorRegistry CreateRegistry() => _registry;
 
         // run the IStartupModule instances here to avoid any resolving too early in Episerver process
         public void Initialize(InitializationEngine context) => _startupBuilder.Run();
 
         public void Uninitialize(InitializationEngine context) { }
-
-        private class ApplicationRequestSettingsProvider : IRequestSettingsProvider
-        {
-            public IDictionary Items => System.Web.HttpContext.Current.Items;
-
-            public bool IsDebugMode => System.Web.HttpContext.Current.IsDebuggingEnabled;
-        }
     }
 }
 ```

@@ -14,6 +14,7 @@ namespace DotNetStarter.Configure.Expressions
         internal IDependencyFinder DependencyFinder { get; private set; }
         internal IDependencySorter DependencySorter { get; private set; }
         internal IStartupLogger Logger { get; private set; }
+        internal IRegistrationLifecycleModifier RegistrationLifecycleModifier { get; private set; }
         internal ILocatorRegistryFactory RegistryFactory { get; private set; }
         internal Func<IRequestSettingsProvider> RequestSettingsProviderFactory { get; private set; }
         internal Func<IStartupConfiguration,IStartupHandler> StartupHandlerFactory { get; private set; }
@@ -94,6 +95,17 @@ namespace DotNetStarter.Configure.Expressions
         public OverrideExpression UseLogger(IStartupLogger logger)
         {
             Logger = logger ?? throw new ArgumentNullException(nameof(logger));
+            return this;
+        }
+
+        /// <summary>
+        /// Allows ability to customize a registration's lifecycle set in the attribute
+        /// </summary>
+        /// <param name="registrationLifecycleModifier"></param>
+        /// <returns></returns>
+        public OverrideExpression UseRegistrationLifecycleModifier(IRegistrationLifecycleModifier registrationLifecycleModifier)
+        {
+            RegistrationLifecycleModifier = registrationLifecycleModifier ?? throw new ArgumentNullException(nameof(registrationLifecycleModifier));
             return this;
         }
 

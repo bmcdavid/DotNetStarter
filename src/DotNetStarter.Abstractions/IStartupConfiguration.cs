@@ -9,27 +9,27 @@
     public interface IStartupConfiguration
     {
         /// <summary>
-        /// Application References for startup
+        /// Assemblies used for startup process, may not be all application assemblies
         /// </summary>
         IEnumerable<Assembly> Assemblies { get; }
 
         /// <summary>
-        /// Default assembly filter useful for AssemblyScanner
+        /// Assembly filter
         /// </summary>
         IAssemblyFilter AssemblyFilter { get; }
 
         /// <summary>
-        /// Default assembly scanner
+        /// Assembly scanner
         /// </summary>
         IAssemblyScanner AssemblyScanner { get; }
 
         /// <summary>
-        /// Default dependency finder
+        /// Dependency finder
         /// </summary>
         IDependencyFinder DependencyFinder { get; }
 
         /// <summary>
-        /// Default dependency sorter
+        /// Dependency sorter
         /// </summary>
         IDependencySorter DependencySorter { get; }
 
@@ -39,18 +39,23 @@
         IStartupEnvironment Environment { get; }
 
         /// <summary>
-        /// Default startup logger
+        /// Startup logger
         /// </summary>
         IStartupLogger Logger { get; }
 
         /// <summary>
-        /// Default module filter
+        /// Module filter
         /// </summary>
         IStartupModuleFilter ModuleFilter { get; }
 
         /// <summary>
-        /// Default timed task manager
+        /// Timed task manager
         /// </summary>
         ITimedTaskManager TimedTaskManager { get; }
+
+        /// <summary>
+        /// Registration lifecycle modifier
+        /// </summary>
+        IRegistrationLifecycleModifier RegistrationLifecycleModifier { get; }
     }
 }

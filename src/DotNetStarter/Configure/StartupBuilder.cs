@@ -124,7 +124,7 @@ namespace DotNetStarter.Configure
         /// <returns></returns>
         public StartupBuilder OverrideDefaults(Action<OverrideExpression> overrideExpression)
         {
-            _overrideExpression = overrideExpression;
+            _overrideExpression += overrideExpression;
             return this;
         }
 
