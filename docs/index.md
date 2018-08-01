@@ -6,11 +6,11 @@ Master: [![Master Build status](https://ci.appveyor.com/api/projects/status/a907
 
 Current: [![Current Build status](https://ci.appveyor.com/api/projects/status/a907wfniy73sk5de?svg=true)](https://ci.appveyor.com/project/bmcdavid/dotnetstarter)
 
-DotNetStarter is a framework for composing applications where many components are provided by NuGet packages. There are two main audiences: package authors and Application developers.
+DotNetStarter is a framework for composing applications where many components are provided by NuGet packages. The main audiences of DotNetStarter are package authors and application developers.
 
 Package authors can depend on either the [configuration and startup abstractions](https://www.nuget.org/packages/DotNetStarter.Abstractions/) or the [registration attribute abstractions](https://www.nuget.org/packages/DotNetStarter.RegistrationAbstractions/) to create their components. The components can then be designed with constructor dependency injection in mind. These classes can then be registered by using the [RegistrationAttribute](https://bmcdavid.github.io/DotNetStarter/register.html) or in a startup module implementing [ILocatorConfigure](https://bmcdavid.github.io/DotNetStarter/register.html). Packages may also perform tasks during startup and shutdown using the [IStartupModule](https://bmcdavid.github.io/DotNetStarter/modules.html) interface.
 
-Application developers can install the DotNetStarter package, a locator (container wrapper) package, any extension such as MVC for the full ASP.Net framework, and any NuGet packages utilizing the abstractions. Owners have full control over the [startup process](https://bmcdavid.github.io/DotNetStarter/custom-objectfactory.html) which can be customized through code configuration at almost every level using a fluent configuration API. The framework also supports a wide variety of .NET frameworks from ASP.NET version 3.5 and up, as well as the [.NET Standard](https://docs.microsoft.com/en-us/dotnet/standard/net-standard) starting at 1.0.
+Application developers can install the DotNetStarter package, a [locator](https://bmcdavid.github.io/DotNetStarter/custom-locator.html) (container wrapper) package, any extension such as [MVC](https://www.nuget.org/packages/DotNetStarter.Extensions.Mvc/) for the full ASP.Net framework, and any NuGet packages utilizing the abstractions. Owners have full control over the [startup process](https://bmcdavid.github.io/DotNetStarter/custom-objectfactory.html) which can be customized through code configuration at almost every level using a fluent configuration API. The framework also supports a wide variety of .NET frameworks from ASP.NET version 3.5 and up, as well as the [.NET Standard](https://docs.microsoft.com/en-us/dotnet/standard/net-standard) starting at 1.0.
 
 
 Package  | Version 
@@ -33,7 +33,7 @@ Package  | Version
 * [Module creation, discovery, and dependencies](https://bmcdavid.github.io/DotNetStarter/modules.html)
 * [Registering items](https://bmcdavid.github.io/DotNetStarter/register.html)
 * [Assembly Scanning](https://bmcdavid.github.io/DotNetStarter/scanning.html)
-* [Custom Locator](https://bmcdavid.github.io/DotNetStarter/custom-locator.html)
+* [Locators](https://bmcdavid.github.io/DotNetStarter/custom-locator.html)
 * [Scoped Services](https://bmcdavid.github.io/DotNetStarter/scoped-locator.html)
 * [Known Issues](https://bmcdavid.github.io/DotNetStarter/known-issues.html)
 
