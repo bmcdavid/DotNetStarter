@@ -8,13 +8,9 @@
     /// <para>Important: The best practice is to avoid getting services directly from the locator, in favor of constructor injection.
     /// If a new transient is needed in an implementation, inject a Func&lt;T> where T is a registered transient service.</para>
     /// </summary>
+    [CriticalComponent]
     public interface ILocator : IDisposable
     {
-        /// <summary>
-        /// Gets underlying container
-        /// </summary>
-        object InternalContainer { get; }
-
         /// <summary>
         /// Debug information about container
         /// </summary>

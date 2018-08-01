@@ -151,6 +151,11 @@ namespace DotNetStarter.UnitTests
 
         internal class MockFactory : ILocatorRegistryFactory
         {
+            public ILocator CreateLocator()
+            {
+                throw new NotImplementedException();
+            }
+
             public ILocatorRegistry CreateRegistry()
             {
                 throw new NotImplementedException();

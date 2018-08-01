@@ -155,7 +155,7 @@ namespace DotNetStarter.Configure
         {
             var startupConfig = objFactory.CreateStartupConfiguration(assemblies);
             IStartupHandler localStartupHandlerFactory(IStartupConfiguration config) =>
-                new StartupHandler(objFactory.CreateTimedTask, objFactory.CreateRegistry(config), objFactory.CreateContainerDefaults());
+                new StartupHandler(objFactory.CreateTimedTask, objFactory.CreateRegistryFactory(config), objFactory.CreateContainerDefaults());
             _startupHandler = (overrideExpression.StartupHandlerFactory ?? localStartupHandlerFactory).Invoke(startupConfig);
 
             StartupContext = _startupHandler.ConfigureLocator(startupConfig);

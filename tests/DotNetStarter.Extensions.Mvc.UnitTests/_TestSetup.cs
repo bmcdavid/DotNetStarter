@@ -13,7 +13,7 @@ namespace DotNetStarter.Extensions.Mvc.Tests
             {
                 typeof(DotNetStarter.Abstractions.IAssemblyFilter).Assembly,
                 typeof(DotNetStarter.ApplicationContext).Assembly,
-                typeof(DotNetStarter.Locators.DryIocLocator).Assembly,
+                typeof(DotNetStarter.Locators.DryIocLocatorRegistry).Assembly,
                 typeof(DotNetStarter.Web.Startup).Assembly,
                 typeof(DotNetStarter.Extensions.Mvc.StartupMvc).Assembly,
                 typeof(_TestSetup).Assembly

@@ -5,6 +5,7 @@
     /// <summary>
     /// Provides access to container add services to the ILocator
     /// </summary>
+    [CriticalComponent]
     public interface ILocatorRegistry
     {
         /// <summary>
@@ -39,5 +40,15 @@
         /// <param name="key"></param>
         /// <param name="lifecycle"></param>
         void Add<TService, TImpl>(string key = null, Lifecycle lifecycle = Lifecycle.Transient) where TImpl : TService;
+
+        /// <summary>
+        /// Gets underlying container
+        /// </summary>
+        object InternalContainer { get; }
+
+        /// <summary>
+        /// Allows ILocatorRegistry to perform any final tasks after container setup complete is invoked
+        /// </summary>
+        void Verify();
     }
 }

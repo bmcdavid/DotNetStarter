@@ -3,22 +3,20 @@ using DotNetStarter.Abstractions;
 namespace DotNetStarter.UnitTests
 {
     [StartupModule]
-    public class LocatorHacks : IStartupModule
+    public class LocatorHacks : ILocatorConfigure
     {
-        void IStartupModule.Shutdown()
+        public void Configure(ILocatorRegistry registry, IStartupEngineConfigurationArgs configArgs)
         {
-        }
-
-        void IStartupModule.Startup(IStartupEngine engine)
-        {
-#if LIGHTINJECT_LOCATOR
-            if (engine.Locator.InternalContainer is LightInject.IServiceContainer lightInjectContainer)
+            configArgs.OnStartupComplete += () =>
             {
-                // hack: needed for injecting func params
-                lightInjectContainer.RegisterConstructorDependency((factory, info, runtimeArgs) => (IInjectable)(runtimeArgs[0]));
-            }
-
+#if LIGHTINJECT_LOCATOR
+                if (registry.InternalContainer is LightInject.IServiceContainer lightInjectContainer)
+                {
+                    // hack: needed for injecting func params
+                    lightInjectContainer.RegisterConstructorDependency((factory, info, runtimeArgs) => (IInjectable)(runtimeArgs[0]));
+                }
 #endif
+            };
         }
     }
 }

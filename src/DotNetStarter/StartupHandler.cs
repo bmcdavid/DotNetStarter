@@ -1,6 +1,5 @@
 ﻿using DotNetStarter.Abstractions;
 using DotNetStarter.Abstractions.Internal;
-using DotNetStarter.Internal;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,7 +14,7 @@ namespace DotNetStarter
         private static readonly string _timerNameBase = typeof(StartupHandler).FullName;
         private readonly bool _enableDelayedStartupModules = false;
         private readonly ILocatorDefaultRegistrations _locatorDefaultRegistrations;
-        private readonly ILocatorRegistry _locatorRegistry;
+        private readonly ILocatorRegistryFactory _locatorRegistryFactory;
         private readonly Func<ITimedTask> _timedTaskFactory;
         private Action _delayedStart;
 
@@ -23,13 +22,13 @@ namespace DotNetStarter
         /// Constructor
         /// </summary>
         /// <param name="timedTaskFactory"></param>
-        /// <param name="locatorRegistry"></param>
+        /// <param name="locatorRegistryFactory"></param>
         /// <param name="locatorDefaultRegistrations"></param>
         /// <param name="enableDelayedStartupModules">If true, doesn't run IStartupModules until IStartupHandler.StartupModules is invoked, default is true</param>
-        public StartupHandler(Func<ITimedTask> timedTaskFactory, ILocatorRegistry locatorRegistry, ILocatorDefaultRegistrations locatorDefaultRegistrations, bool enableDelayedStartupModules = true)
+        public StartupHandler(Func<ITimedTask> timedTaskFactory, ILocatorRegistryFactory locatorRegistryFactory, ILocatorDefaultRegistrations locatorDefaultRegistrations, bool enableDelayedStartupModules = true)
         {
             _timedTaskFactory = timedTaskFactory;
-            _locatorRegistry = locatorRegistry;
+            _locatorRegistryFactory = locatorRegistryFactory;
             _locatorDefaultRegistrations = locatorDefaultRegistrations;
             _enableDelayedStartupModules = enableDelayedStartupModules;
         }
@@ -43,9 +42,10 @@ namespace DotNetStarter
         {
             var configurationArgs = new StartupEngineConfigurationArgs(config);
             IStartupContext startupContext = null;
-            ReadOnlyLocator readOnlyLocator = null;
             ICollection<IDependencyNode> sortedModules = null;
             ICollection<IDependencyNode> filteredModules = null;
+            var locatorRegistry = _locatorRegistryFactory?.CreateRegistry();
+            ILocator locator = null;
 
             // scan the assemblies for registered types for quick retrieval
             var scanSetup = _timedTaskFactory.Invoke();
@@ -83,20 +83,20 @@ namespace DotNetStarter
             containerSetup.Name = _timerNameBase + ".ContainerSetup";
             containerSetup.TimedAction = () =>
             {
-                if (_locatorRegistry == null) { throw new NullLocatorException(); }
-                _locatorDefaultRegistrations.Configure(_locatorRegistry, filteredModules, config);
-                var locatorRegistries = (_locatorRegistry as ILocatorResolveConfigureModules)?.ResolveConfigureModules(filteredModules, config) ?? (_locatorRegistry as ILocator).GetAll<ILocatorConfigure>();
+                if (locatorRegistry == null) { throw new NullLocatorException(); }
+                _locatorDefaultRegistrations.Configure(locatorRegistry, filteredModules, config);
+                locator = _locatorRegistryFactory.CreateLocator();
+                var locatorRegistries = (locatorRegistry as ILocatorResolveConfigureModules)?.ResolveConfigureModules(filteredModules, config) ?? locator.GetAll<ILocatorConfigure>();
 
-                ConfigureRegistry(_locatorRegistry, locatorRegistries, configurationArgs);
+                ConfigureRegistry(locatorRegistry, locatorRegistries, configurationArgs);
 
-                readOnlyLocator = ReadOnlyLocator.CreateReadOnlyLocator(_locatorRegistry as ILocator);
-                _locatorRegistry.Add(typeof(ILocator), readOnlyLocator);
-                startupContext = CreateStartupContext(readOnlyLocator, filteredModules, sortedModules, config);
-                _locatorRegistry.Add(typeof(IStartupContext), startupContext);
+                locatorRegistry.Add(typeof(ILocator), locator);
+                startupContext = CreateStartupContext(locator, filteredModules, sortedModules, config);
+                locatorRegistry.Add(typeof(IStartupContext), startupContext);
 
-                ImportHelper.OnEnsureLocator += (() => readOnlyLocator); // configure import<T> locator
+                ImportHelper.OnEnsureLocator += (() => locator); // configure import<T> locator
                 configurationArgs.RaiseLocatorSetupComplete();
-                (_locatorRegistry as ILocatorVerification)?.Verify();
+                locatorRegistry.Verify();
             };
 
             // startup modules
@@ -104,7 +104,7 @@ namespace DotNetStarter
             startupModulesTask.Name = _timerNameBase + ".StartupModules";
             startupModulesTask.TimedAction = () =>
             {
-                var startupEngine = new StartupEngine(readOnlyLocator, configurationArgs);
+                var startupEngine = new StartupEngine(locator, configurationArgs);
                 var modules = startupEngine.Locator.GetAll<IStartupModule>(); // resolve all startup modules for DI
                 ExecuteStartupModules(modules, startupEngine);
                 startupEngine.RaiseStartupComplete();
@@ -154,14 +154,14 @@ namespace DotNetStarter
         /// <summary>
         /// Creates default startup context
         /// </summary>
-        /// <param name="readOnlyLocator"></param>
+        /// <param name="locator"></param>
         /// <param name="filteredModules"></param>
         /// <param name="sortedModules"></param>
         /// <param name="config"></param>
         /// <returns></returns>
-        protected virtual IStartupContext CreateStartupContext(ReadOnlyLocator readOnlyLocator, IEnumerable<IDependencyNode> filteredModules, IEnumerable<IDependencyNode> sortedModules, IStartupConfiguration config)
+        protected virtual IStartupContext CreateStartupContext(ILocator locator, IEnumerable<IDependencyNode> filteredModules, IEnumerable<IDependencyNode> sortedModules, IStartupConfiguration config)
         {
-            return new StartupContext(readOnlyLocator, sortedModules, filteredModules, config);
+            return new StartupContext(locator, sortedModules, filteredModules, config);
         }
 
         /// <summary>

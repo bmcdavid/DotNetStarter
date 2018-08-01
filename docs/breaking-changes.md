@@ -9,6 +9,9 @@ This page is used to note each versions breaking changes and list future breakin
 * Changed ILocatorConfigure.Configure signature to take a new ILocatorEngineConfigurationArgs instead of ILocatorEngine to prevent access to ILocator before configuration is complete
 * Removed IStartupEngine.OnLocatorStartupComplete
 * Removed IStartupObjectFactory
+* Removed ILocatorVerification
+* Added ILocatoryRegistry.CreateLocator
+* Removed IReadonlyLocator
 * Merged IlocatorDefaultRegistrationsWithCollections into IlocatorDefaultRegistrations.
 * Removed DotNetStarter.ApplicationContext.Startup methods
 * Removed IStartupConfigurationWithEnvironment

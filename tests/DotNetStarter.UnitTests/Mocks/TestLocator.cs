@@ -6,25 +6,20 @@ using DotNetStarter.Internal;
 
 namespace DotNetStarter.UnitTests.Mocks
 {
-    internal class TestLocatorFactory : ILocatorRegistryFactory
-    {
-        public ILocatorRegistry CreateRegistry() => new Mocks.TestLocator();
-    }
-
     /// <summary>
     /// simple locator that only cares about startup modules
     /// </summary>
     internal class TestLocator : ILocatorRegistry, ILocator
     {
-        private List<Type> modules = new List<Type>();
-
         private readonly Dictionary<Type, object> instances = new Dictionary<Type, object>();
 
         private IEnumerable<Type> allowedTypes = new Type[] { typeof(IStartupModule), typeof(ILocatorConfigure), typeof(IReflectionHelper) };
 
-        public object InternalContainer => null;
+        private List<Type> modules = new List<Type>();
 
         public string DebugInfo => null;
+
+        public object InternalContainer => null;
 
         public void Add(Type serviceType, Type serviceImplementation, string key = null, Lifecycle lifeTime = Lifecycle.Transient)
         {
@@ -117,5 +112,20 @@ namespace DotNetStarter.UnitTests.Mocks
         {
 
         }
+
+        public void Verify() { }
+    }
+
+    internal class TestLocatorFactory : ILocatorRegistryFactory
+    {
+        private readonly TestLocator _locator;
+        public TestLocatorFactory()
+        {
+            _locator = new TestLocator();
+        }
+
+        public ILocator CreateLocator() => _locator;
+
+        public ILocatorRegistry CreateRegistry() => _locator;
     }
 }

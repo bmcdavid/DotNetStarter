@@ -31,11 +31,6 @@ namespace DotNetStarter.Locators
         private readonly Scope _Scope;
 
         /// <summary>
-        /// Denied Access to container
-        /// </summary>
-        public object InternalContainer => throw new LocatorLockedException();
-
-        /// <summary>
         /// Debug Info
         /// </summary>
         public string DebugInfo { get; } = "not supported";

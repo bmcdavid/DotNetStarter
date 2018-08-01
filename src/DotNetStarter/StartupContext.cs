@@ -18,7 +18,7 @@
         /// <param name="allModules"></param>
         /// <param name="filteredModules"></param>
         /// <param name="startupConfiguration"></param>
-        public StartupContext(IReadOnlyLocator locator, IEnumerable<IDependencyNode> allModules, IEnumerable<IDependencyNode> filteredModules, IStartupConfiguration startupConfiguration)
+        public StartupContext(ILocator locator, IEnumerable<IDependencyNode> allModules, IEnumerable<IDependencyNode> filteredModules, IStartupConfiguration startupConfiguration)
         {
             Locator = locator;
             AllModuleTypes = allModules;
@@ -44,7 +44,7 @@
         /// <summary>
         /// Service locator
         /// </summary>
-        public IReadOnlyLocator Locator { get; }
+        public ILocator Locator { get; }
 
         /// <summary>
         /// Gets the types that registerd locator items

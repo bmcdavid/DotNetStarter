@@ -30,11 +30,6 @@
         public string DebugInfo => "not supported";
 
         /// <summary>
-        /// Denies access to base container
-        /// </summary>
-        public object InternalContainer => throw new LocatorLockedException();
-
-        /// <summary>
         /// Parent scope or null
         /// </summary>
         public ILocatorScoped Parent { get; }

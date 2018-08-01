@@ -6,12 +6,13 @@
     /// <summary>
     /// startup Context
     /// </summary>
+    [CriticalComponent]
     public interface IStartupContext
     {
         /// <summary>
         /// Service Locator
         /// </summary>
-        IReadOnlyLocator Locator { get; }
+        ILocator Locator { get; }
 
         /// <summary>
         /// Modules to be executed

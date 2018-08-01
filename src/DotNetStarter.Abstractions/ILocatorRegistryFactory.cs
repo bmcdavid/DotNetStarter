@@ -10,5 +10,11 @@
         /// </summary>
         /// <returns></returns>
         ILocatorRegistry CreateRegistry();
+
+        /// <summary>
+        /// Creates an ILocator
+        /// </summary>
+        /// <returns></returns>
+        ILocator CreateLocator();
     }
 }

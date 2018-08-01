@@ -1,156 +1,111 @@
 ﻿namespace DotNetStarter.Locators
 {
     using DotNetStarter.Abstractions;
-    using DotNetStarter.Abstractions.Internal;
     using DryIoc;
     using System;
+    using System.Collections.Generic;
     using System.Linq;
 
     /// <summary>
-    /// Creates a locator based on DryIoc.dll
+    /// DryIoc locator
     /// </summary>
-    public class DryIocLocator : DryIocLocatorBase, ILocatorRegistry, ILocatorRegistryWithContains, ILocatorRegistryWithRemove
+    public class DryIocLocator : ILocator, ILocatorCreateScope, ILocatorWithPropertyInjection
     {
-        private readonly bool _withResolvedArguments;
+        /// <summary>
+        /// Raw container reference
+        /// </summary>
+        protected IContainer _container;
 
         /// <summary>
         /// Constructor
         /// </summary>
-        public DryIocLocator(IContainer container = null) : base(container)
+        public DryIocLocator(IContainer container)
         {
-            _withResolvedArguments = container?.Rules?.FactoryMethod == FactoryMethod.ConstructorWithResolvableArguments;
+            _container = container;
         }
 
         /// <summary>
-        /// Adds service type to container, given its implementation type.
+        /// Provides debug information about the container
         /// </summary>
-        /// <param name="serviceType"></param>
-        /// <param name="serviceImplementation"></param>
-        /// <param name="key"></param>
-        /// <param name="lifetime"></param>
-        public virtual void Add(Type serviceType, Type serviceImplementation, string key = null, Lifecycle lifetime = Lifecycle.Transient)
+        public string DebugInfo => _container?.GetServiceRegistrations()?.Select(x => x.ToString()).
+            Aggregate((current, next) => current + Environment.NewLine + next);
+
+
+        /// <summary>
+        /// Builds up properties of given object, useful in webforms.
+        /// </summary>
+        /// <param name="target"></param>
+        /// <returns></returns>
+        public virtual bool BuildUp(object target)
         {
-            RegisterSimple(_Container, serviceType, serviceImplementation, _withResolvedArguments, ConvertLifeTime(lifetime), key);
+            try
+            {
+                _container.InjectPropertiesAndFields(target); // v2.x
+
+                return true;
+            }
+            catch (Exception e)
+            {
+                if (e is ContainerException ce)
+                    throw new StartupContainerException(ce.Error, ce.Message, ce.InnerException);
+
+                throw new StartupContainerException(-100, e.Message, e.InnerException);
+            }
         }
 
         /// <summary>
-        /// Adds service type to container, given its implementation type via generics.
+        /// Dispose
+        /// </summary>
+        public virtual void Dispose()
+        {
+            _container.Dispose();
+        }
+
+        /// <summary>
+        /// Gets service instance given type and optional key
+        /// </summary>
+        /// <param name="service"></param>
+        /// <param name="key"></param>
+        /// <returns></returns>
+        public virtual object Get(Type service, string key = null) => _container.Resolve(service, key, IfUnresolved.Throw);
+
+        /// <summary>
+        /// Gets service instance given type and optional key for generics
         /// </summary>
         /// <typeparam name="TService"></typeparam>
-        /// <typeparam name="TImpl"></typeparam>
         /// <param name="key"></param>
-        /// <param name="lifetime"></param>
-        public virtual void Add<TService, TImpl>(string key = null, Lifecycle lifetime = Lifecycle.Transient)
-            where TImpl : TService
-        {
-            RegisterSimple<TService, TImpl>(_Container, _withResolvedArguments, ConvertLifeTime(lifetime), key);
-        }
+        /// <returns></returns>
+        public virtual TService Get<TService>(string key = null) => (TService)Get(typeof(TService), key);
 
         /// <summary>
-        /// Addes service type to container given a factory to create the type.
-        /// </summary>
-        /// <param name="serviceType"></param>
-        /// <param name="implementationFactory"></param>
-        /// <param name="lifeTime"></param>
-        public virtual void Add(Type serviceType, Func<ILocator, object> implementationFactory, Lifecycle lifeTime)
-        {
-            _Container.RegisterDelegate(serviceType, r => implementationFactory(r.Resolve<ILocatorAmbient>().Current), ConvertLifeTime(lifeTime));
-        }
-
-        /// <summary>
-        /// Adds service type via object instance, which is set to a singleton lifetime
-        /// </summary>
-        /// <param name="serviceType"></param>
-        /// <param name="serviceInstance"></param>
-        public void Add(Type serviceType, object serviceInstance)
-        {
-            _Container.RegisterDelegate(serviceType, resolver => serviceInstance, ConvertLifeTime(Lifecycle.Singleton));
-        }
-
-        /// <summary>
-        /// Determines if container has service
+        /// Gets all registered services. Key is optional.
         /// </summary>
         /// <param name="serviceType"></param>
         /// <param name="key"></param>
         /// <returns></returns>
-        public virtual bool ContainsService(Type serviceType, string key = null) => _Container.IsRegistered(serviceType, key);
+        public virtual IEnumerable<object> GetAll(Type serviceType, string key = null) =>
+                    _container.ResolveMany(serviceType, serviceKey: key); //_Container.Resolve(typeof(IEnumerable<>).MakeGenericType(serviceType), IfUnresolved.ReturnDefault) as IEnumerable<object>;
 
         /// <summary>
-        /// Removes a service, note: not all containers support this.
+        /// Gets all registered services for generics.
         /// </summary>
-        /// <param name="serviceType"></param>
+        /// <typeparam name="TService"></typeparam>
         /// <param name="key"></param>
-        /// <param name="serviceImplementation"></param>
-        public virtual void Remove(Type serviceType, string key = null, Type serviceImplementation = null)
+        /// <returns></returns>
+        public virtual IEnumerable<TService> GetAll<TService>(string key = null) =>
+                    _container.ResolveMany<TService>(serviceKey: key);
+
+        /// <summary>
+        /// Creates/opens locator scope
+        /// </summary>
+        /// <returns></returns>
+        public virtual ILocatorScoped CreateScope()
         {
-            if (serviceImplementation == null)
-            {
-                _Container.Unregister(serviceType, key, FactoryType.Service, (f) => true);
-            }
-            else
-            {
-                _Container.Unregister(serviceType, key, FactoryType.Service, (f) => f.ImplementationType == serviceType);
-            }
-        }
-
-        private static IReuse ConvertLifeTime(Lifecycle lifetime)
-        {
-            switch (lifetime)
-            {
-                case Lifecycle.Singleton:
-                    return Reuse.Singleton;
-                case Lifecycle.Transient:
-                    return Reuse.Transient;
-                // scoping via the container isn't supported in the locator by default, it takes an unwrapped container to utilize this via cast of IContainer as IContainerRegistry
-                case Lifecycle.Scoped:
-                    return Reuse.ScopedOrSingleton;
-            }
-
-            return Reuse.Transient;
-        }
-
-        private static Made GetConstructorFor(IContainer register, Type implementationType)
-        {
-            var allConstructors = implementationType.Constructors()
-                .Where(x => x.IsConstructor && x.IsPublic)
-                .OrderByDescending(x => x.GetParameters().Count());
-
-            return Made.Of(allConstructors.FirstOrDefault());
-        }
-
-        private static void RegisterSimple<TInterface, TImplementation>(IContainer register, bool withResolvedArguments, IReuse reuse = null, string key = null)
-            where TImplementation : TInterface
-        {
-            register.Register<TInterface, TImplementation>(reuse: reuse,
-                made: withResolvedArguments ? null : GetConstructorFor(register, typeof(TImplementation)),
-                serviceKey: key);
-        }
-
-        private static void RegisterSimple(IContainer register, Type service, Type implementation, bool withResolvedArguments, IReuse reuse = null, string key = null)
-        {
-            if (!service.IsAssignableFromCheck(implementation))
-            {
-                if (!service.IsGenericType())
-                {
-                    ThrowRegisterException(service, implementation);
-                }
-                else
-                {
-                    if (!implementation.IsGenericInterface(service))
-                    {
-                        ThrowRegisterException(service, implementation);
-                    }
-                }
-            }
-
-            register.Register(service, implementation, reuse: reuse, made: withResolvedArguments ? null : GetConstructorFor(register, implementation), serviceKey: key);
-        }
-
-        private static void ThrowRegisterException(Type service, Type implementation)
-        {
-            var ex = new ArgumentException($"{implementation.FullName} cannot be converted to {service.FullName}!");
-
-            throw ex;
+            return new DryIocLocatorScoped(
+                _container
+                .OpenScope(),
+                this
+            );
         }
     }
 }

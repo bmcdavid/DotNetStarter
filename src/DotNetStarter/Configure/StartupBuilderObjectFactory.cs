@@ -57,10 +57,10 @@ namespace DotNetStarter.Configure
             return new StartupBuilderModuleFilter(StartupModulesExpression.RemoveModuleTypes);
         }
 
-        public ILocatorRegistry CreateRegistry(IStartupConfiguration config)
+        public ILocatorRegistryFactory CreateRegistryFactory(IStartupConfiguration config)
         {
-            return OverrideExpression.RegistryFactory?.CreateRegistry() ??
-                GetAssemblyFactory<LocatorRegistryFactoryAttribute, ILocatorRegistryFactory>(config)?.CreateRegistry();
+            return OverrideExpression.RegistryFactory ??
+                GetAssemblyFactory<LocatorRegistryFactoryAttribute, ILocatorRegistryFactory>(config);
         }
 
         public IRequestSettingsProvider CreateRequestSettingsProvider()
@@ -76,7 +76,7 @@ namespace DotNetStarter.Configure
             return config;
         }
 
-        public IStartupContext CreateStartupContext(IReadOnlyLocator locator, IEnumerable<IDependencyNode> filteredModules, IEnumerable<IDependencyNode> allModules,
+        public IStartupContext CreateStartupContext(ILocator locator, IEnumerable<IDependencyNode> filteredModules, IEnumerable<IDependencyNode> allModules,
             IStartupConfiguration startupConfiguration)
         {
             return new StartupContext(locator, allModules, filteredModules, startupConfiguration);
