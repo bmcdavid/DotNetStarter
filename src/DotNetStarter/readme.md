@@ -89,7 +89,7 @@ An IoC/DI package must be installed to enable the ILocator. There are several pr
 * [DotNetStarter.LightInject](https://www.nuget.org/packages/DotNetStarter.Locators.LightInject/)
 * [DotNetStarter.Structuremap](https://www.nuget.org/packages/DotNetStarter.StructureMap/)
 
-They can also be swapped at runtime by the application owner by overriding the default:
+They can also be swapped at compile time by the application owner by overriding the default:
 
 ```cs
 DotNetStarter.Configure.StartupBuilder.Create()
@@ -98,7 +98,7 @@ DotNetStarter.Configure.StartupBuilder.Create()
     .Build()
     .Run();
 ```
-If the default isn't overridden a locator is discovered in the configured assemblies by an assembly attribute as noted below for DryIoc.
+If the default isn't overridden a locator is discovered at runtime in the configured assemblies by an assembly attribute as noted below for DryIoc.
 ```cs
 [assembly: DotNetStarter.Abstractions.LocatorRegistryFactory(typeof(DotNetStarter.DryIocLocatorFactory))]
 ```
