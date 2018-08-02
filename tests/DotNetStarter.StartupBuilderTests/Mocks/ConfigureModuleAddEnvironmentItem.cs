@@ -5,7 +5,7 @@ namespace DotNetStarter.StartupBuilderTests.Mocks
 {
     public class ConfigureModuleAddEnvironmentItem : ILocatorConfigure
     {
-        public void Configure(ILocatorRegistry registry, IStartupEngineConfigurationArgs configArgs)
+        public void Configure(ILocatorRegistry registry, ILocatorConfigureEngine configArgs)
         {
             configArgs.Configuration.Environment.Items.Set<StringBuilder>(new StringBuilder());
             configArgs.Configuration.Environment.Items.Get<StringBuilder>().AppendLine("Configured Item!");

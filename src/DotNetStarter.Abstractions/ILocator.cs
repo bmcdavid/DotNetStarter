@@ -12,11 +12,6 @@
     public interface ILocator : IDisposable
     {
         /// <summary>
-        /// Debug information about container
-        /// </summary>
-        string DebugInfo { get; }
-
-        /// <summary>
         /// Gets item from container
         /// <para>Important: Throwing exceptions instead of returning null when a type cannot resolve in the container is strongly encouraged. </para>
         /// </summary>

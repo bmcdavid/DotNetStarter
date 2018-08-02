@@ -13,6 +13,7 @@
     {
         private readonly IContainer _container;
         private readonly bool _withResolvedArguments;
+
         /// <summary>
         /// Constructor
         /// </summary>
@@ -21,7 +22,6 @@
             _container = container;
             _withResolvedArguments = container?.Rules?.FactoryMethod == FactoryMethod.ConstructorWithResolvableArguments;
         }
-
 
         /// <summary>
         /// Allows access to wrapped container
@@ -54,7 +54,7 @@
         }
 
         /// <summary>
-        /// Addes service type to container given a factory to create the type.
+        /// Adds service type to container given a factory to create the type.
         /// </summary>
         /// <param name="serviceType"></param>
         /// <param name="implementationFactory"></param>
@@ -99,12 +99,7 @@
                 _container.Unregister(serviceType, key, FactoryType.Service, (f) => f.ImplementationType == serviceType);
             }
         }
-
-        /// <summary>
-        /// Verify
-        /// </summary>
-        public void Verify() { }
-
+        
         private static IReuse ConvertLifeTime(Lifecycle lifetime)
         {
             switch (lifetime)

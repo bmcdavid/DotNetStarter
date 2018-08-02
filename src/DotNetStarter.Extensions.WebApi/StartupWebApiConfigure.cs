@@ -17,7 +17,7 @@ namespace DotNetStarter.Extensions.WebApi
         /// </summary>
         public static Func<IApiControllerRegistrationSetup> GetApiControllerRegistrationSetup;
 
-        void ILocatorConfigure.Configure(ILocatorRegistry registry, IStartupEngineConfigurationArgs engine)
+        void ILocatorConfigure.Configure(ILocatorRegistry registry, ILocatorConfigureEngine engine)
         {
             engine.OnLocatorStartupComplete += () =>
             {

@@ -1,33 +1,29 @@
-﻿namespace DotNetStarter.Locators
-{
-    using System;
-    using System.Collections.Generic;
-    using DotNetStarter.Abstractions;
-    using DryIoc;
+﻿using DotNetStarter.Abstractions;
+using Grace.DependencyInjection;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 
+namespace DotNetStarter.Locators
+{
     /// <summary>
-    /// Scoped DryIoc locator
+    /// Scoped Grace Locator
     /// </summary>
-    public sealed class DryIocLocatorScoped : ILocatorScoped, ILocatorWithCreateScope
+    public class GraceScopedLocator : ILocatorScoped, ILocatorWithCreateScope
     {
-        private readonly IResolverContext _resolveContext;        
+        private readonly IExportLocatorScope _exportLocatorScope;
         private Action _onDispose;
 
         /// <summary>
         /// Constructor
         /// </summary>
-        /// <param name="context"></param>
+        /// <param name="exportLocatorScope"></param>
         /// <param name="locator"></param>
-        public DryIocLocatorScoped(IResolverContext context, ILocator locator)
+        public GraceScopedLocator(IExportLocatorScope exportLocatorScope, ILocator locator)
         {
-            _resolveContext = context;
+            _exportLocatorScope = exportLocatorScope;
             Parent = locator as ILocatorScoped;
         }
-
-        /// <summary>
-        /// Not Supported debug info
-        /// </summary>
-        public string DebugInfo => "not supported";
 
         /// <summary>
         /// Parent scope or null
@@ -38,15 +34,15 @@
         /// Creates a child scope
         /// </summary>
         /// <returns></returns>
-        public ILocatorScoped CreateScope() => new DryIocLocatorScoped(_resolveContext.OpenScope(), this);
+        public ILocatorScoped CreateScope() => new GraceScopedLocator(_exportLocatorScope.BeginLifetimeScope(), this);
 
         /// <summary>
-        /// Disposes scoped container
+        /// Dispose child container
         /// </summary>
         public void Dispose()
         {
             _onDispose?.Invoke();
-            _resolveContext.Dispose();
+            _exportLocatorScope.Dispose();
         }
 
         /// <summary>
@@ -54,8 +50,7 @@
         /// </summary>
         /// <param name="serviceType"></param>
         /// <param name="key"></param>
-        /// <returns></returns>
-        public object Get(Type serviceType, string key = null) => _resolveContext.Resolve(serviceType);
+        public object Get(Type serviceType, string key = null) => _exportLocatorScope.Locate(serviceType);
 
         /// <summary>
         /// Gets a scoped instance T
@@ -63,7 +58,7 @@
         /// <typeparam name="T"></typeparam>
         /// <param name="key"></param>
         /// <returns></returns>
-        public T Get<T>(string key = null) => _resolveContext.Resolve<T>();
+        public T Get<T>(string key = null) => _exportLocatorScope.Locate<T>();
 
         /// <summary>
         /// Gets all scoped T instances
@@ -71,7 +66,7 @@
         /// <typeparam name="T"></typeparam>
         /// <param name="key"></param>
         /// <returns></returns>
-        public IEnumerable<T> GetAll<T>(string key = null) => _resolveContext.ResolveMany<T>();
+        public IEnumerable<T> GetAll<T>(string key = null) => _exportLocatorScope.LocateAll<T>();
 
         /// <summary>
         /// Gets all scoped instances
@@ -79,7 +74,7 @@
         /// <param name="serviceType"></param>
         /// <param name="key"></param>
         /// <returns></returns>
-        public IEnumerable<object> GetAll(Type serviceType, string key = null) => _resolveContext.ResolveMany(serviceType);
+        public IEnumerable<object> GetAll(Type serviceType, string key = null) => _exportLocatorScope.LocateAll(serviceType);
 
         /// <summary>
         /// Action to perform on disposing

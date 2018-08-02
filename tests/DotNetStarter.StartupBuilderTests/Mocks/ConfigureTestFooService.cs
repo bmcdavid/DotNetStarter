@@ -5,7 +5,7 @@ namespace DotNetStarter.StartupBuilderTests.Mocks
     [StartupModule]
     public class ConfigureTestFooService : ILocatorConfigure
     {
-        public void Configure(ILocatorRegistry registry, IStartupEngineConfigurationArgs engine)
+        public void Configure(ILocatorRegistry registry, ILocatorConfigureEngine engine)
         {
             registry.Add<TestFoo, TestFoo>();
         }

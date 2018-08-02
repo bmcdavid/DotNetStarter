@@ -8,6 +8,7 @@
     /// when used it should be public to disclose the dependency to consumers.</para>
     /// </summary>
     /// <typeparam name="TService"></typeparam>
+    [CriticalComponent]
     public struct Import<TService> where TService : class
     {
         /// <summary>

@@ -72,7 +72,7 @@ namespace DotNetStarter.UnitTests
             var l = locator ?? _Context.Service.Locator;
 
             // hack: LightInject cannot resolve scoped objects when no scope is open
-            return (l as ILocatorCreateScope).CreateScope();
+            return (l as ILocatorWithCreateScope).CreateScope();
         }
 
         [TestMethod]

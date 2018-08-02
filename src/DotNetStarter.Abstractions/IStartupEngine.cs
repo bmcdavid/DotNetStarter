@@ -5,6 +5,7 @@ namespace DotNetStarter.Abstractions
     /// <summary>
     /// Contains event for startup complete, ILocator for resolving, and IStartupConfiguration
     /// </summary>
+    [CriticalComponent]
     public interface IStartupEngine
     {
         /// <summary>

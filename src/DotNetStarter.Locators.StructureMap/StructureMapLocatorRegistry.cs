@@ -112,10 +112,6 @@
             }
         }
 
-        /// <summary>
-        /// Verify
-        /// </summary>
-        public void Verify() { }
         private ILifecycle ConvertLifeTime(Lifecycle lifetime)
         {
             switch (lifetime)

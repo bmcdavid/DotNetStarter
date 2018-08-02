@@ -9,7 +9,7 @@
     /// <summary>
     /// DryIoc locator
     /// </summary>
-    public class DryIocLocator : ILocator, ILocatorCreateScope, ILocatorWithPropertyInjection
+    public class DryIocLocator : ILocator, ILocatorWithCreateScope, ILocatorWithPropertyInjection
     {
         /// <summary>
         /// Raw container reference
@@ -29,7 +29,6 @@
         /// </summary>
         public string DebugInfo => _container?.GetServiceRegistrations()?.Select(x => x.ToString()).
             Aggregate((current, next) => current + Environment.NewLine + next);
-
 
         /// <summary>
         /// Builds up properties of given object, useful in webforms.
@@ -51,6 +50,19 @@
 
                 throw new StartupContainerException(-100, e.Message, e.InnerException);
             }
+        }
+
+        /// <summary>
+        /// Creates/opens locator scope
+        /// </summary>
+        /// <returns></returns>
+        public virtual ILocatorScoped CreateScope()
+        {
+            return new DryIocLocatorScoped(
+                _container
+                .OpenScope(),
+                this
+            );
         }
 
         /// <summary>
@@ -94,18 +106,5 @@
         /// <returns></returns>
         public virtual IEnumerable<TService> GetAll<TService>(string key = null) =>
                     _container.ResolveMany<TService>(serviceKey: key);
-
-        /// <summary>
-        /// Creates/opens locator scope
-        /// </summary>
-        /// <returns></returns>
-        public virtual ILocatorScoped CreateScope()
-        {
-            return new DryIocLocatorScoped(
-                _container
-                .OpenScope(),
-                this
-            );
-        }
     }
 }

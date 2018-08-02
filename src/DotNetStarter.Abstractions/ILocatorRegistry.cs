@@ -45,10 +45,5 @@
         /// Gets underlying container
         /// </summary>
         object InternalContainer { get; }
-
-        /// <summary>
-        /// Allows ILocatorRegistry to perform any final tasks after container setup complete is invoked
-        /// </summary>
-        void Verify();
     }
 }

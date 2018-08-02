@@ -6,7 +6,7 @@
     /// <summary>
     /// Default Startup Configuration Engine
     /// </summary>
-    public class StartupEngineConfigurationArgs : IStartupEngineConfigurationArgs
+    public class StartupEngineConfigurationArgs : ILocatorConfigureEngine
     {
         /// <summary>
         /// Constructor

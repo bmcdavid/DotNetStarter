@@ -7,7 +7,7 @@ namespace DotNetStarter.Abstractions
     /// <para>Strongly avoid removing or changing method signatures, properties, etc</para>
     /// <para>Add with extreme caution to avoid breaking changes.</para>
     /// </summary>
-    [AttributeUsage(AttributeTargets.Interface|AttributeTargets.Class)]
+    [AttributeUsage(AttributeTargets.Interface | AttributeTargets.Class | AttributeTargets.Struct, AllowMultiple = false)]
     public class CriticalComponentAttribute : Attribute
     {
     }

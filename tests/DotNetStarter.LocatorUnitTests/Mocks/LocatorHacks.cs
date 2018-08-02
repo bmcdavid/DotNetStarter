@@ -5,7 +5,7 @@ namespace DotNetStarter.UnitTests
     [StartupModule]
     public class LocatorHacks : ILocatorConfigure
     {
-        public void Configure(ILocatorRegistry registry, IStartupEngineConfigurationArgs configArgs)
+        public void Configure(ILocatorRegistry registry, ILocatorConfigureEngine configArgs)
         {
             configArgs.OnStartupComplete += () =>
             {

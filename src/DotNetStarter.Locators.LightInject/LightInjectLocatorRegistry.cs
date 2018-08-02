@@ -9,7 +9,7 @@ namespace DotNetStarter.Locators
     /// <summary>
     /// LightInject Registry
     /// </summary>
-    public class LightInjectLocatorRegistry : ILocatorRegistry, ILocatorRegistryWithContains, ILocatorResolveConfigureModules, ILocatorRegistryWithRemove
+    public class LightInjectLocatorRegistry : ILocatorRegistry, ILocatorRegistryWithContains, ILocatorResolveConfigureModules, ILocatorRegistryWithRemove, ILocatorRegistryWithVerification
     {
         private IServiceContainer _container;
         private ContainerRegistrationCollection _registrations;
@@ -160,7 +160,6 @@ namespace DotNetStarter.Locators
                     }
                     else if (registration.ServiceFactory != null)
                     {
-                        //todo: fixfallback
                         _container.RegisterFallback((type, key) => type == registration.ServiceType, r => registration.ServiceFactory.Invoke(_container.GetInstance<ILocatorAmbient>().Current), ConvertLifetime(registration.Lifecycle));
                     }
                     else

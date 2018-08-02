@@ -10,7 +10,7 @@ namespace DotNetStarter.Locators
     /// <summary>
     /// Default LightInject ILocatoryRegistry
     /// </summary>
-    public class LightInjectLocator :  ILocator, ILocatorCreateScope
+    public class LightInjectLocator :  ILocator, ILocatorWithCreateScope
     {
         private IServiceContainer _container;
         private ContainerRegistrationCollection _registrations;
@@ -26,12 +26,6 @@ namespace DotNetStarter.Locators
             _registrations = containerRegistrations;
         }
 
-        /// <summary>
-        /// DebugInfo
-        /// </summary>
-        public string DebugInfo => _registrations.DebugInformation();
-
-        
         /// <summary>
         /// Creates an ILocatorScoped
         /// </summary>

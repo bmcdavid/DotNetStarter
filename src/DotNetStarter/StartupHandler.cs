@@ -96,7 +96,7 @@ namespace DotNetStarter
 
                 ImportHelper.OnEnsureLocator += (() => locator); // configure import<T> locator
                 configurationArgs.RaiseLocatorSetupComplete();
-                locatorRegistry.Verify();
+                (locatorRegistry as ILocatorRegistryWithVerification)?.Verify();
             };
 
             // startup modules
@@ -143,7 +143,7 @@ namespace DotNetStarter
         /// <param name="registry"></param>
         /// <param name="locatorRegistries"></param>
         /// <param name="startupConfigurationEngine"></param>
-        protected virtual void ConfigureRegistry(ILocatorRegistry registry, IEnumerable<ILocatorConfigure> locatorRegistries, IStartupEngineConfigurationArgs startupConfigurationEngine)
+        protected virtual void ConfigureRegistry(ILocatorRegistry registry, IEnumerable<ILocatorConfigure> locatorRegistries, ILocatorConfigureEngine startupConfigurationEngine)
         {
             foreach (var map in locatorRegistries ?? Enumerable.Empty<ILocatorConfigure>())
             {

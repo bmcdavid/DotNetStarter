@@ -9,7 +9,7 @@
     /// <summary>
     /// ILocator for StructureMap
     /// </summary>
-    public class StructureMapSignedLocator : ILocator, ILocatorCreateScope, ILocatorWithPropertyInjection
+    public class StructureMapSignedLocator : ILocator, ILocatorWithCreateScope, ILocatorWithPropertyInjection
     {
         /// <summary>
         /// StructureMap container

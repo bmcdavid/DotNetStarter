@@ -6,10 +6,10 @@ title: DotNetStarter - Breaking Changes
 This page is used to note each versions breaking changes and list future breaking changes.
 
 ## 2.x - 3.x (Proposed)
-* Changed ILocatorConfigure.Configure signature to take a new ILocatorEngineConfigurationArgs instead of ILocatorEngine to prevent access to ILocator before configuration is complete
+* Changed ILocatorConfigure.Configure signature to take a new ILocatorConfigureEngine instead of IStartupEngine to prevent access to ILocator before configuration is complete
 * Removed IStartupEngine.OnLocatorStartupComplete
 * Removed IStartupObjectFactory
-* Removed ILocatorVerification
+* Moved ILocatorVerification to ILocatorRegistryWithVerification
 * Added ILocatoryRegistry.CreateLocator
 * Removed IReadonlyLocator
 * Merged IlocatorDefaultRegistrationsWithCollections into IlocatorDefaultRegistrations.

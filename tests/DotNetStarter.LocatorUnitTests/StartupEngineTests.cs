@@ -10,7 +10,7 @@ namespace DotNetStarter.UnitTests
     {
         internal static bool _ContainerInitCompleteCalled = false;
 
-        public void Configure(ILocatorRegistry container, IStartupEngineConfigurationArgs engine)
+        public void Configure(ILocatorRegistry container, ILocatorConfigureEngine engine)
         {
             engine.OnLocatorStartupComplete += Engine_OnContainerStarted;
         }

@@ -3,7 +3,7 @@
     /// <summary>
     /// Creates/Opens a locator scope
     /// </summary>
-    public interface ILocatorCreateScope
+    public interface ILocatorWithCreateScope
     {
         /// <summary>
         /// Creates/opens a locator scope

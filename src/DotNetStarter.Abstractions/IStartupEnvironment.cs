@@ -3,6 +3,7 @@
     /// <summary>
     /// Information about current environment
     /// </summary>
+    [CriticalComponent]
     public interface IStartupEnvironment
     {
         /// <summary>

@@ -166,7 +166,7 @@ namespace DotNetStarter.UnitTests
 
         internal static bool RegisterException = false;
 
-        public void Configure(ILocatorRegistry container, IStartupEngineConfigurationArgs engine)
+        public void Configure(ILocatorRegistry container, ILocatorConfigureEngine engine)
         {
             try
             {

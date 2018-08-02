@@ -10,7 +10,7 @@ namespace DotNetStarter.Locators
     public sealed class LightInjectLocatorRegistryFactory : ILocatorRegistryFactory
     {
         private readonly IServiceContainer _container;
-        private ContainerRegistrationCollection _registrations;
+        private readonly ContainerRegistrationCollection _registrations;
 
         /// <summary>
         /// Default Constructor

@@ -8,12 +8,13 @@ namespace DotNetStarter.Abstractions
     /// <summary>
     /// Registers all types that use RegistrationAttribute to the locator.
     /// </summary>
+    [CriticalComponent]
     [StartupModule]
     public class RegistrationConfiguration : ILocatorConfigure
     {
         private static readonly Type RegistrationType = typeof(RegistrationAttribute);
 
-        void ILocatorConfigure.Configure(ILocatorRegistry registry, IStartupEngineConfigurationArgs args)
+        void ILocatorConfigure.Configure(ILocatorRegistry registry, ILocatorConfigureEngine args)
         {
             var scannedRegistrations = args.Configuration.AssemblyScanner.GetTypesFor(RegistrationType);
             var registrations = args.Configuration.DependencySorter
