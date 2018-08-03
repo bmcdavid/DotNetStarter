@@ -12,8 +12,8 @@ namespace DotNetStarter.Locators
     /// </summary>
     public class AutofacLocatoryRegistry : ILocatorRegistry, ILocatorRegistryWithResolveConfigureModules
     {
-        private ContainerBuilder _containerBuilder;
         private List<Configurations> _configure = new List<Configurations>();
+        private ContainerBuilder _containerBuilder;
 
         /// <summary>
         /// Constructor
@@ -33,29 +33,7 @@ namespace DotNetStarter.Locators
         /// <param name="serviceImplementation"></param>
         /// <param name="key"></param>
         /// <param name="lifecycle"></param>
-        public void Add(Type serviceType, Type serviceImplementation, string key = null, Lifecycle lifecycle = Lifecycle.Transient)
-        {
-            ConfirmService(serviceType, serviceImplementation);
-            if (serviceType == typeof(ILocatorConfigure))
-            {
-                _configure.Add(new Configurations { ConfigureType = serviceImplementation });
-            }
-
-            if (serviceType.IsGenericType())
-            {
-                _containerBuilder
-                    .RegisterGeneric(serviceImplementation)
-                    .As(serviceType)
-                    .ConfigureLifecycle(lifecycle, null);
-            }
-            else
-            {
-                _containerBuilder
-                    .RegisterType(serviceImplementation)
-                    .As(serviceType)
-                    .ConfigureLifecycle(lifecycle, null);
-            }
-        }
+        public void Add(Type serviceType, Type serviceImplementation, string key = null, Lifecycle lifecycle = Lifecycle.Transient) => CommonAdd(serviceType, serviceImplementation, lifecycle);
 
         /// <summary>
         /// Adds delegate creator for service type
@@ -99,7 +77,7 @@ namespace DotNetStarter.Locators
         /// <typeparam name="TImpl"></typeparam>
         /// <param name="key"></param>
         /// <param name="lifecycle"></param>
-        public void Add<TService, TImpl>(string key = null, Lifecycle lifecycle = Lifecycle.Transient) where TImpl : TService => Add(typeof(TService), typeof(TImpl), lifecycle: lifecycle);
+        public void Add<TService, TImpl>(string key = null, Lifecycle lifecycle = Lifecycle.Transient) where TImpl : TService => CommonAdd(typeof(TService), typeof(TImpl), lifecycle, true);
 
         IEnumerable<ILocatorConfigure> ILocatorRegistryWithResolveConfigureModules.ResolveConfigureModules(IEnumerable<IDependencyNode> filteredModules, IStartupConfiguration startupConfiguration)
         {
@@ -135,6 +113,30 @@ namespace DotNetStarter.Locators
             var ex = new ArgumentException($"{implementation.FullName} cannot be converted to {service.FullName}!");
 
             throw ex;
+        }
+
+        private void CommonAdd(Type serviceType, Type serviceImplementation, Lifecycle lifecycle, bool isGeneric = false)
+        {
+            if (!isGeneric) { ConfirmService(serviceType, serviceImplementation); }
+            if (serviceType == typeof(ILocatorConfigure))
+            {
+                _configure.Add(new Configurations { ConfigureType = serviceImplementation });
+            }
+
+            if (serviceType.IsGenericType())
+            {
+                _containerBuilder
+                    .RegisterGeneric(serviceImplementation)
+                    .As(serviceType)
+                    .ConfigureLifecycle(lifecycle, null);
+            }
+            else
+            {
+                _containerBuilder
+                    .RegisterType(serviceImplementation)
+                    .As(serviceType)
+                    .ConfigureLifecycle(lifecycle, null);
+            }
         }
     }
 }

@@ -27,7 +27,6 @@ namespace DotNetStarter.Internal
 
         internal static void AddServicesToLocator(IServiceCollection services, ILocatorRegistry locator)
         {
-            // map .net services to locator
             for (int i = 0; i < services.Count; i++)
             {
                 var service = services[i];

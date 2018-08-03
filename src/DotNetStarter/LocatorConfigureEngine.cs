@@ -12,10 +12,7 @@
         /// Constructor
         /// </summary>
         /// <param name="startupConfiguration"></param>
-        public LocatorConfigureEngine(IStartupConfiguration startupConfiguration)
-        {
-            Configuration = startupConfiguration;
-        }
+        public LocatorConfigureEngine(IStartupConfiguration startupConfiguration) => Configuration = startupConfiguration;
 
         /// <summary>
         /// Startup configuration

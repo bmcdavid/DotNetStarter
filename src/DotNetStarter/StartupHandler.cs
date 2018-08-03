@@ -146,12 +146,12 @@ namespace DotNetStarter
         /// </summary>
         /// <param name="registry"></param>
         /// <param name="locatorRegistries"></param>
-        /// <param name="startupConfigurationEngine"></param>
-        protected virtual void ConfigureRegistry(ILocatorRegistry registry, IEnumerable<ILocatorConfigure> locatorRegistries, ILocatorConfigureEngine startupConfigurationEngine)
+        /// <param name="configureEngine"></param>
+        protected virtual void ConfigureRegistry(ILocatorRegistry registry, IEnumerable<ILocatorConfigure> locatorRegistries, ILocatorConfigureEngine configureEngine)
         {
             foreach (var map in locatorRegistries ?? Enumerable.Empty<ILocatorConfigure>())
             {
-                map.Configure(registry, startupConfigurationEngine);
+                map.Configure(registry, configureEngine);
             }
         }
 
