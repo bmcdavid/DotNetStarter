@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using DotNetStarter.Abstractions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -73,6 +74,16 @@ namespace DotNetStarter.UnitTests
 
             // hack: LightInject cannot resolve scoped objects when no scope is open
             return (l as ILocatorWithCreateScope).CreateScope();
+        }
+
+        [TestMethod]
+        public void ShouldResolveAll()
+        {
+            var sut = _Context.Service.Locator.GetAll(typeof(IStartupModule)).ToList();
+            var sut2 = _Context.Service.Locator.GetAll<IStartupModule>().ToList();
+            Assert.IsTrue(sut.Any());
+            Assert.IsTrue(sut2.Any());
+            Assert.IsTrue(sut.Count() == sut2.Count());
         }
 
         [TestMethod]

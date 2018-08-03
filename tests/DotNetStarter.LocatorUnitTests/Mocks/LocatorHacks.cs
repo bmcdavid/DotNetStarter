@@ -1,6 +1,6 @@
 using DotNetStarter.Abstractions;
 using System;
-#if LAMAR_LOCATOR
+#if LAMAR_LOCATOR || NETSTANDARD
 using Microsoft.Extensions.DependencyInjection;
 #endif
 namespace DotNetStarter.UnitTests
@@ -12,7 +12,7 @@ namespace DotNetStarter.UnitTests
         {
             configArgs.OnStartupComplete += () =>
             {
-                    // hack: needed for injecting func params
+                // hack: needed for injecting func params
 #if LIGHTINJECT_LOCATOR
                 if (registry.InternalContainer is LightInject.IServiceContainer lightInjectContainer)
                 {
