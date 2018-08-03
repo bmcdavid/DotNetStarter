@@ -227,6 +227,17 @@ namespace DotNetStarter.UnitTests
         }
 
         [TestMethod]
+        public void ShouldResolveSimpleFuncCreator()
+        {
+            var sut = _Context.Service.Locator.Get<Func<ILocatorScopedFactory>>();
+            var sut1 = sut();
+            var sut2 = sut();
+
+            Assert.IsNotNull(sut);
+            Assert.AreSame(sut1, sut2);
+        }
+
+        [TestMethod]
         public void ShouldResolveComplexFuncCreator()
         {
             var injectedArg = new TestInjectable() { Id = 42 };

@@ -8,14 +8,14 @@
     /// </summary>
     public class StartupEngine : IStartupEngine
     {
-        private readonly StartupEngineConfigurationArgs _startupConfigurationEngine;
+        private readonly LocatorConfigureEngine _startupConfigurationEngine;
 
         /// <summary>
         /// Constructor
         /// </summary>
         /// <param name="locator"></param>
         /// <param name="startupConfigurationEngine"></param>
-        public StartupEngine(ILocator locator, StartupEngineConfigurationArgs startupConfigurationEngine)
+        public StartupEngine(ILocator locator, LocatorConfigureEngine startupConfigurationEngine)
         {
             Locator = locator ?? throw new LocatorNotConfiguredException();
             Configuration = startupConfigurationEngine.Configuration;

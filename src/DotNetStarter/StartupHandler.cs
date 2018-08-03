@@ -40,7 +40,7 @@ namespace DotNetStarter
         /// <returns></returns>
         public virtual IStartupContext ConfigureLocator(IStartupConfiguration config)
         {
-            var configurationArgs = new StartupEngineConfigurationArgs(config);
+            var configureEngine = new LocatorConfigureEngine(config);
             IStartupContext startupContext = null;
             ICollection<IDependencyNode> sortedModules = null;
             ICollection<IDependencyNode> filteredModules = null;
@@ -86,16 +86,16 @@ namespace DotNetStarter
                 if (locatorRegistry == null) { throw new NullLocatorException(); }
                 _locatorDefaultRegistrations.Configure(locatorRegistry, filteredModules, config);
                 locator = _locatorRegistryFactory.CreateLocator();
-                var locatorRegistries = (locatorRegistry as ILocatorResolveConfigureModules)?.ResolveConfigureModules(filteredModules, config) ?? locator.GetAll<ILocatorConfigure>();
+                var locatorRegistries = (locatorRegistry as ILocatorRegistryWithResolveConfigureModules)?.ResolveConfigureModules(filteredModules, config) ?? locator.GetAll<ILocatorConfigure>();
 
-                ConfigureRegistry(locatorRegistry, locatorRegistries, configurationArgs);
+                ConfigureRegistry(locatorRegistry, locatorRegistries, configureEngine);
 
                 locatorRegistry.Add(typeof(ILocator), locator);
                 startupContext = CreateStartupContext(locator, filteredModules, sortedModules, config);
                 locatorRegistry.Add(typeof(IStartupContext), startupContext);
 
                 ImportHelper.OnEnsureLocator += (() => locator); // configure import<T> locator
-                configurationArgs.RaiseLocatorSetupComplete();
+                configureEngine.RaiseLocatorSetupComplete();
                 (locatorRegistry as ILocatorRegistryWithVerification)?.Verify();
             };
 
@@ -104,7 +104,7 @@ namespace DotNetStarter
             startupModulesTask.Name = _timerNameBase + ".StartupModules";
             startupModulesTask.TimedAction = () =>
             {
-                var startupEngine = new StartupEngine(locator, configurationArgs);
+                var startupEngine = new StartupEngine(locator, configureEngine);
                 var modules = startupEngine.Locator.GetAll<IStartupModule>(); // resolve all startup modules for DI
                 ExecuteStartupModules(modules, startupEngine);
                 startupEngine.RaiseStartupComplete();

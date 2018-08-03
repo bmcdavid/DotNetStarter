@@ -88,9 +88,13 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DotNetStarter.Extensions.Mv
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DotNetStarter.Extensions.WebApi.UnitTests", "tests\DotNetStarter.Extensions.WebApi.UnitTests\DotNetStarter.Extensions.WebApi.UnitTests.csproj", "{60B6C8DB-E464-425C-A2AA-638943C5163E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotNetStarter.Locators.Grace", "src\DotNetStarter.Locators.Grace\DotNetStarter.Locators.Grace.csproj", "{87BA42D9-7F44-4C2E-9A19-0A000A4C09D9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DotNetStarter.Locators.Grace", "src\DotNetStarter.Locators.Grace\DotNetStarter.Locators.Grace.csproj", "{87BA42D9-7F44-4C2E-9A19-0A000A4C09D9}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DotNetStarter.LocatorUnitTests.Grace", "tests\DotNetStarter.LocatorUnitTests.Grace\DotNetStarter.LocatorUnitTests.Grace.csproj", "{AE33276B-4F84-40CF-88D9-BCCE459C99C1}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DotNetStarter.Locators.Lamar", "src\DotNetStarter.Locators.Lamar\DotNetStarter.Locators.Lamar.csproj", "{F691BB29-A613-40F6-913A-63C3F4D5DA62}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DotNetStarter.LocatorUnitTests.Lamar", "tests\DotNetStarter.LocatorUnitTests.Lamar\DotNetStarter.LocatorUnitTests.Lamar.csproj", "{F002C603-B6A4-4827-9FF4-080B62B4112F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -190,6 +194,14 @@ Global
 		{AE33276B-4F84-40CF-88D9-BCCE459C99C1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AE33276B-4F84-40CF-88D9-BCCE459C99C1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{AE33276B-4F84-40CF-88D9-BCCE459C99C1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F691BB29-A613-40F6-913A-63C3F4D5DA62}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F691BB29-A613-40F6-913A-63C3F4D5DA62}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F691BB29-A613-40F6-913A-63C3F4D5DA62}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F691BB29-A613-40F6-913A-63C3F4D5DA62}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F002C603-B6A4-4827-9FF4-080B62B4112F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F002C603-B6A4-4827-9FF4-080B62B4112F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F002C603-B6A4-4827-9FF4-080B62B4112F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F002C603-B6A4-4827-9FF4-080B62B4112F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -213,6 +225,8 @@ Global
 		{60B6C8DB-E464-425C-A2AA-638943C5163E} = {8A8DF2AE-D820-4CDB-BB3F-0A41C982FB53}
 		{87BA42D9-7F44-4C2E-9A19-0A000A4C09D9} = {FC53A6BC-F55F-42E8-A855-D0E955D3C79B}
 		{AE33276B-4F84-40CF-88D9-BCCE459C99C1} = {8A8DF2AE-D820-4CDB-BB3F-0A41C982FB53}
+		{F691BB29-A613-40F6-913A-63C3F4D5DA62} = {FC53A6BC-F55F-42E8-A855-D0E955D3C79B}
+		{F002C603-B6A4-4827-9FF4-080B62B4112F} = {8A8DF2AE-D820-4CDB-BB3F-0A41C982FB53}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {FF3D216A-6303-4C08-8210-9B458DAC339C}

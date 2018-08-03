@@ -6,13 +6,13 @@
     /// <summary>
     /// Default Startup Configuration Engine
     /// </summary>
-    public class StartupEngineConfigurationArgs : ILocatorConfigureEngine
+    public class LocatorConfigureEngine : ILocatorConfigureEngine
     {
         /// <summary>
         /// Constructor
         /// </summary>
         /// <param name="startupConfiguration"></param>
-        public StartupEngineConfigurationArgs(IStartupConfiguration startupConfiguration)
+        public LocatorConfigureEngine(IStartupConfiguration startupConfiguration)
         {
             Configuration = startupConfiguration;
         }

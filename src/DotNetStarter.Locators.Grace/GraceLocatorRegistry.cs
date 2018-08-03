@@ -36,7 +36,6 @@ namespace DotNetStarter.Locators
         public void Add(Type serviceType, Type serviceImplementation, string key = null, Lifecycle lifecycle = Lifecycle.Transient)
         {
             ConfirmService(serviceType, serviceImplementation);
-
             _container.Configure(c =>
             {
                 c.Export(serviceImplementation)
@@ -55,8 +54,7 @@ namespace DotNetStarter.Locators
         {
             _container.Configure(c =>
             {
-                c
-                .ExportFactory(() => implementationFactory(_container.Locate<ILocatorAmbient>().Current))
+                c.ExportFactory(() => implementationFactory(_container.Locate<ILocatorAmbient>().Current))
                 .As(serviceType)
                 .ConfigureLifetime(lifecycle);
             });
@@ -85,7 +83,14 @@ namespace DotNetStarter.Locators
         /// <param name="key"></param>
         /// <param name="lifecycle"></param>
         public void Add<TService, TImpl>(string key = null, Lifecycle lifecycle = Lifecycle.Transient) where TImpl : TService
-            => Add(typeof(TService), typeof(TImpl), key, lifecycle);
+        {
+            _container.Configure(c =>
+            {
+                c.Export(typeof(TImpl))
+                .As(typeof(TService))
+                .ConfigureLifetime(lifecycle);
+            });
+        }
 
         /// <summary>
         /// Determines if service is registered

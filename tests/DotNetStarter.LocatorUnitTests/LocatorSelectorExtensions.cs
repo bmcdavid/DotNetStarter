@@ -16,6 +16,8 @@ namespace DotNetStarter.UnitTests
             builder.ConfigureAssemblies(a => a.WithAssemblyFromType<DotNetStarter.Locators.LightInjectLocatorRegistryFactory>());
 #elif GRACE_LOCATOR
             builder.ConfigureAssemblies(a => a.WithAssemblyFromType<DotNetStarter.Locators.GraceLocatorRegistryFactory>());
+#elif LAMAR_LOCATOR
+            builder.ConfigureAssemblies(a => a.WithAssemblyFromType<DotNetStarter.Locators.LamarLocatorRegistryFactory>());
 #endif
             return builder;
         }
@@ -32,6 +34,8 @@ namespace DotNetStarter.UnitTests
             builder.OverrideDefaults(d => d.UseLocatorRegistryFactory(new DotNetStarter.Locators.LightInjectLocatorRegistryFactory()));
 #elif GRACE_LOCATOR
             builder.OverrideDefaults(d => d.UseLocatorRegistryFactory(new DotNetStarter.Locators.GraceLocatorRegistryFactory()));
+#elif LAMAR_LOCATOR
+            builder.OverrideDefaults(d => d.UseLocatorRegistryFactory(new DotNetStarter.Locators.LamarLocatorRegistryFactory()));
 #endif
             return builder;
         }

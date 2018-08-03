@@ -9,7 +9,7 @@ namespace DotNetStarter.Locators
     /// <summary>
     /// LightInject Registry
     /// </summary>
-    public class LightInjectLocatorRegistry : ILocatorRegistry, ILocatorRegistryWithContains, ILocatorResolveConfigureModules, ILocatorRegistryWithRemove, ILocatorRegistryWithVerification
+    public class LightInjectLocatorRegistry : ILocatorRegistry, ILocatorRegistryWithContains, ILocatorRegistryWithResolveConfigureModules, ILocatorRegistryWithRemove, ILocatorRegistryWithVerification
     {
         private IServiceContainer _container;
         private ContainerRegistrationCollection _registrations;
@@ -124,24 +124,25 @@ namespace DotNetStarter.Locators
         /// <param name="filteredModules"></param>
         /// <param name="config"></param>
         /// <returns></returns>
-        public IEnumerable<ILocatorConfigure> ResolveConfigureModules(IEnumerable<IDependencyNode> filteredModules, IStartupConfiguration config)
+        IEnumerable<ILocatorConfigure> ILocatorRegistryWithResolveConfigureModules.ResolveConfigureModules(IEnumerable<IDependencyNode> filteredModules, IStartupConfiguration config)
         {
             if (_registrations.TryGetValue(typeof(ILocatorConfigure), out List<ContainerRegistration> locatorConfTypes))
             {
                 foreach (var module in locatorConfTypes)
                 {
                     if (module.ServiceInstance != null)
+                    {
                         yield return (ILocatorConfigure)module.ServiceInstance;
-
-                    yield return (ILocatorConfigure)Activator.CreateInstance(module.ServiceImplementation);
+                    }
+                    else
+                    {
+                        yield return (ILocatorConfigure)Activator.CreateInstance(module.ServiceImplementation);
+                    }
                 }
             }
         }
 
-        /// <summary>
-        /// Converts registration dictionary to actual container registration.
-        /// </summary>
-        public void Verify()
+        void ILocatorRegistryWithVerification.Verify()
         {
             foreach (var item in _registrations)
             {
