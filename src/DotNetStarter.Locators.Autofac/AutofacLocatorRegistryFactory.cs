@@ -31,7 +31,7 @@ namespace DotNetStarter.Locators
         }
 
         /// <summary>
-        /// Injected Constructor where DotNetStarter creates the container
+        /// Injected Constructor where DotNetStarter registers using a container builder, but application externally builds container
         /// </summary>
         /// <param name="containerBuilder"></param>
         /// <param name="containerFactory"></param>
