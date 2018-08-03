@@ -18,6 +18,10 @@ namespace DotNetStarter.UnitTests
             builder.ConfigureAssemblies(a => a.WithAssemblyFromType<DotNetStarter.Locators.GraceLocatorRegistryFactory>());
 #elif LAMAR_LOCATOR
             builder.ConfigureAssemblies(a => a.WithAssemblyFromType<DotNetStarter.Locators.LamarLocatorRegistryFactory>());
+#elif AUTOFAC_LOCATOR
+            builder.ConfigureAssemblies(a => a.WithAssemblyFromType<DotNetStarter.Locators.AutofacLocatorRegistryFactory>());
+#else
+            throw new Exception("Container not setup for tests!");
 #endif
             return builder;
         }
@@ -36,6 +40,10 @@ namespace DotNetStarter.UnitTests
             builder.OverrideDefaults(d => d.UseLocatorRegistryFactory(new DotNetStarter.Locators.GraceLocatorRegistryFactory()));
 #elif LAMAR_LOCATOR
             builder.OverrideDefaults(d => d.UseLocatorRegistryFactory(new DotNetStarter.Locators.LamarLocatorRegistryFactory()));
+#elif AUTOFAC_LOCATOR
+            builder.OverrideDefaults(d => d.UseLocatorRegistryFactory(new DotNetStarter.Locators.AutofacLocatorRegistryFactory()));
+#else
+            throw new Exception("Container not setup for tests!");
 #endif
             return builder;
         }

@@ -19,7 +19,7 @@ namespace DotNetStarter.Configure
         private IStartupEnvironment _environment;
         private bool _isConfigured;
         private Action<StartupModulesExpression> _moduleExpression;
-        private Action<OverrideExpression> _overrideExpression;
+        private Action<DefaultsExpression> _overrideExpression;
         private bool _runOnce;
         private IStartupHandler _startupHandler;
         private StartupBuilder() { }
@@ -57,7 +57,7 @@ namespace DotNetStarter.Configure
             moduleExp.Build();
             objFactory.StartupModulesExpression = moduleExp;
 
-            var overrideExp = new OverrideExpression();
+            var overrideExp = new DefaultsExpression();
             _overrideExpression?.Invoke(overrideExp);
             objFactory.OverrideExpression = overrideExp;
 
@@ -122,7 +122,7 @@ namespace DotNetStarter.Configure
         /// </summary>
         /// <param name="overrideExpression"></param>
         /// <returns></returns>
-        public StartupBuilder OverrideDefaults(Action<OverrideExpression> overrideExpression)
+        public StartupBuilder OverrideDefaults(Action<DefaultsExpression> overrideExpression)
         {
             _overrideExpression += overrideExpression;
             return this;
@@ -151,12 +151,12 @@ namespace DotNetStarter.Configure
             return this;
         }
 
-        private void ExecuteBuild(StartupBuilderObjectFactory objFactory, IEnumerable<Assembly> assemblies, OverrideExpression overrideExpression)
+        private void ExecuteBuild(StartupBuilderObjectFactory objFactory, IEnumerable<Assembly> assemblies, DefaultsExpression defaults)
         {
             var startupConfig = objFactory.CreateStartupConfiguration(assemblies);
             IStartupHandler localStartupHandlerFactory(IStartupConfiguration config) =>
-                new StartupHandler(objFactory.CreateTimedTask, objFactory.CreateRegistryFactory(config), objFactory.CreateContainerDefaults());
-            _startupHandler = (overrideExpression.StartupHandlerFactory ?? localStartupHandlerFactory).Invoke(startupConfig);
+                new StartupHandler(objFactory.CreateTimedTask, objFactory.CreateRegistryFactory(config), objFactory.CreateContainerDefaults(), objFactory.GetRegistryFinalizer());
+            _startupHandler = (defaults.StartupHandlerFactory ?? localStartupHandlerFactory).Invoke(startupConfig);
 
             StartupContext = _startupHandler.ConfigureLocator(startupConfig);
         }

@@ -1,12 +1,12 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
+
   <Import Project="..\..\targets\AddReleaseNotes.targets" />
   <Import Project="..\..\targets\AddReadMeMarkdown.targets" />
   <Import Project="..\..\targets\CommonBuild.props" />
 
   <PropertyGroup>
-    <IsPackable>false</IsPackable>
-    <PackageId>DotNetStarter.Locators.Lamar</PackageId>
-    <TargetFrameworks>netstandard2.0;net461;</TargetFrameworks>
+    <PackageId>DotNetStarter.Locators.Autofac</PackageId>
+    <TargetFrameworks>net45;netstandard1.1</TargetFrameworks>
     <RootNamespace>DotNetStarter.Locators</RootNamespace>
     <Authors>Brad McDavid</Authors>
     <Copyright>Copyright $(CurrentYear)</Copyright>
@@ -22,7 +22,7 @@
   <Import Project="..\..\targets\CommonNuGetPackage.props" />
 
   <ItemGroup>
-    <PackageReference Include="Lamar" Version="1.1.1" />
+    <PackageReference Include="Autofac" Version="4.8.1" />
     <ProjectReference Include="..\DotNetStarter.Abstractions\DotNetStarter.Abstractions.csproj" />
   </ItemGroup>
 

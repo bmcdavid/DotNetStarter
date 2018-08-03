@@ -22,6 +22,9 @@ This page is used to note each versions breaking changes and list future breakin
 * Added Configure.Expresions.AssemblyExpression.WithNoAssemblyScanning() to remove all assembly scanning functionality.
 * Added IItemCollection for storing items in IStartupEnvironments.
 * Added IRegistrationModifier for allowing application developers ability to change discovered registrations.
+* Added ILocatorRegistry extensions for registering, similar to IServiceCollection Apis
+* Added new ILocators: Autofac, Grace, and Lamar.
+* Added ILocatorRegistry finalizer for application developers to do any last minute changes after container is setup.
 * Removed obsoleted code
 
 ## 1.x - 2.x

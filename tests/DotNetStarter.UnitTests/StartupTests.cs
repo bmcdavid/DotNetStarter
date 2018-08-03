@@ -124,29 +124,11 @@ namespace DotNetStarter.UnitTests
             var check = new LocatorRegistryFactoryAttribute(typeof(object));
         }
 
-
-        //[ExpectedException(typeof(NullLocatorException), AllowDerivedTypes = true)]
-        //[TestMethod]
-        //public void ShouldThrowLocatorNotConfiguredException()
-        //{
-        //    var builder = Configure.StartupBuilder.Create();
-        //    builder
-        //        .ConfigureAssemblies(a => a.WithNoAssemblyScanning())
-        //        .ConfigureStartupModules(m => m.ConfigureLocatorModuleCollection
-        //            (c =>
-        //            {
-        //                c.Add(new Mocks.NullLocatorCheckInConfigure());
-        //            })
-        //        )
-        //        .Build(useApplicationContext: false)
-        //        .Run();
-        //}
-
         [ExpectedException(typeof(NullLocatorException))]
         [TestMethod]
         public void ShouldThrowNullLocatorExceptionInDefaultHandler()
         {
-            new StartupHandler(() => new TimedTask(), null, null).ConfigureLocator(ApplicationContext.Default.Configuration);
+            new StartupHandler(() => new TimedTask(), null, null, null).ConfigureLocator(ApplicationContext.Default.Configuration);
         }
 
         internal class MockFactory : ILocatorRegistryFactory

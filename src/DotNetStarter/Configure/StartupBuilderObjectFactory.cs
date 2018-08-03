@@ -12,7 +12,7 @@ namespace DotNetStarter.Configure
     {
         public AssemblyExpression AssemblyExpression { get; set; }
         public IStartupEnvironment Environment { get; set; }
-        public OverrideExpression OverrideExpression { get; set; }
+        public DefaultsExpression OverrideExpression { get; set; }
         public StartupModulesExpression StartupModulesExpression { get; set; }
 
         public IAssemblyFilter CreateAssemblyFilter()
@@ -95,6 +95,11 @@ namespace DotNetStarter.Configure
         public ITimedTaskManager CreateTimedTaskManager()
         {
             return OverrideExpression.TimedTaskManager ?? new TimedTaskManager(CreateRequestSettingsProvider);
+        }
+
+        public Action<ILocatorRegistry> GetRegistryFinalizer()
+        {
+            return OverrideExpression.RegistryFinalizer ?? new Action<ILocatorRegistry>(registry => { });
         }
 
         private static TFactoryType GetAssemblyFactory<TFactoryAttr, TFactoryType>(IStartupConfiguration config) where TFactoryAttr : AssemblyFactoryBaseAttribute

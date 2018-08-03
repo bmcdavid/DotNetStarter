@@ -8,7 +8,7 @@ DotNetStarter is a framework for composing applications where many components ar
 
 Package authors can depend on either the [configuration and startup abstractions](https://www.nuget.org/packages/DotNetStarter.Abstractions/) or the [registration attribute abstractions](https://www.nuget.org/packages/DotNetStarter.RegistrationAbstractions/) to create their components. The components can then be designed with constructor dependency injection in mind. These classes can then be registered by using the [RegistrationAttribute](https://bmcdavid.github.io/DotNetStarter/register.html) or in a startup module implementing [ILocatorConfigure](https://bmcdavid.github.io/DotNetStarter/register.html). Packages may also perform tasks during startup and shutdown using the [IStartupModule](https://bmcdavid.github.io/DotNetStarter/modules.html) interface.
 
-Application developers can install the DotNetStarter package, a [locator](https://bmcdavid.github.io/DotNetStarter/custom-locator.html) (container wrapper) package, any extension such as [MVC](https://www.nuget.org/packages/DotNetStarter.Extensions.Mvc/) for the full ASP.Net framework, and any NuGet packages utilizing the abstractions. Owners have full control over the [startup process](https://bmcdavid.github.io/DotNetStarter/custom-objectfactory.html) which can be customized through code configuration at almost every level using a fluent configuration API. The framework also supports a wide variety of .NET frameworks from ASP.NET version 3.5 and up, as well as the [.NET Standard](https://docs.microsoft.com/en-us/dotnet/standard/net-standard) starting at 1.0.
+Application developers can install the DotNetStarter package, a [locator](https://bmcdavid.github.io/DotNetStarter/custom-locator.html) (container wrapper) package, any extension such as [MVC](https://www.nuget.org/packages/DotNetStarter.Extensions.Mvc/) for the full ASP.Net framework, and any NuGet packages utilizing the abstractions. Developers have full control over the [startup process](https://bmcdavid.github.io/DotNetStarter/custom-objectfactory.html) which can be customized through code configuration at almost every level using a fluent configuration API. The framework also supports a wide variety of .NET frameworks from ASP.NET version 3.5 and up, as well as the [.NET Standard](https://docs.microsoft.com/en-us/dotnet/standard/net-standard) starting at 1.0.
 
 Package  | Version 
 -------- | :------------ 
@@ -136,7 +136,7 @@ public class TestService
     }
 }
 ```
-Cases may exist where constructor injection is not available, in these cases an Import&lt;T> could be used to resolve services. A best practice is when using Import &lt;T> make the dependency known by using a public property, which may be overridden using Import<T>.Accessor by any consumers.
+Cases may exist where constructor injection is not available, in these cases an Import&lt;T> could be used to resolve services. A best practice when using Import &lt;T> is to make the dependency known by using a public property, which may be overridden using Import<T>.Accessor by any consumers.
 
 ```cs
 public class TestService

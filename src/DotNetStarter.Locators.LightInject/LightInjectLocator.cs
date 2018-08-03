@@ -45,7 +45,7 @@ namespace DotNetStarter.Locators
         public void Dispose()
         {
             // hack: disposing throws StackOverFlowException, so its not done
-            //_Container.Dispose();
+            //_container.Dispose();
         }
 
         /// <summary>

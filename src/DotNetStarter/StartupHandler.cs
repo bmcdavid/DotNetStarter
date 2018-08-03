@@ -13,6 +13,7 @@ namespace DotNetStarter
     {
         private static readonly string _timerNameBase = typeof(StartupHandler).FullName;
         private readonly bool _enableDelayedStartupModules = false;
+        private readonly Action<ILocatorRegistry> _finalizeRegistry;
         private readonly ILocatorDefaultRegistrations _locatorDefaultRegistrations;
         private readonly ILocatorRegistryFactory _locatorRegistryFactory;
         private readonly Func<ITimedTask> _timedTaskFactory;
@@ -24,13 +25,15 @@ namespace DotNetStarter
         /// <param name="timedTaskFactory"></param>
         /// <param name="locatorRegistryFactory"></param>
         /// <param name="locatorDefaultRegistrations"></param>
+        /// <param name="finalizeRegistry">Action for application developers to perform any last minute tasks after all other actions are performed.</param>
         /// <param name="enableDelayedStartupModules">If true, doesn't run IStartupModules until IStartupHandler.StartupModules is invoked, default is true</param>
-        public StartupHandler(Func<ITimedTask> timedTaskFactory, ILocatorRegistryFactory locatorRegistryFactory, ILocatorDefaultRegistrations locatorDefaultRegistrations, bool enableDelayedStartupModules = true)
+        public StartupHandler(Func<ITimedTask> timedTaskFactory, ILocatorRegistryFactory locatorRegistryFactory, ILocatorDefaultRegistrations locatorDefaultRegistrations, Action<ILocatorRegistry> finalizeRegistry, bool enableDelayedStartupModules = true)
         {
             _timedTaskFactory = timedTaskFactory;
             _locatorRegistryFactory = locatorRegistryFactory;
             _locatorDefaultRegistrations = locatorDefaultRegistrations;
             _enableDelayedStartupModules = enableDelayedStartupModules;
+            _finalizeRegistry = finalizeRegistry;
         }
 
         /// <summary>
@@ -94,9 +97,10 @@ namespace DotNetStarter
                 startupContext = CreateStartupContext(locator, filteredModules, sortedModules, config);
                 locatorRegistry.Add(typeof(IStartupContext), startupContext);
 
-                ImportHelper.OnEnsureLocator += (() => locator); // configure import<T> locator
                 configureEngine.RaiseLocatorSetupComplete();
                 (locatorRegistry as ILocatorRegistryWithVerification)?.Verify();
+                _finalizeRegistry?.Invoke(locatorRegistry);
+                ImportHelper.OnEnsureLocator += (() => locator); // configure import<T> locator
             };
 
             // startup modules

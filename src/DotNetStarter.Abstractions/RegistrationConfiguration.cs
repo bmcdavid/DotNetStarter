@@ -25,7 +25,6 @@ namespace DotNetStarter.Abstractions
             args.Configuration.RegistrationsModifier?.Modify(registrations);
             registrations.All(r => AddRegistration(r, registry));
 
-            //todo: determine if adding the registrations to the environment are useful
             args.Configuration.Environment.Items.Set<ICollection<Registration>>(registrations);
         }
 
