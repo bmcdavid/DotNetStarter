@@ -9,7 +9,7 @@
     /// <summary>
     /// Base locator for Lamar
     /// </summary>
-    public class LamarLocator : ILocator, ILocatorWithCreateScope
+    public class LamarLocator : ILocator, ILocatorWithCreateScope, ILocatorWithDebugInfo
     {
         /// <summary>
         /// Lamar container
@@ -37,10 +37,7 @@
         /// <param name="serviceType"></param>
         /// <param name="key"></param>
         /// <returns></returns>
-        public virtual object Get(Type serviceType, string key = null)
-        {
-            return _container.GetInstance(serviceType);
-        }
+        public virtual object Get(Type serviceType, string key = null) => _container.GetInstance(serviceType);
 
         /// <summary>
         /// Get typed item
@@ -48,10 +45,7 @@
         /// <typeparam name="T"></typeparam>
         /// <param name="key"></param>
         /// <returns></returns>
-        public virtual T Get<T>(string key = null)
-        {
-            return _container.GetInstance<T>();
-        }
+        public virtual T Get<T>(string key = null) => _container.GetInstance<T>();
 
         /// <summary>
         /// Get all registered
@@ -59,10 +53,7 @@
         /// <param name="serviceType"></param>
         /// <param name="key"></param>
         /// <returns></returns>
-        public virtual IEnumerable<object> GetAll(Type serviceType, string key = null)
-        {
-            return _container.GetAllInstances(serviceType).OfType<object>();
-        }
+        public virtual IEnumerable<object> GetAll(Type serviceType, string key = null) => _container.GetAllInstances(serviceType).OfType<object>();
 
         /// <summary>
         /// Get all registered as type
@@ -70,18 +61,12 @@
         /// <typeparam name="T"></typeparam>
         /// <param name="key"></param>
         /// <returns></returns>
-        public virtual IEnumerable<T> GetAll<T>(string key = null)
-        {
-            return _container.GetAllInstances<T>();
-        }
+        public virtual IEnumerable<T> GetAll<T>(string key = null) => _container.GetAllInstances<T>();
 
         /// <summary>
         /// Creates/opens locator scope
         /// </summary>
         /// <returns></returns>
-        public virtual ILocatorScoped CreateScope()
-        {
-            return new LamarLocatorScoped(_container.CreateScope(), this);
-        }        
+        public virtual ILocatorScoped CreateScope() => new LamarLocatorScoped(_container.CreateScope(), this);
     }
 }

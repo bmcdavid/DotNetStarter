@@ -53,7 +53,6 @@
 
             if (_ModuleHandler.StartupEnabled())
                 _ModuleHandler.Startup(application, StartupModules);
-
         }
     }
 }

@@ -11,7 +11,9 @@
     using static DotNetStarter.ApplicationContext;
 
 #if NET45
+
     using global::Owin;
+
 #endif
 
     /// <summary>
@@ -94,6 +96,7 @@
         }
 
 #if NET45
+
         /// <summary>
         /// Opens scope for OWIN pipeline as an IServiceProvider, scopename and scopecontext are for DryIoc containers.
         /// </summary>
@@ -124,10 +127,11 @@
 
                 if (!hasScopedLocator)
                     scoped?.Dispose();
-
             })));
         }
+
 #endif
+
         internal sealed class MiddlewareWrapper<TServiceMiddleware> where TServiceMiddleware : IOwinMiddleware
         {
             public MiddlewareWrapper(AppFunc next)

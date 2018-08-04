@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace DotNetStarter.Abstractions
+﻿namespace DotNetStarter.Abstractions
 {
     /// <summary>
     /// Main hook for startup

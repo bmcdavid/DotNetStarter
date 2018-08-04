@@ -4,7 +4,7 @@ using System;
 namespace DotNetStarter
 {
     /// <summary>
-    /// Startup exception if IStartupEngine.Locator is accessed during configuration 
+    /// Startup exception if IStartupEngine.Locator is accessed during configuration
     /// </summary>
     public class LocatorNotConfiguredException : Exception
     {

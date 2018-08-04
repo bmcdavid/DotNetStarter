@@ -1,4 +1,5 @@
 ﻿#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
+
 namespace DotNetStarter.Owin
 {
     public static class MiddlewareOwinConstants
@@ -34,7 +35,7 @@ namespace DotNetStarter.Owin
         public const string RequestHeaders = "owin.RequestHeaders";
         public const string RequestBody = "owin.RequestBody";
 
-        #endregion
+        #endregion OWIN v1.0.0 - 3.2.1. Request Data
 
         #region OWIN v1.0.0 - 3.2.2. Response Data
 
@@ -46,7 +47,7 @@ namespace DotNetStarter.Owin
         public const string ResponseHeaders = "owin.ResponseHeaders";
         public const string ResponseBody = "owin.ResponseBody";
 
-        #endregion
+        #endregion OWIN v1.0.0 - 3.2.2. Response Data
 
         #region OWIN v1.0.0 - 3.2.3. Other Data
 
@@ -56,7 +57,7 @@ namespace DotNetStarter.Owin
 
         public const string OwinVersion = "owin.Version";
 
-        #endregion
+        #endregion OWIN v1.0.0 - 3.2.3. Other Data
 
         #region OWIN Key Guidelines and Common Keys - 6. Common keys
 
@@ -82,7 +83,7 @@ namespace DotNetStarter.Owin
             public const string Path = "path";
         }
 
-        #endregion
+        #endregion OWIN Key Guidelines and Common Keys - 6. Common keys
 
         #region SendFiles v0.3.0
 
@@ -101,7 +102,7 @@ namespace DotNetStarter.Owin
             public const string SendAsync = "sendfile.SendAsync";
         }
 
-        #endregion
+        #endregion SendFiles v0.3.0
 
         #region Opaque v0.3.0
 
@@ -120,11 +121,12 @@ namespace DotNetStarter.Owin
             // 5. Consumption
 
             public const string Stream = "opaque.Stream";
+
             // public const string Version = "opaque.Version"; // redundant, declared above
             public const string CallCancelled = "opaque.CallCancelled";
         }
 
-        #endregion
+        #endregion Opaque v0.3.0
 
         #region WebSocket v0.4.0
 
@@ -149,13 +151,15 @@ namespace DotNetStarter.Owin
             public const string SendAsync = "websocket.SendAsync";
             public const string ReceiveAsync = "websocket.ReceiveAsync";
             public const string CloseAsync = "websocket.CloseAsync";
+
             // public const string Version = "websocket.Version"; // redundant, declared above
             public const string CallCancelled = "websocket.CallCancelled";
+
             public const string ClientCloseStatus = "websocket.ClientCloseStatus";
             public const string ClientCloseDescription = "websocket.ClientCloseDescription";
         }
 
-        #endregion
+        #endregion WebSocket v0.4.0
 
         #region Security v0.1.0
 
@@ -180,6 +184,6 @@ namespace DotNetStarter.Owin
             public const string Challenge = "security.Challenge";
         }
 
-        #endregion
+        #endregion Security v0.1.0
     }
 }

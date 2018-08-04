@@ -1,8 +1,8 @@
-﻿using System;
+﻿using DotNetStarter.Abstractions;
+using DotNetStarter.Internal;
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using DotNetStarter.Abstractions;
-using DotNetStarter.Internal;
 
 namespace DotNetStarter.UnitTests.Mocks
 {
@@ -25,12 +25,10 @@ namespace DotNetStarter.UnitTests.Mocks
         {
             if (allowedTypes.Contains(serviceType))
                 modules.Add(serviceImplementation);
-
         }
 
         public void Add(Type serviceType, Func<ILocator, object> implementationFactory, Lifecycle lifeTime)
         {
-
         }
 
         public void Add(Type serviceType, object serviceInstance)
@@ -55,7 +53,6 @@ namespace DotNetStarter.UnitTests.Mocks
 
         public void Dispose()
         {
-
         }
 
         public object Get(Type serviceType, string key = null)
@@ -110,15 +107,17 @@ namespace DotNetStarter.UnitTests.Mocks
 
         public void Remove(Type serviceType, string key = null, Type serviceImplementation = null)
         {
-
         }
 
-        public void Verify() { }
+        public void Verify()
+        {
+        }
     }
 
     internal class TestLocatorFactory : ILocatorRegistryFactory
     {
         private readonly TestLocator _locator;
+
         public TestLocatorFactory()
         {
             _locator = new TestLocator();

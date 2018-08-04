@@ -173,32 +173,11 @@ namespace DotNetStarter.Locators
             _verified = true;
         }
 
-        private static void ThrowRegisterException(Type service, Type implementation)
-        {
-            var ex = new ArgumentException($"{implementation.FullName} cannot be converted to {service.FullName}!");
-
-            throw ex;
-        }
-
         private void AddRegistration(ContainerRegistration registration)
         {
             var service = registration.ServiceType;
             var implementation = registration.ServiceInstance?.GetType() ?? registration.ServiceImplementation;
-
-            if (implementation != null && !service.IsAssignableFromCheck(implementation))
-            {
-                if (!service.IsGenericType())
-                {
-                    ThrowRegisterException(service, implementation);
-                }
-                else
-                {
-                    if (!implementation.IsGenericInterface(service))
-                    {
-                        ThrowRegisterException(service, implementation);
-                    }
-                }
-            }
+            RegistryExtensions.ConfirmService(service, implementation);
 
             if (!_registrations.TryGetValue(registration.ServiceType, out List<ContainerRegistration> storedTypes))
             {
@@ -217,8 +196,10 @@ namespace DotNetStarter.Locators
             {
                 case Lifecycle.Scoped:
                     return new PerScopeLifetime();
+
                 case Lifecycle.Singleton:
                     return new PerContainerLifetime();
+
                 case Lifecycle.Transient:
                     return null; // todo: understand PerRequestLifeTime();
                     // if not null, cannot pass args to a func<arg,tresult> factory

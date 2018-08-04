@@ -24,7 +24,7 @@ namespace DotNetStarter.UnitTests
             DotNetStarter.Configure.StartupBuilder.Create()
                 .ConfigureAssemblies(a => a.WithAssemblies(assemblies))
                 .ConfigureStartupModules(m => m.RemoveStartupModule<Mocks.ExcludeModule>())
-                .OverrideDefaults(d => 
+                .OverrideDefaults(d =>
                 {
                     d
                         .UseLocatorRegistryFactory(new Mocks.TestLocatorFactory())

@@ -1,8 +1,8 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System.Linq;
-using DotNetStarter.Abstractions;
+﻿using DotNetStarter.Abstractions;
 using DotNetStarter.UnitTests.Mocks;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
+using System.Linq;
 
 namespace DotNetStarter.UnitTests
 {

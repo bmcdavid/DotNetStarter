@@ -18,7 +18,7 @@ namespace DotNetStarter.Configure.Expressions
         internal ILocatorRegistryFactory RegistryFactory { get; private set; }
         internal Action<ILocatorRegistry> RegistryFinalizer { get; private set; }
         internal Func<IRequestSettingsProvider> RequestSettingsProviderFactory { get; private set; }
-        internal Func<IStartupConfiguration,IStartupHandler> StartupHandlerFactory { get; private set; }
+        internal Func<IStartupConfiguration, IStartupHandler> StartupHandlerFactory { get; private set; }
         internal Func<ITimedTask> TimedTaskFactory { get; private set; }
         internal ITimedTaskManager TimedTaskManager { get; private set; }
 
@@ -120,6 +120,7 @@ namespace DotNetStarter.Configure.Expressions
             RegistryFinalizer = registryFinalizer;
             return this;
         }
+
         /// <summary>
         /// Creates the request settings provider for the default ITimedTaskManager implementation
         /// <para>Note: This call is not used when ITimedTaskManager is overriden!</para>
@@ -137,7 +138,7 @@ namespace DotNetStarter.Configure.Expressions
         /// </summary>
         /// <param name="startupHandlerFactory"></param>
         /// <returns></returns>
-        public DefaultsExpression UseStartupHandler(Func<IStartupConfiguration,IStartupHandler> startupHandlerFactory)
+        public DefaultsExpression UseStartupHandler(Func<IStartupConfiguration, IStartupHandler> startupHandlerFactory)
         {
             StartupHandlerFactory = startupHandlerFactory ?? throw new ArgumentNullException(nameof(startupHandlerFactory));
             return this;

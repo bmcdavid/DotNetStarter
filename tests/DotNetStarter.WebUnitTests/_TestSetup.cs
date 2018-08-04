@@ -1,6 +1,6 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System.Reflection;
 using System.Collections.Generic;
+using System.Reflection;
 
 namespace DotNetStarter.Web.Tests
 {

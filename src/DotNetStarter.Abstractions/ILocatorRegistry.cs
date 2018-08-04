@@ -22,14 +22,14 @@
         /// </summary>
         /// <param name="serviceType"></param>
         /// <param name="implementationFactory">Important: Given ILocator can only get Singleton and Transient (with no scoped parameters), use with caution!</param>
-        /// <param name="lifecycle"></param>        
+        /// <param name="lifecycle"></param>
         void Add(Type serviceType, Func<ILocator, object> implementationFactory, Lifecycle lifecycle);
 
         /// <summary>
         /// Adds instance to container, the lifetime is set to Singleton
         /// </summary>
         /// <param name="serviceType"></param>
-        /// <param name="serviceInstance"></param>        
+        /// <param name="serviceInstance"></param>
         void Add(Type serviceType, object serviceInstance);
 
         /// <summary>

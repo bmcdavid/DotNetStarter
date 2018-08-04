@@ -37,7 +37,7 @@
             RegisterStartupModuleCollection(registry);
             RegisterLocatorConfigureCollection(registry);
 
-            // add default instances    
+            // add default instances
             registry.Add(typeof(IStartupConfiguration), configuration);
             registry.Add(typeof(IStartupLogger), configuration.Logger);
             registry.Add(typeof(IAssemblyScanner), configuration.AssemblyScanner);

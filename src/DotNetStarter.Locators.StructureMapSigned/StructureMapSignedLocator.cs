@@ -9,7 +9,7 @@
     /// <summary>
     /// ILocator for StructureMap
     /// </summary>
-    public class StructureMapSignedLocator : ILocator, ILocatorWithCreateScope, ILocatorWithPropertyInjection
+    public class StructureMapSignedLocator : ILocator, ILocatorWithCreateScope, ILocatorWithPropertyInjection, ILocatorWithDebugInfo
     {
         /// <summary>
         /// StructureMap container
@@ -19,10 +19,7 @@
         /// <summary>
         /// Constructor
         /// </summary>
-        public StructureMapSignedLocator(IContainer container)
-        {
-            _container = container;
-        }
+        public StructureMapSignedLocator(IContainer container) => _container = container;
 
         /// <summary>
         /// Debug Information
@@ -44,10 +41,7 @@
         /// <summary>
         /// Dispose
         /// </summary>
-        public virtual void Dispose()
-        {
-            _container.Dispose();
-        }
+        public virtual void Dispose() => _container.Dispose();
 
         /// <summary>
         /// Get item
@@ -55,10 +49,7 @@
         /// <param name="serviceType"></param>
         /// <param name="key"></param>
         /// <returns></returns>
-        public virtual object Get(Type serviceType, string key = null)
-        {
-            return _container.GetInstance(serviceType);
-        }
+        public virtual object Get(Type serviceType, string key = null) => _container.GetInstance(serviceType);
 
         /// <summary>
         /// Get typed item
@@ -66,10 +57,7 @@
         /// <typeparam name="T"></typeparam>
         /// <param name="key"></param>
         /// <returns></returns>
-        public virtual T Get<T>(string key = null)
-        {
-            return _container.GetInstance<T>();
-        }
+        public virtual T Get<T>(string key = null) => _container.GetInstance<T>();
 
         /// <summary>
         /// Get all registered
@@ -77,10 +65,7 @@
         /// <param name="serviceType"></param>
         /// <param name="key"></param>
         /// <returns></returns>
-        public virtual IEnumerable<object> GetAll(Type serviceType, string key = null)
-        {
-            return _container.GetAllInstances(serviceType).OfType<object>();
-        }
+        public virtual IEnumerable<object> GetAll(Type serviceType, string key = null) => _container.GetAllInstances(serviceType).OfType<object>();
 
         /// <summary>
         /// Get all registered as type
@@ -88,18 +73,12 @@
         /// <typeparam name="T"></typeparam>
         /// <param name="key"></param>
         /// <returns></returns>
-        public virtual IEnumerable<T> GetAll<T>(string key = null)
-        {
-            return _container.GetAllInstances<T>();
-        }
+        public virtual IEnumerable<T> GetAll<T>(string key = null) => _container.GetAllInstances<T>();
 
         /// <summary>
         /// Creates/opens locator scope
         /// </summary>
         /// <returns></returns>
-        public virtual ILocatorScoped CreateScope()
-        {
-            return new StructureMapSignedLocatorScoped(_container.CreateChildContainer(), this);
-        }        
+        public virtual ILocatorScoped CreateScope() => new StructureMapSignedLocatorScoped(_container.CreateChildContainer(), this);
     }
 }

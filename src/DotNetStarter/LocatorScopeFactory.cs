@@ -61,7 +61,7 @@ namespace DotNetStarter
             setter.SetCurrentScopedLocator(scope);
 
             if (_locatorAmbient is ILocatorAmbientWithSet settable)
-            {       
+            {
                 scope.OnDispose(() => settable.SetCurrentScopedLocator(null));
                 settable.SetCurrentScopedLocator(scope);
             }

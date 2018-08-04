@@ -19,7 +19,9 @@
         /// </summary>
         public bool IsAssemblyDependency { get; protected set; }
 
-        private StartupDependencyBaseAttribute() { }
+        private StartupDependencyBaseAttribute()
+        {
+        }
 
         /// <summary>
         /// Constructor

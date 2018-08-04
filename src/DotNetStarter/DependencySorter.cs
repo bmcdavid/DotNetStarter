@@ -17,7 +17,7 @@
         /// </summary>
         /// <param name="dependencyNodeFactory"></param>
         /// <param name="dependencyComparer"></param>
-        public DependencySorter(Func<object,Type,IDependencyNode> dependencyNodeFactory, IComparer<IDependencyNode> dependencyComparer = null)
+        public DependencySorter(Func<object, Type, IDependencyNode> dependencyNodeFactory, IComparer<IDependencyNode> dependencyComparer = null)
         {
             _DependencyNodeFactory = dependencyNodeFactory ?? throw new ArgumentNullException(nameof(dependencyNodeFactory));
             DependencyComparer = dependencyComparer ?? new DependencyComparer();

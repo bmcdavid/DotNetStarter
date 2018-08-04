@@ -1,5 +1,5 @@
-﻿using System;
-using DotNetStarter.Abstractions;
+﻿using DotNetStarter.Abstractions;
+using System;
 using System.Diagnostics;
 
 namespace DotNetStarter.UnitTests.Mocks

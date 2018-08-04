@@ -19,10 +19,7 @@
         /// <summary>
         /// Constructor
         /// </summary>
-        public StructureMapSignedLocatorRegistry(IContainer container)
-        {
-            _container = container;
-        }
+        public StructureMapSignedLocatorRegistry(IContainer container) => _container = container;
 
         /// <summary>
         /// Raw structuremap container
@@ -34,10 +31,7 @@
         /// </summary>
         /// <param name="serviceType"></param>
         /// <param name="serviceInstance"></param>
-        public void Add(Type serviceType, object serviceInstance)
-        {
-            _container.Configure(x => x.For(serviceType).Singleton().Use(serviceInstance));
-        }
+        public void Add(Type serviceType, object serviceInstance) => _container.Configure(x => x.For(serviceType).Singleton().Use(serviceInstance));
 
         /// <summary>
         /// Add by delegate
@@ -45,10 +39,7 @@
         /// <param name="serviceType"></param>
         /// <param name="implementationFactory"></param>
         /// <param name="lifeTime"></param>
-        public void Add(Type serviceType, Func<ILocator, object> implementationFactory, Lifecycle lifeTime)
-        {
-            _container.Configure(x => x.For(serviceType).LifecycleIs(ConvertLifeTime(lifeTime)).Use((context) => implementationFactory.Invoke(context.GetInstance<ILocatorAmbient>().Current)));
-        }
+        public void Add(Type serviceType, Func<ILocator, object> implementationFactory, Lifecycle lifeTime) => _container.Configure(x => x.For(serviceType).LifecycleIs(ConvertLifeTime(lifeTime)).Use((context) => implementationFactory.Invoke(context.GetInstance<ILocatorAmbient>().Current)));
 
         /// <summary>
         /// Add by type
@@ -57,10 +48,7 @@
         /// <param name="serviceImplementation"></param>
         /// <param name="key"></param>
         /// <param name="lifeTime"></param>
-        public void Add(Type serviceType, Type serviceImplementation, string key = null, Lifecycle lifeTime = Lifecycle.Transient)
-        {
-            _container.Configure(x => x.For(serviceType).LifecycleIs(ConvertLifeTime(lifeTime)).Use(serviceImplementation));
-        }
+        public void Add(Type serviceType, Type serviceImplementation, string key = null, Lifecycle lifeTime = Lifecycle.Transient) => _container.Configure(x => x.For(serviceType).LifecycleIs(ConvertLifeTime(lifeTime)).Use(serviceImplementation));
 
         /// <summary>
         /// Add by generic
@@ -69,10 +57,7 @@
         /// <typeparam name="TImpl"></typeparam>
         /// <param name="key"></param>
         /// <param name="lifetime"></param>
-        public void Add<TService, TImpl>(string key = null, Lifecycle lifetime = Lifecycle.Transient) where TImpl : TService
-        {
-            Add(typeof(TService), typeof(TImpl), key, lifetime);
-        }
+        public void Add<TService, TImpl>(string key = null, Lifecycle lifetime = Lifecycle.Transient) where TImpl : TService => Add(typeof(TService), typeof(TImpl), key, lifetime);
 
         /// <summary>
         /// Checks if service is registered
@@ -83,7 +68,9 @@
         public bool ContainsService(Type serviceType, string key = null)
         {
             if (key == null)
+            {
                 return _container.TryGetInstance(serviceType) != null;
+            }
 
             return _container.TryGetInstance(serviceType, key) != null;
         }
@@ -104,8 +91,7 @@
             {
                 _container.Model.EjectAndRemoveTypes((type) =>
                 {
-                    if (type != serviceType)
-                        return false;
+                    if (type != serviceType) { return false; }
 
                     return serviceImplementation.IsAssignableFromCheck(type);
                 });

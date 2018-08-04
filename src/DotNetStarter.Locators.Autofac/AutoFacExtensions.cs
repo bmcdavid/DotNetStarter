@@ -23,9 +23,11 @@ namespace DotNetStarter.Locators
                     }
 
                     break;
+
                 case Lifecycle.Scoped:
                     registrationBuilder.InstancePerLifetimeScope();
                     break;
+
                 case Lifecycle.Transient:
                     registrationBuilder.InstancePerDependency();
                     break;

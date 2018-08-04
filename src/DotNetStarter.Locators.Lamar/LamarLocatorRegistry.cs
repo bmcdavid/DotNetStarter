@@ -36,10 +36,7 @@
         /// </summary>
         /// <param name="serviceType"></param>
         /// <param name="serviceInstance"></param>
-        public void Add(Type serviceType, object serviceInstance)
-        {
-            _serviceDescriptors.AddSingleton(serviceType, serviceInstance);
-        }
+        public void Add(Type serviceType, object serviceInstance) => _serviceDescriptors.AddSingleton(serviceType, serviceInstance);
 
         /// <summary>
         /// Add by delegate
@@ -47,18 +44,15 @@
         /// <param name="serviceType"></param>
         /// <param name="implementationFactory"></param>
         /// <param name="lifeTime"></param>
-        public void Add(Type serviceType, Func<ILocator, object> implementationFactory, Lifecycle lifeTime)
-        {
-            _serviceDescriptors.Add
+        public void Add(Type serviceType, Func<ILocator, object> implementationFactory, Lifecycle lifeTime) => _serviceDescriptors.Add
+        (
+            new ServiceDescriptor
             (
-                new ServiceDescriptor
-                (
-                    serviceType,
-                    provider => implementationFactory(_container.GetService<ILocatorAmbient>().Current),
-                    ConvertLifetime(lifeTime)
-                )
-            );
-        }
+                serviceType,
+                provider => implementationFactory(_container.GetService<ILocatorAmbient>().Current),
+                ConvertLifetime(lifeTime)
+            )
+        );
 
         /// <summary>
         /// Add by type
@@ -80,10 +74,7 @@
         /// <typeparam name="TImpl"></typeparam>
         /// <param name="key"></param>
         /// <param name="lifetime"></param>
-        public void Add<TService, TImpl>(string key = null, Lifecycle lifetime = Lifecycle.Transient) where TImpl : TService
-        {
-            _serviceDescriptors.Add(new ServiceDescriptor(typeof(TService), typeof(TImpl), ConvertLifetime(lifetime)));
-        }
+        public void Add<TService, TImpl>(string key = null, Lifecycle lifetime = Lifecycle.Transient) where TImpl : TService => _serviceDescriptors.Add(new ServiceDescriptor(typeof(TService), typeof(TImpl), ConvertLifetime(lifetime)));
 
         /// <summary>
         /// Checks if service is registered
@@ -110,14 +101,9 @@
                 else
                     yield return (ILocatorConfigure)Activator.CreateInstance(module.ImplementationType);
             }
-
         }
 
-        void ILocatorRegistryWithVerification.Verify()
-        {
-            _container.Configure(_serviceDescriptors);
-            // _container.AssertConfigurationIsValid(AssertMode.Full);
-        }
+        void ILocatorRegistryWithVerification.Verify() => _container.Configure(_serviceDescriptors);
 
         private static void ConfirmService(Type serviceType, Type serviceImplementation)
         {
@@ -143,6 +129,7 @@
 
             throw ex;
         }
+
         private ServiceLifetime ConvertLifetime(Lifecycle lifeTime)
         {
             switch (lifeTime)

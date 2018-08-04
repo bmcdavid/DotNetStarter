@@ -1,8 +1,8 @@
 ﻿namespace DotNetStarter
 {
+    using Abstractions;
     using System;
     using System.Collections;
-    using Abstractions;
 
     /// <summary>
     /// Default request settings provider

@@ -12,7 +12,7 @@
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="nodes"></param>
-        /// <returns>IEnumerable&lt;DependencyNode> or InvalidOperationException</returns>        
+        /// <returns>IEnumerable&lt;DependencyNode> or InvalidOperationException</returns>
         IList<IDependencyNode> Sort<T>(IEnumerable<object> nodes) where T : StartupDependencyBaseAttribute;
     }
 }

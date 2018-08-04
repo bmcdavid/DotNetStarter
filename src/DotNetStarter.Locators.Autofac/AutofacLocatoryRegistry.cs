@@ -90,34 +90,9 @@ namespace DotNetStarter.Locators
             }
         }
 
-        private static void ConfirmService(Type serviceType, Type serviceImplementation)
-        {
-            if (!serviceType.IsAssignableFromCheck(serviceImplementation))
-            {
-                if (!serviceType.IsGenericType())
-                {
-                    ThrowRegisterException(serviceType, serviceImplementation);
-                }
-                else
-                {
-                    if (!serviceImplementation.IsGenericInterface(serviceType))
-                    {
-                        ThrowRegisterException(serviceType, serviceImplementation);
-                    }
-                }
-            }
-        }
-
-        private static void ThrowRegisterException(Type service, Type implementation)
-        {
-            var ex = new ArgumentException($"{implementation.FullName} cannot be converted to {service.FullName}!");
-
-            throw ex;
-        }
-
         private void CommonAdd(Type serviceType, Type serviceImplementation, Lifecycle lifecycle, bool isGeneric = false)
         {
-            if (!isGeneric) { ConfirmService(serviceType, serviceImplementation); }
+            if (!isGeneric) { RegistryExtensions.ConfirmService(serviceType, serviceImplementation); }
             if (serviceType == typeof(ILocatorConfigure))
             {
                 _configure.Add(new Configurations { ConfigureType = serviceImplementation });

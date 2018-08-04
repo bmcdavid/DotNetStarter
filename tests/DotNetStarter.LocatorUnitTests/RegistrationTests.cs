@@ -1,8 +1,8 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using DotNetStarter.Abstractions;
-using System.Linq;
-using System.Collections.Generic;
+﻿using DotNetStarter.Abstractions;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace DotNetStarter.UnitTests
 {
@@ -24,7 +24,7 @@ namespace DotNetStarter.UnitTests
 
             Assert.IsNotNull(task);
         }
-        
+
         [TestMethod]
         public void ShouldBeReadOnlyLocatorInAppContext()
         {
@@ -101,7 +101,6 @@ namespace DotNetStarter.UnitTests
 
             Assert.IsNotNull(sut);
         }
-
 
         [TestMethod]
         public void ShouldGetGenericService()

@@ -1,5 +1,4 @@
 ﻿using DotNetStarter.Abstractions;
-using DotNetStarter.Abstractions.Internal;
 using Grace.DependencyInjection;
 using System;
 
@@ -16,10 +15,7 @@ namespace DotNetStarter.Locators
         /// Constructor
         /// </summary>
         /// <param name="container"></param>
-        public GraceLocatorRegistry(DependencyInjectionContainer container)
-        {
-            _container = container;
-        }
+        public GraceLocatorRegistry(DependencyInjectionContainer container) => _container = container;
 
         /// <summary>
         /// Grace Container
@@ -35,7 +31,7 @@ namespace DotNetStarter.Locators
         /// <param name="lifecycle"></param>
         public void Add(Type serviceType, Type serviceImplementation, string key = null, Lifecycle lifecycle = Lifecycle.Transient)
         {
-            ConfirmService(serviceType, serviceImplementation);
+            RegistryExtensions.ConfirmService(serviceType, serviceImplementation);
             _container.Configure(c =>
             {
                 c.Export(serviceImplementation)
@@ -99,30 +95,5 @@ namespace DotNetStarter.Locators
         /// <param name="key"></param>
         /// <returns></returns>
         public bool ContainsService(Type serviceType, string key = null) => _container.CanLocate(serviceType, key: key);
-
-        private static void ConfirmService(Type serviceType, Type serviceImplementation)
-        {
-            if (!serviceType.IsAssignableFromCheck(serviceImplementation))
-            {
-                if (!serviceType.IsGenericType())
-                {
-                    ThrowRegisterException(serviceType, serviceImplementation);
-                }
-                else
-                {
-                    if (!serviceImplementation.IsGenericInterface(serviceType))
-                    {
-                        ThrowRegisterException(serviceType, serviceImplementation);
-                    }
-                }
-            }
-        }
-
-        private static void ThrowRegisterException(Type service, Type implementation)
-        {
-            var ex = new ArgumentException($"{implementation.FullName} cannot be converted to {service.FullName}!");
-
-            throw ex;
-        }
     }
 }

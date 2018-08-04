@@ -1,6 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using DotNetStarter.Abstractions;
+using System.Collections.Generic;
 using System.Linq;
-using DotNetStarter.Abstractions;
 
 namespace DotNetStarter.StartupBuilderTests.Mocks
 {

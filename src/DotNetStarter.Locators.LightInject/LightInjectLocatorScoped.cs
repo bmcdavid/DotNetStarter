@@ -56,7 +56,7 @@ namespace DotNetStarter.Locators
         /// <returns></returns>
         public object Get(Type serviceType, string key = null)
         {
-           return _Scope.GetInstance(serviceType);
+            return _Scope.GetInstance(serviceType);
         }
 
         /// <summary>
@@ -91,7 +91,7 @@ namespace DotNetStarter.Locators
         {
             return _Scope.GetAllInstances(serviceType);
         }
-        
+
         /// <summary>
         /// Creates a child scoped locator
         /// </summary>

@@ -35,5 +35,7 @@ after_test:
     msbuild /t:pack /p:NoBuild=true /p:Platform= /p:IncludeSymbols=true /p:Configuration=Release /p:PackageOutputPath=..\..\ src\DotNetStarter.Locators.Autofac\DotNetStarter.Locators.Autofac.csproj
 
     msbuild /t:pack /p:NoBuild=true /p:Platform= /p:IncludeSymbols=true /p:Configuration=Release /p:PackageOutputPath=..\..\ src\DotNetStarter.Locators.Grace\DotNetStarter.Locators.Grace.csproj
+
+    msbuild /t:pack /p:NoBuild=true /p:Platform= /p:IncludeSymbols=true /p:Configuration=Release /p:PackageOutputPath=..\..\ src\DotNetStarter.Locators.Stashbox\DotNetStarter.Locators.Stashbox.csproj
 artifacts:
   - path: '*.nupkg'

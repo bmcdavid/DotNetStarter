@@ -6,7 +6,7 @@ using System.Collections.Generic;
 namespace DotNetStarter
 {
     /// <summary>
-    /// Provides mechanism to pass items between modules 
+    /// Provides mechanism to pass items between modules
     /// </summary>
     public class StartupEnvironmentItemCollection : IItemCollection
     {
@@ -50,7 +50,6 @@ namespace DotNetStarter
         /// </summary>
         /// <returns></returns>
         public IEnumerator<KeyValuePair<Type, object>> GetEnumerator() => items.GetEnumerator();
-
 
         IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
     }

@@ -2,7 +2,6 @@
 using Grace.DependencyInjection;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace DotNetStarter.Locators
 {
@@ -17,10 +16,7 @@ namespace DotNetStarter.Locators
         /// Constructor
         /// </summary>
         /// <param name="container"></param>
-        public GraceLocator(DependencyInjectionContainer container)
-        {
-            _container = container;
-        }
+        public GraceLocator(DependencyInjectionContainer container) => _container = container;
 
         /// <summary>
         /// Creates/opens locator scope

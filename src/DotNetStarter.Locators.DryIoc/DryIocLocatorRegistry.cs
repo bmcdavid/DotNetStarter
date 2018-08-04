@@ -99,13 +99,14 @@
                 _container.Unregister(serviceType, key, FactoryType.Service, (f) => f.ImplementationType == serviceType);
             }
         }
-        
+
         private static IReuse ConvertLifeTime(Lifecycle lifetime)
         {
             switch (lifetime)
             {
                 case Lifecycle.Singleton:
                     return Reuse.Singleton;
+
                 case Lifecycle.Transient:
                     return Reuse.Transient;
                 // scoping via the container isn't supported in the locator by default, it takes an unwrapped container to utilize this via cast of IContainer as IContainerRegistry
@@ -135,29 +136,9 @@
 
         private static void RegisterSimple(IContainer register, Type service, Type implementation, bool withResolvedArguments, IReuse reuse = null, string key = null)
         {
-            if (!service.IsAssignableFromCheck(implementation))
-            {
-                if (!service.IsGenericType())
-                {
-                    ThrowRegisterException(service, implementation);
-                }
-                else
-                {
-                    if (!implementation.IsGenericInterface(service))
-                    {
-                        ThrowRegisterException(service, implementation);
-                    }
-                }
-            }
+            RegistryExtensions.ConfirmService(service, implementation);
 
             register.Register(service, implementation, reuse: reuse, made: withResolvedArguments ? null : GetConstructorFor(register, implementation), serviceKey: key);
-        }
-
-        private static void ThrowRegisterException(Type service, Type implementation)
-        {
-            var ex = new ArgumentException($"{implementation.FullName} cannot be converted to {service.FullName}!");
-
-            throw ex;
         }
     }
 }

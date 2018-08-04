@@ -9,7 +9,7 @@ namespace DotNetStarter.UnitTests
 #if DRYIOC_LOCATOR
             builder.ConfigureAssemblies(a => a.WithAssemblyFromType<DotNetStarter.Locators.DryIocLocatorFactory>());
 #elif STRUCTUREMAP_LOCATOR
-            builder.ConfigureAssemblies(a => a.WithAssemblyFromType<DotNetStarter.Locators.StructureMapFactory>());            
+            builder.ConfigureAssemblies(a => a.WithAssemblyFromType<DotNetStarter.Locators.StructureMapFactory>());
 #elif STRUCTUREMAPSIGNED_LOCATOR
             builder.ConfigureAssemblies(a => a.WithAssemblyFromType<DotNetStarter.Locators.StructureMapSignedFactory>());
 #elif LIGHTINJECT_LOCATOR
@@ -20,6 +20,8 @@ namespace DotNetStarter.UnitTests
             builder.ConfigureAssemblies(a => a.WithAssemblyFromType<DotNetStarter.Locators.LamarLocatorRegistryFactory>());
 #elif AUTOFAC_LOCATOR
             builder.ConfigureAssemblies(a => a.WithAssemblyFromType<DotNetStarter.Locators.AutofacLocatorRegistryFactory>());
+#elif STASHBOX_LOCATOR
+            builder.ConfigureAssemblies(a => a.WithAssemblyFromType<DotNetStarter.Locators.StashboxLocatorRegistryFactory>());
 #else
             throw new Exception("Container not setup for tests!");
 #endif
@@ -31,7 +33,7 @@ namespace DotNetStarter.UnitTests
 #if DRYIOC_LOCATOR
             builder.OverrideDefaults(d => d.UseLocatorRegistryFactory(new DotNetStarter.Locators.DryIocLocatorFactory()));
 #elif STRUCTUREMAP_LOCATOR
-            builder.OverrideDefaults(d => d.UseLocatorRegistryFactory(new DotNetStarter.Locators.StructureMapFactory()));           
+            builder.OverrideDefaults(d => d.UseLocatorRegistryFactory(new DotNetStarter.Locators.StructureMapFactory()));
 #elif STRUCTUREMAPSIGNED_LOCATOR
             builder.OverrideDefaults(d => d.UseLocatorRegistryFactory(new DotNetStarter.Locators.StructureMapSignedFactory()));
 #elif LIGHTINJECT_LOCATOR
@@ -42,6 +44,8 @@ namespace DotNetStarter.UnitTests
             builder.OverrideDefaults(d => d.UseLocatorRegistryFactory(new DotNetStarter.Locators.LamarLocatorRegistryFactory()));
 #elif AUTOFAC_LOCATOR
             builder.OverrideDefaults(d => d.UseLocatorRegistryFactory(new DotNetStarter.Locators.AutofacLocatorRegistryFactory()));
+#elif STASHBOX_LOCATOR
+            builder.OverrideDefaults(d => d.UseLocatorRegistryFactory(new DotNetStarter.Locators.StashboxLocatorRegistryFactory()));
 #else
             throw new Exception("Container not setup for tests!");
 #endif

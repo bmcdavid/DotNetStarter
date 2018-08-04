@@ -9,6 +9,7 @@
 #endif
 
 #if NETFULLFRAMEWORK && !NETSTANDARD
+
     /// <summary>
     /// Service provider that throws exceptions if type cannot be found
     /// </summary>
@@ -21,6 +22,7 @@
         /// <returns></returns>
         object GetRequiredService(Type serviceType);
     }
+
 #endif
 
     /// <summary>

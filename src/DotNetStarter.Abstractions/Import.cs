@@ -4,7 +4,7 @@
 
     /// <summary>
     /// Provides access to locator services
-    /// <para>Important: Import&lt;T> should only be used when constructor injection is not an option; 
+    /// <para>Important: Import&lt;T> should only be used when constructor injection is not an option;
     /// when used it should be public to disclose the dependency to consumers.</para>
     /// </summary>
     /// <typeparam name="TService"></typeparam>

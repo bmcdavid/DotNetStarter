@@ -4,7 +4,7 @@
 
     /// <summary>
     /// Required for IStartupModule and ILocatorConfigure implementations to execute, and optionally define dependencies
-    /// </summary>    
+    /// </summary>
     public class StartupModuleAttribute : StartupDependencyBaseAttribute
     {
         /// <summary>

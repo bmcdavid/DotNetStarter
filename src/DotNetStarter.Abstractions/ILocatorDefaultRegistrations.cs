@@ -24,6 +24,5 @@
         /// <param name="filteredModules"></param>
         /// <param name="configuration"></param>
         void Configure(ILocatorRegistry locator, IEnumerable<IDependencyNode> filteredModules, IStartupConfiguration configuration);
-
     }
 }

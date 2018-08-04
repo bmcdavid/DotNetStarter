@@ -7,12 +7,10 @@ namespace DotNetStarter.UnitTests.Mocks
     {
         public void Shutdown()
         {
-
         }
 
         public void Startup(IStartupEngine engine)
         {
-
         }
     }
 }

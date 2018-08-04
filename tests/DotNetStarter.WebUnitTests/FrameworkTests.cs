@@ -7,8 +7,8 @@ namespace DotNetStarter.Web.Tests
     [TestClass]
     public class FrameworkTests
     {
-        Import<IHttpContextProvider> _HttpContextProvider;
-        Import<IWebModuleStartupHandler> _WebModuleHandler;
+        private Import<IHttpContextProvider> _HttpContextProvider;
+        private Import<IWebModuleStartupHandler> _WebModuleHandler;
 
         [TestMethod]
         public void ShouldDefaultToRegisterHttpContextBase()
@@ -40,8 +40,8 @@ namespace DotNetStarter.Web.Tests
             Mocks.MockHttpModule.InitCalled = false; //reset
             var locator = DotNetStarter.ApplicationContext.Default.Locator;
             var handler = new Mocks.DisabledWebModuleHandler(locator);
-            
-            if(handler.StartupEnabled())
+
+            if (handler.StartupEnabled())
                 handler.Startup(new System.Web.HttpApplication(), new IHttpModule[] { new Mocks.MockHttpModule() });
 
             Assert.IsFalse(handler.StartupEnabled());
@@ -54,7 +54,7 @@ namespace DotNetStarter.Web.Tests
             Mocks.MockHttpModule.InitCalled = false; //reset
             var appStartup = new DotNetStarter.Web.WebModuleStartup();
 
-            appStartup.Init(new System.Web.HttpApplication());            
+            appStartup.Init(new System.Web.HttpApplication());
         }
     }
 }

@@ -1,7 +1,7 @@
-﻿using System;
-using System.Linq;
-using DotNetStarter.Abstractions;
+﻿using DotNetStarter.Abstractions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System;
+using System.Linq;
 
 #if NETSTANDARD
 using Microsoft.Extensions.DependencyInjection;
@@ -59,7 +59,8 @@ namespace DotNetStarter.UnitTests
     {
         public int Id { get; set; }
     }
-    #endregion
+
+    #endregion Mocks
 
     [TestClass]
     public class LocatorTests
@@ -68,13 +69,7 @@ namespace DotNetStarter.UnitTests
 
         public Import<ILocatorScopedAccessor> ScopeAccessor { get; set; }
 
-        private ILocatorScoped CreateScope(ILocator locator = null)
-        {
-            var l = locator ?? _Context.Service.Locator;
-
-            // hack: LightInject cannot resolve scoped objects when no scope is open
-            return (l as ILocatorWithCreateScope).CreateScope();
-        }
+        private ILocatorScoped CreateScope(ILocator locator = null) => ((locator ?? _Context.Service.Locator) as ILocatorWithCreateScope).CreateScope();
 
         [TestMethod]
         public void ShouldResolveAll()
@@ -154,7 +149,7 @@ namespace DotNetStarter.UnitTests
             var factory = locator.Get<ILocatorScopedFactory>();
             ScopeTest noScopeTest;
 
-            // hack: LightInject cannot resolve scoped objects when no scope is open
+            // hack: not all containers can resolve scoped objects when no scope is open
             using (var scopedLocator = factory.CreateScope())
             {
                 noScopeTest = locator.Get<ScopeTest>();

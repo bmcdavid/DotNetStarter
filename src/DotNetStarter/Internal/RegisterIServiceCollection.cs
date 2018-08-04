@@ -59,8 +59,10 @@ namespace DotNetStarter.Internal
             {
                 case ServiceLifetime.Scoped:
                     return Lifecycle.Scoped;
+
                 case ServiceLifetime.Singleton:
                     return Lifecycle.Singleton;
+
                 case ServiceLifetime.Transient:
                 default:
                     return Lifecycle.Transient;

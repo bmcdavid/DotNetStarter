@@ -1,4 +1,5 @@
 ﻿#pragma warning disable CS1591 // Missing XML comment for publicly visible type || member
+
 namespace DotNetStarter.Abstractions.Internal
 {
     using System;
@@ -52,6 +53,7 @@ namespace DotNetStarter.Abstractions.Internal
             return t.GetCustomAttributes(attrType, inherit).OfType<Attribute>();
 #endif
         }
+
         public static IEnumerable<Attribute> CustomAttribute(this Assembly assembly, Type attrType, bool inherit)
         {
 #if NETSTANDARD1_0 || NETSTANDARD1_1
@@ -150,21 +152,23 @@ namespace DotNetStarter.Abstractions.Internal
             return assembly.GetTypes();
 #endif
         }
+
         public static bool HasInterface(this Type t, Type interfaceType)
         {
 #if NETSTANDARD1_0 || NETSTANDARD1_1
             return t.GetTypeInfo().ImplementedInterfaces.Any(i => i == interfaceType);
 #else
             return t.GetInterfaces().Any(i => i == interfaceType);
-#endif            
+#endif
         }
+
         public static IEnumerable<Type> Interfaces(this Type type)
         {
 #if NETSTANDARD1_0 || NETSTANDARD1_1
             return type.GetTypeInfo().ImplementedInterfaces;
 #else
             return type.GetInterfaces();
-#endif   
+#endif
         }
 
         public static bool IsAbstract(this Type type)
@@ -175,6 +179,7 @@ namespace DotNetStarter.Abstractions.Internal
             return type.IsAbstract;
 #endif
         }
+
         public static bool IsAssignableFromCheck(this Type type, Type check)
         {
 #if NETSTANDARD1_0 || NETSTANDARD1_1
@@ -183,13 +188,14 @@ namespace DotNetStarter.Abstractions.Internal
             return type.IsAssignableFrom(check);
 #endif
         }
+
         public static bool IsEnumCheck(this Type type)
         {
 #if NETSTANDARD1_0 || NETSTANDARD1_1
             return type.GetTypeInfo().IsEnum;
 #else
             return type.IsEnum;
-#endif     
+#endif
         }
 
         public static bool IsGenericInterface(this Type t, Type checkType)
@@ -225,8 +231,9 @@ namespace DotNetStarter.Abstractions.Internal
             return type.GetTypeInfo().IsInterface;
 #else
             return type.IsInterface;
-#endif            
+#endif
         }
+
         public static bool IsNullableType(this Type type)
         {
             if (type == null)
@@ -237,7 +244,6 @@ namespace DotNetStarter.Abstractions.Internal
 #else
             return type.IsGenericType && type.GetGenericTypeDefinition().Equals(typeof(Nullable<>));
 #endif
-
         }
 
         public static bool IsValueType(this Type type)

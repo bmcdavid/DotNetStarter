@@ -8,7 +8,7 @@ namespace DotNetStarter.Owin.Tests
     [TestClass]
     public class ContextTests
     {
-        IMiddlewareContext _MiddlewareContext;
+        private IMiddlewareContext _MiddlewareContext;
 
         [TestInitialize]
         public void Setup()
@@ -105,7 +105,6 @@ namespace DotNetStarter.Owin.Tests
                 { MiddlewareOwinConstants.ResponseStatusCode, 200 },
                 { MiddlewareOwinConstants.ResponseHeaders, new Dictionary<string,string[]>(StringComparer.OrdinalIgnoreCase) },
                 { MiddlewareOwinConstants.ResponseBody, null}, //Microsoft.VisualStudio.Web.BrowserLink.Runtime.ScriptInjectionFilterStream]
-
             };
 
             return owinEnvironment;

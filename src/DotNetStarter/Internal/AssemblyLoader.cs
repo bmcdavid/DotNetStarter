@@ -15,6 +15,7 @@ namespace DotNetStarter.Internal
         private static readonly object _lockObj = new object();
 
 #if NETFULLFRAMEWORK
+
         /// <summary>
         /// Gets assembly dll folder
         /// </summary>
@@ -39,9 +40,11 @@ namespace DotNetStarter.Internal
 
             return assembliesPath;
         }
+
 #endif
 
 #if NET35
+
         /// <summary>
         /// Gets assembly files
         /// </summary>
@@ -54,6 +57,7 @@ namespace DotNetStarter.Internal
 
             return files;
         }
+
 #elif NET40 || NET45
         /// <summary>
         /// Gets assembly files
@@ -94,6 +98,7 @@ namespace DotNetStarter.Internal
             return libraries.Select(x => Assembly.Load(new AssemblyName(x.Name)));
         }
 #else
+
         /// <summary>
         /// Gets application assemblies, note: in netstandard apps local builds won't always include the dlls which could lead to test/debug issues
         /// </summary>
@@ -136,6 +141,7 @@ namespace DotNetStarter.Internal
 
             return LoadedAssemblies;
         }
+
 #endif
     }
 }

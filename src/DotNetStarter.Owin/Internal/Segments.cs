@@ -48,7 +48,7 @@
 
         public static bool operator !=(HeaderSegment left, HeaderSegment right) => !left.Equals(right);
 
-        #endregion
+        #endregion Equality members
     }
 
     internal struct HeaderSegmentCollection : IEnumerable<HeaderSegment>, IEquatable<HeaderSegmentCollection>
@@ -80,7 +80,7 @@
 
         public static bool operator !=(HeaderSegmentCollection left, HeaderSegmentCollection right) => !left.Equals(right);
 
-        #endregion
+        #endregion Equality members
 
         public Enumerator GetEnumerator() => new Enumerator(_headers);
 
@@ -207,35 +207,42 @@
                                         _leadingEnd = _offset;
                                         _mode = Mode.Produce;
                                         break;
+
                                     case Attr.Quote:
                                         _leadingEnd = _offset;
                                         _valueStart = _offset;
                                         _mode = Mode.ValueQuoted;
                                         break;
+
                                     case Attr.Value:
                                         _leadingEnd = _offset;
                                         _valueStart = _offset;
                                         _mode = Mode.Value;
                                         break;
+
                                     case Attr.Whitespace:
                                         // more
                                         break;
                                 }
                                 break;
+
                             case Mode.Value:
                                 switch (attr)
                                 {
                                     case Attr.Quote:
                                         _mode = Mode.ValueQuoted;
                                         break;
+
                                     case Attr.Delimiter:
                                         _valueEnd = _offset;
                                         _trailingStart = _offset;
                                         _mode = Mode.Produce;
                                         break;
+
                                     case Attr.Value:
                                         // more
                                         break;
+
                                     case Attr.Whitespace:
                                         _valueEnd = _offset;
                                         _trailingStart = _offset;
@@ -243,12 +250,14 @@
                                         break;
                                 }
                                 break;
+
                             case Mode.ValueQuoted:
                                 switch (attr)
                                 {
                                     case Attr.Quote:
                                         _mode = Mode.Value;
                                         break;
+
                                     case Attr.Delimiter:
                                         if (ch == (char)0)
                                         {
@@ -257,30 +266,35 @@
                                             _mode = Mode.Produce;
                                         }
                                         break;
+
                                     case Attr.Value:
                                     case Attr.Whitespace:
                                         // more
                                         break;
                                 }
                                 break;
+
                             case Mode.Trailing:
                                 switch (attr)
                                 {
                                     case Attr.Delimiter:
                                         _mode = Mode.Produce;
                                         break;
+
                                     case Attr.Quote:
                                         // back into value
                                         _trailingStart = -1;
                                         _valueEnd = -1;
                                         _mode = Mode.ValueQuoted;
                                         break;
+
                                     case Attr.Value:
                                         // back into value
                                         _trailingStart = -1;
                                         _valueEnd = -1;
                                         _mode = Mode.Value;
                                         break;
+
                                     case Attr.Whitespace:
                                         // more
                                         break;
@@ -362,7 +376,7 @@
 
         public static bool operator !=(StringSegment left, StringSegment right) => !left.Equals(right);
 
-        #endregion
+        #endregion Equality members
 
         public bool StartsWith(string text, StringComparison comparisonType)
         {

@@ -6,12 +6,12 @@
     [StartupModule(typeof(RegistrationConfiguration))]
     public class ShutdownModuleForAppDomain : IStartupModule
     {
-        IShutdownHandler _ShutdownHandler;
+        private IShutdownHandler _ShutdownHandler;
 
         void IStartupModule.Shutdown()
         {
 #if HAS_APP_DOMAIN
-            System.AppDomain.CurrentDomain.DomainUnload -= (s,e) => CurrentDomain_DomainUnload();
+            System.AppDomain.CurrentDomain.DomainUnload -= (s, e) => CurrentDomain_DomainUnload();
 #elif HAS_ASSEMBLY_LOAD_CONTEXT
             System.Runtime.Loader.AssemblyLoadContext.Default.Unloading -= (context) => CurrentDomain_DomainUnload();
 #endif
@@ -30,7 +30,7 @@
 #endif
         }
 
-        void CurrentDomain_DomainUnload()
+        private void CurrentDomain_DomainUnload()
         {
             _ShutdownHandler.Shutdown();
         }

@@ -105,7 +105,7 @@ namespace DotNetStarter.Configure.Expressions
         /// <typeparam name="T"></typeparam>
         /// <returns></returns>
         public AssemblyExpression WithAssemblyFromType<T>() => WithAssemblyFromType(typeof(T));
-        
+
         /// <summary>
         /// Gets all assemblies with DotNetStarter.Abstractions.DiscoverableAssemblyAttribute, which is generally a good starting point.
         /// <para>For netstandard1.0 assemblies MUST be provided!</para>
@@ -125,7 +125,6 @@ namespace DotNetStarter.Configure.Expressions
             }
         }
 
-
         /// <summary>
         /// Filters a list of assemblies for DiscoverableAssemblyAttribute.
         /// </summary>
@@ -141,6 +140,5 @@ namespace DotNetStarter.Configure.Expressions
 
             return filteredAssemblies.ToList();
         }
-
     }
 }

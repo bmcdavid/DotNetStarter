@@ -1,8 +1,9 @@
 using DotNetStarter.Abstractions;
-using System;
+
 #if LAMAR_LOCATOR || NETSTANDARD
 using Microsoft.Extensions.DependencyInjection;
 #endif
+
 namespace DotNetStarter.UnitTests
 {
     [StartupModule]
@@ -25,7 +26,7 @@ namespace DotNetStarter.UnitTests
                     {
                         c.AddTransient((provider) =>
                         {
-                            return new Func<IInjectable, TestFuncCreationComplex>(
+                            return new System.Func<IInjectable, TestFuncCreationComplex>(
                                 (i) => new TestFuncCreationComplex(i,
                                 provider.GetService(typeof(IStartupConfiguration)) as IStartupConfiguration,
                                 provider.GetService(typeof(IShutdownHandler)) as IShutdownHandler)

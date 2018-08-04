@@ -37,7 +37,6 @@
             var types = assemblies.SelectMany(x => x.GetTypesCheck());
 
             return types.Where(x => x.CustomAttribute(attrType, false).Any()).OfType<object>();
-
         }
     }
 }

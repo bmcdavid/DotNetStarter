@@ -8,7 +8,9 @@
     [AttributeUsage(AttributeTargets.Assembly, AllowMultiple = false, Inherited = true)]
     public abstract class StartupAssemblyDependencyBaseAttribute : StartupDependencyBaseAttribute
     {
-        private StartupAssemblyDependencyBaseAttribute() { }
+        private StartupAssemblyDependencyBaseAttribute()
+        {
+        }
 
         /// <summary>
         /// Constructor

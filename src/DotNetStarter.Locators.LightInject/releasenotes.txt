@@ -1,1 +1,1 @@
-﻿New locator supported.
+﻿Updated for interface changes.

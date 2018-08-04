@@ -10,7 +10,9 @@ namespace DotNetStarter.Web
     {
         private static bool IsRegistered = false;
 
-        void IStartupModule.Shutdown() { }
+        void IStartupModule.Shutdown()
+        {
+        }
 
         void IStartupModule.Startup(IStartupEngine engine)
         {

@@ -9,7 +9,7 @@
     /// <summary>
     /// DryIoc locator
     /// </summary>
-    public class DryIocLocator : ILocator, ILocatorWithCreateScope, ILocatorWithPropertyInjection
+    public class DryIocLocator : ILocator, ILocatorWithCreateScope, ILocatorWithPropertyInjection, ILocatorWithDebugInfo
     {
         /// <summary>
         /// Raw container reference
@@ -19,10 +19,7 @@
         /// <summary>
         /// Constructor
         /// </summary>
-        public DryIocLocator(IContainer container)
-        {
-            _container = container;
-        }
+        public DryIocLocator(IContainer container) => _container = container;
 
         /// <summary>
         /// Provides debug information about the container
@@ -56,22 +53,12 @@
         /// Creates/opens locator scope
         /// </summary>
         /// <returns></returns>
-        public virtual ILocatorScoped CreateScope()
-        {
-            return new DryIocLocatorScoped(
-                _container
-                .OpenScope(),
-                this
-            );
-        }
+        public virtual ILocatorScoped CreateScope() => new DryIocLocatorScoped(_container.OpenScope(), this);
 
         /// <summary>
         /// Dispose
         /// </summary>
-        public virtual void Dispose()
-        {
-            _container.Dispose();
-        }
+        public virtual void Dispose() => _container.Dispose();
 
         /// <summary>
         /// Gets service instance given type and optional key
@@ -95,8 +82,7 @@
         /// <param name="serviceType"></param>
         /// <param name="key"></param>
         /// <returns></returns>
-        public virtual IEnumerable<object> GetAll(Type serviceType, string key = null) =>
-                    _container.ResolveMany(serviceType, serviceKey: key); //_Container.Resolve(typeof(IEnumerable<>).MakeGenericType(serviceType), IfUnresolved.ReturnDefault) as IEnumerable<object>;
+        public virtual IEnumerable<object> GetAll(Type serviceType, string key = null) => _container.ResolveMany(serviceType, serviceKey: key);
 
         /// <summary>
         /// Gets all registered services for generics.
@@ -104,7 +90,6 @@
         /// <typeparam name="TService"></typeparam>
         /// <param name="key"></param>
         /// <returns></returns>
-        public virtual IEnumerable<TService> GetAll<TService>(string key = null) =>
-                    _container.ResolveMany<TService>(serviceKey: key);
+        public virtual IEnumerable<TService> GetAll<TService>(string key = null) => _container.ResolveMany<TService>(serviceKey: key);
     }
 }

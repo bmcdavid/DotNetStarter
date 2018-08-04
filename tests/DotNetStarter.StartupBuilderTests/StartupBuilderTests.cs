@@ -163,7 +163,7 @@ namespace DotNetStarter.StartupBuilderTests
 
             Assert.IsTrue(builder.StartupContext.Configuration.Environment.IsEnvironment("UnitTest1"));
             Assert.IsNotNull(logger);
-            Assert.IsNotNull(new TestFooImport().FooImport.Service);
+            //Assert.IsNotNull(new TestFooImport().FooImport.Service);
             // ran when test assembly is initialized
             Assert.IsTrue(SetupTests.TestImport is NullReferenceException);
         }

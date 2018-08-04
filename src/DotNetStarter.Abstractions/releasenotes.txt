@@ -1,2 +1,1 @@
-﻿Added ILocatorAmbient for singleton access to a scoped locator.
-Added ILocatorScopedWithDisposeAction for hook into scoped locator disposing use by ILocatorScopedFactory.
+﻿Version 3 release. See https://bmcdavid.github.io/DotNetStarter/breaking-changes.html for full changes.

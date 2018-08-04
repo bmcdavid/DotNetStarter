@@ -16,10 +16,7 @@ namespace DotNetStarter.Locators
         /// </summary>
         /// <param name="container"></param>
         /// <param name="locator"></param>
-        public StructureMapSignedLocatorScoped(IContainer container, ILocator locator) : base(container)
-        {
-            Parent = locator as ILocatorScoped;
-        }
+        public StructureMapSignedLocatorScoped(IContainer container, ILocator locator) : base(container) => Parent = locator as ILocatorScoped;
 
         /// <summary>
         /// Parent scope or null
@@ -30,10 +27,7 @@ namespace DotNetStarter.Locators
         /// Action to perform on disposing
         /// </summary>
         /// <param name="disposeAction"></param>
-        public void OnDispose(Action disposeAction)
-        {
-            _onDispose += disposeAction;
-        }
+        public void OnDispose(Action disposeAction) => _onDispose += disposeAction;
 
         /// <summary>
         /// Disposes ILocatorScoped

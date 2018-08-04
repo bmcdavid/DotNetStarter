@@ -42,7 +42,7 @@
         public virtual Dictionary<Type, HashSet<Type>> ReviewRegistry => new Dictionary<Type, HashSet<Type>>(ScannedRegistry);
 
         /// <summary>
-        /// Get scanned types for given type, note: it doesn't filter interfaces or abstracts. 
+        /// Get scanned types for given type, note: it doesn't filter interfaces or abstracts.
         /// <para>To register a type use the DiscoverTypesAttribute assembly attribute!</para>
         /// </summary>
         /// <param name="scannedType"></param>
@@ -104,10 +104,13 @@
             {
                 case ExportsType.All:
                     return assembly.GetTypesCheck(exportedOnly: false);
+
                 case ExportsType.ExportsOnly:
                     return assembly.GetTypesCheck(exportedOnly: true);
+
                 case ExportsType.Specfic:
                     return exportAttribute.Exports;
+
                 default:
                     throw new NotSupportedException("Unknown ExportsType of " + exportsType);
             }

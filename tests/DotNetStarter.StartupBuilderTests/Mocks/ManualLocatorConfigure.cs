@@ -8,7 +8,7 @@ namespace DotNetStarter.StartupBuilderTests.Mocks
 
         public void Configure(ILocatorRegistry registry, ILocatorConfigureEngine engine)
         {
-            Executed = true;    
+            Executed = true;
         }
     }
 }

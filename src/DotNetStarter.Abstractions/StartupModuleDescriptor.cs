@@ -8,7 +8,7 @@ namespace DotNetStarter.Abstractions
     public class StartupModuleDescriptor
     {
         /// <summary>
-        /// IStartupModule instance 
+        /// IStartupModule instance
         /// </summary>
         public IStartupModule ModuleInstance { get; set; }
 

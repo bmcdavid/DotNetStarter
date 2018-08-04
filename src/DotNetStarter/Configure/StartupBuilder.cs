@@ -22,7 +22,10 @@ namespace DotNetStarter.Configure
         private Action<DefaultsExpression> _overrideExpression;
         private bool _runOnce;
         private IStartupHandler _startupHandler;
-        private StartupBuilder() { }
+
+        private StartupBuilder()
+        {
+        }
 
         /// <summary>
         /// The IStartupContext result after Run has been called
@@ -39,7 +42,7 @@ namespace DotNetStarter.Configure
         /// Runs expressions, and configures DotNetStarter's ILocator, but does not run IStartupModules
         /// <para>IMPORTANT: Must run after all other configurations.</para>
         /// </summary>
-        /// <param name="useApplicationContext">If false, the static ApplicationContext.Default will not be set after execution. Default is true.</param>
+        /// <param name="useApplicationContext">If false, the static ApplicationContext.Default will not be set nor will Import&lt;T> work after execution. Default is true.</param>
         /// <param name="useDiscoverableAssemblies">Ignored if assemblyexpression is used! Instructs default assembly loader to filter for assemblies with DiscoverableAssemblyAttribute</param>
         /// <returns></returns>
         public StartupBuilder Build(bool useApplicationContext = true, bool useDiscoverableAssemblies = false)
@@ -80,7 +83,7 @@ namespace DotNetStarter.Configure
                         if (!ApplicationContext.Started)
                         {
                             _appStarting = true;
-                            ExecuteBuild(objFactory, assembliesForStartup, overrideExp);
+                            ExecuteBuild(objFactory, assembliesForStartup, overrideExp, useApplicationContext);
                             ApplicationContext._Default = StartupContext;
                             ApplicationContext.Started = ApplicationContext._Default != null;
                             _appStarting = false;
@@ -91,7 +94,7 @@ namespace DotNetStarter.Configure
                 return this;
             }
 
-            ExecuteBuild(objFactory, assembliesForStartup, overrideExp);
+            ExecuteBuild(objFactory, assembliesForStartup, overrideExp, false);
             return this;
         }
 
@@ -151,11 +154,11 @@ namespace DotNetStarter.Configure
             return this;
         }
 
-        private void ExecuteBuild(StartupBuilderObjectFactory objFactory, IEnumerable<Assembly> assemblies, DefaultsExpression defaults)
+        private void ExecuteBuild(StartupBuilderObjectFactory objFactory, IEnumerable<Assembly> assemblies, DefaultsExpression defaults, bool enableImport)
         {
             var startupConfig = objFactory.CreateStartupConfiguration(assemblies);
             IStartupHandler localStartupHandlerFactory(IStartupConfiguration config) =>
-                new StartupHandler(objFactory.CreateTimedTask, objFactory.CreateRegistryFactory(config), objFactory.CreateContainerDefaults(), objFactory.GetRegistryFinalizer());
+                new StartupHandler(objFactory.CreateTimedTask, objFactory.CreateRegistryFactory(config), objFactory.CreateContainerDefaults(), objFactory.GetRegistryFinalizer(), enableImport: enableImport);
             _startupHandler = (defaults.StartupHandlerFactory ?? localStartupHandlerFactory).Invoke(startupConfig);
 
             StartupContext = _startupHandler.ConfigureLocator(startupConfig);

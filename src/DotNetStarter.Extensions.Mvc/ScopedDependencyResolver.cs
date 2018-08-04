@@ -12,9 +12,9 @@ namespace DotNetStarter.Extensions.Mvc
     /// </summary>
     public class ScopedDependencyResolver : IDependencyResolver
     {
-        IHttpContextProvider _HttpContextProvider;
-        ILocator _Locator;
-        IServiceProviderTypeChecker _ServiceProviderTypeChecker;
+        private IHttpContextProvider _HttpContextProvider;
+        private ILocator _Locator;
+        private IServiceProviderTypeChecker _ServiceProviderTypeChecker;
 
         /// <summary>
         /// Constructor
@@ -67,7 +67,7 @@ namespace DotNetStarter.Extensions.Mvc
             {
                 return ResolveLocator().GetAll(serviceType);
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 if (_ServiceProviderTypeChecker.IsScannedAssembly(serviceType, e))
                 {

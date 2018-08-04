@@ -1,8 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using Autofac;
+﻿using Autofac;
 using Autofac.Builder;
 using DotNetStarter.Abstractions;
+using System;
+using System.Collections.Generic;
 
 namespace DotNetStarter.Locators
 {

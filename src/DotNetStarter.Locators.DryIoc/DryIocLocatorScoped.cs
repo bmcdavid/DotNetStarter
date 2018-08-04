@@ -1,16 +1,16 @@
 ﻿namespace DotNetStarter.Locators
 {
-    using System;
-    using System.Collections.Generic;
     using DotNetStarter.Abstractions;
     using DryIoc;
+    using System;
+    using System.Collections.Generic;
 
     /// <summary>
     /// Scoped DryIoc locator
     /// </summary>
     public sealed class DryIocLocatorScoped : ILocatorScoped, ILocatorWithCreateScope
     {
-        private readonly IResolverContext _resolveContext;        
+        private readonly IResolverContext _resolveContext;
         private Action _onDispose;
 
         /// <summary>
@@ -23,11 +23,6 @@
             _resolveContext = context;
             Parent = locator as ILocatorScoped;
         }
-
-        /// <summary>
-        /// Not Supported debug info
-        /// </summary>
-        public string DebugInfo => "not supported";
 
         /// <summary>
         /// Parent scope or null

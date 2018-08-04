@@ -21,7 +21,9 @@
 
         internal static IStartupContext _Default;
 
-        private ApplicationContext() { }
+        private ApplicationContext()
+        {
+        }
 
         /// <summary>
         /// Default context instance

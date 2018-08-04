@@ -49,6 +49,7 @@ namespace DotNetStarter.Internal
             else if (scopedLocator != null) { stack.Push(scopedLocator); }
             SetStack(stack);
         }
+
 #if HAS_ASYNC_LOCAL
         // based on httpcontextaccessor
         private static readonly System.Threading.AsyncLocal<Stack<ILocatorScoped>> LocatorScopedContext = new System.Threading.AsyncLocal<Stack<ILocatorScoped>>();
@@ -63,6 +64,7 @@ namespace DotNetStarter.Internal
             LocatorScopedContext.Value = stack;
         }
 #elif NETFULLFRAMEWORK
+
         //based on httpcontext
         private static readonly string Key = typeof(LocatorAmbient).FullName;
 
@@ -75,6 +77,7 @@ namespace DotNetStarter.Internal
         {
             System.Runtime.Remoting.Messaging.CallContext.SetData(Key, stack);
         }
+
 #else
         private static Stack<ILocatorScoped> GetStack() { return null; }
 

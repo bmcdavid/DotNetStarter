@@ -19,11 +19,11 @@
         /// Constructor
         /// </summary>
         /// <param name="locatorScopeFactory"></param>
-        /// <param name="locator"></param>        
+        /// <param name="locator"></param>
         public WebModuleStartupHandler(ILocatorScopedFactory locatorScopeFactory, ILocator locator)
         {
             _LocatorScopeFactory = locatorScopeFactory;
-            _StartupModules = locator.GetAll<IStartupModule>(); // hack: needed to get correct sorting on some locators!            
+            _StartupModules = locator.GetAll<IStartupModule>(); // hack: needed to get correct sorting on some locators!
         }
 
         /// <summary>

@@ -11,8 +11,10 @@ namespace DotNetStarter.Locators
             {
                 case Lifecycle.Scoped:
                     return configuration.Lifestyle.SingletonPerScope();
+
                 case Lifecycle.Singleton:
                     return configuration.Lifestyle.Singleton();
+
                 default:
                     return configuration;
             }

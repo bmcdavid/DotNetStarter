@@ -46,7 +46,7 @@ builder
     {
         assemblies
             // Filters assemblies for ones using the [assembly: DotNetStarter.Abstractions.DiscoverableAssembly] 
-            .WithDiscoverableAssemblies() // for ASP.NET Core projects an initial list of assemblies must be provided
+            .WithDiscoverableAssemblies()
             .WithAssemblyFromType<RegistrationConfiguration>()
             .WithAssembliesFromTypes(typeof(StartupBuilder), typeof(BadStartupModule));
     })
