@@ -104,7 +104,6 @@ namespace DotNetStarter.Locators
          * I will need to work around it in IStartupModule cases like in DotNetStarter.Web
          * this also won't support delegate rolutions
          */
-
         private void SortList<T>(ref IEnumerable<T> list, Type service)
         {
             if (_registrations.TryGetValue(service, out List<ContainerRegistration> sourceList))

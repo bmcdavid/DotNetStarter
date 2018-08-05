@@ -11,7 +11,7 @@
     <Copyright>Copyright $(CurrentYear)</Copyright>
     <Description>DotNetStarter MVC extensions.</Description>
     <!--follow semantic versioning may include prelease information too-->
-    <PackageVersion>3.0.0-pre001</PackageVersion>
+    <PackageVersion>3.0.0</PackageVersion>
     <PackageTags>Startup Modules MVC</PackageTags>
     <!--do not change unless you want to deal with assembly redirects-->
     <AssemblyVersion>3.0.0</AssemblyVersion>

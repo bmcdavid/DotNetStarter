@@ -1,8 +1,4 @@
-# DotNetStarter Read Me
-
-Master: [![Master Build status](https://ci.appveyor.com/api/projects/status/a907wfniy73sk5de/branch/master?svg=true)](https://ci.appveyor.com/project/bmcdavid/dotnetstarter/branch/master)
-
-Current: [![Current Build status](https://ci.appveyor.com/api/projects/status/a907wfniy73sk5de?svg=true)](https://ci.appveyor.com/project/bmcdavid/dotnetstarter)
+[![Master Build status](https://ci.appveyor.com/api/projects/status/a907wfniy73sk5de/branch/master?svg=true)](https://ci.appveyor.com/project/bmcdavid/dotnetstarter/branch/master)
 
 DotNetStarter is a framework for composing applications where many components are provided by NuGet packages. The main audiences of DotNetStarter are package authors and application developers.
 
@@ -89,7 +85,7 @@ An IoC/DI package must be installed to enable the ILocator. There are several pr
 * [DotNetStarter.LightInject](https://www.nuget.org/packages/DotNetStarter.Locators.LightInject/)
 * [DotNetStarter.Structuremap](https://www.nuget.org/packages/DotNetStarter.StructureMap/)
 
-They can also be swapped at compile time by the application owner by overriding the default:
+They can also be swapped at compile time by the application developer by overriding the default:
 
 ```cs
 DotNetStarter.Configure.StartupBuilder.Create()

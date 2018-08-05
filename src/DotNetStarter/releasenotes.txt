@@ -1,1 +1,2 @@
-﻿Version 3 release. See https://bmcdavid.github.io/DotNetStarter/breaking-changes.html for full changes.
+﻿Version 3 release.
+See https://bmcdavid.github.io/DotNetStarter/breaking-changes.html for full changes.

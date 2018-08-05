@@ -22,10 +22,8 @@ namespace DotNetStarter.Configure
         private Action<DefaultsExpression> _overrideExpression;
         private bool _runOnce;
         private IStartupHandler _startupHandler;
-
-        private StartupBuilder()
-        {
-        }
+        private bool _usingAppContext;
+        private StartupBuilder() { }
 
         /// <summary>
         /// The IStartupContext result after Run has been called
@@ -48,8 +46,10 @@ namespace DotNetStarter.Configure
         public StartupBuilder Build(bool useApplicationContext = true, bool useDiscoverableAssemblies = false)
         {
             if (_isConfigured) { return this; }
+            if (useApplicationContext && ApplicationContext.Started) { return this; }
 
             _isConfigured = true;
+            _usingAppContext = useApplicationContext;
             var objFactory = new StartupBuilderObjectFactory() { Environment = _environment };
             var assemblyExp = new AssemblyExpression();
             _assemblyExpression?.Invoke(assemblyExp);
@@ -85,7 +85,6 @@ namespace DotNetStarter.Configure
                             _appStarting = true;
                             ExecuteBuild(objFactory, assembliesForStartup, overrideExp, useApplicationContext);
                             ApplicationContext._Default = StartupContext;
-                            ApplicationContext.Started = ApplicationContext._Default != null;
                             _appStarting = false;
                         }
                     }
@@ -136,11 +135,19 @@ namespace DotNetStarter.Configure
         /// </summary>
         public void Run()
         {
+            if (_usingAppContext && ApplicationContext.Started) { return; }
             if (_runOnce) { return; }
 
             _runOnce = true;
             Build(); // just in case its not called fluently
+
+            if(_startupHandler == null)
+            {
+                throw new Exception($"{nameof(Run)} was called but the startupHandler no startup handler was defined!");
+            }
+
             _startupHandler.TryExecuteStartupModules();
+            ApplicationContext.Started = ApplicationContext._Default != null;
         }
 
         /// <summary>

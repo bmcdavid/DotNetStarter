@@ -5,20 +5,24 @@ title: DotNetStarter - Breaking Changes
 
 This page is used to note each versions breaking changes and list future breaking changes.
 
-## 2.x - 3.x (Proposed)
+## 2.x - 3.x
 * Changed ILocatorConfigure.Configure signature to take a new ILocatorConfigureEngine instead of IStartupEngine to prevent access to ILocator before configuration is complete
 * Removed IStartupEngine.OnLocatorStartupComplete
 * Removed IStartupObjectFactory
-* Moved ILocatorVerification to ILocatorRegistryWithVerification
-* Added ILocatoryRegistry.CreateLocator
 * Removed IReadonlyLocator
-* Merged IlocatorDefaultRegistrationsWithCollections into IlocatorDefaultRegistrations.
 * Removed DotNetStarter.ApplicationContext.Startup methods
 * Removed IStartupConfigurationWithEnvironment
-* Changed IStartupHandler interface.
 * Removed ILocatorSet.
 * Removed IStartupDelayed, handled by IStartupHandler now.
+* Remved netstandard code from DotNetStarter.Web, its now only full framework supported.
+* Removed StartupContainerException
+* Removed obsoleted code
+* Removed ability to set Import<T> when StartupBuilder isn't using the applicationContext.
+* Changed IStartupHandler interface.
+* Moved ILocatorVerification to ILocatorRegistryWithVerification
 * Moved ILocatorScopedWithSet to Internal namespace.
+* Added ILocatoryRegistry.CreateLocator
+* Merged IlocatorDefaultRegistrationsWithCollections into IlocatorDefaultRegistrations.
 * Added Configure.Expresions.AssemblyExpression.WithNoAssemblyScanning() to remove all assembly scanning functionality.
 * Added IItemCollection for storing items in IStartupEnvironments.
 * Added IRegistrationModifier for allowing application developers ability to change discovered registrations.
@@ -26,9 +30,6 @@ This page is used to note each versions breaking changes and list future breakin
 * Added ILocatorRegistry extensions for registering, similar to IServiceCollection Apis
 * Added new ILocators: Autofac, Grace, Lamar, and Stashbox.
 * Added ILocatorRegistry finalizer for application developers to do any last minute changes after container is setup.
-* Remved netstandard code from DotNetStarter.Web, its now only full framework supported.
-* Removed ability to set Import<T> when StartupBuilder isn't used for applicationContext.
-* Removed obsoleted code
 
 ## 1.x - 2.x
 * Added IStartupEnvironment to IStartupConfiguration, and set by passing an implementation to DotNetStarter.ApplicationContext.Startup

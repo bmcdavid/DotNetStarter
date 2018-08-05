@@ -32,22 +32,7 @@
         /// </summary>
         /// <param name="target"></param>
         /// <returns></returns>
-        public virtual bool BuildUp(object target)
-        {
-            try
-            {
-                _container.InjectPropertiesAndFields(target); // v2.x
-
-                return true;
-            }
-            catch (Exception e)
-            {
-                if (e is ContainerException ce)
-                    throw new StartupContainerException(ce.Error, ce.Message, ce.InnerException);
-
-                throw new StartupContainerException(-100, e.Message, e.InnerException);
-            }
-        }
+        public virtual bool BuildUp(object target) => _container.InjectPropertiesAndFields(target) != null;
 
         /// <summary>
         /// Creates/opens locator scope
