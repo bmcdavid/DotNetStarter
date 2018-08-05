@@ -17,7 +17,7 @@
         /// <param name="serviceType"></param>
         /// <param name="lifecycle"></param>
         /// <param name="dependencies"></param>
-        public RegistrationAttribute(Type serviceType, Lifecycle lifecycle = Lifecycle.Transient, params Type[] dependencies) 
+        public RegistrationAttribute(Type serviceType, Lifecycle lifecycle = Lifecycle.Transient, params Type[] dependencies)
             : base(dependencies)
         {
             ServiceType = serviceType;

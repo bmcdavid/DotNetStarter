@@ -1,8 +1,8 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using DotNetStarter.Abstractions;
-using System.Linq;
-using System.Collections.Generic;
+﻿using DotNetStarter.Abstractions;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace DotNetStarter.UnitTests
 {
@@ -25,28 +25,10 @@ namespace DotNetStarter.UnitTests
             Assert.IsNotNull(task);
         }
 
-        [ExpectedException(typeof(LocatorLockedException))]
-        [TestMethod]
-        public void ShouldThrowLockedLocatorException()
-        {
-            var locator = Context.Service.Locator;
-            var temp = Context.Service.Locator.InternalContainer;
-            var lockedPreSet = (locator as IReadOnlyLocator).IsLocked;
-#pragma warning disable CS0612 // Type or member is obsolete
-            (locator as ILocatorSetContainer).SetContainer(temp);
-#pragma warning restore CS0612 // Type or member is obsolete
-            var lockedPostSet = (locator as IReadOnlyLocator).IsLocked;
-
-            Assert.IsFalse(lockedPreSet);
-            Assert.IsTrue(lockedPostSet);
-            Assert.IsNotNull(Context.Service.Locator.InternalContainer); // triggers exception
-
-        }
-
         [TestMethod]
         public void ShouldBeReadOnlyLocatorInAppContext()
         {
-            Assert.IsInstanceOfType(ApplicationContext.Default.Locator, typeof(IReadOnlyLocator));
+            Assert.IsInstanceOfType(ApplicationContext.Default.Locator, typeof(ILocator));
         }
 
         [TestMethod]
@@ -120,7 +102,6 @@ namespace DotNetStarter.UnitTests
             Assert.IsNotNull(sut);
         }
 
-
         [TestMethod]
         public void ShouldGetGenericService()
         {
@@ -184,7 +165,7 @@ namespace DotNetStarter.UnitTests
 
         internal static bool RegisterException = false;
 
-        public void Configure(ILocatorRegistry container, IStartupEngine engine)
+        public void Configure(ILocatorRegistry container, ILocatorConfigureEngine engine)
         {
             try
             {

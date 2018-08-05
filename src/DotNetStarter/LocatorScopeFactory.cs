@@ -45,33 +45,26 @@ namespace DotNetStarter
 
         private ILocatorScoped _Create(ILocator locator)
         {
-            if (!(locator is ILocatorCreateScope creator))
+            if (!(locator is ILocatorWithCreateScope creator))
             {
-                throw new ArgumentException($"{locator.GetType().FullName} doesn't implement {typeof(ILocatorCreateScope).FullName}!");
+                throw new ArgumentException($"{locator.GetType().FullName} doesn't implement {typeof(ILocatorWithCreateScope).FullName}!");
             }
 
             var scope = creator.CreateScope();
             var accessor = scope.Get<ILocatorScopedAccessor>();
 
-            if (!(accessor is ILocatorScopedSetter setter))
+            if (!(accessor is ILocatorScopedWithSet setter))
             {
-                throw new Exception($"{accessor.GetType().FullName} must implement {typeof(ILocatorScopedSetter).FullName}!");
+                throw new Exception($"{accessor.GetType().FullName} must implement {typeof(ILocatorScopedWithSet).FullName}!");
             }
 
             setter.SetCurrentScopedLocator(scope);
 
-#if !NETSTANDARD1_0 && !NETSTANDARD1_1
             if (_locatorAmbient is ILocatorAmbientWithSet settable)
             {
-                if (!(scope is ILocatorScopedWithDisposeAction disposeAction))
-                {
-                    throw new ArgumentException($"{scope.GetType().FullName} must implement {typeof(ILocatorScopedWithDisposeAction).FullName}!");
-                }
-
-                disposeAction.OnDispose(() => settable.SetCurrentScopedLocator(null));
+                scope.OnDispose(() => settable.SetCurrentScopedLocator(null));
                 settable.SetCurrentScopedLocator(scope);
             }
-#endif
 
             return scope;
         }

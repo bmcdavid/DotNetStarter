@@ -3,6 +3,7 @@
     /// <summary>
     /// Information about current environment
     /// </summary>
+    [CriticalComponent]
     public interface IStartupEnvironment
     {
         /// <summary>
@@ -14,6 +15,11 @@
         /// Current environment name
         /// </summary>
         string EnvironmentName { get; }
+
+        /// <summary>
+        /// Environment Items
+        /// </summary>
+        IItemCollection Items { get; }
 
         /// <summary>
         /// Determines if environment name is 'Development'
@@ -57,6 +63,12 @@
         /// </summary>
         /// <returns></returns>
         bool IsTesting();
+
+        /// <summary>
+        /// Determines if environment name is 'UnitTest'
+        /// </summary>
+        /// <returns></returns>
+        bool IsUnitTest();
 
         /// <summary>
         /// Determines if environment name is 'UserAcceptanceTesting'

@@ -1,10 +1,10 @@
-﻿using DotNetStarter.Abstractions.Internal;
+﻿using DotNetStarter.Abstractions;
+using DotNetStarter.Abstractions.Internal;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System;
 using System.Collections.Generic;
 using System.Reflection;
 
-[assembly: DotNetStarter.Abstractions.DiscoverableAssembly]
+[assembly: DiscoverableAssembly]
 
 namespace DotNetStarter.UnitTests
 {
@@ -21,8 +21,17 @@ namespace DotNetStarter.UnitTests
                 typeof(DotNetStarter.UnitTests.Mocks.ExcludeModule).Assembly()
             };
 
-#pragma warning disable CS0618 // Type or member is obsolete
-            ApplicationContext.Startup(assemblies: assemblies, objectFactory: new Mocks.TestObjectFactory());
+            DotNetStarter.Configure.StartupBuilder.Create()
+                .ConfigureAssemblies(a => a.WithAssemblies(assemblies))
+                .ConfigureStartupModules(m => m.RemoveStartupModule<Mocks.ExcludeModule>())
+                .OverrideDefaults(d =>
+                {
+                    d
+                        .UseLocatorRegistryFactory(new Mocks.TestLocatorFactory())
+                        .UseAssemblyFilter(new Mocks.TestAssemblyFilter())
+                        .UseLogger(new Mocks.TestLogger());
+                })
+                .Run();
         }
     }
 }

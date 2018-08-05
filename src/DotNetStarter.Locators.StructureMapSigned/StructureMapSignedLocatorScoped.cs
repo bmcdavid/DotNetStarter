@@ -7,7 +7,7 @@ namespace DotNetStarter.Locators
     /// <summary>
     /// Scoped structuremap locator
     /// </summary>
-    public sealed class StructureMapSignedLocatorScoped : StructureMapSignedLocatorBase, ILocatorScoped, ILocatorScopedWithDisposeAction
+    public sealed class StructureMapSignedLocatorScoped : StructureMapSignedLocator, ILocatorScoped
     {
         private Action _onDispose;
 
@@ -16,15 +16,7 @@ namespace DotNetStarter.Locators
         /// </summary>
         /// <param name="container"></param>
         /// <param name="locator"></param>
-        public StructureMapSignedLocatorScoped(IContainer container, ILocator locator) : base(container)
-        {
-            Parent = locator as ILocatorScoped;
-        }
-
-        /// <summary>
-        /// Denies access to base container
-        /// </summary>
-        public override object InternalContainer => throw new LocatorLockedException();
+        public StructureMapSignedLocatorScoped(IContainer container, ILocator locator) : base(container) => Parent = locator as ILocatorScoped;
 
         /// <summary>
         /// Parent scope or null
@@ -35,10 +27,7 @@ namespace DotNetStarter.Locators
         /// Action to perform on disposing
         /// </summary>
         /// <param name="disposeAction"></param>
-        public void OnDispose(Action disposeAction)
-        {
-            _onDispose += disposeAction;
-        }
+        public void OnDispose(Action disposeAction) => _onDispose += disposeAction;
 
         /// <summary>
         /// Disposes ILocatorScoped

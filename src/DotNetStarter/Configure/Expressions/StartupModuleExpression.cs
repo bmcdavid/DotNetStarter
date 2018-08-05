@@ -51,6 +51,17 @@ namespace DotNetStarter.Configure.Expressions
         }
 
         /// <summary>
+        /// Removes the given type from the startup/shutdown or configuration process
+        /// </summary>
+        /// <param name="moduleType"></param>
+        /// <returns></returns>
+        public StartupModulesExpression RemoveModule(Type moduleType)
+        {
+            RemoveModuleTypes.Add(moduleType);
+            return this;
+        }
+
+        /// <summary>
         /// Removes the given type from the startup/shutdown process
         /// </summary>
         /// <typeparam name="T"></typeparam>

@@ -1,6 +1,4 @@
-﻿using DotNetStarter.Abstractions;
-
-namespace DotNetStarter.Extensions.Mvc
+﻿namespace DotNetStarter.Extensions.Mvc
 {
     /// <summary>
     /// Allows configuration of MVC controller setup

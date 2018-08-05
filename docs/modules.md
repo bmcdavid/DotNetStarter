@@ -10,7 +10,7 @@ DotNetStarter module types:
 * IWebModule: startup module that implements IHttpModule in DotNetStarter.Web (only for netframework projects).
 
 ## IStartupModules
-Startup modules will execute a Startup method when either DotNetStarter.ApplicationContext.Startup() is executed or DotNetStarter.ApplicationContext.Default.Locator is accessed. 
+Startup modules will execute a Startup method when either the StartupBuilder.Run() is executed or DotNetStarter.ApplicationContext.Default.Locator is accessed. 
 This call should be placed early in the application, below are a few possible places to execute:
 
 * ASP.Net WebApp - use in constructor in the global.asax code class.
@@ -21,8 +21,7 @@ This call should be placed early in the application, below are a few possible pl
 ***Note:*** The Shutdown method may not execute by default in all systems as noted in the [known issues](https://bmcdavid.github.io/DotNetStarter/known-issues.html).
 
 ## Filtering Modules
-Scanned modules can be removed by creating a class that implements IStartupModuleFilter and
- swapping out the default implementation in a custom [object factory](https://bmcdavid.github.io/DotNetStarter/custom-objectfactory.html).
+Modules can be removed during startup using the StartupModuleExpression in the StartupBuilder.ConfigureStartupModules callback. An example can be found in the [customization fine-tuned example](https://bmcdavid.github.io/DotNetStarter/custom-objectfactory.html).
 
 ## Startup Module Example
 ```cs
@@ -68,7 +67,7 @@ namespace Example
             _Logger = logger;
         }
 
-        public void Shutdown(IStartupEngine engine)
+        public void Shutdown()
         {
             _Logger.LogMessage("Shutting down!");
 

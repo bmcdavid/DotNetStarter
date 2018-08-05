@@ -12,7 +12,6 @@ namespace DotNetStarter
         /// </summary>
         public NullLocatorException() : base($"{nameof(DotNetStarter)} requires an ILocator as of version 1.x, please refer to https://bmcdavid.github.io/DotNetStarter/ilocator-setup.html for assistance!")
         {
-
         }
     }
 }

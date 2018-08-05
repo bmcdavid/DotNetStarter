@@ -1,6 +1,4 @@
-﻿#if !NETSTANDARD
-
-using System.Web;
+﻿using System.Web;
 
 namespace DotNetStarter.Web
 {
@@ -15,4 +13,3 @@ namespace DotNetStarter.Web
         HttpContextBase CurrentContext { get; }
     }
 }
-#endif

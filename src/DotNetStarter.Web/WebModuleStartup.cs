@@ -1,9 +1,6 @@
-﻿#if !NETSTANDARD
-
-namespace DotNetStarter.Web
+﻿namespace DotNetStarter.Web
 {
     using DotNetStarter.Abstractions;
-    using System;
     using System.Collections.Generic;
     using System.Web;
 
@@ -56,8 +53,6 @@ namespace DotNetStarter.Web
 
             if (_ModuleHandler.StartupEnabled())
                 _ModuleHandler.Startup(application, StartupModules);
-
         }
     }
 }
-#endif

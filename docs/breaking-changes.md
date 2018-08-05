@@ -5,17 +5,35 @@ title: DotNetStarter - Breaking Changes
 
 This page is used to note each versions breaking changes and list future breaking changes.
 
-## Important Note
-The read-only locator was introduced in 1.x since registrations after OnLocatorStartupComplete required casting as ILocatorRegistry.
-
-## 2.x - 3.x (Proposed)
-* Remove IStartupObjectFactory
-* Merge IlocatorDefaultRegistrationsWithCollections into IlocatorDefaultRegistrations.
-* Remove DotNetStarter.ApplicationContext.Startup methods
-* Remove IStartupConfigurationWithEnvironment
+## 2.x - 3.x
+* Changed ILocatorConfigure.Configure signature to take a new ILocatorConfigureEngine instead of IStartupEngine to prevent access to ILocator before configuration is complete
+* Removed IStartupEngine.OnLocatorStartupComplete
+* Removed IStartupObjectFactory
+* Removed IReadonlyLocator
+* Removed DotNetStarter.ApplicationContext.Startup methods
+* Removed IStartupConfigurationWithEnvironment
+* Removed ILocatorSet.
+* Removed IStartupDelayed, handled by IStartupHandler now.
+* Remved netstandard code from DotNetStarter.Web, its now only full framework supported.
+* Removed StartupContainerException
+* Removed obsoleted code
+* Removed ability to set Import<T> when StartupBuilder isn't using the applicationContext.
+* Changed IStartupHandler interface.
+* Moved ILocatorVerification to ILocatorRegistryWithVerification
+* Moved ILocatorScopedWithSet to Internal namespace.
+* Added ILocatoryRegistry.CreateLocator
+* Merged IlocatorDefaultRegistrationsWithCollections into IlocatorDefaultRegistrations.
+* Added Configure.Expresions.AssemblyExpression.WithNoAssemblyScanning() to remove all assembly scanning functionality.
+* Added IItemCollection for storing items in IStartupEnvironments.
+* Added IRegistrationModifier for allowing application developers ability to change discovered registrations.
+* Added an Action<ILocatoryRegistry> for application developer finalization of setup.
+* Added ILocatorRegistry extensions for registering, similar to IServiceCollection Apis
+* Added new ILocators: Autofac, Grace, Lamar, and Stashbox.
+* Added ILocatorRegistry finalizer for application developers to do any last minute changes after container is setup.
 
 ## 1.x - 2.x
 * Added IStartupEnvironment to IStartupConfiguration, and set by passing an implementation to DotNetStarter.ApplicationContext.Startup
+* The read-only locator was introduced in 1.x since registrations after OnLocatorStartupComplete required casting as ILocatorRegistry.
 * Added LightInject and StructureMapSigned locators
 * Added DotNetStarter.Locators namespace for all locators
   * DryIoc and Structuremap retain their existing NuGet package Ids

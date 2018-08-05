@@ -17,7 +17,7 @@ namespace DotNetStarter.Extensions.Mvc
         /// </summary>
         public static Func<IControllerRegistrationSetup> GetControllerRegistrationSetup;
 
-        void ILocatorConfigure.Configure(ILocatorRegistry registry, IStartupEngine engine)
+        void ILocatorConfigure.Configure(ILocatorRegistry registry, ILocatorConfigureEngine engine)
         {
             engine.OnLocatorStartupComplete += () =>
             {

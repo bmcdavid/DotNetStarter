@@ -1,13 +1,10 @@
-# DotNetStarter Read Me
+[![Master Build status](https://ci.appveyor.com/api/projects/status/a907wfniy73sk5de/branch/master?svg=true)](https://ci.appveyor.com/project/bmcdavid/dotnetstarter/branch/master)
 
-[![Build status](https://ci.appveyor.com/api/projects/status/a907wfniy73sk5de?svg=true)](https://ci.appveyor.com/project/bmcdavid/dotnetstarter)
-
-DotNetStarter is a framework for composing applications where many components are provided by NuGet packages. There are two main audiences: package authors and application owners.
+DotNetStarter is a framework for composing applications where many components are provided by NuGet packages. The main audiences of DotNetStarter are package authors and application developers.
 
 Package authors can depend on either the [configuration and startup abstractions](https://www.nuget.org/packages/DotNetStarter.Abstractions/) or the [registration attribute abstractions](https://www.nuget.org/packages/DotNetStarter.RegistrationAbstractions/) to create their components. The components can then be designed with constructor dependency injection in mind. These classes can then be registered by using the [RegistrationAttribute](https://bmcdavid.github.io/DotNetStarter/register.html) or in a startup module implementing [ILocatorConfigure](https://bmcdavid.github.io/DotNetStarter/register.html). Packages may also perform tasks during startup and shutdown using the [IStartupModule](https://bmcdavid.github.io/DotNetStarter/modules.html) interface.
 
-Application owners can install the DotNetStarter package, a locator (container wrapper) package, any extension such as MVC for the full ASP.Net framework, and any NuGet packages utilizing the abstractions. Owners have full control over the [startup process](https://bmcdavid.github.io/DotNetStarter/custom-objectfactory.html) which can be customized through code configuration at almost every level using a fluent configuration API. The framework also supports a wide variety of .NET frameworks from ASP.NET version 3.5 and up, as well as the [.NET Standard](https://docs.microsoft.com/en-us/dotnet/standard/net-standard) starting at 1.0.
-
+Application developers can install the DotNetStarter package, a [locator](https://bmcdavid.github.io/DotNetStarter/custom-locator.html) (container wrapper) package, any extension such as [MVC](https://www.nuget.org/packages/DotNetStarter.Extensions.Mvc/) for the full ASP.Net framework, and any NuGet packages utilizing the abstractions. Developers have full control over the [startup process](https://bmcdavid.github.io/DotNetStarter/custom-objectfactory.html) which can be customized through code configuration at almost every level using a fluent configuration API. The framework also supports a wide variety of .NET frameworks from ASP.NET version 3.5 and up, as well as the [.NET Standard](https://docs.microsoft.com/en-us/dotnet/standard/net-standard) starting at 1.0.
 
 Package  | Version 
 -------- | :------------ 
@@ -18,6 +15,7 @@ Package  | Version
 [DotNetStarter.Owin](https://www.nuget.org/packages/DotNetStarter.Owin/) |  [![NuGet version](https://badge.fury.io/nu/DotNetStarter.Owin.svg)](https://badge.fury.io/nu/DotNetStarter.Owin)
 [DotNetStarter.DryIoc](https://www.nuget.org/packages/DotNetStarter.DryIoc/) |  [![NuGet version](https://badge.fury.io/nu/DotNetStarter.DryIoc.svg)](https://badge.fury.io/nu/DotNetStarter.DryIoc)
 [DotNetStarter.Structuremap](https://www.nuget.org/packages/DotNetStarter.Structuremap/) |  [![NuGet version](https://badge.fury.io/nu/DotNetStarter.Structuremap.svg)](https://badge.fury.io/nu/DotNetStarter.Structuremap)
+[DotNetStarter.Locators.LightInject](https://www.nuget.org/packages/DotNetStarter.Locators.LightInject/) |  [![NuGet version](https://badge.fury.io/nu/DotNetStarter.Locators.LightInject.svg)](https://badge.fury.io/nu/DotNetStarter.Locators.LightInject)
 [DotNetStarter.Extensions.Mvc](https://www.nuget.org/packages/DotNetStarter.Extensions.Mvc/) |  [![NuGet version](https://badge.fury.io/nu/DotNetStarter.Extensions.Mvc.svg)](https://badge.fury.io/nu/DotNetStarter.Extensions.Mvc)
 [DotNetStarter.Extensions.WebApi](https://www.nuget.org/packages/DotNetStarter.Extensions.WebApi/) |  [![NuGet version](https://badge.fury.io/nu/DotNetStarter.Extensions.WebApi.svg)](https://badge.fury.io/nu/DotNetStarter.Extensions.WebApi)
 
@@ -44,7 +42,7 @@ builder
     {
         assemblies
             // Filters assemblies for ones using the [assembly: DotNetStarter.Abstractions.DiscoverableAssembly] 
-            .WithDiscoverableAssemblies() // for ASP.NET Core projects an initial list of assemblies must be provided
+            .WithDiscoverableAssemblies()
             .WithAssemblyFromType<RegistrationConfiguration>()
             .WithAssembliesFromTypes(typeof(StartupBuilder), typeof(BadStartupModule));
     })
@@ -76,17 +74,33 @@ builder
     .Build() // configures the ILocator
     .Run() // Runs IStartupModule registrations;
 ```
+## Abstractions
 
-### Inversion of Control / Dependency Injection
-An IoC/DI package must be installed to enable the ILocator, two are provided by default DotNetStarter.DryIoc and DotNetStarter.Structuremap.
-They can also be swapped at runtime via the assembly attribute as noted below for DryIoc:
+All attributes, baseclasses and interfaces reside in the DotNetStarter.Abstractions namespace. Documentation is provided in the intellisense.
 
+## Inversion of Control / Dependency Injection
+An IoC/DI package must be installed to enable the ILocator. There are several provided by default:
+
+* [DotNetStarter.DryIoc](https://www.nuget.org/packages/DotNetStarter.DryIoc/)
+* [DotNetStarter.LightInject](https://www.nuget.org/packages/DotNetStarter.Locators.LightInject/)
+* [DotNetStarter.Structuremap](https://www.nuget.org/packages/DotNetStarter.StructureMap/)
+
+They can also be swapped at compile time by the application developer by overriding the default:
+
+```cs
+DotNetStarter.Configure.StartupBuilder.Create()
+    .ConfigureAssemblies(a => a.WithDiscoverableAssemblies())
+    .OverrideDefaults(d => d.UseLocatorRegistryFactory(new DotNetStarter.Locators.DryIocLocatorFactory())) //uses DryIoc
+    .Build()
+    .Run();
+```
+If the default isn't overridden a locator is discovered at runtime in the configured assemblies by an assembly attribute as noted below for DryIoc.
 ```cs
 [assembly: DotNetStarter.Abstractions.LocatorRegistryFactory(typeof(DotNetStarter.DryIocLocatorFactory))]
 ```
 
-## Examples of DI/IOC, requires an ILocator package such as DotNetStarter.DryIoc or DotNetStarter.StructureMap
-### Registration
+## Examples of DI/IOC
+### Service Registration
 ```cs
 public interface ITest
 {
@@ -99,14 +113,35 @@ public class Test : ITest
     public string SayHi(string n) => "Hello " + n;
 }
 ```
-### Usage
+### Usage 
+Constructor injection is the preferred method of consuming services as shown below.
 ```cs
-// Import<T> is a struct wrapper for DotNetStarter.ApplicationContext.Default.Locator and can be used when scoping isn't required.
-// Also, Import<T> should only be used when Construction Injection is not available.
-public Import<ITest> TestService { get; set; }
-
-public void ExampleMethod()
+[Registration(typeof(TestService), Lifecycle.Transient)]
+public class TestService
 {
-    string message = TestService.Service.SayHi("User");
+    private readonly ITest _test;
+    
+    public TestService(ITest test)
+    {
+        _test = test;
+    }
+
+    public void ExampleMethod()
+    {
+        string message = _test.SayHi("User");
+    }
+}
+```
+Cases may exist where constructor injection is not available, in these cases an Import&lt;T> could be used to resolve services. A best practice when using Import &lt;T> is to make the dependency known by using a public property, which may be overridden using Import<T>.Accessor by any consumers.
+
+```cs
+public class TestService
+{
+    public Import<ITest> TestImple { get; set; }
+
+    public void ExampleMethod()
+    {
+        string message = TestImple.Service.SayHi("User");
+    }
 }
 ```

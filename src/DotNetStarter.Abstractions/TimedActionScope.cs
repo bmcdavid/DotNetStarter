@@ -9,6 +9,7 @@
         /// Stores in application variable
         /// </summary>
         Application = 0,
+
         /// <summary>
         /// Stores in request variable
         /// </summary>

@@ -1,6 +1,4 @@
-﻿#if !NETSTANDARD
-
-using DotNetStarter.Abstractions;
+﻿using DotNetStarter.Abstractions;
 using System.Web;
 
 namespace DotNetStarter.Web
@@ -17,5 +15,3 @@ namespace DotNetStarter.Web
         public virtual HttpContextBase CurrentContext => new HttpContextWrapper(HttpContext.Current);
     }
 }
-
-#endif

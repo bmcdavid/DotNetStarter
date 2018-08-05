@@ -6,7 +6,8 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace DotNetStarter
 {
-#if NET45 || NET35 || NET40
+#if NETFULLFRAMEWORK && !NETSTANDARD
+
     /// <summary>
     /// Access to scoped provider
     /// </summary>
@@ -17,6 +18,7 @@ namespace DotNetStarter
         /// </summary>
         IServiceProvider ServiceProvider { get; }
     }
+
 #endif
 
     /// <summary>

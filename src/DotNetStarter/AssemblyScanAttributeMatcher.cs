@@ -10,7 +10,7 @@
     /// </summary>
     public class AssemblyScanAttributeMatcher : IAssemblyScanTypeMatcher
     {
-        Type _AttrType = typeof(Attribute);
+        private Type _AttrType = typeof(Attribute);
 
         /// <summary>
         /// Matches based on if an attribute and scan type has attribute

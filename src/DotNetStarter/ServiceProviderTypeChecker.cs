@@ -14,8 +14,8 @@ namespace DotNetStarter
     {
         private readonly IStartupConfiguration _StartupConfiguration;
         private readonly IReflectionHelper _ReflectionHelper;
-        Dictionary<Assembly, bool> _ScannedLookups;
-        List<Assembly> _ScannedAssemblies;
+        private Dictionary<Assembly, bool> _ScannedLookups;
+        private List<Assembly> _ScannedAssemblies;
 
         /// <summary>
         /// Constructor
@@ -51,7 +51,7 @@ namespace DotNetStarter
                     _ScannedAssemblies.AddRange(_StartupConfiguration.Assemblies);
                 }
             }
-            
+
             var assembly = _ReflectionHelper.GetAssembly(serviceType);
 
             if (!_ScannedLookups.TryGetValue(assembly, out bool isScanned))

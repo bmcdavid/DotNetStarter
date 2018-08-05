@@ -11,22 +11,21 @@
     <Copyright>Copyright $(CurrentYear)</Copyright>
     <Description>Startup system and service registration for a DI container.</Description>
     <!--follow semantic versioning may include prelease information too-->
-    <PackageVersion>2.2.2</PackageVersion>
+    <PackageVersion>3.0.0</PackageVersion>
     <PackageTags>Startup Modules DI</PackageTags>
-
     <!--do not change unless you want to deal with assembly redirects-->
-    <AssemblyVersion>2.0.0</AssemblyVersion>
-    <FileVersion>2.0.0</FileVersion>
+    <AssemblyVersion>3.0.0</AssemblyVersion>
+    <FileVersion>3.0.0</FileVersion>
   </PropertyGroup>
 
   <Import Project="..\..\targets\CommonNuGetPackage.props" />
 
   <ItemGroup Condition="'$(TargetFramework)' == 'netstandard1.0'">
-    <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="1.0.0" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="1.1.0" />
   </ItemGroup>
 
   <ItemGroup Condition="'$(TargetFramework)' == 'netstandard1.6'">
-    <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="1.0.0" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="1.1.0" />
     <PackageReference Include="Microsoft.Extensions.DependencyModel" Version="2.1.0" />
     <PackageReference Include="System.Runtime.Loader" Version="4.3.0" />    
   </ItemGroup>
@@ -41,16 +40,28 @@
     <ProjectReference Include="..\DotNetStarter.RegistrationAbstractions\DotNetStarter.RegistrationAbstractions.csproj" />
   </ItemGroup>
 
+  <PropertyGroup Condition=" '$(TargetFramework)' == 'net35'">
+    <DefineConstants>$(DefineConstants);NETFULLFRAMEWORK;HAS_APP_DOMAIN</DefineConstants>
+  </PropertyGroup>
+
+  <PropertyGroup Condition=" '$(TargetFramework)' == 'net40'">
+    <DefineConstants>$(DefineConstants);NETFULLFRAMEWORK;HAS_APP_DOMAIN</DefineConstants>
+  </PropertyGroup>
+
+  <PropertyGroup Condition=" '$(TargetFramework)' == 'net45'">
+    <DefineConstants>$(DefineConstants);NETFULLFRAMEWORK;HAS_APP_DOMAIN</DefineConstants>
+  </PropertyGroup>  
+
   <PropertyGroup Condition=" '$(TargetFramework)' == 'netstandard1.0'">
-    <DefineConstants>$(DefineConstants);NETSTANDARD;</DefineConstants>
+    <DefineConstants>$(DefineConstants);NETSTANDARD</DefineConstants>
   </PropertyGroup>
 
   <PropertyGroup Condition=" '$(TargetFramework)' == 'netstandard1.6'">
-    <DefineConstants>$(DefineConstants);NETSTANDARD</DefineConstants>
+    <DefineConstants>$(DefineConstants);NETSTANDARD;HAS_ASYNC_LOCAL;HAS_ASSEMBLY_LOAD_CONTEXT</DefineConstants>
   </PropertyGroup>
   
   <PropertyGroup Condition=" '$(TargetFramework)' == 'netstandard2.0'">
-    <DefineConstants>$(DefineConstants);NETSTANDARD</DefineConstants>
+    <DefineConstants>$(DefineConstants);NETSTANDARD;HAS_ASYNC_LOCAL;HAS_APP_DOMAIN</DefineConstants>
   </PropertyGroup>
 
 </Project>

@@ -5,7 +5,7 @@ namespace DotNetStarter.Abstractions
     /// <summary>
     /// Allows locator implementation to select how ILocatorConfigure objects are created
     /// </summary>
-    public interface ILocatorResolveConfigureModules
+    public interface ILocatorRegistryWithResolveConfigureModules
     {
         /// <summary>
         /// Allows locator implementation to select how ILocatorConfigure objects are created

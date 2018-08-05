@@ -6,7 +6,6 @@ namespace DotNetStarter.UnitTests.Mocks
     {
         public TestLogger() : base(LogLevel.Error, 100000)
         {
-
         }
     }
 }

@@ -1,97 +1,67 @@
-﻿namespace DotNetStarter
-{
-    using Abstractions;
-    using Abstractions.Internal;
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Reflection;
+﻿using DotNetStarter.Abstractions;
+using DotNetStarter.Abstractions.Internal;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 
+namespace DotNetStarter
+{
     /// <summary>
     /// Default startup handler
     /// </summary>
-    public class StartupHandler : IStartupHandler, IStartupEngine
+    public class StartupHandler : IStartupHandler
     {
-        private bool _LocatorStartupInvoked = false;
-
-        private bool _Started = false;
-
-        private IStartupContext _Context;
+        private static readonly string _timerNameBase = typeof(StartupHandler).FullName;
+        private readonly bool _enableDelayedStartupModules = false;
+        private readonly Action<ILocatorRegistry> _finalizeRegistry;
+        private readonly bool _enableImport;
+        private readonly ILocatorDefaultRegistrations _locatorDefaultRegistrations;
+        private readonly ILocatorRegistryFactory _locatorRegistryFactory;
+        private readonly Func<ITimedTask> _timedTaskFactory;
+        private Action _delayedStart;
 
         /// <summary>
-        /// Fires after ILocatorConfigure.Configure has completed in all executing modules
+        /// Constructor
         /// </summary>
-        public event Action OnLocatorStartupComplete
+        /// <param name="timedTaskFactory"></param>
+        /// <param name="locatorRegistryFactory"></param>
+        /// <param name="locatorDefaultRegistrations"></param>
+        /// <param name="finalizeRegistry">Action for application developers to perform any last minute tasks after all other actions are performed.</param>
+        /// <param name="enableDelayedStartupModules">If true, doesn't run IStartupModules until IStartupHandler.StartupModules is invoked, default is true</param>
+        /// <param name="enableImport"></param>
+        public StartupHandler(Func<ITimedTask> timedTaskFactory, ILocatorRegistryFactory locatorRegistryFactory, ILocatorDefaultRegistrations locatorDefaultRegistrations, Action<ILocatorRegistry> finalizeRegistry, bool enableDelayedStartupModules = true, bool enableImport = true)
         {
-            add
-            {
-                if (_LocatorStartupInvoked == true)
-                {
-                    throw new Exception($"Locator startup complete has already been invoked, try {nameof(OnStartupComplete)} instead!");
-                }
-
-                _OnLocatorStartupComplete += value;
-            }
-            remove
-            {
-                _OnLocatorStartupComplete -= value;
-            }
+            _timedTaskFactory = timedTaskFactory;
+            _locatorRegistryFactory = locatorRegistryFactory;
+            _locatorDefaultRegistrations = locatorDefaultRegistrations;
+            _enableDelayedStartupModules = enableDelayedStartupModules;
+            _finalizeRegistry = finalizeRegistry;
+            _enableImport = enableImport;
         }
 
         /// <summary>
-        /// Fires after IStartupModule.Startup has completed in all executing modules
+        /// Starup process, by default it scans assemblies, sorts modules, configures container, and runs startup for each module
         /// </summary>
-        public event Action OnStartupComplete;
-
-        private event Action _OnLocatorStartupComplete;
-        /// <summary>
-        /// Startup Configuration for IStartupEngine
-        /// </summary>
-        public IStartupConfiguration Configuration { get; protected set; }
-
-        /// <summary>
-        /// ILocator for IStartupEngine
-        /// </summary>
-        public ILocator Locator { get; protected set; }
-
-#pragma warning disable CS0612 // Type or member is obsolete
-                              /// <summary>
-                              /// Starup process, by default it scans assemblies, sorts modules, configures container, and runs startup for each module
-                              /// </summary>
-                              /// <param name="config"></param>
-                              /// <param name="objectFactory"></param>
-                              /// <param name="context"></param>
-                              /// <returns></returns>
-        public virtual bool Startup(IStartupConfiguration config, IStartupObjectFactory objectFactory, out IStartupContext context)
-#pragma warning restore CS0612 // Type or member is obsolete
+        /// <param name="config"></param>
+        /// <returns></returns>
+        public virtual IStartupContext ConfigureLocator(IStartupConfiguration config)
         {
-            if (_Started)
-            {
-                context = _Context;
-
-                return false;
-            }
-
-            Configuration = config;
-            Locator = objectFactory.CreateRegistry(config) as ILocator;
-
-            IStartupEngine startupEngine = this;
-            IEnumerable<Assembly> assemblies = config.Assemblies;
-            IStartupContext tempContext = null;
-            IEnumerable<IDependencyNode> sortedModules = null;
-            IEnumerable<IDependencyNode> filteredModules = null;
-            var timerNameBase = typeof(StartupHandler).FullName;
+            var configureEngine = new LocatorConfigureEngine(config);
+            IStartupContext startupContext = null;
+            ICollection<IDependencyNode> sortedModules = null;
+            ICollection<IDependencyNode> filteredModules = null;
+            var locatorRegistry = _locatorRegistryFactory?.CreateRegistry();
+            ILocator locator = null;
 
             // scan the assemblies for registered types for quick retrieval
-            var scanSetup = objectFactory.CreateTimedTask();
-            scanSetup.Name = timerNameBase + ".AssemblyScan";
+            var scanSetup = _timedTaskFactory.Invoke();
+            scanSetup.Name = _timerNameBase + ".AssemblyScan";
             scanSetup.TimedAction = () =>
             {
+                var assemblies = config.Assemblies;
                 var discoverTypeAttrs = assemblies.SelectMany(x => x.CustomAttribute(typeof(DiscoverTypesAttribute), false).OfType<DiscoverTypesAttribute>());
-                var discoverTypes = discoverTypeAttrs.SelectMany(x => x.DiscoverTypes);                
-
-                // a custom config may set this to null
-                Func<Assembly, bool> assemblyFilter = null;
+                var discoverTypes = discoverTypeAttrs.SelectMany(x => x.DiscoverTypes);
+                Func<System.Reflection.Assembly, bool> assemblyFilter = null; // a custom config may set this to null
 
                 if (config.AssemblyFilter != null)
                 {
@@ -102,8 +72,8 @@
             };
 
             // modules with attribute
-            var moduleSortSetup = objectFactory.CreateTimedTask();
-            moduleSortSetup.Name = timerNameBase + ".ModuleSort";
+            var moduleSortSetup = _timedTaskFactory.Invoke();
+            moduleSortSetup.Name = _timerNameBase + ".ModuleSort";
             moduleSortSetup.TimedAction = () =>
             {
                 var dependents = config.AssemblyScanner.GetTypesFor(typeof(StartupModuleAttribute)).OfType<object>();
@@ -111,52 +81,45 @@
                 var tempFiltered = config.ModuleFilter?.FilterModules(sortedModules) ?? sortedModules;
 
                 // ensure module order wasn't tampered with
-                filteredModules = from i in sortedModules join o in tempFiltered on i.FullName equals o.FullName select o;
+                filteredModules = (from i in sortedModules join o in tempFiltered on i.FullName equals o.FullName select o).ToList();
             };
 
             // create container
-            var containerSetup = objectFactory.CreateTimedTask();
-            containerSetup.Name = timerNameBase + ".ContainerSetup";
+            var containerSetup = _timedTaskFactory.Invoke(); ;
+            containerSetup.Name = _timerNameBase + ".ContainerSetup";
             containerSetup.TimedAction = () =>
             {
-                if (!(Locator is ILocatorRegistry registry))
-                    throw new NullLocatorException();
+                if (locatorRegistry == null) { throw new NullLocatorException(); }
+                _locatorDefaultRegistrations.Configure(locatorRegistry, filteredModules, config);
+                locator = _locatorRegistryFactory.CreateLocator();
+                var locatorRegistries = (locatorRegistry as ILocatorRegistryWithResolveConfigureModules)?.ResolveConfigureModules(filteredModules, config) ?? locator.GetAll<ILocatorConfigure>();
 
-                var containerDefaults = objectFactory.CreateContainerDefaults();
+                ConfigureRegistry(locatorRegistry, locatorRegistries, configureEngine);
 
-                if (containerDefaults == null)
-                    throw new NotSupportedException("Unable to set container defaults, the object factory returned a null service for it!");
-
-                containerDefaults.Configure(registry, filteredModules, config, objectFactory);
-                var locatorRegistries = (registry as ILocatorResolveConfigureModules)?.ResolveConfigureModules(filteredModules, config)
-                                            ?? (registry as ILocator).GetAll<ILocatorConfigure>();
-
-                foreach (var map in locatorRegistries ?? Enumerable.Empty<ILocatorConfigure>())
+                // configure import<T> locator, only on static/default startup by default
+                if (_enableImport)
                 {
-                    map.Configure(registry, this);
+                    ImportHelper.OnEnsureLocator += (() => locator);
                 }
 
-                var readOnlyLocator = Internal.ReadOnlyLocator.CreateReadOnlyLocator(registry as ILocator);
-                registry.Add(typeof(ILocator), readOnlyLocator);
+                locatorRegistry.Add(typeof(ILocator), locator);
+                startupContext = CreateStartupContext(locator, filteredModules, sortedModules, config);
+                locatorRegistry.Add(typeof(IStartupContext), startupContext);
 
-                tempContext = objectFactory.CreateStartupContext(readOnlyLocator, filteredModules, sortedModules, config);
-                registry.Add(typeof(IStartupContext), tempContext);
-
-                ImportHelper.OnEnsureLocator += (() => readOnlyLocator); // configure import<T> locator
-
-                _OnLocatorStartupComplete?.Invoke(); //execute locator complete before verification since last minute additions can occur here.
-                _LocatorStartupInvoked = true;
-                (registry as ILocatorVerification)?.Verify();
+                configureEngine.RaiseLocatorSetupComplete();
+                (locatorRegistry as ILocatorRegistryWithVerification)?.Verify();
+                _finalizeRegistry?.Invoke(locatorRegistry);
             };
 
             // startup modules
-            var startupModulesTask = objectFactory.CreateTimedTask();
-            startupModulesTask.Name = timerNameBase + ".StartupModules";
+            var startupModulesTask = _timedTaskFactory.Invoke();
+            startupModulesTask.Name = _timerNameBase + ".StartupModules";
             startupModulesTask.TimedAction = () =>
             {
-                var modules = Locator.GetAll<IStartupModule>(); // resolve all startup modules for DI
-                Startup(modules);
-                OnStartupComplete?.Invoke();
+                var startupEngine = new StartupEngine(locator, configureEngine);
+                var modules = startupEngine.Locator.GetAll<IStartupModule>(); // resolve all startup modules for DI
+                ExecuteStartupModules(modules, startupEngine);
+                startupEngine.RaiseStartupComplete();
             };
 
             // execute tasks in order
@@ -165,37 +128,64 @@
             config.TimedTaskManager.Execute(containerSetup);
 
             // optionally allows delaying startup until later, must be implemented on IStartupConfiguration instances
-            var delayedStart = config as IStartupDelayed;
-            void startup() => config.TimedTaskManager.Execute(startupModulesTask);
+            _delayedStart = () => config.TimedTaskManager.Execute(startupModulesTask);
 
-            if (delayedStart?.EnableDelayedStartup == true)
+            if (!_enableDelayedStartupModules)
             {
-                delayedStart.DelayedStartup = startup;
-            }
-            else
-            {
-                startup();
+                TryExecuteStartupModules();
             }
 
-            // assign the context(s) after running tasks
-            _Context = context = tempContext;
-
-            _Started = true;
-
-            return _Started;
+            return startupContext;
         }
 
         /// <summary>
-        /// Startups up given modules
+        /// Tries to run IStartupModules if delayed execute is enabled
+        /// </summary>
+        public bool TryExecuteStartupModules()
+        {
+            if (_delayedStart == null) { return false; }
+            _delayedStart.Invoke();
+            _delayedStart = null;
+            return true;
+        }
+
+        /// <summary>
+        /// Configures ILocatorConfigure modules
+        /// </summary>
+        /// <param name="registry"></param>
+        /// <param name="locatorRegistries"></param>
+        /// <param name="configureEngine"></param>
+        protected virtual void ConfigureRegistry(ILocatorRegistry registry, IEnumerable<ILocatorConfigure> locatorRegistries, ILocatorConfigureEngine configureEngine)
+        {
+            foreach (var map in locatorRegistries ?? Enumerable.Empty<ILocatorConfigure>())
+            {
+                map.Configure(registry, configureEngine);
+            }
+        }
+
+        /// <summary>
+        /// Creates default startup context
+        /// </summary>
+        /// <param name="locator"></param>
+        /// <param name="filteredModules"></param>
+        /// <param name="sortedModules"></param>
+        /// <param name="config"></param>
+        /// <returns></returns>
+        protected virtual IStartupContext CreateStartupContext(ILocator locator, IEnumerable<IDependencyNode> filteredModules, IEnumerable<IDependencyNode> sortedModules, IStartupConfiguration config)
+        {
+            return new StartupContext(locator, sortedModules, filteredModules, config);
+        }
+
+        /// <summary>
+        /// Startups up given IStartupModule instances
         /// </summary>
         /// <param name="modules"></param>
-        protected virtual void Startup(IEnumerable<IStartupModule> modules)
+        /// <param name="startupEngine"></param>
+        protected virtual void ExecuteStartupModules(IEnumerable<IStartupModule> modules, IStartupEngine startupEngine)
         {
-            var startupModules = modules ?? Enumerable.Empty<IStartupModule>();
-
-            foreach (var x in startupModules)
+            foreach (var x in modules ?? Enumerable.Empty<IStartupModule>())
             {
-                x.Startup(this);
+                x.Startup(startupEngine);
             }
         }
     }

@@ -1,24 +1,40 @@
 ﻿using DotNetStarter.Abstractions;
+using DotNetStarter.UnitTests.Mocks;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Linq;
 
 namespace DotNetStarter.UnitTests
 {
-    #region Mocks
-
-    [StartupModule]
-    public class StartupTest2 : ILocatorConfigure
+    [TestClass]
+    public class StartupEngineTests
     {
-        internal static bool _ContainerInitCompleteCalled = false;
-
-        public void Configure(ILocatorRegistry container, IStartupEngine engine)
+        [TestMethod]
+        public void ShouldCallContainerInitCompleteEvent()
         {
-            engine.OnLocatorStartupComplete += Engine_OnContainerStarted;
+            var x = ApplicationContext.Default.Configuration.Assemblies.ToList();
+
+            Assert.IsTrue(StartupTest2._ContainerInitCompleteCalled);
         }
 
-        private void Engine_OnContainerStarted()
+        [TestMethod]
+        public void ShouldFireEventsForILocatorConfigure()
         {
-            _ContainerInitCompleteCalled = true;
+            var sut = new ConfigureStartupCompleteTest();
+            var builder = Configure.StartupBuilder.Create();
+            builder
+                .ConfigureAssemblies(a => a.WithNoAssemblyScanning())
+                .ConfigureStartupModules(m => m.ConfigureLocatorModuleCollection
+                    (c =>
+                    {
+                        c.Add(sut);
+                    })
+                )
+                .UseTestLocator()
+                .Build(useApplicationContext: false);
+
+            Assert.IsTrue(sut.FiredLocator, "failed to fire during locator config!");
+            builder.Run();
+            Assert.IsTrue(sut.FiredStartup);
         }
     }
 
@@ -35,17 +51,19 @@ namespace DotNetStarter.UnitTests
         }
     }
 
-    #endregion
-
-    [TestClass]
-    public class StartupEngineTests
+    [StartupModule]
+    public class StartupTest2 : ILocatorConfigure
     {
-        [TestMethod]
-        public void ShouldCallContainerInitCompleteEvent()
-        {
-            var x = DotNetStarter.ApplicationContext.Default.Configuration.Assemblies.ToList();
+        internal static bool _ContainerInitCompleteCalled = false;
 
-            Assert.IsTrue(StartupTest2._ContainerInitCompleteCalled);
-        }        
+        public void Configure(ILocatorRegistry container, ILocatorConfigureEngine engine)
+        {
+            engine.OnLocatorStartupComplete += Engine_OnContainerStarted;
+        }
+
+        private void Engine_OnContainerStarted()
+        {
+            _ContainerInitCompleteCalled = true;
+        }
     }
 }

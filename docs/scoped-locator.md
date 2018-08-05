@@ -30,6 +30,3 @@ Install package DotNetStarter.Web. The scoped locator can be retrieved with
 ```cs
 var scopedLocator = HttpContext.Current?.GetScopedLocator(); // using DotNetStarter.Web;
 ```
-
-### Adding aspnetcore services to Locator for scoped IServiceProvider
-See [examples for netcore](https://bmcdavid.github.io/DotNetStarter/example-netcore-configure-services.html)

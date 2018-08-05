@@ -8,7 +8,7 @@ namespace DotNetStarter.Locators
     /// <summary>
     /// LightInject ILocatorScoped
     /// </summary>
-    public sealed class LightInjectLocatorScoped : ILocatorScoped, ILocatorCreateScope, ILocatorScopedWithDisposeAction
+    public sealed class LightInjectLocatorScoped : ILocatorScoped, ILocatorWithCreateScope
     {
         private Action _disposeAction;
 
@@ -29,11 +29,6 @@ namespace DotNetStarter.Locators
         public ILocatorScoped Parent { get; }
 
         private readonly Scope _Scope;
-
-        /// <summary>
-        /// Denied Access to container
-        /// </summary>
-        public object InternalContainer => throw new LocatorLockedException();
 
         /// <summary>
         /// Debug Info
@@ -61,7 +56,7 @@ namespace DotNetStarter.Locators
         /// <returns></returns>
         public object Get(Type serviceType, string key = null)
         {
-           return _Scope.GetInstance(serviceType);
+            return _Scope.GetInstance(serviceType);
         }
 
         /// <summary>
@@ -96,7 +91,7 @@ namespace DotNetStarter.Locators
         {
             return _Scope.GetAllInstances(serviceType);
         }
-        
+
         /// <summary>
         /// Creates a child scoped locator
         /// </summary>

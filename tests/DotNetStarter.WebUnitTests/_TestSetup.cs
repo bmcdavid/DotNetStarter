@@ -1,6 +1,6 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System.Reflection;
 using System.Collections.Generic;
+using System.Reflection;
 
 namespace DotNetStarter.Web.Tests
 {
@@ -14,7 +14,7 @@ namespace DotNetStarter.Web.Tests
             {
                 typeof(DotNetStarter.ApplicationContext).Assembly,
                 typeof(DotNetStarter.Abstractions.IAssemblyFilter).Assembly,
-                typeof(DotNetStarter.Locators.DryIocLocator).Assembly,
+                typeof(DotNetStarter.Locators.DryIocLocatorRegistry).Assembly,
                 typeof(DotNetStarter.Web.IHttpContextProvider).Assembly,
                 typeof(Mocks.MockHttpContextProvider).Assembly,
             };

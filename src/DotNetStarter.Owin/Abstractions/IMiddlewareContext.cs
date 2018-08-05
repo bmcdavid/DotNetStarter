@@ -4,7 +4,7 @@
     using System.IO;
 
     /// <summary>
-    /// Provides access to OWIN environment 
+    /// Provides access to OWIN environment
     /// </summary>
     public interface IMiddlewareContext
     {
@@ -46,7 +46,7 @@
         /// <typeparam name="T">The type of the value.</typeparam>
         /// <param name="key">The key of the value to set.</param>
         /// <param name="value">The value to set.</param>
-        /// <returns>This instance.</returns>        
+        /// <returns>This instance.</returns>
         IMiddlewareContext Set<T>(string key, T value);
     }
 }

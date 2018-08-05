@@ -1,1 +1,1 @@
-﻿Namespace change. Updated for interface changes.
+﻿Updated to DryIoc 3.

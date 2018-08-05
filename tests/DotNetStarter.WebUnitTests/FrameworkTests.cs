@@ -7,37 +7,8 @@ namespace DotNetStarter.Web.Tests
     [TestClass]
     public class FrameworkTests
     {
-        Import<IHttpContextProvider> _HttpContextProvider;
-        Import<IWebModuleStartupHandler> _WebModuleHandler;
-
-        [TestMethod]
-        public void ShouldCreateStartupEnvironmentWeb()
-        {
-#pragma warning disable CS0612 // Type or member is obsolete
-            var x = new StartupConfigurationWithWebEnvironment(
-#pragma warning restore CS0612 // Type or member is obsolete
-                System.AppDomain.CurrentDomain.GetAssemblies(),
-                new StartupEnvironmentWeb("UnitTest"),
-                new AssemblyFilter(),
-                new AssemblyScanner(),
-                new DependencyFinder(),
-                new DependencySorter(new StartupObjectFactory().CreateDependencyNode),
-                new StringLogger(LogLevel.Error, 10000),
-                new StartupModuleFilter(),
-                new TimedTaskManager(new StartupObjectFactory().CreateRequestSettingsProvider)
-            );
-
-            Assert.AreSame(x.Environment.EnvironmentName, "UnitTest");
-
-            Assert.IsNotNull(x.Assemblies);
-            Assert.IsNotNull(x.AssemblyFilter);
-            Assert.IsNotNull(x.AssemblyScanner);
-            Assert.IsNotNull(x.DependencyFinder);
-            Assert.IsNotNull(x.DependencySorter);
-            Assert.IsNotNull(x.Logger);
-            Assert.IsNotNull(x.ModuleFilter);
-            Assert.IsNotNull(x.TimedTaskManager);
-        }
+        private Import<IHttpContextProvider> _HttpContextProvider;
+        private Import<IWebModuleStartupHandler> _WebModuleHandler;
 
         [TestMethod]
         public void ShouldDefaultToRegisterHttpContextBase()
@@ -69,8 +40,8 @@ namespace DotNetStarter.Web.Tests
             Mocks.MockHttpModule.InitCalled = false; //reset
             var locator = DotNetStarter.ApplicationContext.Default.Locator;
             var handler = new Mocks.DisabledWebModuleHandler(locator);
-            
-            if(handler.StartupEnabled())
+
+            if (handler.StartupEnabled())
                 handler.Startup(new System.Web.HttpApplication(), new IHttpModule[] { new Mocks.MockHttpModule() });
 
             Assert.IsFalse(handler.StartupEnabled());
@@ -83,7 +54,7 @@ namespace DotNetStarter.Web.Tests
             Mocks.MockHttpModule.InitCalled = false; //reset
             var appStartup = new DotNetStarter.Web.WebModuleStartup();
 
-            appStartup.Init(new System.Web.HttpApplication());            
+            appStartup.Init(new System.Web.HttpApplication());
         }
     }
 }

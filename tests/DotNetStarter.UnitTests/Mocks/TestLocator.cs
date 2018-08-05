@@ -1,7 +1,8 @@
-﻿using System;
+﻿using DotNetStarter.Abstractions;
+using DotNetStarter.Internal;
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using DotNetStarter.Abstractions;
 
 namespace DotNetStarter.UnitTests.Mocks
 {
@@ -10,26 +11,24 @@ namespace DotNetStarter.UnitTests.Mocks
     /// </summary>
     internal class TestLocator : ILocatorRegistry, ILocator
     {
-        private List<Type> modules = new List<Type>();
-
         private readonly Dictionary<Type, object> instances = new Dictionary<Type, object>();
 
         private IEnumerable<Type> allowedTypes = new Type[] { typeof(IStartupModule), typeof(ILocatorConfigure), typeof(IReflectionHelper) };
 
-        public object InternalContainer => null;
+        private List<Type> modules = new List<Type>();
 
         public string DebugInfo => null;
+
+        public object InternalContainer => null;
 
         public void Add(Type serviceType, Type serviceImplementation, string key = null, Lifecycle lifeTime = Lifecycle.Transient)
         {
             if (allowedTypes.Contains(serviceType))
                 modules.Add(serviceImplementation);
-
         }
 
         public void Add(Type serviceType, Func<ILocator, object> implementationFactory, Lifecycle lifeTime)
         {
-
         }
 
         public void Add(Type serviceType, object serviceInstance)
@@ -54,7 +53,6 @@ namespace DotNetStarter.UnitTests.Mocks
 
         public void Dispose()
         {
-
         }
 
         public object Get(Type serviceType, string key = null)
@@ -64,6 +62,8 @@ namespace DotNetStarter.UnitTests.Mocks
 
         public T Get<T>(string key = null)
         {
+            if (typeof(T) == typeof(ILocatorAmbient)) { return new object[] { new LocatorAmbient(this) }.OfType<T>().Last(); }
+
             if (typeof(T) == typeof(IShutdownHandler))
             {
                 IShutdownHandler x = new Internal.ShutdownHandler(instances[typeof(ILocator)] as ILocator, instances[typeof(IStartupConfiguration)] as IStartupConfiguration);
@@ -107,7 +107,24 @@ namespace DotNetStarter.UnitTests.Mocks
 
         public void Remove(Type serviceType, string key = null, Type serviceImplementation = null)
         {
-
         }
+
+        public void Verify()
+        {
+        }
+    }
+
+    internal class TestLocatorFactory : ILocatorRegistryFactory
+    {
+        private readonly TestLocator _locator;
+
+        public TestLocatorFactory()
+        {
+            _locator = new TestLocator();
+        }
+
+        public ILocator CreateLocator() => _locator;
+
+        public ILocatorRegistry CreateRegistry() => _locator;
     }
 }

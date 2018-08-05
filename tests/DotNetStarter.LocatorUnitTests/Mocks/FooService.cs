@@ -1,11 +1,23 @@
-﻿using System;
-using DotNetStarter.Abstractions;
+﻿using DotNetStarter.Abstractions;
+using System;
 using System.Diagnostics;
 
 namespace DotNetStarter.UnitTests.Mocks
 {
+    public class ConfigureStartupCompleteTest : ILocatorConfigure
+    {
+        public bool FiredLocator { get; private set; }
+        public bool FiredStartup { get; private set; }
+
+        public void Configure(ILocatorRegistry registry, ILocatorConfigureEngine engine)
+        {
+            engine.OnLocatorStartupComplete += () => FiredLocator = true;
+            engine.OnStartupComplete += () => FiredStartup = true;
+        }
+    }
+
     public interface IFoo
-    {        
+    {
         string Hello { get; }
     }
 
@@ -19,10 +31,11 @@ namespace DotNetStarter.UnitTests.Mocks
     {
         private RegistrationTestGreedyPrivate(string a, string b, bool c, ITransient d)
         {
-
         }
 
-        public RegistrationTestGreedyPrivate(ITransient d) { }
+        public RegistrationTestGreedyPrivate(ITransient d)
+        {
+        }
     }
 
     [Registration(typeof(RegistrationTestGreedyInternal), Lifecycle.Transient)]
@@ -30,10 +43,11 @@ namespace DotNetStarter.UnitTests.Mocks
     {
         private RegistrationTestGreedyInternal(string a, string b, bool c, ITransient d)
         {
-
         }
 
-        public RegistrationTestGreedyInternal(ITransient d) { }
+        public RegistrationTestGreedyInternal(ITransient d)
+        {
+        }
     }
 
     [Registration(typeof(RegistrationTestStatic), Lifecycle.Transient)]
@@ -41,10 +55,11 @@ namespace DotNetStarter.UnitTests.Mocks
     {
         static RegistrationTestStatic()
         {
-
         }
 
-        public RegistrationTestStatic(ITransient d) { }
+        public RegistrationTestStatic(ITransient d)
+        {
+        }
     }
 
     /// <summary>

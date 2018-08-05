@@ -43,11 +43,12 @@
         public ICollection<string> Keys => Store.Keys;
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public ICollection<string[]> Values => Store.Values;
 
         private IDictionary<string, string[]> Store { get; }
+
         /// <summary>
         /// Get or sets the associated value from the collection as a single string.
         /// </summary>

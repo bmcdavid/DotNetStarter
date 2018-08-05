@@ -24,7 +24,7 @@
         public StringLogger(LogLevel logThreshold) : this(logThreshold, 1024000) { }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="logThreshold"></param>
         /// <param name="maxStringLength"></param>

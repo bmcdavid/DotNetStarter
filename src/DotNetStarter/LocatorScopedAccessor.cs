@@ -1,4 +1,5 @@
 ﻿using DotNetStarter.Abstractions;
+using DotNetStarter.Abstractions.Internal;
 
 namespace DotNetStarter
 {
@@ -6,14 +7,14 @@ namespace DotNetStarter
     /// Provides access to currently scoped locator
     /// </summary>
     [Registration(typeof(ILocatorScopedAccessor), Lifecycle.Scoped)]
-    public sealed class LocatorScopedAccessor : ILocatorScopedAccessor, ILocatorScopedSetter
+    public sealed class LocatorScopedAccessor : ILocatorScopedAccessor, ILocatorScopedWithSet
     {
         /// <summary>
         /// Access to current scoped locator
         /// </summary>
         public ILocatorScoped CurrentScope { get; private set; }
 
-        void ILocatorScopedSetter.SetCurrentScopedLocator(ILocatorScoped locatorScoped)
+        void ILocatorScopedWithSet.SetCurrentScopedLocator(ILocatorScoped locatorScoped)
         {
             if (CurrentScope == null)
             {

@@ -9,17 +9,17 @@
     public class AssemblyFilter : IAssemblyFilter
     {
         /// <summary>
-        /// Default filter excludes: mscorelib, system, microsoft, ektron, and episerver namespaces
+        /// Default filters mscorelib, system, microsoft
         /// </summary>
         /// <param name="assembly"></param>
         /// <returns></returns>
         public virtual bool FilterAssembly(Assembly assembly)
         {
-#if NET35 || NET40 || NET45
+#if NETFULLFRAMEWORK
             if (assembly.GlobalAssemblyCache) return true;
 #endif
 
-#if NET40 || NET45 || NETSTANDARD1_0 || NETSTANDARD1_1
+#if !NET35
             if (assembly.IsDynamic) return true;
 #endif
 

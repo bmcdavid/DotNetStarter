@@ -13,14 +13,12 @@ namespace DotNetStarter.Web
         /// </summary>
         public static bool RegisterScopedHttpContext { get; set; } = true;
 
-        void ILocatorConfigure.Configure(ILocatorRegistry registry, IStartupEngine engine)
+        void ILocatorConfigure.Configure(ILocatorRegistry registry, ILocatorConfigureEngine engine)
         {
-#if !NETSTANDARD
             if (RegisterScopedHttpContext)
             {
                 registry.Add(typeof(System.Web.HttpContextBase), _ => new System.Web.HttpContextWrapper(System.Web.HttpContext.Current), Lifecycle.Scoped);
             }
-#endif
         }
     }
 }

@@ -1,0 +1,29 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <Import Project="..\..\targets\AddReleaseNotes.targets" />
+  <Import Project="..\..\targets\AddReadMeMarkdown.targets" />
+  <Import Project="..\..\targets\CommonBuild.props" />
+
+  <PropertyGroup>
+    <PackageId>DotNetStarter.Locators.Grace</PackageId>
+    <TargetFrameworks>net45;netstandard1.0;</TargetFrameworks>
+    <RootNamespace>DotNetStarter.Locators</RootNamespace>
+    <Authors>Brad McDavid</Authors>
+    <Copyright>Copyright $(CurrentYear)</Copyright>
+    <Description>Enables support for DI/IOC in startup.</Description>
+    <!--follow semantic versioning may include prelease information too-->
+    <PackageVersion>3.0.0</PackageVersion>
+    <PackageTags>Startup Modules DI IOC</PackageTags>
+    <!--do not change unless you want to deal with assembly redirects-->
+    <AssemblyVersion>3.0.0</AssemblyVersion>
+    <FileVersion>3.0.0</FileVersion>
+  </PropertyGroup>
+
+  <Import Project="..\..\targets\CommonNuGetPackage.props" />
+
+  <ItemGroup>
+    <PackageReference Include="Grace" Version="6.4.0" />
+    <ProjectReference Include="..\DotNetStarter.Abstractions\DotNetStarter.Abstractions.csproj" />
+  </ItemGroup>
+
+</Project>

@@ -20,14 +20,13 @@ namespace DotNetStarter.Internal
             _serviceCollection = serviceCollection;
         }
 
-        void ILocatorConfigure.Configure(ILocatorRegistry registry, IStartupEngine engine)
+        void ILocatorConfigure.Configure(ILocatorRegistry registry, ILocatorConfigureEngine engine)
         {
             AddServicesToLocator(_serviceCollection, registry);
         }
 
         internal static void AddServicesToLocator(IServiceCollection services, ILocatorRegistry locator)
         {
-            // map .net services to locator
             for (int i = 0; i < services.Count; i++)
             {
                 var service = services[i];
@@ -42,7 +41,7 @@ namespace DotNetStarter.Internal
                     locator.Add(service.ServiceType,
                     l =>
                     {
-                        var provider = new ServiceProvider(l.Get<IServiceProviderTypeChecker>(), l.Get<ILocatorAmbient>());
+                        var provider = new ServiceProvider(l.Get<ILocatorAmbient>(), l.Get<IServiceProviderTypeChecker>(), l.Get<IStartupConfiguration>());
                         return service.ImplementationFactory(provider);
                     },
                     lifetime);
@@ -60,8 +59,10 @@ namespace DotNetStarter.Internal
             {
                 case ServiceLifetime.Scoped:
                     return Lifecycle.Scoped;
+
                 case ServiceLifetime.Singleton:
                     return Lifecycle.Singleton;
+
                 case ServiceLifetime.Transient:
                 default:
                     return Lifecycle.Transient;

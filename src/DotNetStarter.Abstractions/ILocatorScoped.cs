@@ -11,5 +11,11 @@ namespace DotNetStarter.Abstractions
         /// Null if direct child of unscoped
         /// </summary>
         ILocatorScoped Parent { get; }
+
+        /// <summary>
+        /// Dispose action to perform on ILocatorScoped disposing
+        /// </summary>
+        /// <param name="disposeAction"></param>
+        void OnDispose(Action disposeAction);
     }
 }

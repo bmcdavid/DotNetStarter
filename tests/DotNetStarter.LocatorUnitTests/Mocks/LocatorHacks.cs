@@ -1,24 +1,41 @@
 using DotNetStarter.Abstractions;
 
+#if LAMAR_LOCATOR || NETSTANDARD
+using Microsoft.Extensions.DependencyInjection;
+#endif
+
 namespace DotNetStarter.UnitTests
 {
     [StartupModule]
-    public class LocatorHacks : IStartupModule
+    public class LocatorHacks : ILocatorConfigure
     {
-        void IStartupModule.Shutdown()
+        public void Configure(ILocatorRegistry registry, ILocatorConfigureEngine configArgs)
         {
-        }
-
-        void IStartupModule.Startup(IStartupEngine engine)
-        {
-#if LIGHTINJECT_LOCATOR
-            if (engine.Locator.InternalContainer is LightInject.IServiceContainer lightInjectContainer)
+            configArgs.OnStartupComplete += () =>
             {
                 // hack: needed for injecting func params
-                lightInjectContainer.RegisterConstructorDependency((factory, info, runtimeArgs) => (IInjectable)(runtimeArgs[0]));
-            }
-
+#if LIGHTINJECT_LOCATOR
+                if (registry.InternalContainer is LightInject.IServiceContainer lightInjectContainer)
+                {
+                    lightInjectContainer.RegisterConstructorDependency((factory, info, runtimeArgs) => (IInjectable)(runtimeArgs[0]));
+                }
+#elif LAMAR_LOCATOR
+                if (registry.InternalContainer is Lamar.Container lamarContainer)
+                {
+                    lamarContainer.Configure(c =>
+                    {
+                        c.AddTransient((provider) =>
+                        {
+                            return new System.Func<IInjectable, TestFuncCreationComplex>(
+                                (i) => new TestFuncCreationComplex(i,
+                                provider.GetService(typeof(IStartupConfiguration)) as IStartupConfiguration,
+                                provider.GetService(typeof(IShutdownHandler)) as IShutdownHandler)
+                            );
+                        });
+                    });
+                }
 #endif
+            };
         }
     }
 }

@@ -1,6 +1,7 @@
 ﻿namespace DotNetStarter.Abstractions
 {
     using System;
+
     /// <summary>
     /// Adds contains service ability to ILocatorRegistry implementations
     /// </summary>

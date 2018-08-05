@@ -2,15 +2,16 @@
 {
     /// <summary>
     /// Init module that configures the container object.
-    /// <para>IMPORTANT: All implementations require an empty constructor and require [StartupModuleAttribute], unless added using a StartupBuilder!</para>
+    /// <para>IMPORTANT: For implementations using assembly scanning for discovery, those types require an empty constructor and require [StartupModuleAttribute]; StartupBuilder has options to pass manually created instances!</para>
     /// </summary>
+    [CriticalComponent]
     public interface ILocatorConfigure
     {
-        /// <summary>
+        /// <summary>s
         /// Configure container object
         /// </summary>
         /// <param name="registry">Container instance</param>
-        /// <param name="engine">Events to subscribe too.</param>
-        void Configure(ILocatorRegistry registry, IStartupEngine engine);
+        /// <param name="engine">Configuration and events to subscribe to.</param>
+        void Configure(ILocatorRegistry registry, ILocatorConfigureEngine engine);
     }
 }

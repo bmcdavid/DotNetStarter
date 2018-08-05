@@ -6,7 +6,7 @@
     using System.IO;
 
     /// <summary>
-    /// 
+    ///
     /// </summary>
     public class MiddlewareContext : IMiddlewareContext
     {

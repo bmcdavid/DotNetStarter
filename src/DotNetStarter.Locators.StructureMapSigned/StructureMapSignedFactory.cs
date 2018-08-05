@@ -13,7 +13,7 @@ namespace DotNetStarter.Locators
         /// <summary>
         /// Default Constructor
         /// </summary>
-        public StructureMapSignedFactory() : this(null) { }
+        public StructureMapSignedFactory() => _container = new Container();
 
         /// <summary>
         /// Constructor with provided container
@@ -25,6 +25,12 @@ namespace DotNetStarter.Locators
         /// Creates Structuremap Locator
         /// </summary>
         /// <returns></returns>
-        public ILocatorRegistry CreateRegistry() => new StructureMapSignedLocator(_container);
+        public ILocator CreateLocator() => new StructureMapSignedLocator(_container);
+
+        /// <summary>
+        /// Creates Structuremap LocatorRegistry
+        /// </summary>
+        /// <returns></returns>
+        public ILocatorRegistry CreateRegistry() => new StructureMapSignedLocatorRegistry(_container);
     }
 }

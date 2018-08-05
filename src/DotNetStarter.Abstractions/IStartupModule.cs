@@ -3,6 +3,7 @@
     /// <summary>
     /// Starup Component, important requires the [StartupModuleAttribute] class attribute as well for dependency sorting!
     /// </summary>
+    [CriticalComponent]
     public interface IStartupModule
     {
         /// <summary>

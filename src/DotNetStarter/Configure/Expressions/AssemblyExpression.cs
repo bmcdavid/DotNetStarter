@@ -1,4 +1,5 @@
-﻿using DotNetStarter.Abstractions.Internal;
+﻿using DotNetStarter.Abstractions;
+using DotNetStarter.Abstractions.Internal;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,6 +13,18 @@ namespace DotNetStarter.Configure.Expressions
     public sealed class AssemblyExpression
     {
         internal readonly HashSet<Assembly> Assemblies = new HashSet<Assembly>();
+        internal bool WithNoScanning { get; private set; }
+
+        /// <summary>
+        /// Disables assembly scanning
+        /// </summary>
+        /// <returns></returns>
+        public AssemblyExpression WithNoAssemblyScanning()
+        {
+            WithNoScanning = true;
+            Assemblies.Clear();
+            return this;
+        }
 
         /// <summary>
         /// Removes given assemblies from the scanning process
@@ -20,7 +33,7 @@ namespace DotNetStarter.Configure.Expressions
         /// <returns></returns>
         public AssemblyExpression RemoveAssemblies(IEnumerable<Assembly> assembliesToRemove)
         {
-            if (assembliesToRemove == null) return this;
+            if (assembliesToRemove == null) { return this; }
 
             foreach (var a in assembliesToRemove)
             {
@@ -48,7 +61,7 @@ namespace DotNetStarter.Configure.Expressions
         /// <returns></returns>
         public AssemblyExpression WithAssemblies(IEnumerable<Assembly> assemblies)
         {
-            if (assemblies == null) return this;
+            if (assemblies == null) { return this; }
             AddAssemblyRange(assemblies);
             return this;
         }
@@ -92,14 +105,15 @@ namespace DotNetStarter.Configure.Expressions
         /// <typeparam name="T"></typeparam>
         /// <returns></returns>
         public AssemblyExpression WithAssemblyFromType<T>() => WithAssemblyFromType(typeof(T));
-        
+
         /// <summary>
         /// Gets all assemblies with DotNetStarter.Abstractions.DiscoverableAssemblyAttribute, which is generally a good starting point.
+        /// <para>For netstandard1.0 assemblies MUST be provided!</para>
         /// </summary>
         /// <returns></returns>
         public AssemblyExpression WithDiscoverableAssemblies(IEnumerable<Assembly> assemblies = null, Func<Assembly, Type, IEnumerable<Attribute>> attributeChecker = null)
         {
-            AddAssemblyRange(ApplicationContext.GetScannableAssemblies(assemblies, attributeChecker));
+            AddAssemblyRange(GetScannableAssemblies(assemblies, attributeChecker));
             return this;
         }
 
@@ -109,6 +123,22 @@ namespace DotNetStarter.Configure.Expressions
             {
                 Assemblies.Add(assembly);
             }
+        }
+
+        /// <summary>
+        /// Filters a list of assemblies for DiscoverableAssemblyAttribute.
+        /// </summary>
+        /// <param name="assemblies">If null, calls internal assembly loader</param>
+        /// <param name="attributeChecker"></param>
+        /// <returns></returns>
+        public static IList<Assembly> GetScannableAssemblies(IEnumerable<Assembly> assemblies = null, Func<Assembly, Type, IEnumerable<Attribute>> attributeChecker = null)
+        {
+            Func<Assembly, Type, IEnumerable<Attribute>> defaultChecker = (assembly, type) => Abstractions.Internal.TypeExtensions.CustomAttribute(assembly, type, false);
+            attributeChecker = attributeChecker ?? defaultChecker;
+            assemblies = assemblies ?? new Internal.AssemblyLoader().GetAssemblies();
+            var filteredAssemblies = assemblies.Where(x => attributeChecker(x, typeof(DiscoverableAssemblyAttribute)).Any());
+
+            return filteredAssemblies.ToList();
         }
     }
 }

@@ -81,7 +81,7 @@
         /// </summary>
         /// <returns>The request headers.</returns>
         IDictionary<string, string[]> Headers { get; }
-        
+
         /// <summary>
         /// Gets or sets the Content-Type header.
         /// </summary>
@@ -115,7 +115,7 @@
         /// <summary>
         /// Gets or sets the cancellation token for the request.
         /// </summary>
-        /// <returns>The cancellation token for the request.</returns>        
+        /// <returns>The cancellation token for the request.</returns>
         CancellationToken CallCancelled { get; set; }
 
         /// <summary>
@@ -147,7 +147,7 @@
         /// </summary>
         /// <typeparam name="T">The type of the value.</typeparam>
         /// <param name="key">The key of the value to get.</param>
-        /// <returns>The value with the specified key or the default(T) if not present.</returns>        
+        /// <returns>The value with the specified key or the default(T) if not present.</returns>
         T Get<T>(string key);
 
         /// <summary>
@@ -156,7 +156,7 @@
         /// <typeparam name="T">The type of the value.</typeparam>
         /// <param name="key">The key of the value to set.</param>
         /// <param name="value">The value to set.</param>
-        /// <returns>This instance.</returns>        
+        /// <returns>This instance.</returns>
         IMiddlewareRequest Set<T>(string key, T value);
     }
 }

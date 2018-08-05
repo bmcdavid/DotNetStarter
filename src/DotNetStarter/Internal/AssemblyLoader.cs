@@ -1,8 +1,8 @@
-﻿using System;
+﻿using DotNetStarter.Abstractions;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using DotNetStarter.Abstractions;
 
 namespace DotNetStarter.Internal
 {
@@ -11,11 +11,11 @@ namespace DotNetStarter.Internal
     /// </summary>
     public class AssemblyLoader : IAssemblyLoader
     {
-        private static HashSet<Assembly> _LoadedAssemblies = new HashSet<Assembly>();
+        internal static readonly HashSet<Assembly> LoadedAssemblies = new HashSet<Assembly>();
+        private static readonly object _lockObj = new object();
 
-        private static readonly object _Lock = new object();
+#if NETFULLFRAMEWORK
 
-#if NET35 || NET40 || NET45
         /// <summary>
         /// Gets assembly dll folder
         /// </summary>
@@ -40,9 +40,11 @@ namespace DotNetStarter.Internal
 
             return assembliesPath;
         }
+
 #endif
 
 #if NET35
+
         /// <summary>
         /// Gets assembly files
         /// </summary>
@@ -55,6 +57,7 @@ namespace DotNetStarter.Internal
 
             return files;
         }
+
 #elif NET40 || NET45
         /// <summary>
         /// Gets assembly files
@@ -95,17 +98,18 @@ namespace DotNetStarter.Internal
             return libraries.Select(x => Assembly.Load(new AssemblyName(x.Name)));
         }
 #else
+
         /// <summary>
         /// Gets application assemblies, note: in netstandard apps local builds won't always include the dlls which could lead to test/debug issues
         /// </summary>
         /// <returns></returns>
         public virtual IEnumerable<Assembly> GetAssemblies()
         {
-            if (_LoadedAssemblies.Count == 0)
+            if (LoadedAssemblies.Count == 0)
             {
-                lock (_Lock)
+                lock (_lockObj)
                 {
-                    if (_LoadedAssemblies.Count == 0)
+                    if (LoadedAssemblies.Count == 0)
                     {
                         var files = GetAssemblyFiles();
 
@@ -119,7 +123,7 @@ namespace DotNetStarter.Internal
                                 //assembly = Assembly.Load(AssemblyName.GetAssemblyName(file));
                                 assembly = Assembly.Load(new AssemblyName(fileInfo.Name.Replace(fileInfo.Extension, string.Empty)));
 
-                                _LoadedAssemblies.Add(assembly);
+                                LoadedAssemblies.Add(assembly);
                             }
                             catch (BadImageFormatException)
                             {
@@ -135,8 +139,9 @@ namespace DotNetStarter.Internal
                 }
             }
 
-            return _LoadedAssemblies;
+            return LoadedAssemblies;
         }
+
 #endif
     }
 }

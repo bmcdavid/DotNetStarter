@@ -6,12 +6,12 @@ namespace DotNetStarter.Web.Tests.Mocks
     [Registration(typeof(IHttpContextProvider), Lifecycle.Singleton, typeof(HttpContextProvider))]
     public class MockHttpContextProvider : IHttpContextProvider
     {
-        public HttpContextBase CurrentContext => 
+        public HttpContextBase CurrentContext =>
             new HttpContextWrapper
             (
                 new HttpContext
                 (
-                new HttpRequest("", "http://localhost/file?a=b&c=d",""),
+                new HttpRequest("", "http://localhost/file?a=b&c=d", ""),
                 new HttpResponse(null)
                 )
             );
@@ -23,7 +23,6 @@ namespace DotNetStarter.Web.Tests.Mocks
 
         public void Dispose()
         {
-            
         }
 
         public void Init(HttpApplication context)
@@ -36,7 +35,6 @@ namespace DotNetStarter.Web.Tests.Mocks
     {
         public DisabledWebModuleHandler(ILocator locator) : base(locator.Get<ILocatorScopedFactory>(), locator)
         {
-
         }
 
         public override bool ScopeEnabled()

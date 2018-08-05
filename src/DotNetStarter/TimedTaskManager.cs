@@ -72,7 +72,7 @@
         /// <returns></returns>
         public virtual ITimedTask Get(string name)
         {
-            ITimedTask t = _ApplicationTasks.FirstOrDefault(x => Internal.CrossPlatformHelpers.StringCompareIgnoreCase(x.Name,name));
+            ITimedTask t = _ApplicationTasks.FirstOrDefault(x => Internal.CrossPlatformHelpers.StringCompareIgnoreCase(x.Name, name));
 
             if (t != null)
                 return t;
@@ -132,6 +132,6 @@
             {
                 return false;
             }
-        }        
+        }
     }
 }

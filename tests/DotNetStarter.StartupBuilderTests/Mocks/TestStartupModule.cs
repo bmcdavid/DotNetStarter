@@ -15,5 +15,4 @@ namespace DotNetStarter.StartupBuilderTests.Mocks
             Executed = true;
         }
     }
-
 }

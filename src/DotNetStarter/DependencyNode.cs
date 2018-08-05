@@ -71,7 +71,7 @@
         public virtual object Node { get; }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public bool IsAssembly => Node is Assembly;
 

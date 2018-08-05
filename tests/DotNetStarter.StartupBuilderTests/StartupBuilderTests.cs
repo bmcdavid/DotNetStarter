@@ -6,6 +6,7 @@ using DotNetStarter.StartupBuilderTests.Mocks;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Linq;
+using System.Text;
 
 namespace DotNetStarter.StartupBuilderTests
 {
@@ -13,16 +14,49 @@ namespace DotNetStarter.StartupBuilderTests
     public class StartupBuilderTests
     {
         [TestMethod]
+        public void ShouldChangeRegistrationLifecycle()
+        {
+            var builder = CreateTestBuilder();
+            builder
+                .ConfigureAssemblies(assemblies =>
+                {
+                    assemblies
+                        .WithAssemblyFromType<RegistrationConfiguration>()
+                        .WithAssembliesFromTypes(typeof(StartupBuilder), typeof(TestFooImport));
+                })
+                .ConfigureStartupModules(modules =>
+                {
+                    modules
+                        .RemoveStartupModule<BadStartupModule>()
+                        .RemoveConfigureModule<BadConfigureModule>();
+                })
+                .OverrideDefaults(defaults =>
+                {
+                    defaults
+                        .UseRegistrationModifier(new MockRegistrationModifier())
+                        .UseLogger(new StringLogger(LogLevel.Info));
+                })
+                .Build(useApplicationContext: false)
+                .Run();
+
+            var sut1 = builder.StartupContext.Locator.Get<TestFooImport>();
+            var sut2 = builder.StartupContext.Locator.Get<TestFooImport>();
+
+            Assert.AreSame(sut1, sut2);
+            Assert.AreEqual(sut1.DateTime, sut2.DateTime);
+        }
+
+        [TestMethod]
         public void ShouldRegisterConfigureModuleViaConfiguration()
         {
             var sut = new ManualLocatorConfigure();
             var builder = StartupBuilder.Create();
-            builder.
-                ConfigureAssemblies(assemblies =>
+            builder
+                .ConfigureAssemblies(assemblies =>
                 {
                     assemblies
                         .WithAssembliesFromTypes(typeof(StringLogger), typeof(RegistrationConfiguration))
-                        .WithAssemblyFromType<StructureMapFactory>();
+                        .WithAssemblyFromType<DryIocLocatorFactory>();
                 })
                 .ConfigureStartupModules(modules =>
                 {
@@ -42,13 +76,14 @@ namespace DotNetStarter.StartupBuilderTests
         [TestMethod]
         public void ShouldRegisterModuleViaConfiguration()
         {
-            var builder = StartupBuilder.Create();
-            builder.
-                ConfigureAssemblies(assemblies =>
+            var builder = CreateTestBuilder();
+            builder
+                .ConfigureAssemblies(assemblies =>
                 {
                     assemblies
                         .WithDiscoverableAssemblies(new[] { typeof(StringLogger).Assembly(), typeof(RegistrationConfiguration).Assembly() })
-                        .WithAssemblyFromType<StructureMapFactory>();
+                        .WithAssemblyFromType<DryIocLocatorFactory>()
+                        .WithAssemblyFromType<BadConfigureModule>();
                 })
                 .ConfigureStartupModules(modules =>
                 {
@@ -57,7 +92,9 @@ namespace DotNetStarter.StartupBuilderTests
                         {
                             collection.AddType<TestStartupModule>();
                         })
-                        .RemoveConfigureModule<BadConfigureModule>();
+                        .RemoveConfigureModule<BadConfigureModule>()
+                        .RemoveStartupModule<BadStartupModule>()
+                        ;
                 })
                 .Build(useApplicationContext: false)
                 .Run();
@@ -67,9 +104,40 @@ namespace DotNetStarter.StartupBuilderTests
         }
 
         [TestMethod]
+        public void ShouldRunFromDefaults()
+        {
+            // only using discoverable assemblies to remove bad modules for unit testing
+            StartupBuilder.Create().Build(useDiscoverableAssemblies: true).Run();
+            Assert.IsNotNull(ApplicationContext.Default);
+            Internal.UnitTestHelper.ResetApplication();
+        }
+
+        [TestMethod]
+        public void ShouldRunWithNoScanning()
+        {
+            var sut = new ManualLocatorConfigure();
+            var builder = CreateTestBuilder();
+            builder
+                .ConfigureAssemblies(a => a.WithNoAssemblyScanning())
+                .ConfigureStartupModules(modules =>
+                {
+                    modules
+                        .ConfigureLocatorModuleCollection(configureModules =>
+                        {
+                            configureModules.Add(sut);
+                        });
+                })
+                .Build(useApplicationContext: false)
+                .Run();
+
+            Assert.IsTrue(sut.Executed);
+            Assert.IsFalse(builder.StartupContext.Configuration.Assemblies.Any());
+        }
+
+        [TestMethod]
         public void ShouldStartupAndResolveType()
         {
-            var builder = StartupBuilder.Create();
+            var builder = CreateTestBuilder();
             builder
                 .ConfigureAssemblies(assemblies =>
                 {
@@ -83,11 +151,9 @@ namespace DotNetStarter.StartupBuilderTests
                         .RemoveStartupModule<BadStartupModule>()
                         .RemoveConfigureModule<BadConfigureModule>();
                 })
-                .UseEnvironment(new StartupEnvironment("UnitTest1", ""))
                 .OverrideDefaults(defaults =>
                 {
                     defaults
-                        .UseLocatorRegistryFactory(new StructureMapFactory())
                         .UseLogger(new StringLogger(LogLevel.Info));
                 })
                 .Build(useApplicationContext: false)
@@ -97,8 +163,7 @@ namespace DotNetStarter.StartupBuilderTests
 
             Assert.IsTrue(builder.StartupContext.Configuration.Environment.IsEnvironment("UnitTest1"));
             Assert.IsNotNull(logger);
-            Assert.IsFalse(ApplicationContext.Started);
-            Assert.IsNotNull(new TestFooImport().FooImport.Service);
+            //Assert.IsNotNull(new TestFooImport().FooImport.Service);
             // ran when test assembly is initialized
             Assert.IsTrue(SetupTests.TestImport is NullReferenceException);
         }
@@ -106,7 +171,9 @@ namespace DotNetStarter.StartupBuilderTests
         [TestMethod]
         public void ShouldStartupUsingAppContext()
         {
-            var builder = StartupBuilder.Create();
+            Assert.IsFalse(ApplicationContext.Started);
+
+            var builder = CreateTestBuilder();
             builder
                 .ConfigureAssemblies(assemblies =>
                 {
@@ -125,18 +192,49 @@ namespace DotNetStarter.StartupBuilderTests
                 .OverrideDefaults(defaults =>
                 {
                     defaults
-                        .UseLocatorRegistryFactory(new StructureMapFactory())
                         .UseLogger(new StringLogger(LogLevel.Info));
                 })
                 .Build()
                 .Run();
 
             var logger = builder.StartupContext.Locator.Get<IStartupLogger>();
-
             Assert.IsNotNull(logger);
             Assert.IsNotNull(ApplicationContext.Default);
             Assert.IsTrue(ApplicationContext.Started);
             Assert.AreEqual(builder.StartupContext, ApplicationContext.Default);
+            Internal.UnitTestHelper.ResetApplication();
         }
+
+        [TestMethod]
+        public void ShouldUseEnvironmentItemsAcrossModules()
+        {
+            var builder = CreateTestBuilder();
+            builder
+                .ConfigureAssemblies(a => a.WithNoAssemblyScanning())
+                .ConfigureStartupModules(modules =>
+                {
+                    modules
+                        .ConfigureLocatorModuleCollection(l => l.Add(new ConfigureModuleAddEnvironmentItem()))
+                        .ConfigureStartupModuleCollection(s => s.AddType<StartupModuleUseEnvironmentItem>());
+                })
+                .OverrideDefaults(defaults =>
+                {
+                    defaults
+                        .UseRegistrationModifier(new MockRegistrationModifier())
+                        .UseLogger(new StringLogger(LogLevel.Info));
+                })
+                .Build(useApplicationContext: false)
+                .Run();
+
+            var sut = builder.StartupContext.Configuration.Environment.Items.Get<StringBuilder>().ToString().Split(new string[] { Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries).ToList();
+
+            Assert.IsTrue(sut.Count == 2);
+            Assert.IsTrue(sut[0] == "Configured Item!");
+            Assert.IsTrue(sut[1] == "Started Item!");
+        }
+
+        private StartupBuilder CreateTestBuilder() => StartupBuilder.Create()
+            .UseEnvironment(new StartupEnvironment("UnitTest1", ""))
+            .OverrideDefaults(d => d.UseLocatorRegistryFactory(new DryIocLocatorFactory()));
     }
 }

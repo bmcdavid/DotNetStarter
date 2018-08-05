@@ -3,17 +3,16 @@ using DotNetStarter.Configure.Expressions;
 using DotNetStarter.Internal;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
 
 namespace DotNetStarter.Configure
 {
-#pragma warning disable CS0612 // Type or member is obsolete
-    internal class StartupBuilderObjectFactory : IStartupObjectFactory
-#pragma warning restore CS0612 // Type or member is obsolete
+    internal class StartupBuilderObjectFactory
     {
         public AssemblyExpression AssemblyExpression { get; set; }
         public IStartupEnvironment Environment { get; set; }
-        public OverrideExpression OverrideExpression { get; set; }
+        public DefaultsExpression OverrideExpression { get; set; }
         public StartupModulesExpression StartupModulesExpression { get; set; }
 
         public IAssemblyFilter CreateAssemblyFilter()
@@ -32,12 +31,8 @@ namespace DotNetStarter.Configure
         public ILocatorDefaultRegistrations CreateContainerDefaults()
         {
             var defaults = OverrideExpression.ContainerDefaults ?? new ContainerDefaults();
-
-            if (defaults is ILocatorDefaultRegistrationsWithCollections defaultWithCollections)
-            {
-                defaultWithCollections.LocatorConfigureModuleCollection = StartupModulesExpression.InternalConfigureModules;
-                defaultWithCollections.StartupModuleCollection = StartupModulesExpression.InternalStartupModules;
-            }
+            defaults.LocatorConfigureModuleCollection = StartupModulesExpression.InternalConfigureModules;
+            defaults.StartupModuleCollection = StartupModulesExpression.InternalStartupModules;
 
             return defaults;
         }
@@ -62,10 +57,10 @@ namespace DotNetStarter.Configure
             return new StartupBuilderModuleFilter(StartupModulesExpression.RemoveModuleTypes);
         }
 
-        public ILocatorRegistry CreateRegistry(IStartupConfiguration config)
+        public ILocatorRegistryFactory CreateRegistryFactory(IStartupConfiguration config)
         {
-            return OverrideExpression.RegistryFactory?.CreateRegistry() ??
-                ApplicationContext.GetAssemblyFactory<LocatorRegistryFactoryAttribute, ILocatorRegistryFactory>(config)?.CreateRegistry();
+            return OverrideExpression.RegistryFactory ??
+                GetAssemblyFactory<LocatorRegistryFactoryAttribute, ILocatorRegistryFactory>(config);
         }
 
         public IRequestSettingsProvider CreateRequestSettingsProvider()
@@ -73,24 +68,18 @@ namespace DotNetStarter.Configure
             return OverrideExpression.RequestSettingsProviderFactory?.Invoke() ?? new RequestSettingsProvider();
         }
 
-        public IStartupConfiguration CreateStartupConfiguration(IEnumerable<Assembly> assemblies, IStartupEnvironment startupEnvironment)
+        public IStartupConfiguration CreateStartupConfiguration(IEnumerable<Assembly> assemblies)
         {
-            var environment = Environment ?? startupEnvironment ?? new StartupEnvironment("Local", string.Empty);
-            var assemblyArg = AssemblyExpression.Assemblies.Count > 0 ? AssemblyExpression.Assemblies : assemblies;
-            var config = new StartupBuilderConfiguration(this, assemblyArg, environment);
+            var environment = Environment ?? new StartupEnvironment("Local", string.Empty);
+            var config = new StartupBuilderConfiguration(this, assemblies, environment);
 
             return config;
         }
 
-        public IStartupContext CreateStartupContext(IReadOnlyLocator locator, IEnumerable<IDependencyNode> filteredModules, IEnumerable<IDependencyNode> allModules,
+        public IStartupContext CreateStartupContext(ILocator locator, IEnumerable<IDependencyNode> filteredModules, IEnumerable<IDependencyNode> allModules,
             IStartupConfiguration startupConfiguration)
         {
             return new StartupContext(locator, allModules, filteredModules, startupConfiguration);
-        }
-
-        public IStartupHandler CreateStartupHandler()
-        {
-            return OverrideExpression.StartupHandler ?? new StartupHandler();
         }
 
         public IStartupLogger CreateStartupLogger()
@@ -106,6 +95,22 @@ namespace DotNetStarter.Configure
         public ITimedTaskManager CreateTimedTaskManager()
         {
             return OverrideExpression.TimedTaskManager ?? new TimedTaskManager(CreateRequestSettingsProvider);
+        }
+
+        public Action<ILocatorRegistry> GetRegistryFinalizer()
+        {
+            return OverrideExpression.RegistryFinalizer ?? new Action<ILocatorRegistry>(registry => { });
+        }
+
+        private static TFactoryType GetAssemblyFactory<TFactoryAttr, TFactoryType>(IStartupConfiguration config) where TFactoryAttr : AssemblyFactoryBaseAttribute
+        {
+            var dependents = config.DependencyFinder.Find<TFactoryAttr>(config.Assemblies);
+            var sorted = config.DependencySorter.Sort<TFactoryAttr>(dependents);
+
+            if (!(sorted.LastOrDefault()?.NodeAttribute is AssemblyFactoryBaseAttribute attr))
+                return default(TFactoryType);
+
+            return (TFactoryType)Activator.CreateInstance(attr.FactoryType);
         }
     }
 }

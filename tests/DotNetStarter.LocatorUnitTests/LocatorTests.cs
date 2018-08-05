@@ -1,6 +1,7 @@
-﻿using System;
-using DotNetStarter.Abstractions;
+﻿using DotNetStarter.Abstractions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System;
+using System.Linq;
 
 #if NETSTANDARD
 using Microsoft.Extensions.DependencyInjection;
@@ -58,19 +59,35 @@ namespace DotNetStarter.UnitTests
     {
         public int Id { get; set; }
     }
-    #endregion
+
+    #endregion Mocks
 
     [TestClass]
     public class LocatorTests
     {
         public Import<IStartupContext> _Context { get; set; }
 
-        private ILocatorScoped CreateScope(ILocator locator = null)
-        {
-            var l = locator ?? _Context.Service.Locator;
+        public Import<ILocatorScopedAccessor> ScopeAccessor { get; set; }
 
-            // hack: LightInject cannot resolve scoped objects when no scope is open
-            return (l as ILocatorCreateScope).CreateScope();
+        private ILocatorScoped CreateScope(ILocator locator = null) => ((locator ?? _Context.Service.Locator) as ILocatorWithCreateScope).CreateScope();
+
+        [TestMethod]
+        public void ShouldResolveAll()
+        {
+            var sut = _Context.Service.Locator.GetAll(typeof(IStartupModule)).ToList();
+            var sut2 = _Context.Service.Locator.GetAll<IStartupModule>().ToList();
+            Assert.IsTrue(sut.Any());
+            Assert.IsTrue(sut2.Any());
+            Assert.IsTrue(sut.Count() == sut2.Count());
+        }
+
+        [TestMethod]
+        public void ShouldHaveScopeAccessInScope()
+        {
+            using (var scope = _Context.Service.Locator.Get<ILocatorScopedFactory>().CreateScope())
+            {
+                Assert.IsNotNull(ScopeAccessor.Service.CurrentScope);
+            }
         }
 
         [TestMethod]
@@ -132,7 +149,7 @@ namespace DotNetStarter.UnitTests
             var factory = locator.Get<ILocatorScopedFactory>();
             ScopeTest noScopeTest;
 
-            // hack: LightInject cannot resolve scoped objects when no scope is open
+            // hack: not all containers can resolve scoped objects when no scope is open
             using (var scopedLocator = factory.CreateScope())
             {
                 noScopeTest = locator.Get<ScopeTest>();
@@ -213,6 +230,17 @@ namespace DotNetStarter.UnitTests
                 var injectionTest = scopedLocator.Get<TestLocatorInjectionTransient>();
                 var injectionTest2 = scopedLocator.Get<TestLocatorInjectionScoped>();
             }
+        }
+
+        [TestMethod]
+        public void ShouldResolveSimpleFuncCreator()
+        {
+            var sut = _Context.Service.Locator.Get<Func<ILocatorScopedFactory>>();
+            var sut1 = sut();
+            var sut2 = sut();
+
+            Assert.IsNotNull(sut);
+            Assert.AreSame(sut1, sut2);
         }
 
         [TestMethod]

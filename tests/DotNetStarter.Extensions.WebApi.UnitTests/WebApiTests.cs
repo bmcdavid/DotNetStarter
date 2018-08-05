@@ -8,8 +8,8 @@ namespace DotNetStarter.Extensions.WebApi.Tests
     [TestClass]
     public class MvcTests
     {
-        Import<IStartupConfiguration> StartupConfiguration;
-        Import<ILocatorScopedFactory> ScopeFactory;
+        private Import<IStartupConfiguration> StartupConfiguration;
+        private Import<ILocatorScopedFactory> ScopeFactory;
 
         [TestMethod]
         public void ShouldScanControllers()
@@ -25,7 +25,7 @@ namespace DotNetStarter.Extensions.WebApi.Tests
             // mocks open web handler scope
             using (var scope = ScopeFactory.Service.CreateScope())
             {
-                Assert.IsNotNull(scope.Get<ControllerOne>());   
+                Assert.IsNotNull(scope.Get<ControllerOne>());
             }
         }
     }

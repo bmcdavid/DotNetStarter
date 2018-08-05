@@ -5,23 +5,23 @@
 
   <PropertyGroup>
     <PackageId>DotNetStarter.Locators.LightInject</PackageId>
-    <TargetFrameworks>net452;netstandard1.1</TargetFrameworks>
+    <TargetFrameworks>net452;net46;netstandard1.1</TargetFrameworks>
     <RootNamespace>DotNetStarter.Locators</RootNamespace>
     <Authors>Brad McDavid</Authors>
     <Copyright>Copyright $(CurrentYear)</Copyright>
     <Description>Enables support for DI/IOC in startup.</Description>
     <!--follow semantic versioning may include prelease information too-->
-    <PackageVersion>1.1.0</PackageVersion>
+    <PackageVersion>3.0.0</PackageVersion>
     <PackageTags>Startup Modules DI IOC</PackageTags>
     <!--do not change unless you want to deal with assembly redirects-->
-    <AssemblyVersion>1.0.0</AssemblyVersion>
-    <FileVersion>1.0.0</FileVersion>
+    <AssemblyVersion>3.0.0</AssemblyVersion>
+    <FileVersion>3.0.0</FileVersion>
   </PropertyGroup>
 
   <Import Project="..\..\targets\CommonNuGetPackage.props" />
 
   <ItemGroup>
-    <PackageReference Include="LightInject" Version="5.1.4" />
+    <PackageReference Include="LightInject" Version="5.1.5" />
     <ProjectReference Include="..\DotNetStarter.Abstractions\DotNetStarter.Abstractions.csproj" />
   </ItemGroup>
 </Project>

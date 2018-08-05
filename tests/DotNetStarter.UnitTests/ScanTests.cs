@@ -1,7 +1,7 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System.Linq;
-using DotNetStarter.Abstractions;
+﻿using DotNetStarter.Abstractions;
 using DotNetStarter.UnitTests;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System.Linq;
 
 [assembly: DiscoverTypes(typeof(IMock), typeof(IGenericeMock<>), typeof(IGenericeMock<object>), typeof(MockBaseClass))]
 

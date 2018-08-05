@@ -13,14 +13,17 @@ namespace DotNetStarter.Extensions.Mvc.Tests
             {
                 typeof(DotNetStarter.Abstractions.IAssemblyFilter).Assembly,
                 typeof(DotNetStarter.ApplicationContext).Assembly,
-                typeof(DotNetStarter.Locators.DryIocLocator).Assembly,
+                typeof(DotNetStarter.Locators.DryIocLocatorRegistry).Assembly,
                 typeof(DotNetStarter.Web.Startup).Assembly,
                 typeof(DotNetStarter.Extensions.Mvc.StartupMvc).Assembly,
                 typeof(_TestSetup).Assembly
             };
 
-            Configure.StartupBuilder.Create()
+            DotNetStarter.Configure.StartupBuilder.Create()
                 .ConfigureAssemblies(a => a.WithAssemblies(scannableAssemblies))
+                //.ConfigureAssemblies(a => a.WithDiscoverableAssemblies())
+                .OverrideDefaults(d => d.UseLocatorRegistryFactory(new DotNetStarter.Locators.DryIocLocatorFactory()))
+                .Build()
                 .Run();
         }
     }

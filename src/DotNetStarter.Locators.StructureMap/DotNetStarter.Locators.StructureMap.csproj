@@ -11,17 +11,17 @@
     <Copyright>Copyright $(CurrentYear)</Copyright>
     <Description>Enables support for DI/IOC in startup.</Description>
     <!--follow semantic versioning may include prelease information too-->
-    <PackageVersion>2.2.0</PackageVersion>
+    <PackageVersion>3.0.0</PackageVersion>
     <PackageTags>Startup Modules DI IOC</PackageTags>
     <!--do not change unless you want to deal with assembly redirects-->
-    <AssemblyVersion>2.0.0</AssemblyVersion>
-    <FileVersion>2.0.0</FileVersion>
+    <AssemblyVersion>3.0.0</AssemblyVersion>
+    <FileVersion>3.0.0</FileVersion>
   </PropertyGroup>
 
   <Import Project="..\..\targets\CommonNuGetPackage.props" />
 
   <ItemGroup>
     <ProjectReference Include="..\DotNetStarter.Abstractions\DotNetStarter.Abstractions.csproj" />
-    <PackageReference Include="structuremap" version="4.6.1" />
+    <PackageReference Include="structuremap" version="4.7.0" />
   </ItemGroup>  
 </Project>

@@ -13,7 +13,7 @@
         /// <returns></returns>
         public static bool StringCompareIgnoreCase(string a, string b)
         {
-#if NET35 || NET40 || NET45
+#if NETFULLFRAMEWORK
             return string.Compare(a, b, true) == 0;
 #else
             return string.Compare(a,b, System.StringComparison.CurrentCultureIgnoreCase) == 0;
@@ -26,7 +26,7 @@
         /// <returns></returns>
         public static string GetApplicationBaseDirectory()
         {
-#if NET35 || NET40 || NET45
+#if NETFULLFRAMEWORK || NETSTANDARD2_0
             return System.AppDomain.CurrentDomain.BaseDirectory;
 #else
             return "";

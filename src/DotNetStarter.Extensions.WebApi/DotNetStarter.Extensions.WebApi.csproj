@@ -11,11 +11,11 @@
     <Copyright>Copyright $(CurrentYear)</Copyright>
     <Description>DotNetStarter WebApi extensions.</Description>
     <!--follow semantic versioning may include prelease information too-->
-    <PackageVersion>2.0.1</PackageVersion>
+    <PackageVersion>3.0.0</PackageVersion>
     <PackageTags>Startup Modules WebApi</PackageTags>
     <!--do not change unless you want to deal with assembly redirects-->
-    <AssemblyVersion>2.0.0</AssemblyVersion>
-    <FileVersion>2.0.0</FileVersion>
+    <AssemblyVersion>3.0.0</AssemblyVersion>
+    <FileVersion>3.0.0</FileVersion>
   </PropertyGroup>
 
   <Import Project="..\..\targets\CommonNuGetPackage.props" />

@@ -39,7 +39,7 @@
 
         void IShutdownHandler.Shutdown() => InvokeShutdown();
 
-        void InvokeShutdown()
+        private void InvokeShutdown()
         {
             if (_ShutdownInvoked) return;
 
