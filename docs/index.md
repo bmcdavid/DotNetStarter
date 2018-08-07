@@ -31,7 +31,7 @@ Package  | Version
 * [Module creation, discovery, and dependencies](https://bmcdavid.github.io/DotNetStarter/modules.html)
 * [Registering items](https://bmcdavid.github.io/DotNetStarter/register.html)
 * [Assembly Scanning](https://bmcdavid.github.io/DotNetStarter/scanning.html)
-* [Locators](https://bmcdavid.github.io/DotNetStarter/custom-locator.html)
+* [Locators](https://bmcdavid.github.io/DotNetStarter/locators.html)
 * [Scoped Services](https://bmcdavid.github.io/DotNetStarter/scoped-locator.html)
 * [Known Issues](https://bmcdavid.github.io/DotNetStarter/known-issues.html)
 
