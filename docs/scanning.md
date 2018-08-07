@@ -18,40 +18,47 @@ Assembly scanning occurs to discover service registrations (RegistrationAttribut
 )]
 ```
 
-#### The default assembly scanner stores these in a static dictionary for retrieval noted below:
+#### The default assembly scanner stores these in a dictionary for retrieval noted below:
 ```cs
  using DotNetStarter.Abstractions;
 
 [StartupModule]
 public class RegistrationConfiguration : ILocatorConfigure
 {
-    public void Configure(ILocatorRegistry container, IStartupEngine engine)
+    private static readonly Type RegistrationType = typeof(RegistrationAttribute);
+
+    void ILocatorConfigure.Configure(ILocatorRegistry registry, ILocatorConfigureEngine args)
     {
-        // access to default configuration's to get its AssemblyScanner
-        var configuration = engine.Configuration;
-        var serviceType = typeof(RegistrationAttribute);
-        
-        // get all types found for RegistrationAttribute
-        var services = configuration.AssemblyScanner.GetTypesFor(serviceType);
+        var scannedRegistrations = args.Configuration.AssemblyScanner.GetTypesFor(RegistrationType);
+        var registrations = args.Configuration.DependencySorter
+            .Sort<RegistrationAttribute>(scannedRegistrations.OfType<object>())
+            .SelectMany(ConvertNodeToRegistration)
+            .ToList();
 
-        // additional sorting used since RegistrationAttribute inherits StartupDependencyBaseAttribute which allows dependency system
-        var servicesSorted = configuration.DependencySorter.Sort<RegistrationAttribute>(services.OfType<object>()).ToList();
+        args.Configuration.RegistrationsModifier?.Modify(registrations);
+        registrations.All(r => AddRegistration(r, registry));
 
-        // add all types found
-        for (int i = 0; i < servicesSorted.Count; i++)
-        {
-            var t = servicesSorted[i].Node as Type;
-            var attrs = t.CustomAttribute(serviceType, false).OfType<RegistrationAttribute>();
+        args.Configuration.Environment.Items.Set<ICollection<Registration>>(registrations);
+    }
 
-            if (attrs?.Any() == true)
-            {
-                foreach (var attr in attrs)
-                {
-                    attr.ImplementationType = t;
-                    container.Add(attr.ServiceType, attr.ImplementationType, null, attr.Lifecycle);
-                }
-            }
-        }
+    private bool AddRegistration(Registration registration, ILocatorRegistry registry)
+    {
+        registry.Add
+        (
+            registration.ServiceType, // service
+            registration.ImplementationType, // implementation
+            lifecycle: registration.Lifecycle
+        );
+
+        return true;
+    }
+
+    private IEnumerable<Registration> ConvertNodeToRegistration(IDependencyNode node)
+    {
+        var implementationType = node.Node as Type;
+        var attrs = implementationType.CustomAttribute(RegistrationType, false).OfType<RegistrationAttribute>();
+
+        return attrs.Select(r => new Registration(r, implementationType));
     }
 }
 ```
