@@ -1,7 +1,7 @@
 ---
-title: DotNetStarter - Customizing the Locator
+title: DotNetStarter - Locators
 ---
-# DotNetStarter - Customizing the locator
+# DotNetStarter - Locators
 
 The ILocator and ILocatorRegistry system is a wrapper for any container that can implement the interfaces.
 The following are the currently supported container implementations:
