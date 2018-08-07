@@ -3,11 +3,7 @@ title: DotNetStarter - ASP.Net Core Configure Services
 ---
 # DotNetStarter - ASP.Net Core Configure Services
 
-Below are examples of how to configure the IServiceProvider in Configure Services for the supported locators.
-
-## DotNetStarter
-
-DotNetStarter can now create the service provider in the configure set. The only issue with using it is it selects the greediest constructor and not all services are wired up in that manner. Below is a simple example that works with all three of the maintained locators.
+Below are examples of how to configure the IServiceProvider in Configure Services for some of supported locators. By default, DotNetStarter will use the greediest constructor, which services in the service collection do not always use. To resolve this, use a DI container's adapter package for wiring up the service collection, then pass the already configured container instance to an ILocatorRegistryFactory provided by a DotNetStarter supported locator. 
 
 ### Required Packages
 
@@ -20,71 +16,76 @@ DotNetStarter can now create the service provider in the configure set. The only
   * DotNetStarter.Locators.LightInject
 
 ```cs
-public class Startup
+using System;
+using DotNetStarter.Abstractions;
+using DotNetStarter.Locators;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+
+namespace ExampleStartup
 {
-    private readonly IHostingEnvironment _env;
-    private DotNetStarter.Configure.StartupBuilder startupBuilder;
-
-    public Startup(IConfiguration configuration, IHostingEnvironment env)
+    public class Startup
     {
-        Configuration = configuration;
-        _env = env;
-    }
+        private readonly IHostingEnvironment _hostingEnv;
+        private readonly DotNetStarter.Configure.StartupBuilder _startupBuilder;
 
-    public IConfiguration Configuration { get; }
-
-    // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-    public void Configure(IApplicationBuilder app)
-    {
-        startupBuilder.Run(); // to run all IStartupModules
-
-        // omitted for brevity
-    }
-
-    // This method gets called by the runtime. Use this method to add services to the container.
-    public IServiceProvider ConfigureServices(IServiceCollection services)
-    {
-        // service configuration
-        services.Configure<CookiePolicyOptions>(options =>
+        public Startup(IConfiguration configuration, IHostingEnvironment hostingEnv)
         {
-            // This lambda determines whether user consent for non-essential cookies is needed for a given request.
-            options.CheckConsentNeeded = context => true;
-            options.MinimumSameSitePolicy = SameSiteMode.None;
-        });
+            Configuration = configuration;
+            _hostingEnv = hostingEnv;
+            _startupBuilder = DotNetStarter.Configure.StartupBuilder.Create();
+        }
 
-        services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+        public IConfiguration Configuration { get; }
 
-        // begin DotNetStarter with DryIoc Container
-        startupBuilder = DotNetStarter.Configure.StartupBuilder.Create()
-            .UseEnvironment(new StartupEnvironment(_env.EnvironmentName, _env.ContentRootPath))
-            .ConfigureAssemblies(assemblies =>
+        // This method gets called by the runtime. Use this method to add services to the container.
+        public IServiceProvider ConfigureServices(IServiceCollection services)
+        {
+            // service configuration
+            services.Configure<CookiePolicyOptions>(options =>
             {
-                assemblies
-                .WithDiscoverableAssemblies(LoadAssemblies())
-                .WithAssemblyFromType<Startup>();
-            })
-            // provide an ILocator registry factory based on one of the support ILocator packages
-            .OverrideDefaults(d => d.UseLocatorRegistryFactory(CreateRegistryFactory(services)))
-            .Build(useApplicationContext: false);
+                // This lambda determines whether user consent for non-essential cookies is needed for a given request.
+                options.CheckConsentNeeded = context => true;
+                options.MinimumSameSitePolicy = SameSiteMode.None;
+            });
 
-        return startupBuilder.StartupContext.Locator.Get<IServiceProvider>();
-    }
+            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
 
-    // for loading all assemblies
-    private ICollection<Assembly> LoadAssemblies()
-    {
-        var libraries = Microsoft.Extensions.DependencyModel.DependencyContextExtensions.GetRuntimeAssemblyNames
-        (
-            Microsoft.Extensions.DependencyModel.DependencyContext.Default,
-            Microsoft.DotNet.PlatformAbstractions.RuntimeEnvironment.GetRuntimeIdentifier()
-        );
+            // configures dotnetstarter with service collection
+            return ConfigureDotNetStarter(services);
+        }
 
-        return libraries.Select(x => Assembly.Load(new AssemblyName(x.Name))).ToList();
-    }
+        private IServiceProvider ConfigureDotNetStarter(IServiceCollection services)
+        {
+            _startupBuilder
+                //environment allows for conditional check to swap services, perform tasks only in production, etc
+                .UseEnvironment(new DotNetStarter.StartupEnvironment(_hostingEnv.EnvironmentName, _hostingEnv.ContentRootPath))
+                .ConfigureAssemblies(assemblies =>
+                {
+                    assemblies
+                        //scan all types with [assembly: DotNetStarter.Abstractions.DiscoverableAssembly]
+                        .WithDiscoverableAssemblies()
+                        //scan types in this project
+                        .WithAssemblyFromType<Startup>();
+                })
+                // provide an ILocator registry factory based on one of the support ILocator packages
+                // listed at https://bmcdavid.github.io/DotNetStarter/locators.html
+                .OverrideDefaults(d => d.UseLocatorRegistryFactory(CreateRegistryFactory(services)))
+                .Build(useApplicationContext: false) // executes all ILocatorConfigure instances
+                .Run(); // executes all IStartupModule instances
 
-    private ILocatorRegistryFactory CreateRegistryFactory(IServiceCollection services)
-    {
-        // return an ILocatorRegistryFactory as noted below in the examples
+            return _startupBuilder.StartupContext.Locator.Get<IServiceProvider>();
+        }    
+
+        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        {
+             //omitted for brevity
+        }
     }
 }
 ```
@@ -100,24 +101,21 @@ public class Startup
 Replace the **CreateRegistryFactory** call in the above example with the below:
 
 ```cs
-/// <summary>
-/// configures a DryIoc locator with services provided by IServiceCollection
-/// </summary>
-/// <param name="services"></param>
-/// <returns></returns>
-private ILocatorRegistryFactory CreateDryIocFactory(IServiceCollection services)
+// uses DotNetStarter.DryIoc package
+private static ILocatorRegistryFactory CreateDryIocRegistryFactory(IServiceCollection services)
 {
-    // default container Rules for dotnet core
+    // create default container Rules for dotnet core
     var rules = DryIoc.Rules.Default
         .With(DryIoc.FactoryMethod.ConstructorWithResolvableArguments)
         .WithFactorySelector(DryIoc.Rules.SelectLastRegisteredFactory())
-        .WithTrackingDisposableTransients(); //used in transient delegate cases
+        .WithTrackingDisposableTransients();
 
     var container = new DryIoc.Container(rules);
-    DryIoc.Microsoft.DependencyInjection.DryIocAdapter.Populate(container, services); // configures DryIoc with IServiceCollection
+    // configures DryIoc with IServiceCollection using DryIoc.Microsoft.DependencyInjection
+    DryIoc.Microsoft.DependencyInjection.DryIocAdapter.Populate(container, services);
 
-    return new DotNetStarter.Locators.DryIocLocatorFactory(container);
-}
+    return new DryIocLocatorFactory(container);
+}    
 ```
 
 ## Structuremap Locator
@@ -130,17 +128,14 @@ private ILocatorRegistryFactory CreateDryIocFactory(IServiceCollection services)
 Replace the **CreateRegistryFactory** call in the above example with the below:
 
 ```cs
-/// <summary>
-/// configures a Structuremap locator with services provided by IServiceCollection
-/// </summary>
-/// <param name="services"></param>
-/// <returns></returns>
-private ILocatorRegistryFactory CreateStructuremapFactory(IServiceCollection services)
+// uses DotNetStarter.Structuremap package
+private static ILocatorRegistryFactory CreateStructuremapRegistryFactory(IServiceCollection services)
 {
     var container = new StructureMap.Container();
     container.Configure(config =>
     {
-        StructureMap.ContainerExtensions.Populate(config,services); // add services
+        // maps services using Structuremap.Microsoft.DependencyInjection
+        StructureMap.ContainerExtensions.Populate(config, services);
     });
 
     return new StructureMapFactory(container);
