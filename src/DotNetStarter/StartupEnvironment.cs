@@ -9,6 +9,9 @@ namespace DotNetStarter
     {
         private bool? _IsLocal, _IsDev, _IsProd, _IsStage, _IsQA, _IsUAT, _IsTest, _IsUnitTest;
 
+        /// <summary>
+        /// UnitTest Environment name
+        /// </summary>
         protected const string UnitTestName = "UnitTest";
 
         /// <summary>
