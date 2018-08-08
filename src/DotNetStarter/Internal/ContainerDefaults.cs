@@ -38,12 +38,14 @@
             RegisterLocatorConfigureCollection(registry);
 
             // add default instances
-            registry.Add(typeof(IStartupConfiguration), configuration);
-            registry.Add(typeof(IStartupLogger), configuration.Logger);
-            registry.Add(typeof(IAssemblyScanner), configuration.AssemblyScanner);
-            registry.Add(typeof(IDependencyFinder), configuration.DependencyFinder);
-            registry.Add(typeof(IDependencySorter), configuration.DependencySorter);
-            registry.Add<ITimedTask, TimedTask>(lifecycle: Lifecycle.Transient);
+            registry
+                .AddInstance(configuration)
+                .AddInstance(configuration.Environment)
+                .AddInstance(configuration.Logger)
+                .AddInstance(configuration.AssemblyScanner)
+                .AddInstance(configuration.DependencyFinder)
+                .AddInstance(configuration.DependencySorter)
+                .AddTransient<ITimedTask,TimedTask>();
         }
 
         /// <summary>

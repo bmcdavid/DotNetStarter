@@ -39,7 +39,7 @@ The second method requires a class that implements DotNetStarter.Abstractions.IL
 [StartupModule]
 public class Example : ILocatorConfigure
 {
-    public void Configure(ILocatorRegistry container, IStartupEngine engine)
+    public void Configure(ILocatorRegistry container, ILocatorConfigureEngine engine)
     {
         container.Add<BaseTest, BaseImpl>(lifecycle: Lifecycle.Scoped);
 
@@ -59,7 +59,7 @@ Both methods support adding dependencies which allows for an override system. Th
 [StartupModule(typeof(RegisterConfiguration))]
 public class DependencyExample : ILocatorConfigure
 {
-    public void Configure(ILocatorRegistry container, IStartupEngine engine)
+    public void Configure(ILocatorRegistry container, ILocatorConfigureEngine engine)
     {
         container.Add<IServiceType, NewImpl>(lifecycle: Lifecycle.Scoped);
     }

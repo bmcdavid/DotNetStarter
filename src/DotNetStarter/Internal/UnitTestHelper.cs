@@ -1,4 +1,6 @@
-﻿namespace DotNetStarter.Internal
+﻿using DotNetStarter.Abstractions;
+
+namespace DotNetStarter.Internal
 {
     /// <summary>
     /// Allows for application context to be reset, use ONLY in unit test projects
@@ -19,5 +21,17 @@
                 AssemblyLoader.LoadedAssemblies.Clear();
             }
         }
+
+        /// <summary>
+        /// For testing purposes
+        /// </summary>
+        /// <param name="started"></param>
+        public static void SetApplicationStarted(bool started) => ApplicationContext.Started = started;
+
+        /// <summary>
+        /// For testing purposes
+        /// </summary>
+        /// <param name="startupContext"></param>
+        public static void SetApplicationDefaultContext(IStartupContext startupContext) => ApplicationContext._Default = startupContext;
     }
 }

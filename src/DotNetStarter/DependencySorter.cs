@@ -1,16 +1,17 @@
-﻿namespace DotNetStarter
-{
-    using Abstractions;
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
+﻿using DotNetStarter.Abstractions;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 
+namespace DotNetStarter
+{
     /// <summary>
     /// Default dependency sorter
     /// </summary>
     public class DependencySorter : IDependencySorter
     {
-        private Func<object, Type, IDependencyNode> _DependencyNodeFactory;
+        private readonly Func<object, Type, IDependencyNode> _DependencyNodeFactory;
+        private readonly IComparer<IDependencyNode> _depdendencyComparer;
 
         /// <summary>
         /// DI constructor
@@ -20,74 +21,50 @@
         public DependencySorter(Func<object, Type, IDependencyNode> dependencyNodeFactory, IComparer<IDependencyNode> dependencyComparer = null)
         {
             _DependencyNodeFactory = dependencyNodeFactory ?? throw new ArgumentNullException(nameof(dependencyNodeFactory));
-            DependencyComparer = dependencyComparer ?? new DependencyComparer();
+            _depdendencyComparer = dependencyComparer ?? new DependencyComparer();
         }
 
         /// <summary>
-        /// Default comparer, swappable by changing DependencySorter in IStartupConfiguration
-        /// </summary>
-        protected virtual IComparer<IDependencyNode> DependencyComparer { get; set; }
-
-        /// <summary>
-        /// Default sorter or Types or Assemblies
+        /// Default sorter for Types or Assemblies
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="nodes"></param>
         /// <returns></returns>
         public virtual IList<IDependencyNode> Sort<T>(IEnumerable<object> nodes) where T : StartupDependencyBaseAttribute
         {
-            IList<IDependencyNode> unresolved = StartupNodes(nodes, typeof(T), DependencyComparer);
-            List<IDependencyNode> resolved = new List<IDependencyNode>();
-            HashSet<object> hashSet = new HashSet<object>();
-            int count = unresolved.Count;
-            int index = 0;
+            var properSort = new List<IDependencyNode>();
+            var initalSort = new Queue<IDependencyNode>(nodes.Select(n => _DependencyNodeFactory(n, typeof(T))).OrderBy(_ => _, _depdendencyComparer));
+            var dependencyChecks = new HashSet<object>();
+            int index = 0, previousLoopCount = initalSort.Count;
 
-            while (unresolved.Count > 0)
+            while (initalSort.Count > 0)
             {
-                IDependencyNode moduleNode = unresolved[index];
-
-                if (hashSet.IsSupersetOf(moduleNode.Dependencies))
+                index++;
+                var node = initalSort.Dequeue();
+                if (node.Dependencies.IsSubsetOf(dependencyChecks))
                 {
-                    resolved.Add(moduleNode);
-                    hashSet.Add(moduleNode.Node);
-                    unresolved.RemoveAt(index--);
+                    properSort.Add(node);
+                    dependencyChecks.Add(node.Node);
+                    continue;
                 }
 
-                if (++index >= unresolved.Count)
-                {
-                    if (count == unresolved.Count)
-                    {
-                        string names = string.Join(Environment.NewLine, unresolved.Select(x => x.FullName).ToArray());
-                        throw new InvalidOperationException($"Cannot resolve dependencies for the following {typeof(T).FullName}: {names}, please check their dependencies!");
-                    }
+                initalSort.Enqueue(node);// requeue for later pass
 
+                if (index == previousLoopCount)
+                {
+                    if (initalSort.Count == previousLoopCount) { break; }
                     index = 0;
-                    count = unresolved.Count;
+                    previousLoopCount = initalSort.Count;
                 }
             }
 
-            return resolved;
-        }
-
-        /// <summary>
-        /// Creates a list of dependency nodes
-        /// </summary>
-        /// <param name="nodes"></param>
-        /// <param name="attr"></param>
-        /// <param name="comparer"></param>
-        /// <returns></returns>
-        protected virtual IList<IDependencyNode> StartupNodes(IEnumerable<object> nodes, Type attr, IComparer<IDependencyNode> comparer)
-        {
-            List<IDependencyNode> list = new List<IDependencyNode>(100);
-
-            foreach (object node in nodes)
+            if (initalSort.Count > 0)
             {
-                list.Add(_DependencyNodeFactory(node, attr));
+                var names = string.Join(Environment.NewLine, initalSort.Select(x => x.FullName).ToArray());
+                throw new InvalidOperationException($"Cannot resolve ({names}) for attribute {typeof(T).FullName}, please check their dependencies!");
             }
 
-            list.Sort(comparer);
-
-            return list;
+            return properSort;
         }
     }
 }

@@ -11,7 +11,7 @@
     <Copyright>Copyright $(CurrentYear)</Copyright>
     <Description>Abstractions for a startup system and service registration for a DI container.</Description>
     <!--follow semantic versioning may include prelease information too-->
-    <PackageVersion>3.0.0</PackageVersion>
+    <PackageVersion>3.1.0</PackageVersion>
     <PackageTags>Startup Modules Abstractions</PackageTags>
     <!--do not change unless you want to deal with assembly redirects-->
     <AssemblyVersion>3.0.0</AssemblyVersion>

@@ -1,5 +1,3 @@
 # DotNetStarter.Extensions.Mvc Read Me
 
-To enable, please add the following to your global.asax Application_Start:
-
-DotNetStarter.ApplicationContext.Startup():
+To enable, please create a [StartupBuilder](https://bmcdavid.github.io/DotNetStarter/custom-objectfactory.html) in your global.asax constructor.

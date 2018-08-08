@@ -9,6 +9,8 @@ namespace DotNetStarter
     {
         private bool? _IsLocal, _IsDev, _IsProd, _IsStage, _IsQA, _IsUAT, _IsTest, _IsUnitTest;
 
+        protected const string UnitTestName = "UnitTest";
+
         /// <summary>
         /// Constructor
         /// </summary>
@@ -136,7 +138,7 @@ namespace DotNetStarter
         {
             if (_IsUnitTest == null)
             {
-                _IsUnitTest = IsEnvironment("UnitTest");
+                _IsUnitTest = IsEnvironment(UnitTestName);
             }
 
             return _IsUnitTest.Value;

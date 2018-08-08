@@ -9,6 +9,19 @@
     public static class RegistryExtensions
     {
         /// <summary>
+        /// Adds an instance
+        /// </summary>
+        /// <typeparam name="TService"></typeparam>
+        /// <param name="registry"></param>
+        /// <param name="instance"></param>
+        /// <returns></returns>
+        public static ILocatorRegistry AddInstance<TService>(this ILocatorRegistry registry, TService instance)
+        {
+            registry.Add(typeof(TService), instance);
+            return registry;
+        }
+
+        /// <summary>
         /// Adds a scoped lifecycle service
         /// </summary>
         /// <param name="registry"></param>

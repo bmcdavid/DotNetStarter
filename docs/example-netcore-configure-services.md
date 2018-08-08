@@ -1,7 +1,7 @@
 ---
-title: DotNetStarter - ASP.Net Core Configure Services
+title: DotNetStarter - .NET Core Configure Services
 ---
-# DotNetStarter - ASP.Net Core Configure Services
+# DotNetStarter - .NET Core Configure Services
 
 Below are examples of how to configure the IServiceProvider in Configure Services for some of supported locators. By default, DotNetStarter will use the greediest constructor, which services in the service collection do not always use. To resolve this, use a DI container's adapter package for wiring up the service collection, then pass the already configured container instance to an ILocatorRegistryFactory provided by a DotNetStarter supported locator. 
 
@@ -10,10 +10,7 @@ Below are examples of how to configure the IServiceProvider in Configure Service
 * DotNetStarter.RegistrationAbstractions
 * DotNetStarter.Abstractions
 * DotNetStarter
-* One of the following:
-  * DotNetStarter.DryIoc
-  * DotNetStarter.Structuremap
-  * DotNetStarter.Locators.LightInject
+* Any [supported locator](https://bmcdavid.github.io/DotNetStarter/locators.html) package
 
 ```cs
 using System;

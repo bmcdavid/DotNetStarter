@@ -1,1 +1,1 @@
-﻿Updated for interface changes.
+﻿Updated for readme.txt.

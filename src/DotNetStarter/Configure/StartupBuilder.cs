@@ -45,11 +45,13 @@ namespace DotNetStarter.Configure
         /// <returns></returns>
         public StartupBuilder Build(bool useApplicationContext = true, bool useDiscoverableAssemblies = false)
         {
-            if (_isConfigured) { return this; }
-            if (useApplicationContext && ApplicationContext.Started) { return this; }
-
-            _isConfigured = true;
+            // order matters
             _usingAppContext = useApplicationContext;
+            if (_isConfigured) { return this; }
+            _isConfigured = true;
+            if (_usingAppContext && ApplicationContext.Started) { return this; }
+            // end order matters
+
             var objFactory = new StartupBuilderObjectFactory() { Environment = _environment };
             var assemblyExp = new AssemblyExpression();
             _assemblyExpression?.Invoke(assemblyExp);
@@ -135,15 +137,16 @@ namespace DotNetStarter.Configure
         /// </summary>
         public void Run()
         {
+            // order matters
+            if (!_isConfigured) { Build(); }// just in case its not called fluently
             if (_usingAppContext && ApplicationContext.Started) { return; }
             if (_runOnce) { return; }
-
             _runOnce = true;
-            Build(); // just in case its not called fluently
+            // end order matters
 
-            if(_startupHandler == null)
+            if (_startupHandler == null)
             {
-                throw new Exception($"{nameof(Run)} was called but the startupHandler no startup handler was defined!");
+                throw new Exception($"{nameof(Run)} was called but no startup handler was defined!");
             }
 
             _startupHandler.TryExecuteStartupModules();
