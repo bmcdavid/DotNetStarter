@@ -25,7 +25,7 @@ namespace ExampleApplication
         public MvcApplication()
         {
             // Executed in Global.asax constructor to allow IHttpModule startup modules to register
-            DotNetStarter2.Configure.StartupBuilder.Create()
+            DotNetStarter.Configure.StartupBuilder.Create()
                 //environment allows for conditional check to swap services, perform tasks only in production, etc
                 .UseEnvironment(new DotNetStarter.StartupEnvironment(ConfigurationManager.AppSettings["DotNetStarter.Environment"]))
                 .ConfigureAssemblies(assemblies =>
