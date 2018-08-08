@@ -14,6 +14,7 @@ namespace DotNetStarter
     {
         private readonly Type _attributeType;
         private HashSet<object> _dependencies;
+        private StartupDependencyBaseAttribute _nodeAttribute;
 
         /// <summary>
         /// Constructor
@@ -22,14 +23,21 @@ namespace DotNetStarter
         /// <param name="attributeType"></param>
         public DependencyNode(object nodeType, Type attributeType)
         {
-            Node = nodeType;
-            _attributeType = attributeType;
+            Node = nodeType ?? throw new ArgumentNullException(nameof(nodeType));
+            _attributeType = attributeType ?? throw new ArgumentNullException(nameof(attributeType));
         }
 
         /// <summary>
         /// Dependencies
         /// </summary>
-        public virtual HashSet<object> Dependencies => BuildDependencies();
+        public virtual HashSet<object> Dependencies
+        {
+            get
+            {
+                Build();
+                return _dependencies;
+            }
+        }
 
         /// <summary>
         /// Count of Dependencies
@@ -54,7 +62,14 @@ namespace DotNetStarter
         /// <summary>
         /// Attribute instance for Node
         /// </summary>
-        public virtual StartupDependencyBaseAttribute NodeAttribute { get; private set; }
+        public virtual StartupDependencyBaseAttribute NodeAttribute
+        {
+            get
+            {
+                Build();
+                return _nodeAttribute;
+            }
+        }
 
         /// <summary>
         /// String representation of DependencyNode in form of (DepedencyCount) Fullname: string delimited fullname list of dependencies
@@ -67,15 +82,15 @@ namespace DotNetStarter
         private static string JoinDependencyNames(IEnumerable<object> dependencies) =>
             string.Join(",", dependencies.Select(x => GetFullName(x)).ToArray());
 
-        private HashSet<object> BuildDependencies()
+        private void Build()
         {
-            if(_dependencies != null) { return _dependencies; }
+            if (_dependencies != null) { return; }
             _dependencies = new HashSet<object>();
             var attributes = Node.CustomAttribute(_attributeType, false).OfType<StartupDependencyBaseAttribute>();
 
             if (attributes?.Any() == true)
             {
-                NodeAttribute = attributes.FirstOrDefault();
+                _nodeAttribute = attributes.FirstOrDefault();
 
                 foreach (var attribute in attributes)
                 {
@@ -93,7 +108,7 @@ namespace DotNetStarter
                 }
             }
 
-            return _dependencies;
+            return;
         }
     }
 }
