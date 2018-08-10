@@ -43,6 +43,13 @@ namespace DotNetStarter.UnitTests
             Assert.IsTrue(A.RegisterException);
         }
 
+        [ExpectedException(typeof(Exception), AllowDerivedTypes = true)]
+        [TestMethod]
+        public void ShouldThrowResolveErrorWhenNotRegistered()
+        {
+            Assert.IsTrue(ApplicationContext.Default.Locator.Get<Mocks.INotRegistered>() == null);
+        }
+
         [TestMethod]
         public void ShouldGetBaseClasses()
         {

@@ -16,6 +16,8 @@ namespace DotNetStarter.UnitTests.Mocks
         }
     }
 
+    public interface INotRegistered { }
+
     public interface IFoo
     {
         string Hello { get; }
