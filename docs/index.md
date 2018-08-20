@@ -17,9 +17,15 @@ Package  | Version
 [DotNetStarter.RegistrationAbstractions](https://www.nuget.org/packages/DotNetStarter.RegistrationAbstractions/) |  [![NuGet version](https://badge.fury.io/nu/DotNetStarter.RegistrationAbstractions.svg)](https://badge.fury.io/nu/DotNetStarter.RegistrationAbstractions)
 [DotNetStarter.Web](https://www.nuget.org/packages/DotNetStarter.Web/) |  [![NuGet version](https://badge.fury.io/nu/DotNetStarter.Web.svg)](https://badge.fury.io/nu/DotNetStarter.Web)
 [DotNetStarter.Owin](https://www.nuget.org/packages/DotNetStarter.Owin/) |  [![NuGet version](https://badge.fury.io/nu/DotNetStarter.Owin.svg)](https://badge.fury.io/nu/DotNetStarter.Owin)
+Locators | 
+[DotNetStarter.Locators.Autofac](https://www.nuget.org/packages/DotNetStarter.Locators.Autofac/) |  [![NuGet version](https://badge.fury.io/nu/DotNetStarter.Locators.Autofac.svg)](https://badge.fury.io/nu/DotNetStarter.Locators.Autofac)
 [DotNetStarter.DryIoc](https://www.nuget.org/packages/DotNetStarter.DryIoc/) |  [![NuGet version](https://badge.fury.io/nu/DotNetStarter.DryIoc.svg)](https://badge.fury.io/nu/DotNetStarter.DryIoc)
-[DotNetStarter.Structuremap](https://www.nuget.org/packages/DotNetStarter.Structuremap/) |  [![NuGet version](https://badge.fury.io/nu/DotNetStarter.Structuremap.svg)](https://badge.fury.io/nu/DotNetStarter.Structuremap)
+[DotNetStarter.Locators.Grace](https://www.nuget.org/packages/DotNetStarter.Locators.Grace/) |  [![NuGet version](https://badge.fury.io/nu/DotNetStarter.Locators.Grace.svg)](https://badge.fury.io/nu/DotNetStarter.Locators.Grace)
 [DotNetStarter.Locators.LightInject](https://www.nuget.org/packages/DotNetStarter.Locators.LightInject/) |  [![NuGet version](https://badge.fury.io/nu/DotNetStarter.Locators.LightInject.svg)](https://badge.fury.io/nu/DotNetStarter.Locators.LightInject)
+[DotNetStarter.Locators.Stashbox](https://www.nuget.org/packages/DotNetStarter.Locators.Stashbox/) |  [![NuGet version](https://badge.fury.io/nu/DotNetStarter.Locators.Stashbox.svg)](https://badge.fury.io/nu/DotNetStarter.Locators.Stashbox)
+[DotNetStarter.Structuremap](https://www.nuget.org/packages/DotNetStarter.Structuremap/) |  [![NuGet version](https://badge.fury.io/nu/DotNetStarter.Structuremap.svg)](https://badge.fury.io/nu/DotNetStarter.Structuremap)
+[DotNetStarter.Locators.StructuremapSigned](https://www.nuget.org/packages/DotNetStarter.Locators.StructuremapSigned/) |  [![NuGet version](https://badge.fury.io/nu/DotNetStarter.Locators.StructuremapSigned.svg)](https://badge.fury.io/nu/DotNetStarter.Locators.StructuremapSigned)
+Extensions | 
 [DotNetStarter.Extensions.Mvc](https://www.nuget.org/packages/DotNetStarter.Extensions.Mvc/) |  [![NuGet version](https://badge.fury.io/nu/DotNetStarter.Extensions.Mvc.svg)](https://badge.fury.io/nu/DotNetStarter.Extensions.Mvc)
 [DotNetStarter.Extensions.WebApi](https://www.nuget.org/packages/DotNetStarter.Extensions.WebApi/) |  [![NuGet version](https://badge.fury.io/nu/DotNetStarter.Extensions.WebApi.svg)](https://badge.fury.io/nu/DotNetStarter.Extensions.WebApi)
 
@@ -32,9 +38,10 @@ Package  | Version
 * [Assembly Scanning](https://bmcdavid.github.io/DotNetStarter/scanning.html)
 * [Locators](https://bmcdavid.github.io/DotNetStarter/locators.html)
 * [Scoped Services](https://bmcdavid.github.io/DotNetStarter/scoped-locator.html)
+* [Package Authoring Tips](https://bmcdavid.github.io/DotNetStarter/package-authors.html)
 * [Known Issues](https://bmcdavid.github.io/DotNetStarter/known-issues.html)
 
 ## Examples
 * [.NET Framework Configuration](https://bmcdavid.github.io/DotNetStarter/example-netfullframework.html)
 * [.NET Core Service Configuration](https://bmcdavid.github.io/DotNetStarter/example-netcore-configure-services.html)
-* [Episerver Locator with Scoped Dependency Resolver](https://bmcdavid.github.io/DotNetStarter/example-episerver-locator.html)
+* [Episerver Initialization](https://bmcdavid.github.io/DotNetStarter/example-episerver-locator.html)

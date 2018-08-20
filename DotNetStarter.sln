@@ -28,6 +28,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "docs", "docs", "{C36723A8-B
 		docs\known-issues.md = docs\known-issues.md
 		docs\locators.md = docs\locators.md
 		docs\modules.md = docs\modules.md
+		docs\package-authors.md = docs\package-authors.md
 		docs\register.md = docs\register.md
 		docs\scanning.md = docs\scanning.md
 		docs\scoped-locator.md = docs\scoped-locator.md
