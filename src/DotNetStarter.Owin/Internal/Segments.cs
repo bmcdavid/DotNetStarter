@@ -1,4 +1,8 @@
-﻿namespace DotNetStarter.Owin.Internal
+﻿// Copyright (c) .NET Foundation. All rights reserved.
+// Licensed under the Apache License, Version 2.0. See https://github.com/aspnet/AspNetKatana/blob/master/LICENSE.txt for license information.
+// Modifications copyright 2016 <Brad McDavid>
+
+namespace DotNetStarter.Owin.Internal
 {
     using System;
     using System.Collections;

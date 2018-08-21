@@ -1,9 +1,9 @@
 ---
-title: DotNetStarter - Episerver locator and Depencency Resolver
+title: DotNetStarter - Episerver Initialization
 ---
-# DotNetStarter - Episerver locator and Depencency Resolver
+# DotNetStarter - Episerver Initialization
 
-Below is an example of how to wireup with Episerver's structuremap configured container.
+Below is an example of how to wireup with Episerver's structuremap configured container during Episerver initialization.
 
 ## Required NuGet packages
 
@@ -47,9 +47,8 @@ namespace Example.Business.Initialization
                 .ConfigureAssemblies(assemblies =>
                 {
                     assemblies
-                        .WithDiscoverableAssemblies()
-                        .WithAssemblyFromType<WireupDotNetStarter>() // this project, for controllers, services, etc
-                        ;
+                        .WithDiscoverableAssemblies(AppDomain.CurrentDomain.GetAssemblies())
+                        .WithAssemblyFromType<WireupDotNetStarter>(); // this project, for controllers, services, etc
                 })
                 .OverrideDefaults(defaults =>
                 {

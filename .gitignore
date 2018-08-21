@@ -241,4 +241,5 @@ ModelManifest.xml
 # FAKE - F# Make
 .fake/
 
-GeneratedAssemblyInfo.cs
+coverage.*.xml
+coveragereport/
