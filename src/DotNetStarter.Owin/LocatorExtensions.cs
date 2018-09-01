@@ -109,7 +109,7 @@
             {
                 var scoped = TryGetHttpScopedLocator(context, locator) as ILocatorScoped;
                 var hasScopedLocator = scoped != null;
-                scoped = scoped ?? (locator as ILocatorWithCreateScope).CreateScope();
+                scoped = scoped ?? locator.Get<ILocatorScopedFactory>().CreateScope(); // create via factory
 
                 var contextAccessor = scoped.Get<IContextAccessor>();
                 (contextAccessor as IContextSetter)

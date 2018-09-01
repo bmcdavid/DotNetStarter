@@ -1,3 +1,1 @@
-﻿Fixed StartupBuilder bug for full framework using ApplicationContext.
-Added UnitTestEnvironment
-Version 3 release, see https://bmcdavid.github.io/DotNetStarter/breaking-changes.html for full changes.
+﻿Refactored IStartupHandler into IStartupTask execution.

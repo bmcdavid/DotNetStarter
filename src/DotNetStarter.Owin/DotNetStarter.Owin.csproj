@@ -11,7 +11,7 @@
     <Copyright>Copyright $(CurrentYear)</Copyright>
     <Description>Owin Startup system with optional support for DI/IOC.</Description>
     <!--follow semantic versioning may include prelease information too-->
-    <PackageVersion>3.0.0</PackageVersion>
+    <PackageVersion>3.0.1</PackageVersion>
     <PackageTags>Startup Owin</PackageTags>
     <!--do not change unless you want to deal with assembly redirects-->
     <AssemblyVersion>3.0.0</AssemblyVersion>
