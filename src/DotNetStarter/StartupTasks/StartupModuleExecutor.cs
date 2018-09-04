@@ -33,7 +33,7 @@ namespace DotNetStarter.StartupTasks
         /// Prepares task
         /// </summary>
         /// <param name="taskContext"></param>
-        public void Prepare(StartupTaskContext taskContext)
+        public void Prepare(IStartupTaskContext taskContext)
         {
             _timedTask.Name = typeof(StartupModuleExecutor).FullName;
             _timedTask.TimedAction = () =>

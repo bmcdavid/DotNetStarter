@@ -1,6 +1,4 @@
-﻿using DotNetStarter.Abstractions;
-
-namespace DotNetStarter.StartupTasks
+﻿namespace DotNetStarter.Abstractions
 {
     /// <summary>
     /// Task to perform by IStartupHandler
@@ -11,7 +9,7 @@ namespace DotNetStarter.StartupTasks
         /// Prepares task for exectution
         /// </summary>
         /// <param name="taskContext"></param>
-        void Prepare(StartupTaskContext taskContext);
+        void Prepare(IStartupTaskContext taskContext);
 
         /// <summary>
         /// Executes task with given ITimedTaskManager

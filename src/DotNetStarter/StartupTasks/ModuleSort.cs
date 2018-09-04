@@ -27,7 +27,7 @@ namespace DotNetStarter.StartupTasks
         /// Prepares module sort
         /// </summary>
         /// <param name="taskContext"></param>
-        public void Prepare(StartupTaskContext taskContext)
+        public void Prepare(IStartupTaskContext taskContext)
         {
             _timedTask.Name = typeof(ModuleSort).FullName;
             _timedTask.TimedAction = () =>

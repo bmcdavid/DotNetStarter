@@ -1,4 +1,4 @@
-﻿namespace DotNetStarter.StartupTasks
+﻿namespace DotNetStarter.Abstractions
 {
     /// <summary>
     /// StartupHandler task that can run IStartupModule isntances

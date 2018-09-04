@@ -6,7 +6,7 @@ namespace DotNetStarter.StartupTasks
     /// <summary>
     /// Provides data across startup tasks
     /// </summary>
-    public sealed class StartupTaskContext
+    public sealed class StartupTaskContext : IStartupTaskContext
     {
         private readonly IItemCollection _taskItems;
 
@@ -30,19 +30,14 @@ namespace DotNetStarter.StartupTasks
         }
 
         /// <summary>
-        /// Determines if Import&lt;T> is assigned
-        /// </summary>
-        public bool EnableImport { get; }
-
-        /// <summary>
         /// IStartupConfiguration instance
         /// </summary>
         public IStartupConfiguration Configuration { get; }
 
         /// <summary>
-        /// ILocatorRegistry instance
+        /// Determines if Import&lt;T> is assigned
         /// </summary>
-        public ILocatorRegistry LocatorRegistry { get; }
+        public bool EnableImport { get; }
 
         /// <summary>
         /// ILocator instance
@@ -50,11 +45,9 @@ namespace DotNetStarter.StartupTasks
         public ILocator Locator { get; }
 
         /// <summary>
-        /// Sets a task item
+        /// ILocatorRegistry instance
         /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="itemInstance"></param>
-        public void SetItem<T>(T itemInstance) => _taskItems.Set(itemInstance);
+        public ILocatorRegistry LocatorRegistry { get; }
 
         /// <summary>
         /// Gets a task item
@@ -62,5 +55,12 @@ namespace DotNetStarter.StartupTasks
         /// <typeparam name="T"></typeparam>
         /// <returns></returns>
         public T Get<T>() => _taskItems.Get<T>();
+
+        /// <summary>
+        /// Sets a task item
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="itemInstance"></param>
+        public void SetItem<T>(T itemInstance) => _taskItems.Set(itemInstance);
     }
 }
