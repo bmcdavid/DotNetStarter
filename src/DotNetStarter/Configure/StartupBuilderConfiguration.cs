@@ -28,8 +28,7 @@ namespace DotNetStarter.Configure
         public IStartupEnvironment Environment { get; }
         public IStartupLogger Logger { get; }
         public IStartupModuleFilter ModuleFilter { get; }
-        public ITimedTaskManager TimedTaskManager { get; }
-
         public IRegistrationsModifier RegistrationsModifier { get; }
+        public ITimedTaskManager TimedTaskManager { get; }
     }
 }

@@ -45,10 +45,9 @@ namespace DotNetStarter
         public virtual IStartupContext ConfigureLocator(IStartupConfiguration config)
         {
             IStartupTask startupTaskWithStartModules = null;
-            var startupTasks = CreateStartupTasks();
             var startupTaskContext = new StartupTaskContext(_enableImport, _locatorRegistryFactory, config, _locatorDefaultRegistrations, _finalizeRegistry);
 
-            foreach (var task in startupTasks)
+            foreach (var task in CreateStartupTasks())
             {
                 task.Prepare(startupTaskContext);
 
@@ -102,33 +101,5 @@ namespace DotNetStarter
                 new StartupModuleExecutor(_timedTaskFactory)
             };
         }
-
-        /// <summary>
-        /// Configures ILocatorConfigure modules
-        /// </summary>
-        /// <param name="registry"></param>
-        /// <param name="locatorRegistries"></param>
-        /// <param name="configureEngine"></param>
-        [Obsolete("Use now in ContainerSetup.ConfigureRegistry!", false)]
-        protected virtual void ConfigureRegistry(ILocatorRegistry registry, IEnumerable<ILocatorConfigure> locatorRegistries, ILocatorConfigureEngine configureEngine) { }
-
-        /// <summary>
-        /// Creates default startup context
-        /// </summary>
-        /// <param name="locator"></param>
-        /// <param name="filteredModules"></param>
-        /// <param name="sortedModules"></param>
-        /// <param name="config"></param>
-        /// <returns></returns>
-        [Obsolete("Used now in ContainerSetup.CreateStartupContext!", false)]
-        protected virtual IStartupContext CreateStartupContext(ILocator locator, IEnumerable<IDependencyNode> filteredModules, IEnumerable<IDependencyNode> sortedModules, IStartupConfiguration config) => null;
-
-        /// <summary>
-        /// Startups up given IStartupModule instances
-        /// </summary>
-        /// <param name="modules"></param>
-        /// <param name="startupEngine"></param>
-        [Obsolete("Use now in StartupModuleExecutorer.RunStartupModules!", false)]
-        protected virtual void ExecuteStartupModules(IEnumerable<IStartupModule> modules, IStartupEngine startupEngine) { }
     }
 }

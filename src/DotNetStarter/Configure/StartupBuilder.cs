@@ -70,32 +70,32 @@ namespace DotNetStarter.Configure
             // will throw exception for netstandard1.0 applications
             var assembliesForStartup = GetDefaultAssemblies(useDiscoverableAssemblies, assemblyExp);
 
-            // default way using the static startup
-            if (useApplicationContext)
+            if (!useApplicationContext)
             {
-                if (!ApplicationContext.Started)
-                {
-                    if (_appStarting)
-                    {
-                        throw new Exception($"Do not access {typeof(ApplicationContext).FullName}.{nameof(ApplicationContext.Default)} during startup!");
-                    }
-
-                    lock (_objLock)
-                    {
-                        if (!ApplicationContext.Started)
-                        {
-                            _appStarting = true;
-                            ExecuteBuild(objFactory, assembliesForStartup, overrideExp, useApplicationContext);
-                            ApplicationContext._Default = StartupContext;
-                            _appStarting = false;
-                        }
-                    }
-                }
-
+                ExecuteBuild(objFactory, assembliesForStartup, overrideExp, false);
                 return this;
             }
 
-            ExecuteBuild(objFactory, assembliesForStartup, overrideExp, false);
+            // default way using the static startup
+            if (!ApplicationContext.Started)
+            {
+                if (_appStarting)
+                {
+                    throw new Exception($"Do not access {typeof(ApplicationContext).FullName}.{nameof(ApplicationContext.Default)} during startup!");
+                }
+
+                lock (_objLock)
+                {
+                    if (!ApplicationContext.Started)
+                    {
+                        _appStarting = true;
+                        ExecuteBuild(objFactory, assembliesForStartup, overrideExp, useApplicationContext);
+                        ApplicationContext._Default = StartupContext;
+                        _appStarting = false;
+                    }
+                }
+            }
+
             return this;
         }
 
