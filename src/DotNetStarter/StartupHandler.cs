@@ -46,7 +46,7 @@ namespace DotNetStarter
         {
             IStartupTask startupTaskWithStartModules = null;
             var startupTasks = CreateStartupTasks();
-            var startupTaskContext = new StartupTaskContext(_enableImport, _locatorRegistryFactory, config, _locatorDefaultRegistrations, _finalizeRegistry, new LocatorConfigureEngine(config));
+            var startupTaskContext = new StartupTaskContext(_enableImport, _locatorRegistryFactory, config, _locatorDefaultRegistrations, _finalizeRegistry);
 
             foreach (var task in startupTasks)
             {

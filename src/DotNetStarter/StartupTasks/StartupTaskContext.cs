@@ -18,8 +18,7 @@ namespace DotNetStarter.StartupTasks
         /// <param name="startupConfiguration"></param>
         /// <param name="locatorDefaultRegistrations"></param>
         /// <param name="locatorRegistryFinalizer"></param>
-        /// <param name="locatorConfigureEngine"></param>
-        public StartupTaskContext(bool enableImport, ILocatorRegistryFactory locatorRegistryFactory, IStartupConfiguration startupConfiguration, ILocatorDefaultRegistrations locatorDefaultRegistrations, Action<ILocatorRegistry> locatorRegistryFinalizer, LocatorConfigureEngine locatorConfigureEngine)
+        public StartupTaskContext(bool enableImport, ILocatorRegistryFactory locatorRegistryFactory, IStartupConfiguration startupConfiguration, ILocatorDefaultRegistrations locatorDefaultRegistrations, Action<ILocatorRegistry> locatorRegistryFinalizer)
         {
             EnableImport = enableImport;
             LocatorRegistry = locatorRegistryFactory?.CreateRegistry();
@@ -28,7 +27,6 @@ namespace DotNetStarter.StartupTasks
             _taskItems = new StartupEnvironmentItemCollection();
             _taskItems.Set(locatorDefaultRegistrations);
             _taskItems.Set(locatorRegistryFinalizer);
-            _taskItems.Set(locatorConfigureEngine);
         }
 
         /// <summary>

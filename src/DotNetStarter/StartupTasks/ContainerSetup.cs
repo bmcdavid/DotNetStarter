@@ -36,7 +36,8 @@ namespace DotNetStarter.StartupTasks
                 var locatorRegistry = taskContext.LocatorRegistry;
                 var locator = taskContext.Locator;
                 var modules = taskContext.Get<StartupTaskModuleCollection>();
-                var configureEngine = taskContext.Get<LocatorConfigureEngine>();
+                var configureEngine = new LocatorConfigureEngine(taskContext.Configuration);
+                taskContext.SetItem(configureEngine);
                 if (locatorRegistry == null) { throw new NullLocatorException(); }
                 taskContext.Get<ILocatorDefaultRegistrations>().Configure(locatorRegistry, modules.FilteredModules, taskContext.Configuration);
                 var locatorRegistries = (locatorRegistry as ILocatorRegistryWithResolveConfigureModules)?.ResolveConfigureModules(modules.FilteredModules, taskContext.Configuration) ?? locator.GetAll<ILocatorConfigure>();
