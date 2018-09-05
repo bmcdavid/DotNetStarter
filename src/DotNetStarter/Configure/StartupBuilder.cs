@@ -81,6 +81,7 @@ namespace DotNetStarter.Configure
             {
                 if (_appStarting)
                 {
+                    _appStarting = false; // for test purposes
                     throw new Exception($"Do not access {typeof(ApplicationContext).FullName}.{nameof(ApplicationContext.Default)} during startup!");
                 }
 
@@ -169,9 +170,9 @@ namespace DotNetStarter.Configure
             var startupConfig = objFactory.CreateStartupConfiguration(assemblies);
             IStartupHandler localStartupHandlerFactory(IStartupConfiguration config) =>
                 new StartupHandler(objFactory.CreateTimedTask, objFactory.CreateRegistryFactory(config), objFactory.CreateContainerDefaults(), objFactory.GetRegistryFinalizer(), enableImport: enableImport);
-            _startupHandler = (defaults.StartupHandlerFactory ?? localStartupHandlerFactory).Invoke(startupConfig);
+            _startupHandler = (defaults.StartupHandlerFactory ?? localStartupHandlerFactory)?.Invoke(startupConfig);
 
-            StartupContext = _startupHandler.ConfigureLocator(startupConfig);
+            StartupContext = _startupHandler?.ConfigureLocator(startupConfig);
         }
 
         private ICollection<Assembly> GetDefaultAssemblies(bool useDiscoverableAssemblies, AssemblyExpression assemblyExpression)
