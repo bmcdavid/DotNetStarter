@@ -13,8 +13,6 @@ namespace DotNetStarter.StartupBuilderTests
     [TestClass]
     public class StartupBuilderTests
     {
-        private static readonly object _lock = new object();
-
         [TestMethod]
         public void ShouldChangeRegistrationLifecycle()
         {
@@ -213,20 +211,17 @@ namespace DotNetStarter.StartupBuilderTests
             string sut = string.Empty;
             try
             {
-                lock (_lock)
-                {
-                    var builder = CreateTestBuilder();
-                    builder
-                        .ConfigureAssemblies(assemblies => assemblies.WithNoAssemblyScanning())
-                        .ConfigureStartupModules(modules =>
-                        {
-                            modules
-                                .ConfigureLocatorModuleCollection(c => c.Add(new FaultyAccessStaticDuringStartup()))
-                                .RemoveStartupModule<BadStartupModule>()
-                                .RemoveConfigureModule<BadConfigureModule>();
-                        })
-                        .Run();
-                }
+                var builder = CreateTestBuilder();
+                builder
+                    .ConfigureAssemblies(assemblies => assemblies.WithNoAssemblyScanning())
+                    .ConfigureStartupModules(modules =>
+                    {
+                        modules
+                            .ConfigureLocatorModuleCollection(c => c.Add(new FaultyAccessStaticDuringStartup()))
+                            .RemoveStartupModule<BadStartupModule>()
+                            .RemoveConfigureModule<BadConfigureModule>();
+                    })
+                    .Run();
             }
             catch (Exception e)
             {
