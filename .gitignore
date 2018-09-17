@@ -243,3 +243,4 @@ ModelManifest.xml
 
 coverage.*.xml
 coveragereport/
+coverage/

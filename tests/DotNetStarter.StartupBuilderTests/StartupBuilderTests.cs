@@ -47,6 +47,14 @@ namespace DotNetStarter.StartupBuilderTests
         }
 
         [TestMethod]
+        public void ShouldExecuteFromDefaults()
+        {
+            // only using discoverable assemblies to remove bad modules for unit testing
+            StartupBuilder.Create().Build(useDiscoverableAssemblies: true).Run();
+            Assert.IsNotNull(ApplicationContext.Default);
+            Internal.UnitTestHelper.ResetApplication();
+        }
+        [TestMethod]
         public void ShouldRegisterConfigureModuleViaConfiguration()
         {
             var sut = new ManualLocatorConfigure();
@@ -104,15 +112,6 @@ namespace DotNetStarter.StartupBuilderTests
         }
 
         [TestMethod]
-        public void ShouldRunFromDefaults()
-        {
-            // only using discoverable assemblies to remove bad modules for unit testing
-            StartupBuilder.Create().Build(useDiscoverableAssemblies: true).Run();
-            Assert.IsNotNull(ApplicationContext.Default);
-            Internal.UnitTestHelper.ResetApplication();
-        }
-
-        [TestMethod]
         public void ShouldRunWithNoScanning()
         {
             var sut = new ManualLocatorConfigure();
@@ -159,8 +158,8 @@ namespace DotNetStarter.StartupBuilderTests
                 .Build(useApplicationContext: false)
                 .Run();
 
+            builder.Build(useApplicationContext: false).Run();
             var logger = builder.StartupContext.Locator.Get<IStartupLogger>();
-
             Assert.IsTrue(builder.StartupContext.Configuration.Environment.IsEnvironment("UnitTest1"));
             Assert.IsNotNull(logger);
             //Assert.IsNotNull(new TestFooImport().FooImport.Service);
@@ -194,8 +193,9 @@ namespace DotNetStarter.StartupBuilderTests
                     defaults
                         .UseLogger(new StringLogger(LogLevel.Info));
                 })
-                .Build()
-                .Run();
+                .Run(); // omitting build for default
+
+            builder.Build().Run(); // 2nd pass shouldn't do anything
 
             var logger = builder.StartupContext.Locator.Get<IStartupLogger>();
             Assert.IsNotNull(logger);
@@ -205,6 +205,52 @@ namespace DotNetStarter.StartupBuilderTests
             Internal.UnitTestHelper.ResetApplication();
         }
 
+        [TestMethod]
+        public void ShouldThrowErrorAccessingStaticContextDuringInit()
+        {
+            string sut = string.Empty;
+            try
+            {
+                var builder = CreateTestBuilder();
+                builder
+                    .ConfigureAssemblies(assemblies => assemblies.WithNoAssemblyScanning())
+                    .ConfigureStartupModules(modules =>
+                    {
+                        modules
+                            .ConfigureLocatorModuleCollection(c => c.Add(new FaultyAccessStaticDuringStartup()))
+                            .RemoveStartupModule<BadStartupModule>()
+                            .RemoveConfigureModule<BadConfigureModule>();
+                    })
+                    .Run();
+            }
+            catch (Exception e)
+            {
+                sut = e.Message;
+            }
+
+            Assert.IsTrue(sut.StartsWith("Do not access"));
+            Internal.UnitTestHelper.ResetApplication();
+        }
+        [TestMethod]
+        public void ShouldThrowNoHandlerException()
+        {
+            string sut = string.Empty;
+            try
+            {
+                var builder = CreateTestBuilder();
+                builder
+                    .ConfigureAssemblies(a => a.WithNoAssemblyScanning())
+                    .OverrideDefaults(d => d.UseStartupHandler(c => null))
+                    .Build(useApplicationContext: false)
+                    .Run();
+            }
+            catch (Exception e)
+            {
+                sut = e.Message;
+            }
+
+            Assert.IsTrue(sut.Contains("was called but no startup handler was defined"));
+        }
         [TestMethod]
         public void ShouldUseEnvironmentItemsAcrossModules()
         {

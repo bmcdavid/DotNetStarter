@@ -35,7 +35,7 @@ namespace DotNetStarter
             var properSort = new List<IDependencyNode>();
             var initalSort = new Queue<IDependencyNode>(nodes.Select(n => _DependencyNodeFactory(n, typeof(T))).OrderBy(_ => _, _depdendencyComparer));
             var dependencyChecks = new HashSet<object>();
-            int index = 0, previousLoopCount = initalSort.Count;
+            int index = 0, unresolvedCount = initalSort.Count;
 
             while (initalSort.Count > 0)
             {
@@ -50,11 +50,11 @@ namespace DotNetStarter
 
                 initalSort.Enqueue(node);// requeue for later pass
 
-                if (index == previousLoopCount)
+                if (index == unresolvedCount)
                 {
-                    if (initalSort.Count == previousLoopCount) { break; }
+                    if (initalSort.Count == unresolvedCount) { break; }
                     index = 0;
-                    previousLoopCount = initalSort.Count;
+                    unresolvedCount = initalSort.Count;
                 }
             }
 

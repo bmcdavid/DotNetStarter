@@ -70,32 +70,33 @@ namespace DotNetStarter.Configure
             // will throw exception for netstandard1.0 applications
             var assembliesForStartup = GetDefaultAssemblies(useDiscoverableAssemblies, assemblyExp);
 
-            // default way using the static startup
-            if (useApplicationContext)
+            if (!useApplicationContext)
             {
-                if (!ApplicationContext.Started)
-                {
-                    if (_appStarting)
-                    {
-                        throw new Exception($"Do not access {typeof(ApplicationContext).FullName}.{nameof(ApplicationContext.Default)} during startup!");
-                    }
-
-                    lock (_objLock)
-                    {
-                        if (!ApplicationContext.Started)
-                        {
-                            _appStarting = true;
-                            ExecuteBuild(objFactory, assembliesForStartup, overrideExp, useApplicationContext);
-                            ApplicationContext._Default = StartupContext;
-                            _appStarting = false;
-                        }
-                    }
-                }
-
+                ExecuteBuild(objFactory, assembliesForStartup, overrideExp, false);
                 return this;
             }
 
-            ExecuteBuild(objFactory, assembliesForStartup, overrideExp, false);
+            // default way using the static startup
+            if (!ApplicationContext.Started)
+            {
+                if (_appStarting)
+                {
+                    _appStarting = false; // for test purposes
+                    throw new Exception($"Do not access {typeof(ApplicationContext).FullName}.{nameof(ApplicationContext.Default)} during startup!");
+                }
+
+                lock (_objLock)
+                {
+                    if (!ApplicationContext.Started)
+                    {
+                        _appStarting = true;
+                        ExecuteBuild(objFactory, assembliesForStartup, overrideExp, useApplicationContext);
+                        ApplicationContext._Default = StartupContext;
+                        _appStarting = false;
+                    }
+                }
+            }
+
             return this;
         }
 
@@ -169,9 +170,9 @@ namespace DotNetStarter.Configure
             var startupConfig = objFactory.CreateStartupConfiguration(assemblies);
             IStartupHandler localStartupHandlerFactory(IStartupConfiguration config) =>
                 new StartupHandler(objFactory.CreateTimedTask, objFactory.CreateRegistryFactory(config), objFactory.CreateContainerDefaults(), objFactory.GetRegistryFinalizer(), enableImport: enableImport);
-            _startupHandler = (defaults.StartupHandlerFactory ?? localStartupHandlerFactory).Invoke(startupConfig);
+            _startupHandler = (defaults.StartupHandlerFactory ?? localStartupHandlerFactory)?.Invoke(startupConfig);
 
-            StartupContext = _startupHandler.ConfigureLocator(startupConfig);
+            StartupContext = _startupHandler?.ConfigureLocator(startupConfig);
         }
 
         private ICollection<Assembly> GetDefaultAssemblies(bool useDiscoverableAssemblies, AssemblyExpression assemblyExpression)
