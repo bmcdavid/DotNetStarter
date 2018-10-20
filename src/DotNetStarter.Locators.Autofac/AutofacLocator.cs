@@ -9,7 +9,7 @@ namespace DotNetStarter.Locators
     /// <summary>
     /// Autofac Locator
     /// </summary>
-    public class AutofacLocator : ILocator, ILocatorWithCreateScope
+    public class AutofacLocator : ILocator, ILocatorWithCreateScope, IServiceProvider
     {
         private readonly ContainerBuilder _containerBuilder;
         private readonly ContainerBuildOptions _options;
@@ -85,5 +85,12 @@ namespace DotNetStarter.Locators
 
             return _container = _containerFactory?.Invoke() ?? _containerBuilder.Build(_options);
         }
+
+        /// <summary>
+        /// IServiceProvider.GetService
+        /// </summary>
+        /// <param name="serviceType"></param>
+        /// <returns></returns>
+        public virtual object GetService(Type serviceType) => ResolveContainer().Resolve(serviceType);
     }
 }

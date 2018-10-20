@@ -20,6 +20,11 @@
 
   <Import Project="..\..\targets\CommonNuGetPackage.props" />
 
+  <ItemGroup Condition="'$(TargetFramework)' == 'netstandard1.1'">
+    <PackageReference Include="System.ComponentModel" Version="4.3.0" />
+  </ItemGroup>
+
+
   <ItemGroup>
     <PackageReference Include="LightInject" Version="5.1.5" />
     <ProjectReference Include="..\DotNetStarter.Abstractions\DotNetStarter.Abstractions.csproj" />

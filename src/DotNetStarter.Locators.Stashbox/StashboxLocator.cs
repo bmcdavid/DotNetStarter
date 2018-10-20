@@ -8,7 +8,7 @@ namespace DotNetStarter.Locators
     /// <summary>
     /// Stashbox Locator
     /// </summary>
-    public class StashboxLocator : ILocator, ILocatorWithCreateScope
+    public class StashboxLocator : ILocator, ILocatorWithCreateScope, IServiceProvider
     {
         private IStashboxContainer _container;
 
@@ -60,5 +60,12 @@ namespace DotNetStarter.Locators
         /// <param name="key"></param>
         /// <returns></returns>
         public IEnumerable<object> GetAll(Type serviceType, string key = null) => _container.ResolveAll(serviceType);
+
+        /// <summary>
+        /// IServiceProvider.GetService
+        /// </summary>
+        /// <param name="serviceType"></param>
+        /// <returns></returns>
+        public object GetService(Type serviceType) => _container.Resolve(serviceType);
     }
 }

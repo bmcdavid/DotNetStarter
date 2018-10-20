@@ -8,7 +8,7 @@ namespace DotNetStarter.Locators
     /// <summary>
     /// Grace Locator
     /// </summary>
-    public class GraceLocator : ILocator, ILocatorWithCreateScope
+    public class GraceLocator : ILocator, ILocatorWithCreateScope, IServiceProvider
     {
         private DependencyInjectionContainer _container;
 
@@ -60,5 +60,12 @@ namespace DotNetStarter.Locators
         /// <param name="key"></param>
         /// <returns></returns>
         public IEnumerable<object> GetAll(Type serviceType, string key = null) => _container.LocateAll(serviceType);
+
+        /// <summary>
+        /// IServiceProvider.GetService
+        /// </summary>
+        /// <param name="serviceType"></param>
+        /// <returns></returns>
+        public object GetService(Type serviceType) => _container.Locate(serviceType);
     }
 }

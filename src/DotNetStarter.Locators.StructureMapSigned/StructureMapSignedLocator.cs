@@ -9,7 +9,7 @@
     /// <summary>
     /// ILocator for StructureMap
     /// </summary>
-    public class StructureMapSignedLocator : ILocator, ILocatorWithCreateScope, ILocatorWithPropertyInjection, ILocatorWithDebugInfo
+    public class StructureMapSignedLocator : ILocator, ILocatorWithCreateScope, ILocatorWithPropertyInjection, ILocatorWithDebugInfo, IServiceProvider
     {
         /// <summary>
         /// StructureMap container
@@ -80,5 +80,12 @@
         /// </summary>
         /// <returns></returns>
         public virtual ILocatorScoped CreateScope() => new StructureMapSignedLocatorScoped(_container.CreateChildContainer(), this);
+
+        /// <summary>
+        /// IServiceProvider.GetService
+        /// </summary>
+        /// <param name="serviceType"></param>
+        /// <returns></returns>
+        public object GetService(Type serviceType) => _container.GetInstance(serviceType);
     }
 }

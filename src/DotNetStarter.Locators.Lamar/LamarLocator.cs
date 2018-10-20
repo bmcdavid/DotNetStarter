@@ -9,7 +9,7 @@
     /// <summary>
     /// Base locator for Lamar
     /// </summary>
-    public class LamarLocator : ILocator, ILocatorWithCreateScope, ILocatorWithDebugInfo
+    public class LamarLocator : ILocator, ILocatorWithCreateScope, ILocatorWithDebugInfo, IServiceProvider
     {
         /// <summary>
         /// Lamar container
@@ -68,5 +68,12 @@
         /// </summary>
         /// <returns></returns>
         public virtual ILocatorScoped CreateScope() => new LamarLocatorScoped(_container.CreateScope(), this);
+
+        /// <summary>
+        /// IServiceProvider.GetService
+        /// </summary>
+        /// <param name="serviceType"></param>
+        /// <returns></returns>
+        public virtual object GetService(Type serviceType) => _container.GetInstance(serviceType);
     }
 }
