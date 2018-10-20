@@ -39,11 +39,7 @@ namespace DotNetStarter.Internal
                 else if (service.ImplementationFactory != null)
                 {
                     locator.Add(service.ServiceType,
-                    l =>
-                    {
-                        var provider = new ServiceProvider(l.Get<ILocatorAmbient>(), l.Get<IServiceProviderTypeChecker>(), l.Get<IStartupConfiguration>());
-                        return service.ImplementationFactory(provider);
-                    },
+                    l => service.ImplementationFactory(l.GetServiceProvider()),
                     lifetime);
                 }
                 else

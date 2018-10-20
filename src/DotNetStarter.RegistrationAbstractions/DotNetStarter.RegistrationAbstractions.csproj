@@ -21,4 +21,12 @@
 
   <Import Project="..\..\targets\CommonNuGetPackage.props" />
 
+  <ItemGroup Condition="'$(TargetFramework)' == 'netstandard1.0'">
+    <PackageReference Include="System.ComponentModel" Version="4.3.0" />
+  </ItemGroup>
+
+  <ItemGroup Condition="'$(TargetFramework)' == 'netstandard1.1'">
+    <PackageReference Include="System.ComponentModel" Version="4.3.0" />
+  </ItemGroup>
+
 </Project>

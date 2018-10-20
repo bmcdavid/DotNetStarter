@@ -91,6 +91,15 @@ namespace DotNetStarter.UnitTests
         }
 
         [TestMethod]
+        public void ShouldImplementIServiceProvider()
+        {
+            Assert.IsTrue(_Context.Service.Locator is IServiceProvider);
+
+            using (var scope = CreateScope())
+                Assert.IsTrue(scope is IServiceProvider);
+        }
+
+        [TestMethod]
         public void ShouldHaveAmbientLocatorInScope()
         {
             var ambientLocator = _Context.Service.Locator.Get<ILocatorAmbient>();
