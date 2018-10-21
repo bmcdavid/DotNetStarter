@@ -9,18 +9,16 @@ namespace DotNetStarter.UnitTests
     [TestClass]
     public class RegistrationTests
     {
-        public Import<IStartupContext> Context;
-
         internal Import<IRemove> Remove;
 
-        public Import<IFooTwo> FooTwo;
+        public IFooTwo FooTwo => _TestSetup.TestContext.Locator.Get<IFooTwo>();
 
-        public Import<IReflectionHelper> ReflectionHelper;
+        public IReflectionHelper ReflectionHelper => _TestSetup.TestContext.Locator.Get<IReflectionHelper>();
 
         [TestMethod]
         public void ShouldCreateTimedTaskFromContainer()
         {
-            var task = Context.Service.Locator.Get<ITimedTask>();
+            var task = _TestSetup.TestContext.Locator.Get<ITimedTask>();
 
             Assert.IsNotNull(task);
         }
@@ -34,7 +32,7 @@ namespace DotNetStarter.UnitTests
         [TestMethod]
         public void ShouldImportReflectionHelper()
         {
-            Assert.IsNotNull(ReflectionHelper.Service);
+            Assert.IsNotNull(ReflectionHelper);
         }
 
         [TestMethod]
@@ -53,7 +51,7 @@ namespace DotNetStarter.UnitTests
         [TestMethod]
         public void ShouldGetBaseClasses()
         {
-            var baseImples = ReflectionHelper.Service.GetBaseTypes(typeof(BaseImpl));
+            var baseImples = ReflectionHelper.GetBaseTypes(typeof(BaseImpl));
 
             Assert.IsTrue(baseImples.Count() > 1);
         }
@@ -89,13 +87,13 @@ namespace DotNetStarter.UnitTests
         [TestMethod]
         public void ShouldGetServiceFromFactory()
         {
-            Assert.IsNotNull(FooTwo.Service);
+            Assert.IsNotNull(FooTwo);
         }
 
         [TestMethod]
         public void ShouldGetDifferentServiceFromFactory()
         {
-            var one = FooTwo.Service;
+            var one = FooTwo;
             var two = DotNetStarter.ApplicationContext.Default.Locator.Get<IFooTwo>();
 
             Assert.AreNotEqual(one, two);
