@@ -54,7 +54,7 @@ namespace DotNetStarter.StartupBuilderTests
                 .ConfigureAssemblies(a => a.WithNoAssemblyScanning())
                 .ConfigureRegistrations(r =>
                 {
-                    r.Add(new RegistrationDescriptor(typeof(TestFooImport), new TestFooImport()));
+                    r.TryAddSingleton(new TestFooImport());
                     //todo: test each constructor
                 })
                 .Build(useApplicationContext: false)

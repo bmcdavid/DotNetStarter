@@ -85,5 +85,393 @@ namespace DotNetStarter.Abstractions
 
         /// <inheritdoc />
         public Func<IServiceProvider, object> ImplementationFactory { get; }
+                
+        /// <summary>
+        /// Creates an instance of <see cref="RegistrationDescriptor"/> with the specified
+        /// <typeparamref name="TService"/>, <typeparamref name="TImplementation"/>,
+        /// and the <see cref="Lifecycle.Transient"/> lifetime.
+        /// </summary>
+        /// <typeparam name="TService">The type of the service.</typeparam>
+        /// <typeparam name="TImplementation">The type of the implementation.</typeparam>
+        /// <returns>A new instance of <see cref="RegistrationDescriptor"/>.</returns>
+        public static RegistrationDescriptor Transient<TService, TImplementation>()
+            where TService : class
+            where TImplementation : class, TService
+        {
+            return Describe<TService, TImplementation>(Lifecycle.Transient);
+        }
+
+        /// <summary>
+        /// Creates an instance of <see cref="RegistrationDescriptor"/> with the specified
+        /// <paramref name="service"/> and <paramref name="implementationType"/>
+        /// and the <see cref="Lifecycle.Transient"/> lifetime.
+        /// </summary>
+        /// <param name="service">The type of the service.</param>
+        /// <param name="implementationType">The type of the implementation.</param>
+        /// <returns>A new instance of <see cref="RegistrationDescriptor"/>.</returns>
+        public static RegistrationDescriptor Transient(Type service, Type implementationType)
+        {
+            if (service == null)
+            {
+                throw new ArgumentNullException(nameof(service));
+            }
+
+            if (implementationType == null)
+            {
+                throw new ArgumentNullException(nameof(implementationType));
+            }
+
+            return Describe(service, implementationType, Lifecycle.Transient);
+        }
+
+#if !NET35
+        /// <summary>
+        /// Creates an instance of <see cref="RegistrationDescriptor"/> with the specified
+        /// <typeparamref name="TService"/>, <typeparamref name="TImplementation"/>,
+        /// <paramref name="implementationFactory"/>,
+        /// and the <see cref="Lifecycle.Transient"/> lifetime.
+        /// </summary>
+        /// <typeparam name="TService">The type of the service.</typeparam>
+        /// <typeparam name="TImplementation">The type of the implementation.</typeparam>
+        /// <param name="implementationFactory">A factory to create new instances of the service implementation.</param>
+        /// <returns>A new instance of <see cref="RegistrationDescriptor"/>.</returns>
+        public static RegistrationDescriptor Transient<TService, TImplementation>(
+            Func<IServiceProvider, TImplementation> implementationFactory)
+            where TService : class
+            where TImplementation : class, TService
+        {
+            if (implementationFactory == null)
+            {
+                throw new ArgumentNullException(nameof(implementationFactory));
+            }
+
+            return Describe(typeof(TService), implementationFactory, Lifecycle.Transient);
+        }
+
+        /// <summary>
+        /// Creates an instance of <see cref="RegistrationDescriptor"/> with the specified
+        /// <typeparamref name="TService"/>, <paramref name="implementationFactory"/>,
+        /// and the <see cref="Lifecycle.Transient"/> lifetime.
+        /// </summary>
+        /// <typeparam name="TService">The type of the service.</typeparam>
+        /// <param name="implementationFactory">A factory to create new instances of the service implementation.</param>
+        /// <returns>A new instance of <see cref="RegistrationDescriptor"/>.</returns>
+        public static RegistrationDescriptor Transient<TService>(Func<IServiceProvider, TService> implementationFactory)
+            where TService : class
+        {
+            if (implementationFactory == null)
+            {
+                throw new ArgumentNullException(nameof(implementationFactory));
+            }
+
+            return Describe(typeof(TService), implementationFactory, Lifecycle.Transient);
+        }
+#endif
+        /// <summary>
+        /// Creates an instance of <see cref="RegistrationDescriptor"/> with the specified
+        /// <paramref name="service"/>, <paramref name="implementationFactory"/>,
+        /// and the <see cref="Lifecycle.Transient"/> lifetime.
+        /// </summary>
+        /// <param name="service">The type of the service.</param>
+        /// <param name="implementationFactory">A factory to create new instances of the service implementation.</param>
+        /// <returns>A new instance of <see cref="RegistrationDescriptor"/>.</returns>
+        public static RegistrationDescriptor Transient(Type service, Func<IServiceProvider, object> implementationFactory)
+        {
+            if (service == null)
+            {
+                throw new ArgumentNullException(nameof(service));
+            }
+
+            if (implementationFactory == null)
+            {
+                throw new ArgumentNullException(nameof(implementationFactory));
+            }
+
+            return Describe(service, implementationFactory, Lifecycle.Transient);
+        }
+
+        /// <summary>
+        /// Creates an instance of <see cref="RegistrationDescriptor"/> with the specified
+        /// <typeparamref name="TService"/>, <typeparamref name="TImplementation"/>,
+        /// and the <see cref="Lifecycle.Scoped"/> lifetime.
+        /// </summary>
+        /// <typeparam name="TService">The type of the service.</typeparam>
+        /// <typeparam name="TImplementation">The type of the implementation.</typeparam>
+        /// <returns>A new instance of <see cref="RegistrationDescriptor"/>.</returns>
+        public static RegistrationDescriptor Scoped<TService, TImplementation>()
+            where TService : class
+            where TImplementation : class, TService
+        {
+            return Describe<TService, TImplementation>(Lifecycle.Scoped);
+        }
+
+        /// <summary>
+        /// Creates an instance of <see cref="RegistrationDescriptor"/> with the specified
+        /// <paramref name="service"/> and <paramref name="implementationType"/>
+        /// and the <see cref="Lifecycle.Scoped"/> lifetime.
+        /// </summary>
+        /// <param name="service">The type of the service.</param>
+        /// <param name="implementationType">The type of the implementation.</param>
+        /// <returns>A new instance of <see cref="RegistrationDescriptor"/>.</returns>
+        public static RegistrationDescriptor Scoped(Type service, Type implementationType)
+        {
+            return Describe(service, implementationType, Lifecycle.Scoped);
+        }
+
+#if !NET35
+        /// <summary>
+        /// Creates an instance of <see cref="RegistrationDescriptor"/> with the specified
+        /// <typeparamref name="TService"/>, <typeparamref name="TImplementation"/>,
+        /// <paramref name="implementationFactory"/>,
+        /// and the <see cref="Lifecycle.Scoped"/> lifetime.
+        /// </summary>
+        /// <typeparam name="TService">The type of the service.</typeparam>
+        /// <typeparam name="TImplementation">The type of the implementation.</typeparam>
+        /// <param name="implementationFactory">A factory to create new instances of the service implementation.</param>
+        /// <returns>A new instance of <see cref="RegistrationDescriptor"/>.</returns>
+        public static RegistrationDescriptor Scoped<TService, TImplementation>(
+            Func<IServiceProvider, TImplementation> implementationFactory)
+            where TService : class
+            where TImplementation : class, TService
+        {
+            if (implementationFactory == null)
+            {
+                throw new ArgumentNullException(nameof(implementationFactory));
+            }
+
+            return Describe(typeof(TService), implementationFactory, Lifecycle.Scoped);
+        }
+
+        /// <summary>
+        /// Creates an instance of <see cref="RegistrationDescriptor"/> with the specified
+        /// <typeparamref name="TService"/>, <paramref name="implementationFactory"/>,
+        /// and the <see cref="Lifecycle.Scoped"/> lifetime.
+        /// </summary>
+        /// <typeparam name="TService">The type of the service.</typeparam>
+        /// <param name="implementationFactory">A factory to create new instances of the service implementation.</param>
+        /// <returns>A new instance of <see cref="RegistrationDescriptor"/>.</returns>
+        public static RegistrationDescriptor Scoped<TService>(Func<IServiceProvider, TService> implementationFactory)
+            where TService : class
+        {
+            if (implementationFactory == null)
+            {
+                throw new ArgumentNullException(nameof(implementationFactory));
+            }
+
+            return Describe(typeof(TService), implementationFactory, Lifecycle.Scoped);
+        }
+#endif
+
+        /// <summary>
+        /// Creates an instance of <see cref="RegistrationDescriptor"/> with the specified
+        /// <paramref name="service"/>, <paramref name="implementationFactory"/>,
+        /// and the <see cref="Lifecycle.Scoped"/> lifetime.
+        /// </summary>
+        /// <param name="service">The type of the service.</param>
+        /// <param name="implementationFactory">A factory to create new instances of the service implementation.</param>
+        /// <returns>A new instance of <see cref="RegistrationDescriptor"/>.</returns>
+        public static RegistrationDescriptor Scoped(Type service, Func<IServiceProvider, object> implementationFactory)
+        {
+            if (service == null)
+            {
+                throw new ArgumentNullException(nameof(service));
+            }
+
+            if (implementationFactory == null)
+            {
+                throw new ArgumentNullException(nameof(implementationFactory));
+            }
+
+            return Describe(service, implementationFactory, Lifecycle.Scoped);
+        }
+
+        /// <summary>
+        /// Creates an instance of <see cref="RegistrationDescriptor"/> with the specified
+        /// <typeparamref name="TService"/>, <typeparamref name="TImplementation"/>,
+        /// and the <see cref="Lifecycle.Singleton"/> lifetime.
+        /// </summary>
+        /// <typeparam name="TService">The type of the service.</typeparam>
+        /// <typeparam name="TImplementation">The type of the implementation.</typeparam>
+        /// <returns>A new instance of <see cref="RegistrationDescriptor"/>.</returns>
+        public static RegistrationDescriptor Singleton<TService, TImplementation>()
+            where TService : class
+            where TImplementation : class, TService
+        {
+            return Describe<TService, TImplementation>(Lifecycle.Singleton);
+        }
+
+        /// <summary>
+        /// Creates an instance of <see cref="RegistrationDescriptor"/> with the specified
+        /// <paramref name="service"/> and <paramref name="implementationType"/>
+        /// and the <see cref="Lifecycle.Singleton"/> lifetime.
+        /// </summary>
+        /// <param name="service">The type of the service.</param>
+        /// <param name="implementationType">The type of the implementation.</param>
+        /// <returns>A new instance of <see cref="RegistrationDescriptor"/>.</returns>
+        public static RegistrationDescriptor Singleton(Type service, Type implementationType)
+        {
+            if (service == null)
+            {
+                throw new ArgumentNullException(nameof(service));
+            }
+
+            if (implementationType == null)
+            {
+                throw new ArgumentNullException(nameof(implementationType));
+            }
+
+            return Describe(service, implementationType, Lifecycle.Singleton);
+        }
+
+#if !NET35
+        /// <summary>
+        /// Creates an instance of <see cref="RegistrationDescriptor"/> with the specified
+        /// <typeparamref name="TService"/>, <typeparamref name="TImplementation"/>,
+        /// <paramref name="implementationFactory"/>,
+        /// and the <see cref="Lifecycle.Singleton"/> lifetime.
+        /// </summary>
+        /// <typeparam name="TService">The type of the service.</typeparam>
+        /// <typeparam name="TImplementation">The type of the implementation.</typeparam>
+        /// <param name="implementationFactory">A factory to create new instances of the service implementation.</param>
+        /// <returns>A new instance of <see cref="RegistrationDescriptor"/>.</returns>
+        public static RegistrationDescriptor Singleton<TService, TImplementation>(
+            Func<IServiceProvider, TImplementation> implementationFactory)
+            where TService : class
+            where TImplementation : class, TService
+        {
+            if (implementationFactory == null)
+            {
+                throw new ArgumentNullException(nameof(implementationFactory));
+            }
+
+            return Describe(typeof(TService), implementationFactory, Lifecycle.Singleton);
+        }
+
+        /// <summary>
+        /// Creates an instance of <see cref="RegistrationDescriptor"/> with the specified
+        /// <typeparamref name="TService"/>, <paramref name="implementationFactory"/>,
+        /// and the <see cref="Lifecycle.Singleton"/> lifetime.
+        /// </summary>
+        /// <typeparam name="TService">The type of the service.</typeparam>
+        /// <param name="implementationFactory">A factory to create new instances of the service implementation.</param>
+        /// <returns>A new instance of <see cref="RegistrationDescriptor"/>.</returns>
+        public static RegistrationDescriptor Singleton<TService>(Func<IServiceProvider, TService> implementationFactory)
+            where TService : class
+        {
+            if (implementationFactory == null)
+            {
+                throw new ArgumentNullException(nameof(implementationFactory));
+            }
+
+            return Describe(typeof(TService), implementationFactory, Lifecycle.Singleton);
+        }
+#endif
+
+        /// <summary>
+        /// Creates an instance of <see cref="RegistrationDescriptor"/> with the specified
+        /// <paramref name="serviceType"/>, <paramref name="implementationFactory"/>,
+        /// and the <see cref="Lifecycle.Singleton"/> lifetime.
+        /// </summary>
+        /// <param name="serviceType">The type of the service.</param>
+        /// <param name="implementationFactory">A factory to create new instances of the service implementation.</param>
+        /// <returns>A new instance of <see cref="RegistrationDescriptor"/>.</returns>
+        public static RegistrationDescriptor Singleton(
+            Type serviceType,
+            Func<IServiceProvider, object> implementationFactory)
+        {
+            if (serviceType == null)
+            {
+                throw new ArgumentNullException(nameof(serviceType));
+            }
+
+            if (implementationFactory == null)
+            {
+                throw new ArgumentNullException(nameof(implementationFactory));
+            }
+
+            return Describe(serviceType, implementationFactory, Lifecycle.Singleton);
+        }
+
+        /// <summary>
+        /// Creates an instance of <see cref="RegistrationDescriptor"/> with the specified
+        /// <typeparamref name="TService"/>, <paramref name="implementationInstance"/>,
+        /// and the <see cref="Lifecycle.Scoped"/> lifetime.
+        /// </summary>
+        /// <typeparam name="TService">The type of the service.</typeparam>
+        /// <param name="implementationInstance">The instance of the implementation.</param>
+        /// <returns>A new instance of <see cref="RegistrationDescriptor"/>.</returns>
+        public static RegistrationDescriptor Singleton<TService>(TService implementationInstance)
+            where TService : class
+        {
+            if (implementationInstance == null)
+            {
+                throw new ArgumentNullException(nameof(implementationInstance));
+            }
+
+            return Singleton(typeof(TService), implementationInstance);
+        }
+
+        /// <summary>
+        /// Creates an instance of <see cref="RegistrationDescriptor"/> with the specified
+        /// <paramref name="serviceType"/>, <paramref name="implementationInstance"/>,
+        /// and the <see cref="Lifecycle.Scoped"/> lifetime.
+        /// </summary>
+        /// <param name="serviceType">The type of the service.</param>
+        /// <param name="implementationInstance">The instance of the implementation.</param>
+        /// <returns>A new instance of <see cref="RegistrationDescriptor"/>.</returns>
+        public static RegistrationDescriptor Singleton(
+            Type serviceType,
+            object implementationInstance)
+        {
+            if (serviceType == null)
+            {
+                throw new ArgumentNullException(nameof(serviceType));
+            }
+
+            if (implementationInstance == null)
+            {
+                throw new ArgumentNullException(nameof(implementationInstance));
+            }
+
+            return new RegistrationDescriptor(serviceType, implementationInstance);
+        }
+
+        private static RegistrationDescriptor Describe<TService, TImplementation>(Lifecycle lifetime)
+            where TService : class
+            where TImplementation : class, TService
+        {
+            return Describe(
+                typeof(TService),
+                typeof(TImplementation),
+                lifetime: lifetime);
+        }
+
+        /// <summary>
+        /// Creates an instance of <see cref="RegistrationDescriptor"/> with the specified
+        /// <paramref name="serviceType"/>, <paramref name="implementationType"/>,
+        /// and <paramref name="lifetime"/>.
+        /// </summary>
+        /// <param name="serviceType">The type of the service.</param>
+        /// <param name="implementationType">The type of the implementation.</param>
+        /// <param name="lifetime">The lifetime of the service.</param>
+        /// <returns>A new instance of <see cref="RegistrationDescriptor"/>.</returns>
+        public static RegistrationDescriptor Describe(Type serviceType, Type implementationType, Lifecycle lifetime)
+        {
+            return new RegistrationDescriptor(serviceType, implementationType, lifetime);
+        }
+
+        /// <summary>
+        /// Creates an instance of <see cref="RegistrationDescriptor"/> with the specified
+        /// <paramref name="serviceType"/>, <paramref name="implementationFactory"/>,
+        /// and <paramref name="lifetime"/>.
+        /// </summary>
+        /// <param name="serviceType">The type of the service.</param>
+        /// <param name="implementationFactory">A factory to create new instances of the service implementation.</param>
+        /// <param name="lifetime">The lifetime of the service.</param>
+        /// <returns>A new instance of <see cref="RegistrationDescriptor"/>.</returns>
+        public static RegistrationDescriptor Describe(Type serviceType, Func<IServiceProvider, object> implementationFactory, Lifecycle lifetime)
+        {
+            return new RegistrationDescriptor(serviceType, implementationFactory, lifetime);
+        }
     }
 }
