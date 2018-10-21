@@ -11,11 +11,10 @@
     [Registration(typeof(IShutdownHandler), Lifecycle.Singleton)]
     public sealed class ShutdownHandler : IShutdownHandler
     {
-        private bool _ShutdownInvoked = false;
-
         private readonly ILocator _Locator;
-        private readonly IEnumerable<IStartupModule> _StartupModules;
         private readonly IStartupConfiguration _StartupConfiguration;
+        private readonly IEnumerable<IStartupModule> _StartupModules;
+        private bool _ShutdownInvoked = false;
 
         /// <summary>
         /// Injected constructor
@@ -36,6 +35,11 @@
         {
             InvokeShutdown();
         }
+
+        /// <summary>
+        /// Disables locator disposal, default is true, false is useful for unit tests only
+        /// </summary>
+        public bool DisposeLocator { get; set; } = true;
 
         void IShutdownHandler.Shutdown() => InvokeShutdown();
 
@@ -61,7 +65,7 @@
                 }
 
                 // Dispose root locator and backing container
-                _Locator.Dispose();
+                if (DisposeLocator) { _Locator.Dispose(); }
             }
         }
     }

@@ -1,4 +1,5 @@
 ﻿using DotNetStarter.Abstractions;
+using DotNetStarter.UnitTests.Mocks;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Linq;
@@ -9,59 +10,6 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace DotNetStarter.UnitTests
 {
-    #region Mocks
-
-    [Registration(typeof(ScopeTest), Lifecycle.Scoped)]
-    internal class ScopeTest
-    {
-        public ScopeTest()
-        {
-            TestVariable = DateTime.Now.Ticks;
-        }
-
-        public long TestVariable { get; }
-    }
-
-    [Registration(typeof(TestFuncCreationComplex), Lifecycle.Transient)]
-    internal class TestFuncCreationComplex
-    {
-        public TestFuncCreationComplex(IInjectable injectionTest, IStartupConfiguration configuration, IShutdownHandler shutdownHandler)
-        {
-            InjectionTest = injectionTest;
-        }
-
-        public IInjectable InjectionTest { get; }
-    }
-
-    [Registration(typeof(TestLocatorInjectionScoped), Lifecycle.Scoped)]
-    internal class TestLocatorInjectionScoped
-    {
-        public TestLocatorInjectionScoped(ILocatorScopedAccessor locatorScopedAccessor)
-        {
-            if (null == locatorScopedAccessor.CurrentScope)
-                throw new Exception("Scope not set!");
-        }
-    }
-
-    [Registration(typeof(TestLocatorInjectionTransient), Lifecycle.Scoped)]
-    internal class TestLocatorInjectionTransient
-    {
-        public TestLocatorInjectionTransient(ILocatorScopedAccessor locatorScopedAccessor)
-        {
-            if (null == locatorScopedAccessor.CurrentScope)
-                throw new Exception("Scope not set!");
-        }
-    }
-
-    internal interface IInjectable { int Id { get; } }
-
-    internal class TestInjectable : IInjectable
-    {
-        public int Id { get; set; }
-    }
-
-    #endregion Mocks
-
     [TestClass]
     public class LocatorTests
     {

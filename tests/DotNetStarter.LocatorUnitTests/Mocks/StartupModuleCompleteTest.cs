@@ -3,7 +3,7 @@
 namespace DotNetStarter.UnitTests.Mocks
 {
     [StartupModule]
-    public class StartupModuleTest : IStartupModule
+    public class StartupModuleCompleteTest : IStartupModule
     {
         internal static bool _InitCompleteCalled = false;
         internal static bool InitCalled { get; private set; } = false;

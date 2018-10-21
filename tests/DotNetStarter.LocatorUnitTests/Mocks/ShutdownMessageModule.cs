@@ -5,17 +5,17 @@ using System.Diagnostics;
 namespace DotNetStarter.UnitTests.Mocks
 {
     [StartupModule]
-    public class ShutdownMessage : IStartupModule
+    public class ShutdownMessageModule : IStartupModule
     {
         public void Shutdown()
         {
-            Debug.WriteLine("DNS shutdown");
-            Console.WriteLine("DNS shutdown");
+            Debug.WriteLine("DNS locator shutdown");
+            Console.WriteLine("DNS locator shutdown");
         }
 
         public void Startup(IStartupEngine engine)
         {
-            Debug.WriteLine("DNS startup");
+            Debug.WriteLine("DNS Locator startup");
         }
     }
 }

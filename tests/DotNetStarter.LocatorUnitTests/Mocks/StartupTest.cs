@@ -3,7 +3,7 @@
 namespace DotNetStarter.UnitTests.Mocks
 {
     [StartupModule]
-    public class ExcludeModule : IStartupModule
+    public class StartupTest : IStartupModule
     {
         public void Shutdown()
         {
@@ -11,6 +11,7 @@ namespace DotNetStarter.UnitTests.Mocks
 
         public void Startup(IStartupEngine engine)
         {
+            System.Diagnostics.Debug.Write("Ran startup");
         }
     }
 }

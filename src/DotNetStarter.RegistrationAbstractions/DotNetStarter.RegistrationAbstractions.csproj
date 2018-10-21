@@ -12,7 +12,7 @@
     <Copyright>Copyright $(CurrentYear)</Copyright>
     <Description>Abstractions for a registration system.</Description>
     <!--follow semantic versioning may include prelease information too-->
-    <PackageVersion>1.2.0</PackageVersion>
+    <PackageVersion>1.3.0</PackageVersion>
     <PackageTags>Startup Modules Abstractions DI</PackageTags>
     <!--do not change unless you want to deal with assembly redirects-->
     <AssemblyVersion>1.0.1</AssemblyVersion>

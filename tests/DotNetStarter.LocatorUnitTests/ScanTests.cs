@@ -1,24 +1,10 @@
 ﻿using DotNetStarter.Abstractions;
-using DotNetStarter.UnitTests;
+using DotNetStarter.UnitTests.Mocks;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Linq;
 
-[assembly: DiscoverTypes(typeof(IMock), typeof(IGenericeMock<>), typeof(IGenericeMock<object>), typeof(MockBaseClass))]
-
 namespace DotNetStarter.UnitTests
 {
-    public interface IGenericeMock<T> where T : new() { }
-
-    public class GenericStringBuilder : IGenericeMock<System.Text.StringBuilder> { }
-
-    public class GenericObject : IGenericeMock<object> { }
-
-    public interface IMock { }
-
-    public abstract class MockBaseClass : IMock { }
-
-    public class MockImplClass : MockBaseClass { }
-
     [TestClass]
     public class ScanTests
     {

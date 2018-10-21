@@ -123,17 +123,5 @@ namespace DotNetStarter.UnitTests
             Assert.IsNotNull(i.Service);
             Assert.IsTrue(i.Service.GetType() == typeof(StringBuilder));
         }
-
-        private class MockClass
-        {
-            public Import<object> Test { get; set; }
-        }
-
-        private class MockImportClass
-        {
-            public Import<NotRegisteredObject> Test { get; set; }
-
-            public class NotRegisteredObject { }
-        }
     }
 }
