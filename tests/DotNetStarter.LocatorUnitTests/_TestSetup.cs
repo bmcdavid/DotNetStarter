@@ -8,18 +8,25 @@ namespace DotNetStarter.UnitTests
     public sealed class _TestSetup
     {
         [AssemblyInitialize]
-        public static void Setup(TestContext context) => 
+        public static void Setup(TestContext context) =>
             StartupBuilder.Create()
-                  .UseEnvironment(new UnitTestEnvironment())
-                  .ConfigureAssemblies(assemblies =>
-                  {
-                      assemblies
-                      .WithAssemblyFromType<Mocks.FooService>()
-                      .WithAssemblyFromType<StartupBuilder>()
-                      .WithAssemblyFromType<RegistrationConfiguration>();
-                  })
-                  .AddLocatorAssembly()
-                  .Build()
-                  .Run();
+            .UseEnvironment(new UnitTestEnvironment())
+            .ConfigureStartupModules(x => x.RemoveStartupModule<Mocks.ExcludeModule>())
+            .ConfigureAssemblies(assemblies =>
+            {
+                assemblies
+                .WithAssemblyFromType<Mocks.FooService>()
+                .WithAssemblyFromType<StartupBuilder>()
+                .WithAssemblyFromType<RegistrationConfiguration>();
+            })
+            .OverrideDefaults(d =>
+            {
+                d
+                .UseAssemblyFilter(new Mocks.TestAssemblyFilter())
+                .UseLogger(new Mocks.TestLogger());
+            })
+            .AddLocatorAssembly()
+            .Build()
+            .Run();
     }
 }

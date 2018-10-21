@@ -44,10 +44,10 @@ namespace DotNetStarter.UnitTests
         {
             IEnumerable<Assembly> assemblies = new List<Assembly>
             {
-               Abstractions.Internal.TypeExtensions.Assembly(typeof(ApplicationContext))
+                Abstractions.Internal.TypeExtensions.Assembly(typeof(DotNetStarter.ApplicationContext))
             };
 
-            var filter = Configure.Expressions.AssemblyExpression.GetScannableAssemblies(assemblies: assemblies);
+            var filter = DotNetStarter.Configure.Expressions.AssemblyExpression.GetScannableAssemblies(assemblies: assemblies);
 
             Assert.IsTrue(filter.Count() == 1);
         }

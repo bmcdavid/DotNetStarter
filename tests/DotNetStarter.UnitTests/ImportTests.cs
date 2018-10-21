@@ -13,10 +13,24 @@ namespace DotNetStarter.UnitTests
             public Import<object> Test { get; set; }
         }
 
+        private class MockClassForNullImport
+        {
+            public Import<NotRegisteredObject> Test { get; set; }
+
+            public class NotRegisteredObject { }
+        }
+
         [TestMethod]
         public void ShouldNotSetImportService()
         {
-            Assert.IsNull(new MockClass().Test.Service);
+            try
+            {
+                var sut = new MockClassForNullImport().Test.Service;
+            }
+            catch
+            {
+                Assert.IsTrue(true);
+            }
         }
 
         [TestMethod]
