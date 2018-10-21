@@ -47,6 +47,26 @@ namespace DotNetStarter.StartupBuilderTests
         }
 
         [TestMethod]
+        public void ShouldRegisterDescriptorCollection()
+        {
+            var builder = CreateTestBuilder();
+            builder
+                .ConfigureAssemblies(a => a.WithNoAssemblyScanning())
+                .ConfigureRegistrations(r =>
+                {
+                    r.Add(new RegistrationDescriptor(typeof(TestFooImport), new TestFooImport()));
+                    //todo: test each constructor
+                })
+                .Build(useApplicationContext: false)
+                .Run();
+
+            var sut1 = builder.StartupContext.Locator.Get<TestFooImport>();
+            var sut2 = builder.StartupContext.Locator.Get<TestFooImport>();
+
+            Assert.AreSame(sut1, sut2);
+        }
+
+        [TestMethod]
         public void ShouldExecuteFromDefaults()
         {
             // only using discoverable assemblies to remove bad modules for unit testing

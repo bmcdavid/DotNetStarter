@@ -20,6 +20,7 @@ namespace DotNetStarter.Configure
         private bool _isConfigured;
         private Action<StartupModulesExpression> _moduleExpression;
         private Action<DefaultsExpression> _overrideExpression;
+        private Action<IRegistrationCollection> _registrationCollectionExpression;
         private bool _runOnce;
         private IStartupHandler _startupHandler;
         private bool _usingAppContext;
@@ -51,6 +52,8 @@ namespace DotNetStarter.Configure
             _isConfigured = true;
             if (_usingAppContext && ApplicationContext.Started) { return this; }
             // end order matters
+
+            AddManualRegistrations();
 
             var objFactory = new StartupBuilderObjectFactory() { Environment = _environment };
             var assemblyExp = new AssemblyExpression();
@@ -112,6 +115,17 @@ namespace DotNetStarter.Configure
         }
 
         /// <summary>
+        /// For manually adding/removing service from a given collection registrations
+        /// </summary>
+        /// <param name="registrationCollectionExpression"></param>
+        /// <returns></returns>
+        public StartupBuilder ConfigureRegistrations(Action<IRegistrationCollection> registrationCollectionExpression)
+        {
+            _registrationCollectionExpression += registrationCollectionExpression;
+            return this;
+        }
+
+        /// <summary>
         /// Customize IStartupModule and ILocatorConfigure types in the startup process
         /// </summary>
         /// <param name="moduleExpression"></param>
@@ -163,6 +177,28 @@ namespace DotNetStarter.Configure
         {
             _environment = startupEnvironment;
             return this;
+        }
+
+        /// <summary>
+        /// Add manual registrations if assigned
+        /// <para>IMPORTANT: Must execute before module expression!</para>
+        /// </summary>
+        private void AddManualRegistrations()
+        {
+            if (_registrationCollectionExpression != null)
+            {
+                var collection = new Internal.RegistrationDescriptionCollection();
+                _registrationCollectionExpression.Invoke(collection);
+
+                if (collection.Any())
+                {
+                    ConfigureStartupModules(moduleExpression =>
+                    {
+                        moduleExpression.ConfigureLocatorModuleCollection(config =>
+                            config.Add(new Internal.RegisterRegistrationDescriptionCollection(collection)));
+                    });
+                }
+            }
         }
 
         private void ExecuteBuild(StartupBuilderObjectFactory objFactory, IEnumerable<Assembly> assemblies, DefaultsExpression defaults, bool enableImport)
