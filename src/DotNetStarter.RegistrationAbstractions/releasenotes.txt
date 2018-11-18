@@ -1,1 +1,2 @@
-﻿Added netstandard 2.0 support.
+﻿Added support for manual registrations using RegistrationDescriptor collection.
+Added SourceLink.

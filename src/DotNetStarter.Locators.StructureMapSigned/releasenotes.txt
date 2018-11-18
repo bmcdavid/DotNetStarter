@@ -1,1 +1,2 @@
-﻿New locator supported.
+﻿Added IServiceProvider implementation.
+Added SourceLink.

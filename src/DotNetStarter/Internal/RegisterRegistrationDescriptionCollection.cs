@@ -4,8 +4,6 @@ using System.Collections.Generic;
 namespace DotNetStarter.Internal
 {
     //todo: bump all locator package minors, registration minor, and dotnetstarter minor version numbers
-    //todo: implement SourceLink in all packages
-    //todo: add api for adding items to IRegistrationCollection such as .AddTransient etc to Registration package
     //todo: research configuration api before finalizing
 
     /// <summary>

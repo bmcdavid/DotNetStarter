@@ -66,6 +66,164 @@ namespace DotNetStarter.Abstractions
         }
 
         /// <summary>
+        /// Adds an instance
+        /// </summary>
+        /// <typeparam name="TService"></typeparam>
+        /// <param name="registry"></param>
+        /// <param name="instance"></param>
+        /// <returns></returns>
+        public static IRegistrationCollection AddInstance<TService>(this IRegistrationCollection registry, TService instance)
+        {
+            var descriptor = RegistrationDescriptor.Singleton(typeof(TService), instance);
+            registry.Add(descriptor);
+            return registry;
+        }
+
+        /// <summary>
+        /// Adds a scoped lifecycle service
+        /// </summary>
+        /// <param name="registry"></param>
+        /// <param name="serviceType"></param>
+        /// <param name="implementationType"></param>
+        /// <returns></returns>
+        public static IRegistrationCollection AddScoped(this IRegistrationCollection registry, Type serviceType, Type implementationType)
+        {
+            registry.Add(RegistrationDescriptor.Scoped(serviceType, implementationType));
+            return registry;
+        }
+
+        /// <summary>
+        /// Adds a scoped lifecycle service
+        /// </summary>
+        /// <typeparam name="TService"></typeparam>
+        /// <typeparam name="TImplementation"></typeparam>
+        /// <param name="registry"></param>
+        /// <returns></returns>
+        public static IRegistrationCollection AddScoped<TService, TImplementation>(this IRegistrationCollection registry) where TImplementation : TService
+        {
+            registry.Add(RegistrationDescriptor.Scoped(typeof(TService), typeof(TImplementation)));
+            return registry;
+        }
+
+        /// <summary>
+        /// Adds a singleton lifecycle service
+        /// </summary>
+        /// <param name="registry"></param>
+        /// <param name="serviceType"></param>
+        /// <param name="implementationType"></param>
+        /// <returns></returns>
+        public static IRegistrationCollection AddSingleton(this IRegistrationCollection registry, Type serviceType, Type implementationType)
+        {
+            registry.Add(RegistrationDescriptor.Singleton(serviceType, implementationType));
+            return registry;
+        }
+
+        /// <summary>
+        /// Adds a singleton lifecycle service
+        /// </summary>
+        /// <typeparam name="TService"></typeparam>
+        /// <typeparam name="TImplementation"></typeparam>
+        /// <param name="registry"></param>
+        /// <returns></returns>
+        public static IRegistrationCollection AddSingleton<TService, TImplementation>(this IRegistrationCollection registry) where TImplementation : TService
+        {
+            registry.Add(RegistrationDescriptor.Singleton(typeof(TService), typeof(TImplementation)));
+            return registry;
+        }
+
+        /// <summary>
+        /// Adds a transient lifecycle service
+        /// </summary>
+        /// <param name="registry"></param>
+        /// <param name="serviceType"></param>
+        /// <param name="implementationType"></param>
+        /// <returns></returns>
+        public static IRegistrationCollection AddTransient(this IRegistrationCollection registry, Type serviceType, Type implementationType)
+        {
+            registry.Add(RegistrationDescriptor.Transient(serviceType, implementationType));
+            return registry;
+        }
+
+        /// <summary>
+        /// Adds a transient lifecycle service
+        /// </summary>
+        /// <typeparam name="TService"></typeparam>
+        /// <typeparam name="TImplementation"></typeparam>
+        /// <param name="registry"></param>
+        /// <returns></returns>
+        public static IRegistrationCollection AddTransient<TService, TImplementation>(this IRegistrationCollection registry) where TImplementation : TService
+        {
+            registry.Add(RegistrationDescriptor.Transient(typeof(TService), typeof(TImplementation)));
+            return registry;
+        }
+
+        /// <summary>
+        /// Removes all services of type <typeparamef name="T"/> in <see cref="IRegistrationCollection"/>.
+        /// </summary>
+        /// <param name="collection">The <see cref="IRegistrationCollection"/>.</param>
+        /// <returns></returns>
+        public static IRegistrationCollection RemoveAll<T>(this IRegistrationCollection collection)
+        {
+            return RemoveAll(collection, typeof(T));
+        }
+
+        /// <summary>
+        /// Removes all services of type <paramef name="serviceType"/> in <see cref="IRegistrationCollection"/>.
+        /// </summary>
+        /// <param name="collection">The <see cref="IRegistrationCollection"/>.</param>
+        /// <param name="serviceType">The service type to remove.</param>
+        /// <returns></returns>
+        public static IRegistrationCollection RemoveAll(this IRegistrationCollection collection, Type serviceType)
+        {
+            if (serviceType == null)
+            {
+                throw new ArgumentNullException(nameof(serviceType));
+            }
+
+            for (var i = collection.Count - 1; i >= 0; i--)
+            {
+                var descriptor = collection[i];
+                if (descriptor.ServiceType == serviceType)
+                {
+                    collection.RemoveAt(i);
+                }
+            }
+
+            return collection;
+        }
+
+        /// <summary>
+        /// Removes the first service in <see cref="IRegistrationCollection"/> with the same service type
+        /// as <paramref name="descriptor"/> and adds <paramef name="descriptor"/> to the collection.
+        /// </summary>
+        /// <param name="collection">The <see cref="IRegistrationCollection"/>.</param>
+        /// <param name="descriptor">The <see cref="RegistrationDescriptor"/> to replace with.</param>
+        /// <returns></returns>
+        public static IRegistrationCollection Replace(
+            this IRegistrationCollection collection,
+            RegistrationDescriptor descriptor)
+        {
+            if (collection == null)
+            {
+                throw new ArgumentNullException(nameof(collection));
+            }
+
+            if (descriptor == null)
+            {
+                throw new ArgumentNullException(nameof(descriptor));
+            }
+
+            var registeredRegistrationDescriptor = collection.FirstOrDefault(s => s.ServiceType == descriptor.ServiceType);
+            if (registeredRegistrationDescriptor != null)
+            {
+                collection.Remove(registeredRegistrationDescriptor);
+            }
+
+            collection.Add(descriptor);
+            return collection;
+        }
+
+        /// <summary>
         /// Adds the specified <paramref name="descriptor"/> to the <paramref name="collection"/> if the
         /// service type hasn't already been registered.
         /// </summary>
@@ -116,149 +274,6 @@ namespace DotNetStarter.Abstractions
                 collection.TryAdd(d);
             }
         }
-
-        /// <summary>
-        /// Adds the specified <paramref name="service"/> as a <see cref="Lifecycle.Transient"/> service
-        /// to the <paramref name="collection"/> if the service type hasn't already been registered.
-        /// </summary>
-        /// <param name="collection">The <see cref="IRegistrationCollection"/>.</param>
-        /// <param name="service">The type of the service to register.</param>
-        public static void TryAddTransient(
-            this IRegistrationCollection collection,
-            Type service)
-        {
-            if (collection == null)
-            {
-                throw new ArgumentNullException(nameof(collection));
-            }
-
-            if (service == null)
-            {
-                throw new ArgumentNullException(nameof(service));
-            }
-
-            var descriptor = RegistrationDescriptor.Transient(service, service);
-            TryAdd(collection, descriptor);
-        }
-
-        /// <summary>
-        /// Adds the specified <paramref name="service"/> as a <see cref="Lifecycle.Transient"/> service
-        /// with the <paramref name="implementationType"/> implementation
-        /// to the <paramref name="collection"/> if the service type hasn't already been registered.
-        /// </summary>
-        /// <param name="collection">The <see cref="IRegistrationCollection"/>.</param>
-        /// <param name="service">The type of the service to register.</param>
-        /// <param name="implementationType">The implementation type of the service.</param>
-        public static void TryAddTransient(
-            this IRegistrationCollection collection,
-            Type service,
-            Type implementationType)
-        {
-            if (collection == null)
-            {
-                throw new ArgumentNullException(nameof(collection));
-            }
-
-            if (service == null)
-            {
-                throw new ArgumentNullException(nameof(service));
-            }
-
-            if (implementationType == null)
-            {
-                throw new ArgumentNullException(nameof(implementationType));
-            }
-
-            var descriptor = RegistrationDescriptor.Transient(service, implementationType);
-            TryAdd(collection, descriptor);
-        }
-
-        /// <summary>
-        /// Adds the specified <paramref name="service"/> as a <see cref="Lifecycle.Transient"/> service
-        /// using the factory specified in <paramref name="implementationFactory"/>
-        /// to the <paramref name="collection"/> if the service type hasn't already been registered.
-        /// </summary>
-        /// <param name="collection">The <see cref="IRegistrationCollection"/>.</param>
-        /// <param name="service">The type of the service to register.</param>
-        /// <param name="implementationFactory">The factory that creates the service.</param>
-        public static void TryAddTransient(
-            this IRegistrationCollection collection,
-            Type service,
-            Func<IServiceProvider, object> implementationFactory)
-        {
-            if (collection == null)
-            {
-                throw new ArgumentNullException(nameof(collection));
-            }
-
-            if (service == null)
-            {
-                throw new ArgumentNullException(nameof(service));
-            }
-
-            if (implementationFactory == null)
-            {
-                throw new ArgumentNullException(nameof(implementationFactory));
-            }
-
-            var descriptor = RegistrationDescriptor.Transient(service, implementationFactory);
-            TryAdd(collection, descriptor);
-        }
-
-        /// <summary>
-        /// Adds the specified <typeparamref name="TService"/> as a <see cref="Lifecycle.Transient"/> service
-        /// to the <paramref name="collection"/> if the service type hasn't already been registered.
-        /// </summary>
-        /// <typeparam name="TService">The type of the service to add.</typeparam>
-        /// <param name="collection">The <see cref="IRegistrationCollection"/>.</param>
-        public static void TryAddTransient<TService>(this IRegistrationCollection collection)
-            where TService : class
-        {
-            if (collection == null)
-            {
-                throw new ArgumentNullException(nameof(collection));
-            }
-
-            TryAddTransient(collection, typeof(TService), typeof(TService));
-        }
-
-        /// <summary>
-        /// Adds the specified <typeparamref name="TService"/> as a <see cref="Lifecycle.Transient"/> service
-        /// implementation type specified in <typeparamref name="TImplementation"/>
-        /// to the <paramref name="collection"/> if the service type hasn't already been registered.
-        /// </summary>
-        /// <typeparam name="TService">The type of the service to add.</typeparam>
-        /// <typeparam name="TImplementation">The type of the implementation to use.</typeparam>
-        /// <param name="collection">The <see cref="IRegistrationCollection"/>.</param>
-        public static void TryAddTransient<TService, TImplementation>(this IRegistrationCollection collection)
-            where TService : class
-            where TImplementation : class, TService
-        {
-            if (collection == null)
-            {
-                throw new ArgumentNullException(nameof(collection));
-            }
-
-            TryAddTransient(collection, typeof(TService), typeof(TImplementation));
-        }
-
-#if !NET35
-        /// <summary>
-        /// Adds the specified <typeparamref name="TService"/> as a <see cref="Lifecycle.Transient"/> service
-        /// using the factory specified in <paramref name="implementationFactory"/>
-        /// to the <paramref name="services"/> if the service type hasn't already been registered.
-        /// </summary>
-        /// <typeparam name="TService">The type of the service to add.</typeparam>
-        /// <param name="services">The <see cref="IRegistrationCollection"/>.</param>
-        /// <param name="implementationFactory">The factory that creates the service.</param>
-        public static void TryAddTransient<TService>(
-            this IRegistrationCollection services,
-            Func<IServiceProvider, TService> implementationFactory)
-            where TService : class
-        {
-            services.TryAdd(RegistrationDescriptor.Transient(implementationFactory));
-        }
-#endif
 
         /// <summary>
         /// Adds the specified <paramref name="service"/> as a <see cref="Lifecycle.Scoped"/> service
@@ -402,7 +417,6 @@ namespace DotNetStarter.Abstractions
             services.TryAdd(RegistrationDescriptor.Scoped(implementationFactory));
         }
 #endif
-
         /// <summary>
         /// Adds the specified <paramref name="service"/> as a <see cref="Lifecycle.Singleton"/> service
         /// to the <paramref name="collection"/> if the service type hasn't already been registered.
@@ -569,6 +583,149 @@ namespace DotNetStarter.Abstractions
             services.TryAdd(RegistrationDescriptor.Singleton(implementationFactory));
         }
 
+        /// <summary>
+        /// Adds the specified <paramref name="service"/> as a <see cref="Lifecycle.Transient"/> service
+        /// to the <paramref name="collection"/> if the service type hasn't already been registered.
+        /// </summary>
+        /// <param name="collection">The <see cref="IRegistrationCollection"/>.</param>
+        /// <param name="service">The type of the service to register.</param>
+        public static void TryAddTransient(
+            this IRegistrationCollection collection,
+            Type service)
+        {
+            if (collection == null)
+            {
+                throw new ArgumentNullException(nameof(collection));
+            }
+
+            if (service == null)
+            {
+                throw new ArgumentNullException(nameof(service));
+            }
+
+            var descriptor = RegistrationDescriptor.Transient(service, service);
+            TryAdd(collection, descriptor);
+        }
+
+        /// <summary>
+        /// Adds the specified <paramref name="service"/> as a <see cref="Lifecycle.Transient"/> service
+        /// with the <paramref name="implementationType"/> implementation
+        /// to the <paramref name="collection"/> if the service type hasn't already been registered.
+        /// </summary>
+        /// <param name="collection">The <see cref="IRegistrationCollection"/>.</param>
+        /// <param name="service">The type of the service to register.</param>
+        /// <param name="implementationType">The implementation type of the service.</param>
+        public static void TryAddTransient(
+            this IRegistrationCollection collection,
+            Type service,
+            Type implementationType)
+        {
+            if (collection == null)
+            {
+                throw new ArgumentNullException(nameof(collection));
+            }
+
+            if (service == null)
+            {
+                throw new ArgumentNullException(nameof(service));
+            }
+
+            if (implementationType == null)
+            {
+                throw new ArgumentNullException(nameof(implementationType));
+            }
+
+            var descriptor = RegistrationDescriptor.Transient(service, implementationType);
+            TryAdd(collection, descriptor);
+        }
+
+        /// <summary>
+        /// Adds the specified <paramref name="service"/> as a <see cref="Lifecycle.Transient"/> service
+        /// using the factory specified in <paramref name="implementationFactory"/>
+        /// to the <paramref name="collection"/> if the service type hasn't already been registered.
+        /// </summary>
+        /// <param name="collection">The <see cref="IRegistrationCollection"/>.</param>
+        /// <param name="service">The type of the service to register.</param>
+        /// <param name="implementationFactory">The factory that creates the service.</param>
+        public static void TryAddTransient(
+            this IRegistrationCollection collection,
+            Type service,
+            Func<IServiceProvider, object> implementationFactory)
+        {
+            if (collection == null)
+            {
+                throw new ArgumentNullException(nameof(collection));
+            }
+
+            if (service == null)
+            {
+                throw new ArgumentNullException(nameof(service));
+            }
+
+            if (implementationFactory == null)
+            {
+                throw new ArgumentNullException(nameof(implementationFactory));
+            }
+
+            var descriptor = RegistrationDescriptor.Transient(service, implementationFactory);
+            TryAdd(collection, descriptor);
+        }
+
+        /// <summary>
+        /// Adds the specified <typeparamref name="TService"/> as a <see cref="Lifecycle.Transient"/> service
+        /// to the <paramref name="collection"/> if the service type hasn't already been registered.
+        /// </summary>
+        /// <typeparam name="TService">The type of the service to add.</typeparam>
+        /// <param name="collection">The <see cref="IRegistrationCollection"/>.</param>
+        public static void TryAddTransient<TService>(this IRegistrationCollection collection)
+            where TService : class
+        {
+            if (collection == null)
+            {
+                throw new ArgumentNullException(nameof(collection));
+            }
+
+            TryAddTransient(collection, typeof(TService), typeof(TService));
+        }
+
+        /// <summary>
+        /// Adds the specified <typeparamref name="TService"/> as a <see cref="Lifecycle.Transient"/> service
+        /// implementation type specified in <typeparamref name="TImplementation"/>
+        /// to the <paramref name="collection"/> if the service type hasn't already been registered.
+        /// </summary>
+        /// <typeparam name="TService">The type of the service to add.</typeparam>
+        /// <typeparam name="TImplementation">The type of the implementation to use.</typeparam>
+        /// <param name="collection">The <see cref="IRegistrationCollection"/>.</param>
+        public static void TryAddTransient<TService, TImplementation>(this IRegistrationCollection collection)
+            where TService : class
+            where TImplementation : class, TService
+        {
+            if (collection == null)
+            {
+                throw new ArgumentNullException(nameof(collection));
+            }
+
+            TryAddTransient(collection, typeof(TService), typeof(TImplementation));
+        }
+
+#if !NET35
+        /// <summary>
+        /// Adds the specified <typeparamref name="TService"/> as a <see cref="Lifecycle.Transient"/> service
+        /// using the factory specified in <paramref name="implementationFactory"/>
+        /// to the <paramref name="services"/> if the service type hasn't already been registered.
+        /// </summary>
+        /// <typeparam name="TService">The type of the service to add.</typeparam>
+        /// <param name="services">The <see cref="IRegistrationCollection"/>.</param>
+        /// <param name="implementationFactory">The factory that creates the service.</param>
+        public static void TryAddTransient<TService>(
+            this IRegistrationCollection services,
+            Func<IServiceProvider, TService> implementationFactory)
+            where TService : class
+        {
+            services.TryAdd(RegistrationDescriptor.Transient(implementationFactory));
+        }
+#endif
+
         ///// <summary>
         ///// Adds a <see cref="RegistrationDescriptor"/> if an existing descriptor with the same
         ///// <see cref="RegistrationDescriptor.ServiceType"/> and an implementation that does not already exist
@@ -656,71 +813,5 @@ namespace DotNetStarter.Abstractions
         //        services.TryAddEnumerable(d);
         //    }
         //}
-
-        /// <summary>
-        /// Removes the first service in <see cref="IRegistrationCollection"/> with the same service type
-        /// as <paramref name="descriptor"/> and adds <paramef name="descriptor"/> to the collection.
-        /// </summary>
-        /// <param name="collection">The <see cref="IRegistrationCollection"/>.</param>
-        /// <param name="descriptor">The <see cref="RegistrationDescriptor"/> to replace with.</param>
-        /// <returns></returns>
-        public static IRegistrationCollection Replace(
-            this IRegistrationCollection collection,
-            RegistrationDescriptor descriptor)
-        {
-            if (collection == null)
-            {
-                throw new ArgumentNullException(nameof(collection));
-            }
-
-            if (descriptor == null)
-            {
-                throw new ArgumentNullException(nameof(descriptor));
-            }
-
-            var registeredRegistrationDescriptor = collection.FirstOrDefault(s => s.ServiceType == descriptor.ServiceType);
-            if (registeredRegistrationDescriptor != null)
-            {
-                collection.Remove(registeredRegistrationDescriptor);
-            }
-
-            collection.Add(descriptor);
-            return collection;
-        }
-
-        /// <summary>
-        /// Removes all services of type <typeparamef name="T"/> in <see cref="IRegistrationCollection"/>.
-        /// </summary>
-        /// <param name="collection">The <see cref="IRegistrationCollection"/>.</param>
-        /// <returns></returns>
-        public static IRegistrationCollection RemoveAll<T>(this IRegistrationCollection collection)
-        {
-            return RemoveAll(collection, typeof(T));
-        }
-
-        /// <summary>
-        /// Removes all services of type <paramef name="serviceType"/> in <see cref="IRegistrationCollection"/>.
-        /// </summary>
-        /// <param name="collection">The <see cref="IRegistrationCollection"/>.</param>
-        /// <param name="serviceType">The service type to remove.</param>
-        /// <returns></returns>
-        public static IRegistrationCollection RemoveAll(this IRegistrationCollection collection, Type serviceType)
-        {
-            if (serviceType == null)
-            {
-                throw new ArgumentNullException(nameof(serviceType));
-            }
-
-            for (var i = collection.Count - 1; i >= 0; i--)
-            {
-                var descriptor = collection[i];
-                if (descriptor.ServiceType == serviceType)
-                {
-                    collection.RemoveAt(i);
-                }
-            }
-
-            return collection;
-        }
     }
 }
