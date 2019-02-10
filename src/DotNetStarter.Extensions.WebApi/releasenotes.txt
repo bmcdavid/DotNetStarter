@@ -1,1 +1,1 @@
-﻿Updated for interface changes.
+﻿Added HttpConfiguration extension to assign dependency resolver given a configuration and locator.

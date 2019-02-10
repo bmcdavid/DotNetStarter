@@ -2,6 +2,7 @@
 {
     using DotNetStarter.Abstractions;
     using Lamar;
+    using Microsoft.Extensions.DependencyInjection;
     using System;
     using System.Collections.Generic;
     using System.Linq;
@@ -67,7 +68,7 @@
         /// Creates/opens locator scope
         /// </summary>
         /// <returns></returns>
-        public virtual ILocatorScoped CreateScope() => new LamarLocatorScoped(_container.CreateScope(), this);
+        public virtual ILocatorScoped CreateScope() => new LamarLocatorScoped(_container.ServiceProvider.CreateScope(), this);
 
         /// <summary>
         /// IServiceProvider.GetService

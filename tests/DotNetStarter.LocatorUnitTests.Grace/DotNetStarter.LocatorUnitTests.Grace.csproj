@@ -10,10 +10,10 @@
   </PropertyGroup>
   
   <ItemGroup>
-    <PackageReference Include="altcover" Version="4.0.649" />
+    <PackageReference Include="altcover" Version="5.0.665" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="15.9.0" />
-    <PackageReference Include="MSTest.TestAdapter" Version="1.3.2" />
-    <PackageReference Include="MSTest.TestFramework" Version="1.3.2" />
+    <PackageReference Include="MSTest.TestAdapter" Version="1.4.0" />
+    <PackageReference Include="MSTest.TestFramework" Version="1.4.0" />
     <Compile Include="..\DotNetStarter.LocatorUnitTests\**\*.cs" />
   </ItemGroup>
 

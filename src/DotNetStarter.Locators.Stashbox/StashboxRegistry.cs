@@ -37,7 +37,7 @@ namespace DotNetStarter.Locators
         /// <param name="serviceType"></param>
         /// <param name="implementationFactory"></param>
         /// <param name="lifecycle"></param>
-        public void Add(Type serviceType, Func<ILocator, object> implementationFactory, Lifecycle lifecycle) => _container.RegisterType
+        public void Add(Type serviceType, Func<ILocator, object> implementationFactory, Lifecycle lifecycle) => _container.Register
         (
             serviceType,
             c => c
@@ -73,7 +73,7 @@ namespace DotNetStarter.Locators
         {
             if (!isGeneric) { RegistryExtensions.ConfirmService(serviceType, serviceImplementation); }
 
-            _container.RegisterType(serviceType, serviceImplementation, c => c.ConvertLifetime(lifecycle));
+            _container.Register(serviceType, serviceImplementation, c => c.ConvertLifetime(lifecycle));
         }
     }
 }

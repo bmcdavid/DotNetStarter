@@ -44,7 +44,7 @@ namespace DotNetStarter.Locators
             {
                 _disposeAction?.Invoke();
                 _Scope.Dispose();
-                _Scope.IsDisposed = true;
+                // _Scope.IsDisposed = true;
             }
         }
 
