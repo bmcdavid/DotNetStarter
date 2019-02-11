@@ -2,7 +2,6 @@
 {
     using DotNetStarter.Abstractions;
     using Lamar;
-    using Microsoft.Extensions.DependencyInjection;
     using System;
     using System.Collections.Generic;
     using System.Linq;
@@ -68,7 +67,14 @@
         /// Creates/opens locator scope
         /// </summary>
         /// <returns></returns>
-        public virtual ILocatorScoped CreateScope() => new LamarLocatorScoped(_container.ServiceProvider.CreateScope(), this);
+        public virtual ILocatorScoped CreateScope()
+        {
+            // have to cast otherwise extension is used creating an infinite loop
+            var containerScope = 
+                (_container as Microsoft.Extensions.DependencyInjection.IServiceScopeFactory).CreateScope();
+
+            return new LamarLocatorScoped(containerScope, this);
+        }
 
         /// <summary>
         /// IServiceProvider.GetService
