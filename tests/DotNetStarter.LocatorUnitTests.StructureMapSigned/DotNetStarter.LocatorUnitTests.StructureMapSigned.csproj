@@ -1,4 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
+  <Import Project="..\..\targets\CommonBuild.props" />
+
   <PropertyGroup>
     <TargetFrameworks>net45;</TargetFrameworks>
     <IsPackable>false</IsPackable>
