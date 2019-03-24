@@ -56,7 +56,7 @@ namespace DotNetStarter.StartupBuilderTests
                 {
                     r.TryAddSingleton(new TestFooImport());
                     r.AddSingleton<TestFooImport, TestFooImport>();
-                    //todo: test each constructor
+                    //todo: test more usages
                 })
                 .Build(useApplicationContext: false)
                 .Run();

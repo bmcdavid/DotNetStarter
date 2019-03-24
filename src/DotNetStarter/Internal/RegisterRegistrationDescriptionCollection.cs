@@ -3,9 +3,6 @@ using System.Collections.Generic;
 
 namespace DotNetStarter.Internal
 {
-    //todo: bump all locator package minors, registration minor, and dotnetstarter minor version numbers
-    //todo: research configuration api before finalizing
-
     /// <summary>
     /// Default Registration description collection
     /// </summary>
