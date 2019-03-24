@@ -6,7 +6,7 @@
 
   <PropertyGroup>
     <PackageId>DotNetStarter</PackageId>
-    <TargetFrameworks>net35;net40;net45;netstandard1.0;netstandard1.6;netstandard2.0</TargetFrameworks>
+    <TargetFrameworks>net35;net40;net45;net461;netstandard1.0;netstandard1.6;netstandard2.0</TargetFrameworks>
     <Authors>Brad McDavid</Authors>
     <Copyright>Copyright $(CurrentYear)</Copyright>
     <Description>Startup system and service registration for a DI container.</Description>
@@ -35,6 +35,11 @@
     <PackageReference Include="Microsoft.Extensions.DependencyModel" Version="2.1.0" />
   </ItemGroup>
 
+  <ItemGroup Condition="'$(TargetFramework)' == 'net461'">
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="2.0.0" />
+    <PackageReference Include="Microsoft.Extensions.DependencyModel" Version="2.1.0" />
+  </ItemGroup>
+
   <ItemGroup>
     <ProjectReference Include="..\DotNetStarter.Abstractions\DotNetStarter.Abstractions.csproj" />
     <ProjectReference Include="..\DotNetStarter.RegistrationAbstractions\DotNetStarter.RegistrationAbstractions.csproj" />
@@ -50,7 +55,11 @@
 
   <PropertyGroup Condition=" '$(TargetFramework)' == 'net45'">
     <DefineConstants>$(DefineConstants);NETFULLFRAMEWORK;HAS_APP_DOMAIN</DefineConstants>
-  </PropertyGroup>  
+  </PropertyGroup>
+
+  <PropertyGroup Condition=" '$(TargetFramework)' == 'net461'">
+    <DefineConstants>$(DefineConstants);NETSTANDARD;NETFULLFRAMEWORK;HAS_APP_DOMAIN</DefineConstants>
+  </PropertyGroup>
 
   <PropertyGroup Condition=" '$(TargetFramework)' == 'netstandard1.0'">
     <DefineConstants>$(DefineConstants);NETSTANDARD</DefineConstants>

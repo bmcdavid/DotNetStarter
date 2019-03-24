@@ -22,7 +22,7 @@
   <Import Project="..\..\targets\CommonNuGetPackage.props" />
 
   <ItemGroup>
-    <PackageReference Include="Autofac" Version="4.9.0" />
+    <PackageReference Include="Autofac" Version="4.9.2" />
     <ProjectReference Include="..\DotNetStarter.Abstractions\DotNetStarter.Abstractions.csproj" />
   </ItemGroup>
 

@@ -58,7 +58,7 @@ namespace DotNetStarter.Internal
             return files;
         }
 
-#elif NET40 || NET45
+#elif NETFULLFRAMEWORK
         /// <summary>
         /// Gets assembly files
         /// </summary>
