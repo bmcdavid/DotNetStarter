@@ -1,1 +1,1 @@
-﻿Fixed scoped created to use ILocatorScopeFactory.
+﻿Removed dependencies that weren't needed.

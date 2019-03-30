@@ -11,7 +11,7 @@
     <Copyright>Copyright $(CurrentYear)</Copyright>
     <Description>Owin Startup system with optional support for DI/IOC.</Description>
     <!--follow semantic versioning may include prelease information too-->
-    <PackageVersion>3.0.1</PackageVersion>
+    <PackageVersion>3.0.2</PackageVersion>
     <PackageTags>Startup Owin</PackageTags>
     <!--do not change unless you want to deal with assembly redirects-->
     <AssemblyVersion>3.0.0</AssemblyVersion>
@@ -28,10 +28,4 @@
   <ItemGroup Condition="'$(TargetFramework)' == 'net45'">
     <PackageReference Include="Owin" Version="1.0.0" />
   </ItemGroup>
-
-  <ItemGroup Condition="'$(TargetFramework)' == 'netstandard1.3'">
-    <PackageReference Include="Microsoft.AspNetCore.Http.Abstractions" Version="[1,2)" />
-    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="[1,2)" />
-  </ItemGroup>
-
 </Project>
