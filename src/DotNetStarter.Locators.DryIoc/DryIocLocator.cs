@@ -32,7 +32,7 @@
         /// </summary>
         /// <param name="target"></param>
         /// <returns></returns>
-        public virtual bool BuildUp(object target) => _container.InjectPropertiesAndFields(target) != null;
+        public virtual bool BuildUp(object target) => _container.InjectPropertiesAndFields(target) is object;
 
         /// <summary>
         /// Creates/opens locator scope

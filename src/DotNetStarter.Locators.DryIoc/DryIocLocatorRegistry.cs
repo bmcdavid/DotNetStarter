@@ -90,7 +90,7 @@
         /// <param name="serviceImplementation"></param>
         public virtual void Remove(Type serviceType, string key = null, Type serviceImplementation = null)
         {
-            if (serviceImplementation == null)
+            if (serviceImplementation is null)
             {
                 _container.Unregister(serviceType, key, FactoryType.Service, (f) => true);
             }

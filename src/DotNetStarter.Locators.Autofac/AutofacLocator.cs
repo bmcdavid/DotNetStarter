@@ -81,7 +81,7 @@ namespace DotNetStarter.Locators
 
         private IContainer ResolveContainer()
         {
-            if (_container != null) { return _container; }
+            if (_container is object) { return _container; }
 
             return _container = _containerFactory?.Invoke() ?? _containerBuilder.Build(_options);
         }

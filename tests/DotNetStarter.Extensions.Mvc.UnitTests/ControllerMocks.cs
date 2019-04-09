@@ -7,7 +7,7 @@ namespace DotNetStarter.Extensions.Mvc.Tests
     {
         public ControllerOne(IStartupContext startupContext, ILocatorScopedAccessor locatorScopedAccessor)
         {
-            if (locatorScopedAccessor.CurrentScope == null)
+            if (locatorScopedAccessor.CurrentScope is null)
                 throw new System.NullReferenceException();
         }
     }

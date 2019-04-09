@@ -77,14 +77,14 @@ namespace DotNetStarter.Extensions.Mvc
 
             foreach (string type in unavailableTypesInMvc4)
             {
-                if (_TypeFromStringResolver == null)
+                if (_TypeFromStringResolver is null)
                 {
                     throw new NullReferenceException("Cannot resolve string to type, the func is null!");
                 }
 
                 Type t = _TypeFromStringResolver(type);
 
-                if (t != null)
+                if (t is object)
                 {
                     types.Add(t);
                 }

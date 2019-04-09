@@ -30,11 +30,11 @@ namespace DotNetStarter.Internal
             {
                 var service = services[i];
 
-                if (service.ImplementationType != null)
+                if (service.ImplementationType is object)
                 {
                     locator.Add(service.ServiceType, service.ImplementationType, lifecycle: service.Lifetime);
                 }
-                else if (service.ImplementationFactory != null)
+                else if (service.ImplementationFactory is object)
                 {
                     locator.Add(service.ServiceType,
                     l => service.ImplementationFactory(l.GetServiceProvider()),

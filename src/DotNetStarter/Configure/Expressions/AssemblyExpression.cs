@@ -33,7 +33,7 @@ namespace DotNetStarter.Configure.Expressions
         /// <returns></returns>
         public AssemblyExpression RemoveAssemblies(IEnumerable<Assembly> assembliesToRemove)
         {
-            if (assembliesToRemove == null) { return this; }
+            if (assembliesToRemove is null) { return this; }
 
             foreach (var a in assembliesToRemove)
             {
@@ -61,7 +61,7 @@ namespace DotNetStarter.Configure.Expressions
         /// <returns></returns>
         public AssemblyExpression WithAssemblies(IEnumerable<Assembly> assemblies)
         {
-            if (assemblies == null) { return this; }
+            if (assemblies is null) { return this; }
             AddAssemblyRange(assemblies);
             return this;
         }
@@ -84,7 +84,7 @@ namespace DotNetStarter.Configure.Expressions
         /// <returns></returns>
         public AssemblyExpression WithAssembly(Assembly assembly)
         {
-            if (assembly != null) Assemblies.Add(assembly);
+            if (assembly is object) Assemblies.Add(assembly);
             return this;
         }
 

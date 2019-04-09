@@ -25,7 +25,7 @@ namespace DotNetStarter.Abstractions
         /// <param name="lifetime">The <see cref="Lifecycle"/> of the service.</param>
         public RegistrationDescriptor(Type serviceType, Type implementationType, Lifecycle lifetime) : this(serviceType, lifetime)
         {
-            if (serviceType == null)
+            if (serviceType is null)
             {
                 throw new ArgumentNullException(nameof(serviceType));
             }
@@ -41,7 +41,7 @@ namespace DotNetStarter.Abstractions
         /// <param name="instance">The instance implementing the service.</param>
         public RegistrationDescriptor(Type serviceType, object instance) : this(serviceType, Lifecycle.Singleton)
         {
-            if (serviceType == null)
+            if (serviceType is null)
             {
                 throw new ArgumentNullException(nameof(serviceType));
             }
@@ -57,7 +57,7 @@ namespace DotNetStarter.Abstractions
         /// <param name="lifetime">The <see cref="Lifecycle"/> of the service.</param>
         public RegistrationDescriptor(Type serviceType, Func<IServiceProvider, object> factory, Lifecycle lifetime) : this(serviceType, lifetime)
         {
-            if (serviceType == null)
+            if (serviceType is null)
             {
                 throw new ArgumentNullException(nameof(serviceType));
             }
@@ -111,12 +111,12 @@ namespace DotNetStarter.Abstractions
         /// <returns>A new instance of <see cref="RegistrationDescriptor"/>.</returns>
         public static RegistrationDescriptor Transient(Type service, Type implementationType)
         {
-            if (service == null)
+            if (service is null)
             {
                 throw new ArgumentNullException(nameof(service));
             }
 
-            if (implementationType == null)
+            if (implementationType is null)
             {
                 throw new ArgumentNullException(nameof(implementationType));
             }
@@ -140,7 +140,7 @@ namespace DotNetStarter.Abstractions
             where TService : class
             where TImplementation : class, TService
         {
-            if (implementationFactory == null)
+            if (implementationFactory is null)
             {
                 throw new ArgumentNullException(nameof(implementationFactory));
             }
@@ -159,7 +159,7 @@ namespace DotNetStarter.Abstractions
         public static RegistrationDescriptor Transient<TService>(Func<IServiceProvider, TService> implementationFactory)
             where TService : class
         {
-            if (implementationFactory == null)
+            if (implementationFactory is null)
             {
                 throw new ArgumentNullException(nameof(implementationFactory));
             }
@@ -177,12 +177,12 @@ namespace DotNetStarter.Abstractions
         /// <returns>A new instance of <see cref="RegistrationDescriptor"/>.</returns>
         public static RegistrationDescriptor Transient(Type service, Func<IServiceProvider, object> implementationFactory)
         {
-            if (service == null)
+            if (service is null)
             {
                 throw new ArgumentNullException(nameof(service));
             }
 
-            if (implementationFactory == null)
+            if (implementationFactory is null)
             {
                 throw new ArgumentNullException(nameof(implementationFactory));
             }
@@ -234,7 +234,7 @@ namespace DotNetStarter.Abstractions
             where TService : class
             where TImplementation : class, TService
         {
-            if (implementationFactory == null)
+            if (implementationFactory is null)
             {
                 throw new ArgumentNullException(nameof(implementationFactory));
             }
@@ -253,7 +253,7 @@ namespace DotNetStarter.Abstractions
         public static RegistrationDescriptor Scoped<TService>(Func<IServiceProvider, TService> implementationFactory)
             where TService : class
         {
-            if (implementationFactory == null)
+            if (implementationFactory is null)
             {
                 throw new ArgumentNullException(nameof(implementationFactory));
             }
@@ -272,12 +272,12 @@ namespace DotNetStarter.Abstractions
         /// <returns>A new instance of <see cref="RegistrationDescriptor"/>.</returns>
         public static RegistrationDescriptor Scoped(Type service, Func<IServiceProvider, object> implementationFactory)
         {
-            if (service == null)
+            if (service is null)
             {
                 throw new ArgumentNullException(nameof(service));
             }
 
-            if (implementationFactory == null)
+            if (implementationFactory is null)
             {
                 throw new ArgumentNullException(nameof(implementationFactory));
             }
@@ -310,12 +310,12 @@ namespace DotNetStarter.Abstractions
         /// <returns>A new instance of <see cref="RegistrationDescriptor"/>.</returns>
         public static RegistrationDescriptor Singleton(Type service, Type implementationType)
         {
-            if (service == null)
+            if (service is null)
             {
                 throw new ArgumentNullException(nameof(service));
             }
 
-            if (implementationType == null)
+            if (implementationType is null)
             {
                 throw new ArgumentNullException(nameof(implementationType));
             }
@@ -339,7 +339,7 @@ namespace DotNetStarter.Abstractions
             where TService : class
             where TImplementation : class, TService
         {
-            if (implementationFactory == null)
+            if (implementationFactory is null)
             {
                 throw new ArgumentNullException(nameof(implementationFactory));
             }
@@ -358,7 +358,7 @@ namespace DotNetStarter.Abstractions
         public static RegistrationDescriptor Singleton<TService>(Func<IServiceProvider, TService> implementationFactory)
             where TService : class
         {
-            if (implementationFactory == null)
+            if (implementationFactory is null)
             {
                 throw new ArgumentNullException(nameof(implementationFactory));
             }
@@ -379,12 +379,12 @@ namespace DotNetStarter.Abstractions
             Type serviceType,
             Func<IServiceProvider, object> implementationFactory)
         {
-            if (serviceType == null)
+            if (serviceType is null)
             {
                 throw new ArgumentNullException(nameof(serviceType));
             }
 
-            if (implementationFactory == null)
+            if (implementationFactory is null)
             {
                 throw new ArgumentNullException(nameof(implementationFactory));
             }
@@ -403,7 +403,7 @@ namespace DotNetStarter.Abstractions
         public static RegistrationDescriptor Singleton<TService>(TService implementationInstance)
             where TService : class
         {
-            if (implementationInstance == null)
+            if (implementationInstance is null)
             {
                 throw new ArgumentNullException(nameof(implementationInstance));
             }
@@ -423,12 +423,12 @@ namespace DotNetStarter.Abstractions
             Type serviceType,
             object implementationInstance)
         {
-            if (serviceType == null)
+            if (serviceType is null)
             {
                 throw new ArgumentNullException(nameof(serviceType));
             }
 
-            if (implementationInstance == null)
+            if (implementationInstance is null)
             {
                 throw new ArgumentNullException(nameof(implementationInstance));
             }

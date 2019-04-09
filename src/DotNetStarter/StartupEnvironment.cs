@@ -48,7 +48,7 @@ namespace DotNetStarter
         /// <returns></returns>
         public virtual bool IsDevelopment()
         {
-            if (_IsDev == null)
+            if (_IsDev is null)
             {
                 _IsDev = IsEnvironment("Development");
             }
@@ -69,7 +69,7 @@ namespace DotNetStarter
         /// <returns></returns>
         public virtual bool IsLocal()
         {
-            if (_IsLocal == null)
+            if (_IsLocal is null)
             {
                 _IsLocal = IsEnvironment("Local");
             }
@@ -83,7 +83,7 @@ namespace DotNetStarter
         /// <returns></returns>
         public virtual bool IsProduction()
         {
-            if (_IsProd == null)
+            if (_IsProd is null)
             {
                 _IsProd = IsEnvironment("Production");
             }
@@ -97,7 +97,7 @@ namespace DotNetStarter
         /// <returns></returns>
         public virtual bool IsQualityAssurance()
         {
-            if (_IsQA == null)
+            if (_IsQA is null)
             {
                 _IsQA = IsEnvironment("QualityAssurance");
             }
@@ -111,7 +111,7 @@ namespace DotNetStarter
         /// <returns></returns>
         public virtual bool IsStaging()
         {
-            if (_IsStage == null)
+            if (_IsStage is null)
             {
                 _IsStage = IsEnvironment("Staging");
             }
@@ -125,7 +125,7 @@ namespace DotNetStarter
         /// <returns></returns>
         public virtual bool IsTesting()
         {
-            if (_IsTest == null)
+            if (_IsTest is null)
             {
                 _IsTest = IsEnvironment("Testing");
             }
@@ -139,7 +139,7 @@ namespace DotNetStarter
         /// <returns></returns>
         public bool IsUnitTest()
         {
-            if (_IsUnitTest == null)
+            if (_IsUnitTest is null)
             {
                 _IsUnitTest = IsEnvironment(UnitTestName);
             }
@@ -153,7 +153,7 @@ namespace DotNetStarter
         /// <returns></returns>
         public virtual bool IsUserAcceptanceTesting()
         {
-            if (_IsUAT == null)
+            if (_IsUAT is null)
             {
                 _IsUAT = IsEnvironment("UserAcceptanceTesting");
             }

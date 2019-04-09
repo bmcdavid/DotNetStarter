@@ -130,7 +130,7 @@ namespace DotNetStarter.Locators
             {
                 foreach (var module in locatorConfTypes)
                 {
-                    if (module.ServiceInstance != null)
+                    if (module.ServiceInstance is object)
                     {
                         yield return (ILocatorConfigure)module.ServiceInstance;
                     }
@@ -155,11 +155,11 @@ namespace DotNetStarter.Locators
                     // for GetAllInstances to work they must be named, except for last
                     string serviceKey = registration.ServiceKey ?? ((i + 1 == count) ? "" : nameof(DotNetStarter) + $"_{i}");
 
-                    if (registration.ServiceInstance != null)
+                    if (registration.ServiceInstance is object)
                     {
                         _container.RegisterInstance(registration.ServiceType, registration.ServiceInstance);
                     }
-                    else if (registration.ServiceFactory != null)
+                    else if (registration.ServiceFactory is object)
                     {
                         _container.RegisterFallback((type, key) => type == registration.ServiceType, r => registration.ServiceFactory.Invoke(_container.GetInstance<ILocatorAmbient>().Current), ConvertLifetime(registration.Lifecycle));
                     }

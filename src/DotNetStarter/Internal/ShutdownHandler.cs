@@ -47,7 +47,7 @@
         {
             if (_ShutdownInvoked) return;
 
-            if (_StartupModules != null)
+            if (_StartupModules is object)
             {
                 _ShutdownInvoked = true;
 

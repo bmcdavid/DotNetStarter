@@ -45,7 +45,7 @@ namespace DotNetStarter.Locators
         /// Creates a locator
         /// </summary>
         /// <returns></returns>
-        public ILocator CreateLocator() => _containerFactory != null ?
+        public ILocator CreateLocator() => _containerFactory is object ?
             new AutofacLocator(_containerFactory) :
             new AutofacLocator(_containerBuilder, _containerBuilderOptions ?? ContainerBuildOptions.None);
 

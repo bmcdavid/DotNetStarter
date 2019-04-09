@@ -106,7 +106,7 @@
         /// <param name="serviceImplementation"></param>
         public static void ConfirmService(Type serviceType, Type serviceImplementation)
         {
-            if (serviceImplementation != null && !serviceType.IsAssignableFromCheck(serviceImplementation))
+            if (serviceImplementation is object && !serviceType.IsAssignableFromCheck(serviceImplementation))
             {
                 if (!serviceType.IsGenericType())
                 {

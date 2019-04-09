@@ -33,7 +33,7 @@ namespace DotNetStarter.Owin
         /// <param name="environment">OWIN environment dictionary which stores state information about the request, response and relevant server state.</param>
         public MiddlewareContext(IDictionary<string, object> environment)
         {
-            if (environment == null)
+            if (environment is null)
             {
                 throw new ArgumentNullException(nameof(environment));
             }

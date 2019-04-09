@@ -28,7 +28,7 @@
         {
             get
             {
-                if (Accessor != null) { return Accessor.Service; }
+                if (Accessor is object) { return Accessor.Service; }
 
                 return ResolveLocator().Get<TService>();
             }
@@ -41,7 +41,7 @@
         {
             get
             {
-                if (Accessor != null) { return Accessor.AllServices; }
+                if (Accessor is object) { return Accessor.AllServices; }
 
                 return ResolveLocator().GetAll<TService>();
             }

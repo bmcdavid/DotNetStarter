@@ -23,12 +23,12 @@ namespace DotNetStarter.Abstractions
             this IRegistrationCollection collection,
             RegistrationDescriptor descriptor)
         {
-            if (collection == null)
+            if (collection is null)
             {
                 throw new ArgumentNullException(nameof(collection));
             }
 
-            if (descriptor == null)
+            if (descriptor is null)
             {
                 throw new ArgumentNullException(nameof(descriptor));
             }
@@ -47,12 +47,12 @@ namespace DotNetStarter.Abstractions
             this IRegistrationCollection collection,
             IEnumerable<RegistrationDescriptor> descriptors)
         {
-            if (collection == null)
+            if (collection is null)
             {
                 throw new ArgumentNullException(nameof(collection));
             }
 
-            if (descriptors == null)
+            if (descriptors is null)
             {
                 throw new ArgumentNullException(nameof(descriptors));
             }
@@ -175,7 +175,7 @@ namespace DotNetStarter.Abstractions
         /// <returns></returns>
         public static IRegistrationCollection RemoveAll(this IRegistrationCollection collection, Type serviceType)
         {
-            if (serviceType == null)
+            if (serviceType is null)
             {
                 throw new ArgumentNullException(nameof(serviceType));
             }
@@ -203,18 +203,18 @@ namespace DotNetStarter.Abstractions
             this IRegistrationCollection collection,
             RegistrationDescriptor descriptor)
         {
-            if (collection == null)
+            if (collection is null)
             {
                 throw new ArgumentNullException(nameof(collection));
             }
 
-            if (descriptor == null)
+            if (descriptor is null)
             {
                 throw new ArgumentNullException(nameof(descriptor));
             }
 
             var registeredRegistrationDescriptor = collection.FirstOrDefault(s => s.ServiceType == descriptor.ServiceType);
-            if (registeredRegistrationDescriptor != null)
+            if (registeredRegistrationDescriptor is object)
             {
                 collection.Remove(registeredRegistrationDescriptor);
             }
@@ -233,12 +233,12 @@ namespace DotNetStarter.Abstractions
             this IRegistrationCollection collection,
             RegistrationDescriptor descriptor)
         {
-            if (collection == null)
+            if (collection is null)
             {
                 throw new ArgumentNullException(nameof(collection));
             }
 
-            if (descriptor == null)
+            if (descriptor is null)
             {
                 throw new ArgumentNullException(nameof(descriptor));
             }
@@ -259,12 +259,12 @@ namespace DotNetStarter.Abstractions
             this IRegistrationCollection collection,
             IEnumerable<RegistrationDescriptor> descriptors)
         {
-            if (collection == null)
+            if (collection is null)
             {
                 throw new ArgumentNullException(nameof(collection));
             }
 
-            if (descriptors == null)
+            if (descriptors is null)
             {
                 throw new ArgumentNullException(nameof(descriptors));
             }
@@ -285,12 +285,12 @@ namespace DotNetStarter.Abstractions
             this IRegistrationCollection collection,
             Type service)
         {
-            if (collection == null)
+            if (collection is null)
             {
                 throw new ArgumentNullException(nameof(collection));
             }
 
-            if (service == null)
+            if (service is null)
             {
                 throw new ArgumentNullException(nameof(service));
             }
@@ -312,17 +312,17 @@ namespace DotNetStarter.Abstractions
             Type service,
             Type implementationType)
         {
-            if (collection == null)
+            if (collection is null)
             {
                 throw new ArgumentNullException(nameof(collection));
             }
 
-            if (service == null)
+            if (service is null)
             {
                 throw new ArgumentNullException(nameof(service));
             }
 
-            if (implementationType == null)
+            if (implementationType is null)
             {
                 throw new ArgumentNullException(nameof(implementationType));
             }
@@ -344,17 +344,17 @@ namespace DotNetStarter.Abstractions
             Type service,
             Func<IServiceProvider, object> implementationFactory)
         {
-            if (collection == null)
+            if (collection is null)
             {
                 throw new ArgumentNullException(nameof(collection));
             }
 
-            if (service == null)
+            if (service is null)
             {
                 throw new ArgumentNullException(nameof(service));
             }
 
-            if (implementationFactory == null)
+            if (implementationFactory is null)
             {
                 throw new ArgumentNullException(nameof(implementationFactory));
             }
@@ -372,7 +372,7 @@ namespace DotNetStarter.Abstractions
         public static void TryAddScoped<TService>(this IRegistrationCollection collection)
             where TService : class
         {
-            if (collection == null)
+            if (collection is null)
             {
                 throw new ArgumentNullException(nameof(collection));
             }
@@ -392,7 +392,7 @@ namespace DotNetStarter.Abstractions
             where TService : class
             where TImplementation : class, TService
         {
-            if (collection == null)
+            if (collection is null)
             {
                 throw new ArgumentNullException(nameof(collection));
             }
@@ -427,12 +427,12 @@ namespace DotNetStarter.Abstractions
             this IRegistrationCollection collection,
             Type service)
         {
-            if (collection == null)
+            if (collection is null)
             {
                 throw new ArgumentNullException(nameof(collection));
             }
 
-            if (service == null)
+            if (service is null)
             {
                 throw new ArgumentNullException(nameof(service));
             }
@@ -454,17 +454,17 @@ namespace DotNetStarter.Abstractions
             Type service,
             Type implementationType)
         {
-            if (collection == null)
+            if (collection is null)
             {
                 throw new ArgumentNullException(nameof(collection));
             }
 
-            if (service == null)
+            if (service is null)
             {
                 throw new ArgumentNullException(nameof(service));
             }
 
-            if (implementationType == null)
+            if (implementationType is null)
             {
                 throw new ArgumentNullException(nameof(implementationType));
             }
@@ -486,17 +486,17 @@ namespace DotNetStarter.Abstractions
             Type service,
             Func<IServiceProvider, object> implementationFactory)
         {
-            if (collection == null)
+            if (collection is null)
             {
                 throw new ArgumentNullException(nameof(collection));
             }
 
-            if (service == null)
+            if (service is null)
             {
                 throw new ArgumentNullException(nameof(service));
             }
 
-            if (implementationFactory == null)
+            if (implementationFactory is null)
             {
                 throw new ArgumentNullException(nameof(implementationFactory));
             }
@@ -514,7 +514,7 @@ namespace DotNetStarter.Abstractions
         public static void TryAddSingleton<TService>(this IRegistrationCollection collection)
             where TService : class
         {
-            if (collection == null)
+            if (collection is null)
             {
                 throw new ArgumentNullException(nameof(collection));
             }
@@ -534,7 +534,7 @@ namespace DotNetStarter.Abstractions
             where TService : class
             where TImplementation : class, TService
         {
-            if (collection == null)
+            if (collection is null)
             {
                 throw new ArgumentNullException(nameof(collection));
             }
@@ -553,12 +553,12 @@ namespace DotNetStarter.Abstractions
         public static void TryAddSingleton<TService>(this IRegistrationCollection collection, TService instance)
             where TService : class
         {
-            if (collection == null)
+            if (collection is null)
             {
                 throw new ArgumentNullException(nameof(collection));
             }
 
-            if (instance == null)
+            if (instance is null)
             {
                 throw new ArgumentNullException(nameof(instance));
             }
@@ -593,12 +593,12 @@ namespace DotNetStarter.Abstractions
             this IRegistrationCollection collection,
             Type service)
         {
-            if (collection == null)
+            if (collection is null)
             {
                 throw new ArgumentNullException(nameof(collection));
             }
 
-            if (service == null)
+            if (service is null)
             {
                 throw new ArgumentNullException(nameof(service));
             }
@@ -620,17 +620,17 @@ namespace DotNetStarter.Abstractions
             Type service,
             Type implementationType)
         {
-            if (collection == null)
+            if (collection is null)
             {
                 throw new ArgumentNullException(nameof(collection));
             }
 
-            if (service == null)
+            if (service is null)
             {
                 throw new ArgumentNullException(nameof(service));
             }
 
-            if (implementationType == null)
+            if (implementationType is null)
             {
                 throw new ArgumentNullException(nameof(implementationType));
             }
@@ -652,17 +652,17 @@ namespace DotNetStarter.Abstractions
             Type service,
             Func<IServiceProvider, object> implementationFactory)
         {
-            if (collection == null)
+            if (collection is null)
             {
                 throw new ArgumentNullException(nameof(collection));
             }
 
-            if (service == null)
+            if (service is null)
             {
                 throw new ArgumentNullException(nameof(service));
             }
 
-            if (implementationFactory == null)
+            if (implementationFactory is null)
             {
                 throw new ArgumentNullException(nameof(implementationFactory));
             }
@@ -680,7 +680,7 @@ namespace DotNetStarter.Abstractions
         public static void TryAddTransient<TService>(this IRegistrationCollection collection)
             where TService : class
         {
-            if (collection == null)
+            if (collection is null)
             {
                 throw new ArgumentNullException(nameof(collection));
             }
@@ -700,7 +700,7 @@ namespace DotNetStarter.Abstractions
             where TService : class
             where TImplementation : class, TService
         {
-            if (collection == null)
+            if (collection is null)
             {
                 throw new ArgumentNullException(nameof(collection));
             }
@@ -747,12 +747,12 @@ namespace DotNetStarter.Abstractions
         //    this IRegistrationCollection services,
         //    RegistrationDescriptor descriptor)
         //{
-        //    if (services == null)
+        //    if (services is null)
         //    {
         //        throw new ArgumentNullException(nameof(services));
         //    }
 
-        //    if (descriptor == null)
+        //    if (descriptor is null)
         //    {
         //        throw new ArgumentNullException(nameof(descriptor));
         //    }
@@ -798,12 +798,12 @@ namespace DotNetStarter.Abstractions
         //    this IRegistrationCollection services,
         //    IEnumerable<RegistrationDescriptor> descriptors)
         //{
-        //    if (services == null)
+        //    if (services is null)
         //    {
         //        throw new ArgumentNullException(nameof(services));
         //    }
 
-        //    if (descriptors == null)
+        //    if (descriptors is null)
         //    {
         //        throw new ArgumentNullException(nameof(descriptors));
         //    }

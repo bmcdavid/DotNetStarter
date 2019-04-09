@@ -25,15 +25,15 @@ namespace DotNetStarter
         {
             get
             {
-                if (key == null) { throw new ArgumentNullException(nameof(key)); }
+                if (key is null) { throw new ArgumentNullException(nameof(key)); }
                 if (items.TryGetValue(key, out var obj)) { return obj; }
 
                 return null;
             }
             set
             {
-                if (key == null) { throw new ArgumentNullException(nameof(key)); }
-                if (value == null) { items.Remove(key); }
+                if (key is null) { throw new ArgumentNullException(nameof(key)); }
+                if (value is null) { items.Remove(key); }
 
                 items[key] = value;
             }

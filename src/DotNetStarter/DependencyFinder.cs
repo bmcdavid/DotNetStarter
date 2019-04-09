@@ -21,10 +21,10 @@
         /// <returns></returns>
         public virtual IEnumerable<object> Find<T>(IEnumerable<Assembly> assemblies, Func<Assembly, bool> assemblyFilter = null) where T : StartupDependencyBaseAttribute
         {
-            if (assemblies == null)
+            if (assemblies is null)
                 throw new ArgumentNullException(nameof(assemblies));
 
-            if (assemblyFilter != null)
+            if (assemblyFilter is object)
                 assemblies = assemblies.Where(assemblyFilter);
 
             var attrType = typeof(T);

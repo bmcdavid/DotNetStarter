@@ -83,7 +83,7 @@ namespace DotNetStarter.Abstractions.Internal
 #endif
         }
 
-        public static IEnumerable<Type> GetBaseTypes(this Type type) => (BaseType(type) == null || BaseType(type) == typeof(object))
+        public static IEnumerable<Type> GetBaseTypes(this Type type) => (BaseType(type) is null || BaseType(type) == typeof(object))
             ? Interfaces(type)
             : Enumerable
                 .Repeat(BaseType(type), 1)
@@ -236,7 +236,7 @@ namespace DotNetStarter.Abstractions.Internal
 
         public static bool IsNullableType(this Type type)
         {
-            if (type == null)
+            if (type is null)
                 return false;
 
 #if NETSTANDARD1_0 || NETSTANDARD1_1

@@ -62,7 +62,7 @@
         /// <param name="assemblyFilter"></param>
         public virtual void Scan(IEnumerable<Assembly> scanAssemblies, IEnumerable<Type> forTypes, Func<Assembly, bool> assemblyFilter = null)
         {
-            if (assemblyFilter != null)
+            if (assemblyFilter is object)
                 scanAssemblies = scanAssemblies.Where(x => !assemblyFilter(x));
 
             var types = scanAssemblies.SelectMany(x => AssemblyTypes(x));
@@ -95,7 +95,7 @@
                 .OfType<ExportsAttribute>()
                 .FirstOrDefault();
 
-            if (exportAttribute != null)
+            if (exportAttribute is object)
             {
                 exportsType = exportAttribute.ExportsType;
             }

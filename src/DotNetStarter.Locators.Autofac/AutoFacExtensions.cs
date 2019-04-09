@@ -13,7 +13,7 @@ namespace DotNetStarter.Locators
             switch (lifecycleKind)
             {
                 case Lifecycle.Singleton:
-                    if (lifetimeScopeTagForSingleton == null)
+                    if (lifetimeScopeTagForSingleton is null)
                     {
                         registrationBuilder.SingleInstance();
                     }

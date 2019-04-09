@@ -82,7 +82,7 @@ namespace DotNetStarter.UnitTests
                 System.Threading.Thread.Sleep(1);
                 var scopeTest2 = scopedLocator.Get<ScopeTest>();
 
-                Assert.IsTrue(scopedLocator.Parent == null);
+                Assert.IsTrue(scopedLocator.Parent is null);
 
                 using (var nestedScope = CreateScope(scopedLocator))
                 {

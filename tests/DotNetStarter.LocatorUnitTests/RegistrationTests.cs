@@ -45,7 +45,7 @@ namespace DotNetStarter.UnitTests
         [TestMethod]
         public void ShouldThrowResolveErrorWhenNotRegistered()
         {
-            Assert.IsTrue(ApplicationContext.Default.Locator.Get<Mocks.INotRegistered>() == null);
+            Assert.IsTrue(ApplicationContext.Default.Locator.Get<Mocks.INotRegistered>() is null);
         }
 
         [TestMethod]

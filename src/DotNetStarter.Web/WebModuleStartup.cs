@@ -45,7 +45,7 @@
         /// <param name="application"></param>
         public void Init(HttpApplication application)
         {
-            if (_ModuleHandler == null)
+            if (_ModuleHandler is null)
                 _ModuleHandler = StartupWebModuleHandler.Service;
 
             if (_ModuleHandler.ScopeEnabled())

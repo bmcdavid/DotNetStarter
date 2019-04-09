@@ -30,7 +30,7 @@
         {
             get
             {
-                if (_Default == null) { StartupBuilder.Create().Run(); }
+                if (_Default is null) { StartupBuilder.Create().Run(); }
 
                 return _Default;
             }

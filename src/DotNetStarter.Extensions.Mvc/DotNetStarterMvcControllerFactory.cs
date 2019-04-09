@@ -32,20 +32,20 @@ namespace DotNetStarter.Extensions.Mvc
         /// <returns></returns>
         public override IController CreateController(RequestContext requestContext, string controllerName)
         {
-            if (requestContext == null)
+            if (requestContext is null)
                 throw new ArgumentNullException(nameof(requestContext));
 
-            if (controllerName == null)
+            if (controllerName is null)
                 throw new ArgumentNullException(nameof(controllerName));
 
             var controllerType = base.GetControllerType(requestContext, controllerName);
 
-            if (controllerType == null)
+            if (controllerType is null)
                 throw new NullReferenceException($"Controller type {controllerType.FullName} not found");
 
             var controller = ResolveLocator(requestContext).Get(controllerType) as IController;
 
-            if (controller == null)
+            if (controller is null)
                 throw new ApplicationException(string.Format("No controller with name '{0}' found in {1}", controllerName, _Locator.GetType().FullName));
 
             return controller;

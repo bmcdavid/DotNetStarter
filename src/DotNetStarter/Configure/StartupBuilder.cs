@@ -159,13 +159,13 @@ namespace DotNetStarter.Configure
             _runOnce = true;
             // end order matters
 
-            if (_startupHandler == null)
+            if (_startupHandler is null)
             {
                 throw new Exception($"{nameof(Run)} was called but no startup handler was defined!");
             }
 
             _startupHandler.TryExecuteStartupModules();
-            ApplicationContext.Started = ApplicationContext._Default != null;
+            ApplicationContext.Started = ApplicationContext._Default is object;
         }
 
         /// <summary>
@@ -185,7 +185,7 @@ namespace DotNetStarter.Configure
         /// </summary>
         private void AddManualRegistrations()
         {
-            if (_registrationCollectionExpression != null)
+            if (_registrationCollectionExpression is object)
             {
                 var collection = new Internal.RegistrationDescriptionCollection();
                 _registrationCollectionExpression.Invoke(collection);

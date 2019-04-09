@@ -21,7 +21,7 @@ namespace DotNetStarter.Owin
             }
 
             string existing = GetHeader(headers, key);
-            if (existing == null)
+            if (existing is null)
             {
                 SetHeader(headers, key, values);
             }
@@ -33,13 +33,13 @@ namespace DotNetStarter.Owin
 
         public static void AppendHeaderJoined(IDictionary<string, string[]> headers, string key, params string[] values)
         {
-            if (values == null || values.Length == 0)
+            if (values is null || values.Length == 0)
             {
                 return;
             }
 
             string existing = GetHeader(headers, key);
-            if (existing == null)
+            if (existing is null)
             {
                 SetHeaderJoined(headers, key, values);
             }
@@ -51,13 +51,13 @@ namespace DotNetStarter.Owin
 
         public static void AppendHeaderUnmodified(IDictionary<string, string[]> headers, string key, params string[] values)
         {
-            if (values == null || values.Length == 0)
+            if (values is null || values.Length == 0)
             {
                 return;
             }
 
             string[] existing = GetHeaderUnmodified(headers, key);
-            if (existing == null)
+            if (existing is null)
             {
                 SetHeaderUnmodified(headers, key, values);
             }
@@ -70,18 +70,18 @@ namespace DotNetStarter.Owin
         public static string GetHeader(IDictionary<string, string[]> headers, string key)
         {
             string[] values = GetHeaderUnmodified(headers, key);
-            return values == null ? null : string.Join(",", values);
+            return values is null ? null : string.Join(",", values);
         }
 
         public static IEnumerable<string> GetHeaderSplit(IDictionary<string, string[]> headers, string key)
         {
             string[] values = GetHeaderUnmodified(headers, key);
-            return values == null ? null : GetHeaderSplitImplementation(values);
+            return values is null ? null : GetHeaderSplitImplementation(values);
         }
 
         public static string[] GetHeaderUnmodified(IDictionary<string, string[]> headers, string key)
         {
-            if (headers == null)
+            if (headers is null)
             {
                 throw new ArgumentNullException(nameof(headers));
             }
@@ -106,7 +106,7 @@ namespace DotNetStarter.Owin
 
         public static void SetHeader(IDictionary<string, string[]> headers, string key, string value)
         {
-            if (headers == null)
+            if (headers is null)
             {
                 throw new ArgumentNullException(nameof(headers));
             }
@@ -126,7 +126,7 @@ namespace DotNetStarter.Owin
 
         public static void SetHeaderJoined(IDictionary<string, string[]> headers, string key, params string[] values)
         {
-            if (headers == null)
+            if (headers is null)
             {
                 throw new ArgumentNullException(nameof(headers));
             }
@@ -134,7 +134,7 @@ namespace DotNetStarter.Owin
             {
                 throw new ArgumentNullException(nameof(key));
             }
-            if (values == null || values.Length == 0)
+            if (values is null || values.Length == 0)
             {
                 headers.Remove(key);
             }
@@ -146,7 +146,7 @@ namespace DotNetStarter.Owin
 
         public static void SetHeaderUnmodified(IDictionary<string, string[]> headers, string key, IEnumerable<string> values)
         {
-            if (headers == null)
+            if (headers is null)
             {
                 throw new ArgumentNullException(nameof(headers));
             }
@@ -155,7 +155,7 @@ namespace DotNetStarter.Owin
 
         public static void SetHeaderUnmodified(IDictionary<string, string[]> headers, string key, params string[] values)
         {
-            if (headers == null)
+            if (headers is null)
             {
                 throw new ArgumentNullException(nameof(headers));
             }
@@ -163,7 +163,7 @@ namespace DotNetStarter.Owin
             {
                 throw new ArgumentNullException(nameof(key));
             }
-            if (values == null || values.Length == 0)
+            if (values is null || values.Length == 0)
             {
                 headers.Remove(key);
             }

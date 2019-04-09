@@ -41,7 +41,7 @@ namespace DotNetStarter
             if (_ScannedAssemblies.Count == 0)
             {
                 // if not pre-filtered, we must filter them again :(
-                if (_StartupConfiguration.AssemblyFilter != null)
+                if (_StartupConfiguration.AssemblyFilter is object)
                 {
                     _ScannedAssemblies.AddRange(_StartupConfiguration.Assemblies.Where(a =>
                         _StartupConfiguration.AssemblyFilter.FilterAssembly(a) == false));
@@ -60,7 +60,7 @@ namespace DotNetStarter
                 _ScannedLookups[assembly] = isScanned;
             }
 
-            if (exception != null && isScanned == false)
+            if (exception is object && isScanned == false)
             {
                 LogException(serviceType, exception);
             }
@@ -75,7 +75,7 @@ namespace DotNetStarter
         /// <param name="e"></param>
         protected virtual void LogException(Type serviceType, Exception e)
         {
-            if (_StartupConfiguration.AssemblyFilter != null)
+            if (_StartupConfiguration.AssemblyFilter is object)
             {
                 _StartupConfiguration.Logger.LogException($"Unable to resolve {serviceType.FullName}!", e, typeof(ServiceProviderTypeChecker), LogLevel.Debug);
             }

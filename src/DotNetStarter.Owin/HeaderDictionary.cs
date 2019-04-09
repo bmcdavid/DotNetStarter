@@ -20,7 +20,7 @@ namespace DotNetStarter.Owin
         /// <param name="store">The underlying data store.</param>
         public HeaderDictionary(IDictionary<string, string[]> store)
         {
-            if (store == null)
+            if (store is null)
             {
                 throw new ArgumentNullException(nameof(store));
             }
@@ -172,7 +172,7 @@ namespace DotNetStarter.Owin
         public IList<string> GetCommaSeparatedValues(string key)
         {
             IEnumerable<string> values = MiddlewareHelpers.GetHeaderSplit(Store, key);
-            return values == null ? null : values.ToList();
+            return values is null ? null : values.ToList();
         }
 
         /// <summary>

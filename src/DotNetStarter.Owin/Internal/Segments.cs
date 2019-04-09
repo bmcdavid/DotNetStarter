@@ -78,7 +78,7 @@ namespace DotNetStarter.Owin.Internal
             return obj is HeaderSegmentCollection && Equals((HeaderSegmentCollection)obj);
         }
 
-        public override int GetHashCode() => (_headers != null ? _headers.GetHashCode() : 0);
+        public override int GetHashCode() => (_headers is object ? _headers.GetHashCode() : 0);
 
         public static bool operator ==(HeaderSegmentCollection left, HeaderSegmentCollection right) => left.Equals(right);
 
@@ -349,7 +349,7 @@ namespace DotNetStarter.Owin.Internal
 
         public string Value => _offset == -1 ? null : _buffer.Substring(_offset, _count);
 
-        public bool HasValue => _offset != -1 && _count != 0 && _buffer != null;
+        public bool HasValue => _offset != -1 && _count != 0 && _buffer is object;
 
         #region Equality members
 
@@ -369,7 +369,7 @@ namespace DotNetStarter.Owin.Internal
         {
             unchecked
             {
-                int hashCode = (_buffer != null ? _buffer.GetHashCode() : 0);
+                int hashCode = (_buffer is object ? _buffer.GetHashCode() : 0);
                 hashCode = (hashCode * 397) ^ _offset;
                 hashCode = (hashCode * 397) ^ _count;
                 return hashCode;
@@ -384,7 +384,7 @@ namespace DotNetStarter.Owin.Internal
 
         public bool StartsWith(string text, StringComparison comparisonType)
         {
-            if (text == null)
+            if (text is null)
             {
                 throw new ArgumentNullException(nameof(text));
             }
@@ -399,7 +399,7 @@ namespace DotNetStarter.Owin.Internal
 
         public bool EndsWith(string text, StringComparison comparisonType)
         {
-            if (text == null)
+            if (text is null)
             {
                 throw new ArgumentNullException(nameof(text));
             }
@@ -414,7 +414,7 @@ namespace DotNetStarter.Owin.Internal
 
         public bool Equals(string text, StringComparison comparisonType)
         {
-            if (text == null)
+            if (text is null)
             {
                 throw new ArgumentNullException(nameof(text));
             }

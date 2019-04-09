@@ -44,9 +44,9 @@ namespace DotNetStarter.Internal
         {
             var stack = GetStack() ?? new Stack<ILocatorScoped>();
             // clears on scope disposing
-            if (scopedLocator == null && stack.Count > 0) { stack.Pop(); }
+            if (scopedLocator is null && stack.Count > 0) { stack.Pop(); }
             // push newest scope to top
-            else if (scopedLocator != null) { stack.Push(scopedLocator); }
+            else if (scopedLocator is object) { stack.Push(scopedLocator); }
             SetStack(stack);
         }
 

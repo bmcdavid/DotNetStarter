@@ -29,7 +29,7 @@
         {
             get
             {
-                if (_lifecycle != null) return _lifecycle.Value;
+                if (_lifecycle is object) return _lifecycle.Value;
 
                 return _registrationAttribute.Lifecycle;
             }

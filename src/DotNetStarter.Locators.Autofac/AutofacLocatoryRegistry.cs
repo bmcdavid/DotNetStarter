@@ -83,7 +83,7 @@ namespace DotNetStarter.Locators
         {
             foreach (var module in _configure)
             {
-                if (module.ConfigureInstance != null)
+                if (module.ConfigureInstance is object)
                     yield return (ILocatorConfigure)module.ConfigureInstance;
                 else
                     yield return (ILocatorConfigure)Activator.CreateInstance(module.ConfigureType);

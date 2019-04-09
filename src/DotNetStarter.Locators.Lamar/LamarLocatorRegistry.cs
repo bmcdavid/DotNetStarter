@@ -96,7 +96,7 @@
         {
             foreach (var module in _serviceDescriptors.Where(x => x.ServiceType == typeof(ILocatorConfigure)).ToList())
             {
-                if (module.ImplementationInstance != null)
+                if (module.ImplementationInstance is object)
                     yield return (ILocatorConfigure)module.ImplementationInstance;
                 else
                     yield return (ILocatorConfigure)Activator.CreateInstance(module.ImplementationType);
