@@ -5,6 +5,11 @@ title: DotNetStarter - Breaking Changes
 
 This page is used to note each versions breaking changes and list future breaking changes.
 
+## 3.x - 4.x Proposed
+
+* Remove NET35, NET40, and less than NETSTANDARD2.0
+* Add IServiceProvider to ILocator interface.
+
 ## 2.x - 3.x
 * Changed ILocatorConfigure.Configure signature to take a new ILocatorConfigureEngine instead of IStartupEngine to prevent access to ILocator before configuration is complete
 * Removed IStartupEngine.OnLocatorStartupComplete

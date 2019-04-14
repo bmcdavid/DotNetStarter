@@ -22,7 +22,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\DotNetStarter.Abstractions\DotNetStarter.Abstractions.csproj" />
-    <PackageReference Include="structuremap" version="4.7.0" />
+    <PackageReference Include="structuremap" version="4.7.1" />
   </ItemGroup>
 
   <ItemGroup Condition="'$(TargetFramework)' == 'netstandard1.3'">
