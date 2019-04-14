@@ -84,7 +84,7 @@ namespace DotNetStarter
 
         private void Build()
         {
-            if (_dependencies != null) { return; }
+            if (_dependencies is object) { return; }
             _dependencies = new HashSet<object>();
             var attributes = Node.CustomAttribute(_attributeType, false).OfType<StartupDependencyBaseAttribute>();
 

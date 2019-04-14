@@ -8,7 +8,7 @@ namespace DotNetStarter.Locators
     /// <summary>
     /// Stashbox Scoped Locator
     /// </summary>
-    public class StashboxScopedLocator : ILocatorScoped, ILocatorWithCreateScope
+    public class StashboxScopedLocator : ILocatorScoped, ILocatorWithCreateScope, IServiceProvider
     {
         private IDependencyResolver _dependencyResolver;
         private Action _disposeAction;
@@ -75,6 +75,13 @@ namespace DotNetStarter.Locators
         /// <param name="key"></param>
         /// <returns></returns>
         public IEnumerable<object> GetAll(Type serviceType, string key = null) => _dependencyResolver.ResolveAll(serviceType);
+
+        /// <summary>
+        /// IServiceProvider.GetService
+        /// </summary>
+        /// <param name="serviceType"></param>
+        /// <returns></returns>
+        public object GetService(Type serviceType) => _dependencyResolver.Resolve(serviceType);
 
         /// <summary>
         /// Dispose action

@@ -12,7 +12,7 @@
     <Copyright>Copyright $(CurrentYear)</Copyright>
     <Description>Enables support for DI/IOC in startup.</Description>
     <!--follow semantic versioning may include prelease information too-->
-    <PackageVersion>3.0.0</PackageVersion>
+    <PackageVersion>3.1.0</PackageVersion>
     <PackageTags>Startup Modules DI IOC</PackageTags>
     <!--do not change unless you want to deal with assembly redirects-->
     <AssemblyVersion>3.0.0</AssemblyVersion>
@@ -21,8 +21,12 @@
 
   <Import Project="..\..\targets\CommonNuGetPackage.props" />
 
+  <ItemGroup Condition="'$(TargetFramework)' == 'netstandard1.0'">
+    <PackageReference Include="System.ComponentModel" Version="4.3.0" />
+  </ItemGroup>
+
   <ItemGroup>
-    <PackageReference Include="Grace" Version="6.4.0" />
+    <PackageReference Include="Grace" Version="6.4.2" />
     <ProjectReference Include="..\DotNetStarter.Abstractions\DotNetStarter.Abstractions.csproj" />
   </ItemGroup>
 

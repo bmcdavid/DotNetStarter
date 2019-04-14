@@ -18,7 +18,7 @@ namespace DotNetStarter.Configure
         public IAssemblyFilter CreateAssemblyFilter()
         {
             // assume if we are given assemblies and no filter, we do not need to filter
-            if (OverrideExpression.AssemblyFilter == null && AssemblyExpression?.Assemblies.Count > 0) return null;
+            if (OverrideExpression.AssemblyFilter is null && AssemblyExpression?.Assemblies.Count > 0) return null;
 
             return OverrideExpression.AssemblyFilter ?? new AssemblyFilter();
         }

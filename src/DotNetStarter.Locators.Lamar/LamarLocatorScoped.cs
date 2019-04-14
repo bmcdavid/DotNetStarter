@@ -8,11 +8,11 @@ namespace DotNetStarter.Locators
     /// <summary>
     /// Scoped Lamar locator
     /// </summary>
-    public sealed class LamarLocatorScoped : ILocatorScoped, ILocatorWithCreateScope
+    public sealed class LamarLocatorScoped : ILocatorScoped, ILocatorWithCreateScope, IServiceProvider
     {
         private readonly IServiceScope _scope;
         private Action _onDispose;
-        private ILocatorScoped _parent;
+        private readonly ILocatorScoped _parent;
 
         /// <summary>
         /// Constructor
@@ -26,6 +26,13 @@ namespace DotNetStarter.Locators
         }
 
         ILocatorScoped ILocatorScoped.Parent => _parent;
+
+        /// <summary>
+        /// IServiceProvider.GetService
+        /// </summary>
+        /// <param name="serviceType"></param>
+        /// <returns></returns>
+        public object GetService(Type serviceType) => _scope.ServiceProvider.GetService(serviceType);
 
         ILocatorScoped ILocatorWithCreateScope.CreateScope() => new LamarLocatorScoped(_scope.ServiceProvider.CreateScope(), this);
 

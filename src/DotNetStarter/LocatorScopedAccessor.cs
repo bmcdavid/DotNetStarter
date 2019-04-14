@@ -16,7 +16,7 @@ namespace DotNetStarter
 
         void ILocatorScopedWithSet.SetCurrentScopedLocator(ILocatorScoped locatorScoped)
         {
-            if (CurrentScope == null)
+            if (CurrentScope is null)
             {
                 CurrentScope = locatorScoped;
             }

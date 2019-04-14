@@ -8,7 +8,7 @@ namespace DotNetStarter.Locators
     /// <summary>
     /// Scoped Grace Locator
     /// </summary>
-    public class GraceScopedLocator : ILocatorScoped, ILocatorWithCreateScope
+    public class GraceScopedLocator : ILocatorScoped, ILocatorWithCreateScope, IServiceProvider
     {
         private readonly IExportLocatorScope _exportLocatorScope;
         private Action _onDispose;
@@ -74,6 +74,13 @@ namespace DotNetStarter.Locators
         /// <param name="key"></param>
         /// <returns></returns>
         public IEnumerable<object> GetAll(Type serviceType, string key = null) => _exportLocatorScope.LocateAll(serviceType);
+
+        /// <summary>
+        /// IServiceProvider.GetService
+        /// </summary>
+        /// <param name="serviceType"></param>
+        /// <returns></returns>
+        public object GetService(Type serviceType) => _exportLocatorScope.Locate(serviceType);
 
         /// <summary>
         /// Action to perform on disposing

@@ -1,1 +1,2 @@
-﻿Updated for interface changes.
+﻿Added IServiceProvider implementation.
+Added SourceLink.

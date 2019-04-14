@@ -9,7 +9,7 @@
     /// <summary>
     /// Base locator for Lamar
     /// </summary>
-    public class LamarLocator : ILocator, ILocatorWithCreateScope, ILocatorWithDebugInfo
+    public class LamarLocator : ILocator, ILocatorWithCreateScope, ILocatorWithDebugInfo, IServiceProvider
     {
         /// <summary>
         /// Lamar container
@@ -67,6 +67,20 @@
         /// Creates/opens locator scope
         /// </summary>
         /// <returns></returns>
-        public virtual ILocatorScoped CreateScope() => new LamarLocatorScoped(_container.CreateScope(), this);
+        public virtual ILocatorScoped CreateScope()
+        {
+            // have to cast otherwise extension is used creating an infinite loop
+            var containerScope = 
+                (_container as Microsoft.Extensions.DependencyInjection.IServiceScopeFactory).CreateScope();
+
+            return new LamarLocatorScoped(containerScope, this);
+        }
+
+        /// <summary>
+        /// IServiceProvider.GetService
+        /// </summary>
+        /// <param name="serviceType"></param>
+        /// <returns></returns>
+        public virtual object GetService(Type serviceType) => _container.GetInstance(serviceType);
     }
 }

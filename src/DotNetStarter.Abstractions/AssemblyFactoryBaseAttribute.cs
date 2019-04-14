@@ -22,7 +22,7 @@
         {
             FactoryType = factoryType;
 
-            if (implRestriction != null)
+            if (implRestriction is object)
             {
                 if (!ImplementationTypeIsAssignableFromFactory(implRestriction, FactoryType))
                     throw new ArgumentException($"{FactoryType.FullName} does not implement {implRestriction.FullName}!");
@@ -88,7 +88,7 @@
 
         private static void ThrowIfNull(object value, string property)
         {
-            if (value == null)
+            if (value is null)
                 throw new NullReferenceException(property + $" func cannot be null in {typeof(StartupAssemblyDependencyBaseAttribute).FullName}!");
         }
     }

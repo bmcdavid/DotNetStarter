@@ -11,7 +11,7 @@
     <Copyright>Copyright $(CurrentYear)</Copyright>
     <Description>DotNetStarter WebApi extensions.</Description>
     <!--follow semantic versioning may include prelease information too-->
-    <PackageVersion>3.0.0</PackageVersion>
+    <PackageVersion>3.1.0</PackageVersion>
     <PackageTags>Startup Modules WebApi</PackageTags>
     <!--do not change unless you want to deal with assembly redirects-->
     <AssemblyVersion>3.0.0</AssemblyVersion>
@@ -25,8 +25,8 @@
     <PackageReference Include="Microsoft.AspNet.WebApi" Version="5.0.0" />
     <ProjectReference Include="..\DotNetStarter.RegistrationAbstractions\DotNetStarter.RegistrationAbstractions.csproj" />
     <ProjectReference Include="..\DotNetStarter.Abstractions\DotNetStarter.Abstractions.csproj" />
-    <ProjectReference Include="..\DotNetStarter\DotNetStarter.csproj" />
     <ProjectReference Include="..\DotNetStarter.Web\DotNetStarter.Web.csproj" />
+    <ProjectReference Include="..\DotNetStarter\DotNetStarter.csproj" />
   </ItemGroup>
 
 </Project>

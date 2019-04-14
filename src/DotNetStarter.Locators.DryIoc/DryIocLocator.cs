@@ -9,7 +9,7 @@
     /// <summary>
     /// DryIoc locator
     /// </summary>
-    public class DryIocLocator : ILocator, ILocatorWithCreateScope, ILocatorWithPropertyInjection, ILocatorWithDebugInfo
+    public class DryIocLocator : ILocator, ILocatorWithCreateScope, ILocatorWithPropertyInjection, ILocatorWithDebugInfo, IServiceProvider
     {
         /// <summary>
         /// Raw container reference
@@ -32,7 +32,7 @@
         /// </summary>
         /// <param name="target"></param>
         /// <returns></returns>
-        public virtual bool BuildUp(object target) => _container.InjectPropertiesAndFields(target) != null;
+        public virtual bool BuildUp(object target) => _container.InjectPropertiesAndFields(target) is object;
 
         /// <summary>
         /// Creates/opens locator scope
@@ -76,5 +76,12 @@
         /// <param name="key"></param>
         /// <returns></returns>
         public virtual IEnumerable<TService> GetAll<TService>(string key = null) => _container.ResolveMany<TService>(serviceKey: key);
+
+        /// <summary>
+        /// IServiceProvider.GetService
+        /// </summary>
+        /// <param name="serviceType"></param>
+        /// <returns></returns>
+        public virtual object GetService(Type serviceType) => _container.Resolve(serviceType);
     }
 }

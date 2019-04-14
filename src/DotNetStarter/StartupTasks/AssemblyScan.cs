@@ -38,7 +38,7 @@ namespace DotNetStarter.StartupTasks
                 var discoverTypes = discoverTypeAttrs.SelectMany(x => x.DiscoverTypes);
                 Func<System.Reflection.Assembly, bool> assemblyFilter = null; // a custom config may set this to null
 
-                if (taskContext.Configuration.AssemblyFilter != null)
+                if (taskContext.Configuration.AssemblyFilter is object)
                 {
                     assemblyFilter = taskContext.Configuration.AssemblyFilter.FilterAssembly;
                 }

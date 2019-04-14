@@ -17,13 +17,18 @@
         public ImportAccessor<TService> Accessor { get; set; }
 
         /// <summary>
+        /// Allows ambient imports to be disabled
+        /// </summary>
+        public static bool DisableAmbientLocator { get; set; }
+
+        /// <summary>
         /// Access to a single service
         /// </summary>
         public TService Service
         {
             get
             {
-                if (Accessor != null) { return Accessor.Service; }
+                if (Accessor is object) { return Accessor.Service; }
 
                 return ResolveLocator().Get<TService>();
             }
@@ -36,12 +41,14 @@
         {
             get
             {
-                if (Accessor != null) { return Accessor.AllServices; }
+                if (Accessor is object) { return Accessor.AllServices; }
 
                 return ResolveLocator().GetAll<TService>();
             }
         }
 
-        private ILocator ResolveLocator() => ImportHelper.Locator.Get<ILocatorAmbient>().Current;
+        private ILocator ResolveLocator() => (!DisableAmbientLocator) ?
+            ImportHelper.Locator.Get<ILocatorAmbient>().Current :
+            ImportHelper.Locator;
     }
 }

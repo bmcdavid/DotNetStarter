@@ -8,7 +8,7 @@
     /// <summary>
     /// Scoped DryIoc locator
     /// </summary>
-    public sealed class DryIocLocatorScoped : ILocatorScoped, ILocatorWithCreateScope
+    public sealed class DryIocLocatorScoped : ILocatorScoped, ILocatorWithCreateScope, IServiceProvider
     {
         private readonly IResolverContext _resolveContext;
         private Action _onDispose;
@@ -75,6 +75,13 @@
         /// <param name="key"></param>
         /// <returns></returns>
         public IEnumerable<object> GetAll(Type serviceType, string key = null) => _resolveContext.ResolveMany(serviceType);
+
+        /// <summary>
+        /// IServiceProvider.GetService
+        /// </summary>
+        /// <param name="serviceType"></param>
+        /// <returns></returns>
+        public object GetService(Type serviceType) => _resolveContext.Resolve(serviceType);
 
         /// <summary>
         /// Action to perform on disposing

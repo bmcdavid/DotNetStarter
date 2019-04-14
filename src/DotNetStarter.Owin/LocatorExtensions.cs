@@ -54,7 +54,7 @@
             object o = null;
             items?.TryGetValue(key, out o);
 
-            return o == null ? fallback : (T)o;
+            return o is null ? fallback : (T)o;
         }
 
         /// <summary>
@@ -66,7 +66,7 @@
         /// <returns></returns>
         public static IDictionary<string, object> Set(this IDictionary<string, object> items, string key, object value)
         {
-            if (items == null || key == null)
+            if (items is null || key is null)
                 throw new ArgumentNullException($"{nameof(items)} or {nameof(key)} cannot be null!");
 
             items[key] = value;
@@ -84,7 +84,7 @@
         {
             var reflectionHelper = rootLocator.Get<IReflectionHelper>();
             var httpContext = environment.Get<IServiceProvider>("System.Web.HttpContextBase", null);
-            var httpContextItemProperty = httpContext == null ? null :
+            var httpContextItemProperty = httpContext is null ? null :
                     reflectionHelper.GetProperties(httpContext.GetType()).FirstOrDefault(x => string.CompareOrdinal(x.Name, "Items") == 0);
 
             if (httpContextItemProperty?.GetValue(httpContext) is IDictionary contextItemDict)
@@ -108,7 +108,7 @@
             app.Use(new Func<AppFunc, AppFunc>(next => (async context =>
             {
                 var scoped = TryGetHttpScopedLocator(context, locator) as ILocatorScoped;
-                var hasScopedLocator = scoped != null;
+                var hasScopedLocator = scoped is object;
                 scoped = scoped ?? locator.Get<ILocatorScopedFactory>().CreateScope(); // create via factory
 
                 var contextAccessor = scoped.Get<IContextAccessor>();
@@ -145,12 +145,12 @@
             {
                 var scopedProvider = context.GetScopedServiceProvider();
 
-                if (scopedProvider == null)
+                if (scopedProvider is null)
                     throw new NullReferenceException($"Cannot get {typeof(IServiceProvider).FullName} from current context for key {ScopedProviderKeyInContext}!");
 
                 var middleware = scopedProvider.GetService(typeof(Func<AppFunc, TServiceMiddleware>)) as Func<AppFunc, TServiceMiddleware>;
 
-                if (middleware == null)
+                if (middleware is null)
                     return Next.Invoke(context);
 
                 return middleware(Next).Invoke(context);

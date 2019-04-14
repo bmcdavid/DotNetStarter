@@ -95,7 +95,7 @@
         /// </summary>
         public void Dispose()
         {
-            if (_scopeAccessor?.CurrentScope != null)
+            if (_scopeAccessor?.CurrentScope is object)
             {
                 _scopeAccessor?.CurrentScope.Dispose();
             }
@@ -115,7 +115,7 @@
         {
             var service = Locator.Get(serviceType);
 
-            if (service == null)
+            if (service is null)
             {
                 throw new NullReferenceException($"{serviceType.FullName} cannot be null and couldn't be resolved!");
             }

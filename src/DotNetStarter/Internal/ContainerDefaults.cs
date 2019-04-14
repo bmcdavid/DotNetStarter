@@ -90,11 +90,11 @@
             {
                 foreach (var module in StartupModuleCollection)
                 {
-                    if (module.ModuleInstance != null)
+                    if (module.ModuleInstance is object)
                     {
                         registry.Add(StartupModuleType, module.ModuleInstance);
                     }
-                    else if (module.ModuleType != null)
+                    else if (module.ModuleType is object)
                     {
                         registry.Add(StartupModuleType, module.ModuleType, null, Lifecycle.Singleton);
                     }

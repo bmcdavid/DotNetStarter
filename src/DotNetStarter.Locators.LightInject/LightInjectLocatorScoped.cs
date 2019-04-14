@@ -8,7 +8,7 @@ namespace DotNetStarter.Locators
     /// <summary>
     /// LightInject ILocatorScoped
     /// </summary>
-    public sealed class LightInjectLocatorScoped : ILocatorScoped, ILocatorWithCreateScope
+    public sealed class LightInjectLocatorScoped : ILocatorScoped, ILocatorWithCreateScope, IServiceProvider
     {
         private Action _disposeAction;
 
@@ -44,7 +44,7 @@ namespace DotNetStarter.Locators
             {
                 _disposeAction?.Invoke();
                 _Scope.Dispose();
-                _Scope.IsDisposed = true;
+                // _Scope.IsDisposed = true;
             }
         }
 
@@ -109,5 +109,12 @@ namespace DotNetStarter.Locators
         {
             _disposeAction += disposeAction;
         }
+
+        /// <summary>
+        /// IServiceProvider.GetService
+        /// </summary>
+        /// <param name="serviceType"></param>
+        /// <returns></returns>
+        public object GetService(Type serviceType) => _Scope.GetInstance(serviceType);
     }
 }

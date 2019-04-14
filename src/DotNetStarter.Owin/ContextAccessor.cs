@@ -22,12 +22,12 @@ namespace DotNetStarter.Owin
 
         void IContextSetter.SetContexts(IMiddlewareContext middleware, IDictionary<string, object> dictionary)
         {
-            if (CurrentMiddlewareContext == null)
+            if (CurrentMiddlewareContext is null)
             {
                 CurrentMiddlewareContext = middleware;
             }
 
-            if (CurrentDictionaryContext == null)
+            if (CurrentDictionaryContext is null)
             {
                 CurrentDictionaryContext = dictionary;
             }

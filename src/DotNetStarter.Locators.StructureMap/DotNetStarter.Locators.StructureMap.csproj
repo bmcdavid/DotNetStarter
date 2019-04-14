@@ -11,7 +11,7 @@
     <Copyright>Copyright $(CurrentYear)</Copyright>
     <Description>Enables support for DI/IOC in startup.</Description>
     <!--follow semantic versioning may include prelease information too-->
-    <PackageVersion>3.0.0</PackageVersion>
+    <PackageVersion>3.1.0</PackageVersion>
     <PackageTags>Startup Modules DI IOC</PackageTags>
     <!--do not change unless you want to deal with assembly redirects-->
     <AssemblyVersion>3.0.0</AssemblyVersion>
@@ -22,6 +22,11 @@
 
   <ItemGroup>
     <ProjectReference Include="..\DotNetStarter.Abstractions\DotNetStarter.Abstractions.csproj" />
-    <PackageReference Include="structuremap" version="4.7.0" />
-  </ItemGroup>  
+    <PackageReference Include="structuremap" version="4.7.1" />
+  </ItemGroup>
+
+  <ItemGroup Condition="'$(TargetFramework)' == 'netstandard1.3'">
+    <PackageReference Include="System.ComponentModel" Version="4.3.0" />
+  </ItemGroup>
+
 </Project>

@@ -8,7 +8,7 @@ namespace DotNetStarter.Locators
     /// <summary>
     /// Scoped Autofac Locator
     /// </summary>
-    public class AutofacScopedLocator : ILocatorScoped, ILocatorWithCreateScope
+    public class AutofacScopedLocator : ILocatorScoped, ILocatorWithCreateScope, IServiceProvider
     {
         private ILifetimeScope _lifetimeScope;
         private Action _action;
@@ -75,6 +75,13 @@ namespace DotNetStarter.Locators
         /// <param name="key"></param>
         /// <returns></returns>
         public IEnumerable<object> GetAll(Type serviceType, string key = null) => _lifetimeScope.Resolve(typeof(IEnumerable<>).MakeGenericType(serviceType)) as IEnumerable<object>;
+
+        /// <summary>
+        /// IServiceProvider.GetService
+        /// </summary>
+        /// <param name="serviceType"></param>
+        /// <returns></returns>
+        public virtual object GetService(Type serviceType) => _lifetimeScope.Resolve(serviceType);
 
         void ILocatorScoped.OnDispose(Action disposeAction) => _action += disposeAction;
     }

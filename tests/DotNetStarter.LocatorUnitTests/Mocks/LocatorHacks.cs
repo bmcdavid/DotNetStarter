@@ -1,4 +1,5 @@
 using DotNetStarter.Abstractions;
+using DotNetStarter.UnitTests.Mocks;
 
 #if LAMAR_LOCATOR || NETSTANDARD
 using Microsoft.Extensions.DependencyInjection;

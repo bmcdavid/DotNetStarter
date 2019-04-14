@@ -60,7 +60,7 @@ namespace DotNetStarter
                 task.Execute(config.TimedTaskManager);
             }
 
-            if (startupTaskWithStartModules == null)
+            if (startupTaskWithStartModules is null)
             {
                 throw new Exception("No IStartupTaskWithStartupModules was used in startup tasks!");
             }
@@ -81,7 +81,7 @@ namespace DotNetStarter
         /// </summary>
         public bool TryExecuteStartupModules()
         {
-            if (_delayedStart == null) { return false; }
+            if (_delayedStart is null) { return false; }
             _delayedStart.Invoke();
             _delayedStart = null;
             return true;

@@ -15,7 +15,7 @@ namespace DotNetStarter.UnitTests
         [TestMethod]
         public void ShouldCallInitCompleteEvent()
         {
-            Assert.IsTrue(StartupModuleTest._InitCompleteCalled);
+            Assert.IsTrue(StartupModuleCompleteTest._InitCompleteCalled);
         }
 
         [TestMethod]
@@ -23,10 +23,10 @@ namespace DotNetStarter.UnitTests
         {
             var sut = new StringLogger(LogLevel.Debug, 10);
             var e = new Exception("Testing");
-            sut.LogException("Testing Clear", e, typeof(StartupModuleTest), LogLevel.Error);
+            sut.LogException("Testing Clear", e, typeof(StartupModuleCompleteTest), LogLevel.Error);
             Assert.IsFalse(string.IsNullOrEmpty(sut.ToString()));
 
-            sut.LogException("New log", e, typeof(StartupModuleTest), LogLevel.Error);
+            sut.LogException("New log", e, typeof(StartupModuleCompleteTest), LogLevel.Error);
             Assert.IsFalse(sut.ToString().Contains("Testing Clear"));
             Assert.IsTrue(sut.ToString().Contains("New log"));
         }
@@ -44,7 +44,7 @@ namespace DotNetStarter.UnitTests
         {
             IEnumerable<Assembly> assemblies = new List<Assembly>
             {
-                Abstractions.Internal.TypeExtensions.Assembly(typeof(StartupModuleTests))
+                Abstractions.Internal.TypeExtensions.Assembly(typeof(DotNetStarter.ApplicationContext))
             };
 
             var filter = DotNetStarter.Configure.Expressions.AssemblyExpression.GetScannableAssemblies(assemblies: assemblies);
@@ -57,11 +57,11 @@ namespace DotNetStarter.UnitTests
         {
             var sut = new StringLogger(LogLevel.Error, 10000);
             var e = new Exception("Testing");
-            sut.LogException("Test", e, typeof(StartupModuleTest), LogLevel.Error);
+            sut.LogException("Test", e, typeof(StartupModuleCompleteTest), LogLevel.Error);
             Assert.IsFalse(string.IsNullOrEmpty(sut.ToString()));
 
             sut = new StringLogger(LogLevel.Error, 10000);
-            sut.LogException("Test", e, typeof(StartupModuleTest), LogLevel.Fatal);
+            sut.LogException("Test", e, typeof(StartupModuleCompleteTest), LogLevel.Fatal);
             Assert.IsFalse(string.IsNullOrEmpty(sut.ToString()));
         }
 
@@ -70,7 +70,7 @@ namespace DotNetStarter.UnitTests
         {
             var sut = new StringLogger(LogLevel.Fatal, 10000);
             var e = new Exception("Testing");
-            sut.LogException("Test", e, typeof(StartupModuleTest), LogLevel.Error);
+            sut.LogException("Test", e, typeof(StartupModuleCompleteTest), LogLevel.Error);
             Assert.IsTrue(string.IsNullOrEmpty(sut.ToString()));
         }
 
@@ -106,15 +106,16 @@ namespace DotNetStarter.UnitTests
         public void ShouldShutdown()
         {
             var shutdown = ApplicationContext.Default.Locator.Get<IShutdownHandler>();
+            if (shutdown is Internal.ShutdownHandler sh) { sh.DisposeLocator = false; } // we don't really want to dispose container in unit test
             shutdown.Shutdown();
 
-            Assert.IsTrue(StartupModuleTest.ShutdownCalled);
+            Assert.IsTrue(StartupModuleCompleteTest.ShutdownCalled);
         }
 
         [TestMethod]
         public void ShouldStartup()
         {
-            Assert.IsTrue(StartupModuleTest.InitCalled);
+            Assert.IsTrue(StartupModuleCompleteTest.InitCalled);
         }
 
         [ExpectedException(typeof(ArgumentException))]
@@ -129,19 +130,6 @@ namespace DotNetStarter.UnitTests
         public void ShouldThrowNullLocatorExceptionInDefaultHandler()
         {
             new StartupHandler(() => new TimedTask(), null, null, null).ConfigureLocator(ApplicationContext.Default.Configuration);
-        }
-
-        internal class MockFactory : ILocatorRegistryFactory
-        {
-            public ILocator CreateLocator()
-            {
-                throw new NotImplementedException();
-            }
-
-            public ILocatorRegistry CreateRegistry()
-            {
-                throw new NotImplementedException();
-            }
         }
     }
 }

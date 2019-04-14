@@ -67,12 +67,12 @@
         /// <returns></returns>
         public bool ContainsService(Type serviceType, string key = null)
         {
-            if (key == null)
+            if (key is null)
             {
-                return _container.TryGetInstance(serviceType) != null;
+                return _container.TryGetInstance(serviceType) is object;
             }
 
-            return _container.TryGetInstance(serviceType, key) != null;
+            return _container.TryGetInstance(serviceType, key) is object;
         }
 
         /// <summary>
@@ -83,7 +83,7 @@
         /// <param name="serviceImplementation"></param>
         public void Remove(Type serviceType, string key = null, Type serviceImplementation = null)
         {
-            if (serviceImplementation == null)
+            if (serviceImplementation is null)
             {
                 _container.Model.EjectAndRemove(serviceType);
             }

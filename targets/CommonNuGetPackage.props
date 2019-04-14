@@ -9,9 +9,19 @@
     <IncludeSymbols>true</IncludeSymbols>
     <IncludeSource>true</IncludeSource>
 
+    <!-- source link -->
+    <AllowedOutputExtensionsInPackageBuildOutputFolder>$(AllowedOutputExtensionsInPackageBuildOutputFolder);.pdb</AllowedOutputExtensionsInPackageBuildOutputFolder>
+    <RepositoryUrl>https://github.com/bmcdavid/DotNetStarter</RepositoryUrl>
+    <RepositoryType>GitHub</RepositoryType>
+    <PublishRepositoryUrl>true</PublishRepositoryUrl>
+    <EmbedUntrackedSources>true</EmbedUntrackedSources>
+
     <!--set assembly info version from CI prop if possible-->
     <BuildInfo Condition="'$(CIBuildNumber)' != ''"> Commit: $(RepositoryCommit) Branch: $(RepositoryBranch) Build: $(CIBuildNumber)</BuildInfo>
     <InformationalVersion>$(PackageVersion)$(BuildInfo)</InformationalVersion>
-
   </PropertyGroup>
+  
+  <ItemGroup>
+    <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.0.0-beta-63127-02" PrivateAssets="All"/>
+  </ItemGroup>
 </Project>

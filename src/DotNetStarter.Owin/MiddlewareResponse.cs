@@ -186,7 +186,7 @@ namespace DotNetStarter.Owin
         {
             var onSendingHeaders = Get<Action<Action<object>, object>>(MiddlewareOwinConstants.CommonKeys.OnSendingHeaders);
 
-            if (onSendingHeaders == null)
+            if (onSendingHeaders is null)
             {
                 throw new NotSupportedException();
             }
@@ -220,7 +220,7 @@ namespace DotNetStarter.Owin
         /// <param name="data">The response data.</param>
         public virtual void Write(byte[] data)
         {
-            Write(data, 0, data == null ? 0 : data.Length);
+            Write(data, 0, data is null ? 0 : data.Length);
         }
 
         /// <summary>
@@ -262,7 +262,7 @@ namespace DotNetStarter.Owin
         /// <param name="data">The response data.</param>
         /// <param name="token">A token used to indicate cancellation.</param>
         /// <returns>A Task tracking the state of the write operation.</returns>
-        public virtual Task WriteAsync(byte[] data, CancellationToken token) => WriteAsync(data, 0, data == null ? 0 : data.Length, token);
+        public virtual Task WriteAsync(byte[] data, CancellationToken token) => WriteAsync(data, 0, data is null ? 0 : data.Length, token);
 
         /// <summary>
         /// Asynchronously writes the given bytes to the response body stream.

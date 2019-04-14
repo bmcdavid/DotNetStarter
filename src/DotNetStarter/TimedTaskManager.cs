@@ -33,7 +33,7 @@
         /// <param name="task"></param>
         public virtual void Execute(ITimedTask task)
         {
-            if (task == null) return;
+            if (task is null) return;
 
             // if requiring debug, and not in debug mode, execute with no tracking
             if (task.RequireDebugMode && RequestSettingsProvider?.IsDebugMode != true)
@@ -74,10 +74,10 @@
         {
             ITimedTask t = _ApplicationTasks.FirstOrDefault(x => Internal.CrossPlatformHelpers.StringCompareIgnoreCase(x.Name, name));
 
-            if (t != null)
+            if (t is object)
                 return t;
 
-            if (RequestSettingsProvider == null || !ProviderHasItems(RequestSettingsProvider))
+            if (RequestSettingsProvider is null || !ProviderHasItems(RequestSettingsProvider))
                 return null;
 
             return RequestSettingsProvider.Items[name] as TimedTask;
@@ -90,7 +90,7 @@
         /// <returns></returns>
         public virtual IEnumerable<ITimedTask> GetAll(string prefix)
         {
-            if (_ApplicationTasks == null)
+            if (_ApplicationTasks is null)
                 yield break;
 
             // Get all in application
@@ -101,14 +101,13 @@
             }
 
             //Get all in request
-            if (RequestSettingsProvider == null || !ProviderHasItems(RequestSettingsProvider))
+            if (RequestSettingsProvider is null || !ProviderHasItems(RequestSettingsProvider))
                 yield break;
 
             foreach (object key in RequestSettingsProvider.Items.Keys)
             {
-                string name = key as string;
-
-                if (name == null) continue;
+                var name = key as string;
+                if (name is null) { continue; }
 
                 var task = RequestSettingsProvider.Items[name] as TimedTask;
 
@@ -126,7 +125,7 @@
         {
             try
             {
-                return provider?.Items != null;
+                return provider?.Items is object;
             }
             catch (NotImplementedException)
             {

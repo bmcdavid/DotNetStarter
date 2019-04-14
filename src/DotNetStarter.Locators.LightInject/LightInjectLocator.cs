@@ -10,7 +10,7 @@ namespace DotNetStarter.Locators
     /// <summary>
     /// Default LightInject ILocatoryRegistry
     /// </summary>
-    public class LightInjectLocator : ILocator, ILocatorWithCreateScope
+    public class LightInjectLocator : ILocator, ILocatorWithCreateScope, IServiceProvider
     {
         private IServiceContainer _container;
         private ContainerRegistrationCollection _registrations;
@@ -98,12 +98,20 @@ namespace DotNetStarter.Locators
             return list;
         }
 
+        /// <summary>
+        /// IServiceProvider.GetService
+        /// </summary>
+        /// <param name="serviceType"></param>
+        /// <returns></returns>
+        public object GetService(Type serviceType) => _container.GetInstance(serviceType);
+
         // hack: GetAllInstances Requires additional sorting as LightInject returns from ConcurrentDictionary
         // required for LightInject, which causes many other considerations as constructor injection isn't supported by this, affects DotNetStarter.Web injection
         /* IEnumerable will need another sorting mechanism for most things
          * I will need to work around it in IStartupModule cases like in DotNetStarter.Web
          * this also won't support delegate rolutions
          */
+
         private void SortList<T>(ref IEnumerable<T> list, Type service)
         {
             if (_registrations.TryGetValue(service, out List<ContainerRegistration> sourceList))

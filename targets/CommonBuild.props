@@ -1,5 +1,7 @@
 <Project>
   <PropertyGroup>
+    <DisableImplicitNuGetFallbackFolder>true</DisableImplicitNuGetFallbackFolder>
+
     <!--get info for appveyor builds-->
     <CIBuildNumber Condition="'$(APPVEYOR)' == 'True'">$(APPVEYOR_BUILD_NUMBER)</CIBuildNumber>
     <RepositoryBranch Condition="'$(APPVEYOR)' == 'True'">$(APPVEYOR_REPO_BRANCH)</RepositoryBranch>
