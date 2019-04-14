@@ -2,7 +2,10 @@
   <!-- Must be imported after ProjectVersion property and CommonBuild -->
   <PropertyGroup>
     <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
-    <PackageLicenseUrl>https://github.com/bmcdavid/DotNetStarter/blob/master/license.txt</PackageLicenseUrl>
+    <!--<PackageLicenseUrl>https://github.com/bmcdavid/DotNetStarter/blob/master/license.txt</PackageLicenseUrl>-->
+    <!--<Copyright>2016-$(CurrentYear) Brad McDavid</Copyright>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>-->
+    <PackageLicenseFile>license.txt</PackageLicenseFile>
     <PackageProjectUrl>https://bmcdavid.github.io/DotNetStarter/</PackageProjectUrl>
     <IncludeReadMeMarkdown>true</IncludeReadMeMarkdown>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
@@ -22,6 +25,7 @@
   </PropertyGroup>
   
   <ItemGroup>
+    <None Include="..\..\license.txt" Pack="true" PackagePath=""/>
     <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.0.0-beta-63127-02" PrivateAssets="All"/>
   </ItemGroup>
 </Project>
