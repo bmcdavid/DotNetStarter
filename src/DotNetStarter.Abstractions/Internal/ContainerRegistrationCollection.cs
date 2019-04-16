@@ -51,11 +51,7 @@ namespace DotNetStarter.Abstractions.Internal
         /// <returns></returns>
         public string DebugInformation()
         {
-#if NET35
-            return string.Join(",", this.Select(x => x.Key.FullName).ToArray());
-#else
             return string.Join(",", this.Select(x => x.Key.FullName));
-#endif
         }
     }
 }

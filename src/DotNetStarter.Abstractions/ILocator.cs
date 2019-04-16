@@ -9,7 +9,7 @@
     /// If a new transient is needed in an implementation, inject a Func&lt;T> where T is a registered transient service.</para>
     /// </summary>
     [CriticalComponent]
-    public interface ILocator : IDisposable
+    public interface ILocator : IServiceProvider, IDisposable
     {
         /// <summary>
         /// Gets item from container

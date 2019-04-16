@@ -15,7 +15,6 @@ namespace DotNetStarter.Internal
         private static readonly object _lockObj = new object();
 
 #if NETFULLFRAMEWORK
-
         /// <summary>
         /// Gets assembly dll folder
         /// </summary>
@@ -43,22 +42,7 @@ namespace DotNetStarter.Internal
 
 #endif
 
-#if NET35
-
-        /// <summary>
-        /// Gets assembly files
-        /// </summary>
-        /// <returns></returns>
-        protected virtual IEnumerable<string> GetAssemblyFiles()
-        {
-            var assemblyPath = GetAssemblyDir();
-            IEnumerable<string> files = System.IO.Directory.GetFiles(assemblyPath, "*.dll")
-                                                 .Concat(System.IO.Directory.GetFiles(assemblyPath, "*.exe"));
-
-            return files;
-        }
-
-#elif NETFULLFRAMEWORK
+#if NETFULLFRAMEWORK
         /// <summary>
         /// Gets assembly files
         /// </summary>
@@ -73,16 +57,7 @@ namespace DotNetStarter.Internal
         }
 #endif
 
-#if NETSTANDARD1_0
-        /// <summary>
-        /// Assembly loader not implemented for netstandard 1.0
-        /// </summary>
-        /// <returns></returns>
-        public virtual IEnumerable<Assembly> GetAssemblies()
-        {
-            throw new AssembliesNotConfiguredException();
-        }
-#elif NETSTANDARD1_6 || NETSTANDARD2_0
+#if NETSTANDARD2_0
         /// <summary>
         /// Assembly loader for netstandard1.6+
         /// </summary>

@@ -6,7 +6,7 @@
 
   <PropertyGroup>
     <PackageId>DotNetStarter.Abstractions</PackageId>
-    <TargetFrameworks>net35;net40;net45;netstandard1.0;netstandard1.1;netstandard2.0</TargetFrameworks>
+    <TargetFrameworks>net45;netstandard2.0</TargetFrameworks>
     <Authors>Brad McDavid</Authors>
     <Copyright>Copyright $(CurrentYear)</Copyright>
     <Description>Abstractions for a startup system and service registration for a DI container.</Description>

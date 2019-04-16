@@ -70,12 +70,7 @@
         {
             if (StringBuilderLogger.Length > _MaxStringBuilderLength)
             {
-#if !NET35
                 StringBuilderLogger.Clear();
-#else
-                StringBuilderLogger.Length = 0;
-                StringBuilderLogger.Capacity = 0;
-#endif
             }
         }
     }

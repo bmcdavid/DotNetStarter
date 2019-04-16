@@ -2,7 +2,7 @@
   <Import Project="..\..\targets\CommonBuild.props" />
 
   <PropertyGroup>
-    <TargetFrameworks>net452;netcoreapp1.0;netcoreapp2.1</TargetFrameworks>
+    <TargetFrameworks>net452;netcoreapp2.1</TargetFrameworks>
     <IsPackable>false</IsPackable>
     <DefineConstants>$(DefineConstants);LIGHTINJECT_LOCATOR;</DefineConstants>
   </PropertyGroup>

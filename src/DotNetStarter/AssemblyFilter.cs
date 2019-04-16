@@ -19,9 +19,7 @@
             if (assembly.GlobalAssemblyCache) return true;
 #endif
 
-#if !NET35
             if (assembly.IsDynamic) return true;
-#endif
 
             var name = assembly.GetName().Name.Split('.');
 

@@ -2,7 +2,7 @@
   <Import Project="..\..\targets\CommonBuild.props" />
 
   <PropertyGroup>
-    <TargetFrameworks>net45;net451;net452;netcoreapp1.0;netcoreapp2.0</TargetFrameworks>
+    <TargetFrameworks>net452;netcoreapp2.0</TargetFrameworks>
     <IsPackable>false</IsPackable>
     <DefineConstants>$(DefineConstants);DRYIOC_LOCATOR;</DefineConstants>
   </PropertyGroup>
@@ -17,20 +17,6 @@
     <PackageReference Include="MSTest.TestAdapter" Version="1.4.0" />
     <PackageReference Include="MSTest.TestFramework" Version="1.4.0" />
     <Compile Include="..\DotNetStarter.LocatorUnitTests\**\*.cs" />
-  </ItemGroup>
-
-  <ItemGroup Condition="'$(TargetFramework)' == 'net45'">
-    <ProjectReference Include="..\..\src\DotNetStarter.Abstractions\DotNetStarter.Abstractions.csproj" AdditionalProperties="TargetFramework=net35" />
-    <ProjectReference Include="..\..\src\DotNetStarter.RegistrationAbstractions\DotNetStarter.RegistrationAbstractions.csproj" AdditionalProperties="TargetFramework=net35" />
-    <ProjectReference Include="..\..\src\DotNetStarter\DotNetStarter.csproj" AdditionalProperties="TargetFramework=net35" />
-    <ProjectReference Include="..\..\src\DotNetStarter.Locators.DryIoc\DotNetStarter.Locators.DryIoc.csproj" AdditionalProperties="TargetFramework=net35" />
-  </ItemGroup>
-
-  <ItemGroup Condition="'$(TargetFramework)' == 'net451'">
-    <ProjectReference Include="..\..\src\DotNetStarter.Abstractions\DotNetStarter.Abstractions.csproj" AdditionalProperties="TargetFramework=net40" />
-    <ProjectReference Include="..\..\src\DotNetStarter.RegistrationAbstractions\DotNetStarter.RegistrationAbstractions.csproj" AdditionalProperties="TargetFramework=net40" />
-    <ProjectReference Include="..\..\src\DotNetStarter\DotNetStarter.csproj" AdditionalProperties="TargetFramework=net40" />
-    <ProjectReference Include="..\..\src\DotNetStarter.Locators.DryIoc\DotNetStarter.Locators.DryIoc.csproj" AdditionalProperties="TargetFramework=net40" />
   </ItemGroup>
 
   <!--Fallback for remaining are selected correctly-->

@@ -124,7 +124,6 @@ namespace DotNetStarter.Abstractions
             return Describe(service, implementationType, Lifecycle.Transient);
         }
 
-#if !NET35
         /// <summary>
         /// Creates an instance of <see cref="RegistrationDescriptor"/> with the specified
         /// <typeparamref name="TService"/>, <typeparamref name="TImplementation"/>,
@@ -166,7 +165,7 @@ namespace DotNetStarter.Abstractions
 
             return Describe(typeof(TService), implementationFactory, Lifecycle.Transient);
         }
-#endif
+
         /// <summary>
         /// Creates an instance of <see cref="RegistrationDescriptor"/> with the specified
         /// <paramref name="service"/>, <paramref name="implementationFactory"/>,
@@ -218,7 +217,6 @@ namespace DotNetStarter.Abstractions
             return Describe(service, implementationType, Lifecycle.Scoped);
         }
 
-#if !NET35
         /// <summary>
         /// Creates an instance of <see cref="RegistrationDescriptor"/> with the specified
         /// <typeparamref name="TService"/>, <typeparamref name="TImplementation"/>,
@@ -260,7 +258,6 @@ namespace DotNetStarter.Abstractions
 
             return Describe(typeof(TService), implementationFactory, Lifecycle.Scoped);
         }
-#endif
 
         /// <summary>
         /// Creates an instance of <see cref="RegistrationDescriptor"/> with the specified
@@ -323,7 +320,6 @@ namespace DotNetStarter.Abstractions
             return Describe(service, implementationType, Lifecycle.Singleton);
         }
 
-#if !NET35
         /// <summary>
         /// Creates an instance of <see cref="RegistrationDescriptor"/> with the specified
         /// <typeparamref name="TService"/>, <typeparamref name="TImplementation"/>,
@@ -365,7 +361,6 @@ namespace DotNetStarter.Abstractions
 
             return Describe(typeof(TService), implementationFactory, Lifecycle.Singleton);
         }
-#endif
 
         /// <summary>
         /// Creates an instance of <see cref="RegistrationDescriptor"/> with the specified

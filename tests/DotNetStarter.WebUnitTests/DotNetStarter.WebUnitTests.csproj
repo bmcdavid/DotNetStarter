@@ -2,7 +2,7 @@
   <Import Project="..\..\targets\CommonBuild.props" />
 
   <PropertyGroup>
-    <TargetFrameworks>net45;net451;net452</TargetFrameworks>
+    <TargetFrameworks>net452</TargetFrameworks>
     <IsPackable>false</IsPackable>
   </PropertyGroup>
 
@@ -14,22 +14,14 @@
     <Reference Include="System.Web" />
     <Reference Include="System.Web.Abstractions" />
   </ItemGroup>
-
-  <ItemGroup Condition="'$(TargetFramework)' == 'net45'">
-    <ProjectReference Include="..\..\src\DotNetStarter.Abstractions\DotNetStarter.Abstractions.csproj" AdditionalProperties="TargetFramework=net35" />
-    <ProjectReference Include="..\..\src\DotNetStarter.Locators.DryIoc\DotNetStarter.Locators.DryIoc.csproj" AdditionalProperties="TargetFramework=net35" />
-    <ProjectReference Include="..\..\src\DotNetStarter.RegistrationAbstractions\DotNetStarter.RegistrationAbstractions.csproj" AdditionalProperties="TargetFramework=net35" />
-    <ProjectReference Include="..\..\src\DotNetStarter.Web\DotNetStarter.Web.csproj" AdditionalProperties="TargetFramework=net35" />
-    <ProjectReference Include="..\..\src\DotNetStarter\DotNetStarter.csproj" AdditionalProperties="TargetFramework=net35" />
-  </ItemGroup>
   
-  <ItemGroup Condition="'$(TargetFramework)' == 'net451'">
+  <!--<ItemGroup Condition="'$(TargetFramework)' == 'net451'">
     <ProjectReference Include="..\..\src\DotNetStarter.Abstractions\DotNetStarter.Abstractions.csproj" AdditionalProperties="TargetFramework=net40" />
     <ProjectReference Include="..\..\src\DotNetStarter.Locators.DryIoc\DotNetStarter.Locators.DryIoc.csproj" AdditionalProperties="TargetFramework=net40" />
     <ProjectReference Include="..\..\src\DotNetStarter.RegistrationAbstractions\DotNetStarter.RegistrationAbstractions.csproj" AdditionalProperties="TargetFramework=net40" />
     <ProjectReference Include="..\..\src\DotNetStarter.Web\DotNetStarter.Web.csproj" AdditionalProperties="TargetFramework=net40" />
     <ProjectReference Include="..\..\src\DotNetStarter\DotNetStarter.csproj" AdditionalProperties="TargetFramework=net40" />
-  </ItemGroup>
+  </ItemGroup>-->
 
   <ItemGroup Condition="'$(TargetFramework)' != 'net45' AND '$(TargetFramework)' != 'net451'">
     <ProjectReference Include="..\..\src\DotNetStarter.Abstractions\DotNetStarter.Abstractions.csproj" />

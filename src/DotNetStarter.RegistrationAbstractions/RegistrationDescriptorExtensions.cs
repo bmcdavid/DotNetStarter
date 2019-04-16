@@ -400,7 +400,6 @@ namespace DotNetStarter.Abstractions
             TryAddScoped(collection, typeof(TService), typeof(TImplementation));
         }
 
-#if !NET35
         /// <summary>
         /// Adds the specified <typeparamref name="TService"/> as a <see cref="Lifecycle.Scoped"/> service
         /// using the factory specified in <paramref name="implementationFactory"/>
@@ -416,7 +415,7 @@ namespace DotNetStarter.Abstractions
         {
             services.TryAdd(RegistrationDescriptor.Scoped(implementationFactory));
         }
-#endif
+
         /// <summary>
         /// Adds the specified <paramref name="service"/> as a <see cref="Lifecycle.Singleton"/> service
         /// to the <paramref name="collection"/> if the service type hasn't already been registered.
@@ -708,7 +707,6 @@ namespace DotNetStarter.Abstractions
             TryAddTransient(collection, typeof(TService), typeof(TImplementation));
         }
 
-#if !NET35
         /// <summary>
         /// Adds the specified <typeparamref name="TService"/> as a <see cref="Lifecycle.Transient"/> service
         /// using the factory specified in <paramref name="implementationFactory"/>
@@ -724,7 +722,6 @@ namespace DotNetStarter.Abstractions
         {
             services.TryAdd(RegistrationDescriptor.Transient(implementationFactory));
         }
-#endif
 
         ///// <summary>
         ///// Adds a <see cref="RegistrationDescriptor"/> if an existing descriptor with the same

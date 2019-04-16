@@ -2,7 +2,7 @@
   <Import Project="..\..\targets\CommonBuild.props" />
 
   <PropertyGroup>
-    <TargetFrameworks>net45;netcoreapp1.0;netcoreapp2.1</TargetFrameworks>
+    <TargetFrameworks>net45;netcoreapp2.1</TargetFrameworks>
     <IsPackable>false</IsPackable>
   </PropertyGroup>
 

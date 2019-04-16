@@ -5,7 +5,7 @@
 
   <PropertyGroup>
     <PackageId>DotNetStarter.DryIoc</PackageId>
-    <TargetFrameworks>net35;net40;net45;netstandard1.0;netstandard2.0</TargetFrameworks>
+    <TargetFrameworks>net45;netstandard2.0</TargetFrameworks>
     <RootNamespace>DotNetStarter.Locators</RootNamespace>
     <Authors>Brad McDavid</Authors>
     <Copyright>Copyright $(CurrentYear)</Copyright>
@@ -21,7 +21,7 @@
   <Import Project="..\..\targets\CommonNuGetPackage.props" />
 
   <ItemGroup>
-    <PackageReference Include="DryIoc.dll" version="4.0.2" />
+    <PackageReference Include="DryIoc.dll" version="4.0.3" />
     <ProjectReference Include="..\DotNetStarter.Abstractions\DotNetStarter.Abstractions.csproj" />
   </ItemGroup>
 

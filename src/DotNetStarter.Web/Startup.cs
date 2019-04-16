@@ -32,18 +32,12 @@ namespace DotNetStarter.Web
             try
             {
                 var moduleType = typeof(WebModuleStartup);
-#if NET40
-                // requires Microsoft.Web.Infrastructure package for .net 4.0
-                Microsoft.Web.Infrastructure.DynamicModuleHelper.DynamicModuleUtility.RegisterModule(moduleType);
-#elif NET45
+
                 System.Web.HttpApplication.RegisterModule(moduleType);
-#endif
             }
             catch (System.InvalidOperationException)
             {
-#if NET40 || NET45
                 throw new System.InvalidOperationException($"Please execute {typeof(DotNetStarter.Configure.StartupBuilder).FullName} in a {typeof(System.Web.PreApplicationStartMethodAttribute)} startup method or the global asax constructor!");
-#endif
             }
 
             IsRegistered = true;
