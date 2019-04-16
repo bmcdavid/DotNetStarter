@@ -11,9 +11,7 @@
     using static DotNetStarter.ApplicationContext;
 
 #if NET45
-
     using global::Owin;
-
 #endif
 
     /// <summary>

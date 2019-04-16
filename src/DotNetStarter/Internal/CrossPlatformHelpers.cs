@@ -13,11 +13,7 @@
         /// <returns></returns>
         public static bool StringCompareIgnoreCase(string a, string b)
         {
-#if NETFULLFRAMEWORK
-            return string.Compare(a, b, true) == 0;
-#else
             return string.Compare(a,b, System.StringComparison.CurrentCultureIgnoreCase) == 0;
-#endif
         }
 
         /// <summary>
@@ -26,11 +22,7 @@
         /// <returns></returns>
         public static string GetApplicationBaseDirectory()
         {
-#if NETFULLFRAMEWORK || NETSTANDARD2_0
             return System.AppDomain.CurrentDomain.BaseDirectory;
-#else
-            return "";
-#endif
         }
     }
 }

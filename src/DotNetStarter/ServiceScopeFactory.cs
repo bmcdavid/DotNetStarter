@@ -7,7 +7,6 @@ using Microsoft.Extensions.DependencyInjection;
 namespace DotNetStarter
 {
 #if NETFULLFRAMEWORK && !NETSTANDARD
-
     /// <summary>
     /// Factory to create scoped service providers
     /// </summary>
@@ -19,7 +18,6 @@ namespace DotNetStarter
         /// <returns></returns>
         IServiceScope CreateScope();
     }
-
 #endif
 
     /// <summary>

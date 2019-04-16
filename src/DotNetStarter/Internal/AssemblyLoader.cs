@@ -14,7 +14,22 @@ namespace DotNetStarter.Internal
         internal static readonly HashSet<Assembly> LoadedAssemblies = new HashSet<Assembly>();
         private static readonly object _lockObj = new object();
 
-#if NETFULLFRAMEWORK
+#if NETSTANDARD2_0
+        /// <summary>
+        /// Assembly loader for netstandard1.6+
+        /// </summary>
+        /// <returns></returns>
+        public virtual IEnumerable<Assembly> GetAssemblies()
+        {
+            var libraries = Microsoft.Extensions.DependencyModel.DependencyContextExtensions.GetRuntimeAssemblyNames
+            (
+                Microsoft.Extensions.DependencyModel.DependencyContext.Default,
+                Microsoft.DotNet.PlatformAbstractions.RuntimeEnvironment.GetRuntimeIdentifier()
+            );
+
+            return libraries.Select(x => Assembly.Load(new AssemblyName(x.Name)));
+        }
+#else
         /// <summary>
         /// Gets assembly dll folder
         /// </summary>
@@ -40,9 +55,6 @@ namespace DotNetStarter.Internal
             return assembliesPath;
         }
 
-#endif
-
-#if NETFULLFRAMEWORK
         /// <summary>
         /// Gets assembly files
         /// </summary>
@@ -55,24 +67,6 @@ namespace DotNetStarter.Internal
 
             return files;
         }
-#endif
-
-#if NETSTANDARD2_0
-        /// <summary>
-        /// Assembly loader for netstandard1.6+
-        /// </summary>
-        /// <returns></returns>
-        public virtual IEnumerable<Assembly> GetAssemblies()
-        {
-            var libraries = Microsoft.Extensions.DependencyModel.DependencyContextExtensions.GetRuntimeAssemblyNames
-            (
-                Microsoft.Extensions.DependencyModel.DependencyContext.Default,
-                Microsoft.DotNet.PlatformAbstractions.RuntimeEnvironment.GetRuntimeIdentifier()
-            );
-
-            return libraries.Select(x => Assembly.Load(new AssemblyName(x.Name)));
-        }
-#else
 
         /// <summary>
         /// Gets application assemblies, note: in netstandard apps local builds won't always include the dlls which could lead to test/debug issues
