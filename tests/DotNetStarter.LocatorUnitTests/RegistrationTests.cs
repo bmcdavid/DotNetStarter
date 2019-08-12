@@ -26,7 +26,7 @@ namespace DotNetStarter.UnitTests
         [TestMethod]
         public void ShouldBeReadOnlyLocatorInAppContext()
         {
-            Assert.IsInstanceOfType(ApplicationContext.Default.Locator, typeof(ILocator));
+            Assert.IsInstanceOfType(_TestSetup.TestContext.Locator, typeof(ILocator));
         }
 
         [TestMethod]
@@ -45,7 +45,7 @@ namespace DotNetStarter.UnitTests
         [TestMethod]
         public void ShouldThrowResolveErrorWhenNotRegistered()
         {
-            Assert.IsTrue(ApplicationContext.Default.Locator.Get<Mocks.INotRegistered>() is null);
+            Assert.IsTrue(_TestSetup.TestContext.Locator.Get<Mocks.INotRegistered>() is null);
         }
 
         [TestMethod]
@@ -62,7 +62,7 @@ namespace DotNetStarter.UnitTests
         {
             if (A.SupportsServiceRemoval)
             {
-                Assert.IsNull(DotNetStarter.ApplicationContext.Default.Locator.Get<IRemove>());
+                Assert.IsNull(_TestSetup.TestContext.Locator.Get<IRemove>());
             }
             else
             {
@@ -94,7 +94,7 @@ namespace DotNetStarter.UnitTests
         public void ShouldGetDifferentServiceFromFactory()
         {
             var one = FooTwo;
-            var two = DotNetStarter.ApplicationContext.Default.Locator.Get<IFooTwo>();
+            var two = _TestSetup.TestContext.Locator.Get<IFooTwo>();
 
             Assert.AreNotEqual(one, two);
         }
@@ -102,7 +102,7 @@ namespace DotNetStarter.UnitTests
         [TestMethod]
         public void ShouldGetImplFromAbstract()
         {
-            var sut = DotNetStarter.ApplicationContext.Default.Locator.Get<BaseTest>();
+            var sut = _TestSetup.TestContext.Locator.Get<BaseTest>();
 
             Assert.IsNotNull(sut);
         }
@@ -110,7 +110,7 @@ namespace DotNetStarter.UnitTests
         [TestMethod]
         public void ShouldGetGenericService()
         {
-            var sut = DotNetStarter.ApplicationContext.Default.Locator.Get<IPagedData<FooTwo>>(); // note: IPagedData<object> fails in LightInject
+            var sut = _TestSetup.TestContext.Locator.Get<IPagedData<FooTwo>>(); // note: IPagedData<object> fails in LightInject
 
             Assert.IsNotNull(sut);
         }

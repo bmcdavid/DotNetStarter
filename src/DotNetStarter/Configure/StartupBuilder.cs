@@ -13,8 +13,6 @@ namespace DotNetStarter.Configure
     /// </summary>
     public sealed class StartupBuilder
     {
-        private static readonly object _objLock = new object();
-        private static bool _appStarting = false;
         private Action<AssemblyExpression> _assemblyExpression;
         private IStartupEnvironment _environment;
         private bool _isConfigured;
@@ -23,7 +21,8 @@ namespace DotNetStarter.Configure
         private Action<IRegistrationCollection> _registrationCollectionExpression;
         private bool _runOnce;
         private IStartupHandler _startupHandler;
-        private bool _usingAppContext;
+        private bool _usingImport = true;
+
         private StartupBuilder() { }
 
         /// <summary>
@@ -41,17 +40,12 @@ namespace DotNetStarter.Configure
         /// Runs expressions, and configures DotNetStarter's ILocator, but does not run IStartupModules
         /// <para>IMPORTANT: Must run after all other configurations.</para>
         /// </summary>
-        /// <param name="useApplicationContext">If false, the static ApplicationContext.Default will not be set nor will Import&lt;T> work after execution. Default is true.</param>
         /// <param name="useDiscoverableAssemblies">Ignored if assemblyexpression is used! Instructs default assembly loader to filter for assemblies with DiscoverableAssemblyAttribute</param>
         /// <returns></returns>
-        public StartupBuilder Build(bool useApplicationContext = true, bool useDiscoverableAssemblies = false)
+        public StartupBuilder Build(bool useDiscoverableAssemblies = false)
         {
-            // order matters
-            _usingAppContext = useApplicationContext;
             if (_isConfigured) { return this; }
             _isConfigured = true;
-            if (_usingAppContext && ApplicationContext.Started) { return this; }
-            // end order matters
 
             AddManualRegistrations();
 
@@ -72,34 +66,18 @@ namespace DotNetStarter.Configure
             // if no assemblies have been configured follow the default scanner rule
             // will throw exception for netstandard1.0 applications
             var assembliesForStartup = GetDefaultAssemblies(useDiscoverableAssemblies, assemblyExp);
+            ExecuteBuild(objFactory, assembliesForStartup, overrideExp, _usingImport);
+            return this;
+        }
 
-            if (!useApplicationContext)
-            {
-                ExecuteBuild(objFactory, assembliesForStartup, overrideExp, false);
-                return this;
-            }
-
-            // default way using the static startup
-            if (!ApplicationContext.Started)
-            {
-                if (_appStarting)
-                {
-                    _appStarting = false; // for test purposes
-                    throw new Exception($"Do not access {typeof(ApplicationContext).FullName}.{nameof(ApplicationContext.Default)} during startup!");
-                }
-
-                lock (_objLock)
-                {
-                    if (!ApplicationContext.Started)
-                    {
-                        _appStarting = true;
-                        ExecuteBuild(objFactory, assembliesForStartup, overrideExp, useApplicationContext);
-                        ApplicationContext._Default = StartupContext;
-                        _appStarting = false;
-                    }
-                }
-            }
-
+        /// <summary>
+        /// Enables Import&lt;T> when true is passed. 
+        /// </summary>
+        /// <param name="importEnabled"></param>
+        /// <returns></returns>
+        public StartupBuilder UseImport(bool importEnabled = true)
+        {
+            _usingImport = importEnabled;
             return this;
         }
 
@@ -152,12 +130,9 @@ namespace DotNetStarter.Configure
         /// </summary>
         public void Run()
         {
-            // order matters
             if (!_isConfigured) { Build(); }// just in case its not called fluently
-            if (_usingAppContext && ApplicationContext.Started) { return; }
             if (_runOnce) { return; }
             _runOnce = true;
-            // end order matters
 
             if (_startupHandler is null)
             {
@@ -165,7 +140,6 @@ namespace DotNetStarter.Configure
             }
 
             _startupHandler.TryExecuteStartupModules();
-            ApplicationContext.Started = ApplicationContext._Default is object;
         }
 
         /// <summary>

@@ -6,7 +6,7 @@ namespace DotNetStarter.StartupBuilderTests.Mocks
     {
         public void Configure(ILocatorRegistry registry, ILocatorConfigureEngine engine)
         {
-            var x = DotNetStarter.ApplicationContext.Default;
+            //var x = DotNetStarter.ApplicationContext.Default;
         }
     }
 }

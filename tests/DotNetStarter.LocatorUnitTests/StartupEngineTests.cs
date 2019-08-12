@@ -10,7 +10,7 @@ namespace DotNetStarter.UnitTests
         [TestMethod]
         public void ShouldCallContainerInitCompleteEvent()
         {
-            var x = ApplicationContext.Default.Configuration.Assemblies.ToList();
+            var x = _TestSetup.TestContext.Configuration.Assemblies.ToList();
 
             Assert.IsTrue(StartupTest2._ContainerInitCompleteCalled);
         }
@@ -29,7 +29,7 @@ namespace DotNetStarter.UnitTests
                     })
                 )
                 .UseTestLocator()
-                .Build(useApplicationContext: false);
+                .Build();
 
             Assert.IsTrue(sut.FiredLocator, "failed to fire during locator config!");
             builder.Run();

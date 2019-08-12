@@ -8,21 +8,21 @@ namespace DotNetStarter.UnitTests
     [TestClass]
     public class ScanTests
     {
-        private IAssemblyScanner _AssemblyScanner;
+        private IAssemblyScanner _assemblyScanner;
 
-        private IReflectionHelper _ReflectionHelper;
+        private IReflectionHelper _reflectionHelper;
 
         [TestInitialize]
         public void Setup()
         {
-            _AssemblyScanner = ApplicationContext.Default.Configuration.AssemblyScanner;
-            _ReflectionHelper = ApplicationContext.Default.Locator.Get<IReflectionHelper>();
+            _assemblyScanner = _TestSetup.TestContext.Configuration.AssemblyScanner;
+            _reflectionHelper = _TestSetup.TestContext.Locator.Get<IReflectionHelper>();
         }
 
         [TestMethod]
         public void ShouldScanServiceAttributes()
         {
-            var types = _AssemblyScanner.GetTypesFor(typeof(RegistrationAttribute));
+            var types = _assemblyScanner.GetTypesFor(typeof(RegistrationAttribute));
 
             Assert.IsTrue(types?.Count() > 0);
         }
@@ -30,7 +30,7 @@ namespace DotNetStarter.UnitTests
         [TestMethod]
         public void ShouldScanBaseClass()
         {
-            var types = _AssemblyScanner.GetTypesFor(typeof(MockBaseClass));
+            var types = _assemblyScanner.GetTypesFor(typeof(MockBaseClass));
 
             Assert.IsTrue(types?.Any(x => x == typeof(MockImplClass)) == true);
         }
@@ -38,7 +38,7 @@ namespace DotNetStarter.UnitTests
         [TestMethod]
         public void ShouldScanInterface()
         {
-            var types = _AssemblyScanner.GetTypesFor(typeof(IMock));
+            var types = _assemblyScanner.GetTypesFor(typeof(IMock));
 
             Assert.IsTrue(types?.Any(x => x == typeof(MockImplClass)) == true);
         }
@@ -46,15 +46,15 @@ namespace DotNetStarter.UnitTests
         [TestMethod]
         public void ShouldScanOpenGenericInterface()
         {
-            var types = _AssemblyScanner.GetTypesFor(typeof(IGenericeMock<>));
+            var types = _assemblyScanner.GetTypesFor(typeof(IGenericeMock<>));
 
-            Assert.IsTrue(types.Where(x => !_ReflectionHelper.IsInterface(x)).Count() == 2);
+            Assert.IsTrue(types.Where(x => !_reflectionHelper.IsInterface(x)).Count() == 2);
         }
 
         [TestMethod]
         public void ShouldScanBoundedGenericInterface()
         {
-            var types = _AssemblyScanner.GetTypesFor(typeof(IGenericeMock<object>));
+            var types = _assemblyScanner.GetTypesFor(typeof(IGenericeMock<object>));
 
             Assert.IsTrue(types.Any(x => x == typeof(GenericObject)));
         }

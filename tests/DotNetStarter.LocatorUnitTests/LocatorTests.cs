@@ -213,7 +213,7 @@ namespace DotNetStarter.UnitTests
         [TestMethod]
         public void ShouldImportContext()
         {
-            Assert.AreEqual(_Context, ApplicationContext.Default);
+           Assert.AreEqual(_Context, _TestSetup.TestContext);
         }
 
         [TestMethod]

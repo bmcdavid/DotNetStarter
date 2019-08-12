@@ -22,23 +22,5 @@
         internal static IStartupContext _Default;
 
         private ApplicationContext() { }
-
-        /// <summary>
-        /// Default context instance
-        /// </summary>
-        public static IStartupContext Default
-        {
-            get
-            {
-                if (_Default is null) { StartupBuilder.Create().Run(); }
-
-                return _Default;
-            }
-        }
-
-        /// <summary>
-        /// Used to determine if application default startup has executed
-        /// </summary>
-        public static bool Started { get; internal set; }
     }
 }
