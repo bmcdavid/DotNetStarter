@@ -11,7 +11,9 @@
     /// </summary>
     public class TimedTaskManager : ITimedTaskManager
     {
-        private IRequestSettingsProvider RequestSettingsProvider;
+        private readonly List<ITimedTask> _applicationTasks = new List<ITimedTask>();
+
+        private readonly IRequestSettingsProvider _requestSettingsProvider;
 
         /// <summary>
         /// DI Constructor
@@ -19,13 +21,8 @@
         /// <param name="requestSettingsProviderFactory"></param>
         public TimedTaskManager(Func<IRequestSettingsProvider> requestSettingsProviderFactory)
         {
-            RequestSettingsProvider = requestSettingsProviderFactory() ?? throw new ArgumentNullException(nameof(requestSettingsProviderFactory));
+            _requestSettingsProvider = requestSettingsProviderFactory() ?? throw new ArgumentNullException(nameof(requestSettingsProviderFactory));
         }
-
-        /// <summary>
-        /// Store all timed tasks
-        /// </summary>
-        private List<ITimedTask> _ApplicationTasks = new List<ITimedTask>();
 
         /// <summary>
         /// Execute timed task
@@ -36,7 +33,7 @@
             if (task is null) return;
 
             // if requiring debug, and not in debug mode, execute with no tracking
-            if (task.RequireDebugMode && RequestSettingsProvider?.IsDebugMode != true)
+            if (task.RequireDebugMode && _requestSettingsProvider?.IsDebugMode != true)
             {
                 task.TimedAction();
                 return;
@@ -52,16 +49,16 @@
 
             if (task.Scope == TimedActionScope.Application)
             {
-                _ApplicationTasks.Add(task);
+                _applicationTasks.Add(task);
                 return;
             }
 
-            if (!ProviderHasItems(RequestSettingsProvider))
+            if (!ProviderHasItems(_requestSettingsProvider))
             {
                 throw new Exception($"Settings provider or its Items are null and TimerScope is set to {nameof(TimedActionScope.Request)}!");
             }
 
-            RequestSettingsProvider.Items[task.Name] = task;
+            _requestSettingsProvider.Items[task.Name] = task;
         }
 
         /// <summary>
@@ -71,15 +68,15 @@
         /// <returns></returns>
         public virtual ITimedTask Get(string name)
         {
-            ITimedTask t = _ApplicationTasks.FirstOrDefault(x => Internal.CrossPlatformHelpers.StringCompareIgnoreCase(x.Name, name));
+            var t = _applicationTasks.FirstOrDefault(x => Internal.CrossPlatformHelpers.StringCompareIgnoreCase(x.Name, name));
 
             if (t is object)
                 return t;
 
-            if (RequestSettingsProvider is null || !ProviderHasItems(RequestSettingsProvider))
+            if (_requestSettingsProvider is null || !ProviderHasItems(_requestSettingsProvider))
                 return null;
 
-            return RequestSettingsProvider.Items[name] as TimedTask;
+            return _requestSettingsProvider.Items[name] as TimedTask;
         }
 
         /// <summary>
@@ -89,26 +86,25 @@
         /// <returns></returns>
         public virtual IEnumerable<ITimedTask> GetAll(string prefix)
         {
-            if (_ApplicationTasks is null)
+            if (_applicationTasks is null)
                 yield break;
 
             // Get all in application
-            foreach (var task in _ApplicationTasks)
+            foreach (var task in _applicationTasks)
             {
                 if (task.Name.StartsWith(prefix, StringComparison.OrdinalIgnoreCase))
                     yield return task;
             }
 
             //Get all in request
-            if (RequestSettingsProvider is null || !ProviderHasItems(RequestSettingsProvider))
+            if (_requestSettingsProvider is null || !ProviderHasItems(_requestSettingsProvider))
                 yield break;
 
-            foreach (object key in RequestSettingsProvider.Items.Keys)
+            foreach (object key in _requestSettingsProvider.Items.Keys)
             {
-                var name = key as string;
-                if (name is null) { continue; }
+                if (!(key is string name)) { continue; }
 
-                var task = RequestSettingsProvider.Items[name] as TimedTask;
+                var task = _requestSettingsProvider.Items[name] as TimedTask;
 
                 if (task?.Name.StartsWith(prefix, StringComparison.OrdinalIgnoreCase) == true)
                     yield return task;

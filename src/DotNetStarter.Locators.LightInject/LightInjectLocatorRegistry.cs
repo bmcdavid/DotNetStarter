@@ -58,12 +58,13 @@ namespace DotNetStarter.Locators
         /// <param name="lifeTime"></param>
         public void Add(Type serviceType, Func<ILocator, object> implementationFactory, Lifecycle lifeTime)
         {
-            AddRegistration(new ContainerRegistration()
+            var r = new ContainerRegistration()
             {
                 Lifecycle = lifeTime,
                 ServiceType = serviceType,
                 ServiceFactory = implementationFactory
-            });
+            };
+            AddRegistration(r, confirm: false);
         }
 
         /// <summary>
@@ -173,11 +174,15 @@ namespace DotNetStarter.Locators
             _verified = true;
         }
 
-        private void AddRegistration(ContainerRegistration registration)
+        private void AddRegistration(ContainerRegistration registration, bool confirm = true)
         {
             var service = registration.ServiceType;
             var implementation = registration.ServiceInstance?.GetType() ?? registration.ServiceImplementation;
-            RegistryExtensions.ConfirmService(service, implementation);
+
+            if (confirm)
+            {
+                RegistryExtensions.ConfirmService(service, implementation);
+            }
 
             if (!_registrations.TryGetValue(registration.ServiceType, out List<ContainerRegistration> storedTypes))
             {
