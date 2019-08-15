@@ -29,21 +29,15 @@ namespace DotNetStarter
         /// </summary>
         /// <param name="locatorScoped"></param>
         /// <returns></returns>
-        public virtual ILocatorScoped CreateChildScope(ILocatorScoped locatorScoped)
-        {
-            return _Create(locatorScoped);
-        }
+        public virtual ILocatorScoped CreateChildScope(ILocatorScoped locatorScoped) => Create(locatorScoped);
 
         /// <summary>
         /// Creates an initial scope
         /// </summary>
         /// <returns></returns>
-        public virtual ILocatorScoped CreateScope()
-        {
-            return _Create(_locator);
-        }
+        public virtual ILocatorScoped CreateScope() => Create(_locator);
 
-        private ILocatorScoped _Create(ILocator locator)
+        private ILocatorScoped Create(ILocator locator)
         {
             if (!(locator is ILocatorWithCreateScope creator))
             {

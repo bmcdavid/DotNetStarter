@@ -86,28 +86,9 @@
         /// <returns></returns>
         public virtual IEnumerable<ITimedTask> GetAll(string prefix)
         {
-            if (_applicationTasks is null)
-                yield break;
-
-            // Get all in application
-            foreach (var task in _applicationTasks)
+            foreach (var t in GetApplicationTasks(prefix).Union(GetRequestTasks(prefix)))
             {
-                if (task.Name.StartsWith(prefix, StringComparison.OrdinalIgnoreCase))
-                    yield return task;
-            }
-
-            //Get all in request
-            if (_requestSettingsProvider is null || !ProviderHasItems(_requestSettingsProvider))
-                yield break;
-
-            foreach (object key in _requestSettingsProvider.Items.Keys)
-            {
-                if (!(key is string name)) { continue; }
-
-                var task = _requestSettingsProvider.Items[name] as TimedTask;
-
-                if (task?.Name.StartsWith(prefix, StringComparison.OrdinalIgnoreCase) == true)
-                    yield return task;
+                yield return t;
             }
         }
 
@@ -118,13 +99,39 @@
         /// <returns></returns>
         protected virtual bool ProviderHasItems(IRequestSettingsProvider provider)
         {
-            try
+            return provider?.Items is object;
+        }
+
+        private IEnumerable<ITimedTask> GetApplicationTasks(string prefix)
+        {
+            if (_applicationTasks is null)
             {
-                return provider?.Items is object;
+                yield break;
             }
-            catch (NotImplementedException)
+
+            foreach (var task in _applicationTasks)
             {
-                return false;
+                if (task.Name.StartsWith(prefix, StringComparison.OrdinalIgnoreCase))
+                {
+                    yield return task;
+                }
+            }
+        }
+
+        private IEnumerable<ITimedTask> GetRequestTasks(string prefix)
+        {
+            if (_requestSettingsProvider is null || !ProviderHasItems(_requestSettingsProvider))
+            {
+                yield break;
+            }
+
+            foreach (object key in _requestSettingsProvider.Items.Keys)
+            {
+                if (!(key is string name)) { continue; }
+                if (_requestSettingsProvider.Items[name] is TimedTask task && task.Name.StartsWith(prefix, StringComparison.OrdinalIgnoreCase) == true)
+                {
+                    yield return task;
+                }
             }
         }
     }

@@ -45,7 +45,7 @@
                 .AddInstance(configuration.AssemblyScanner)
                 .AddInstance(configuration.DependencyFinder)
                 .AddInstance(configuration.DependencySorter)
-                .AddTransient<ITimedTask,TimedTask>();
+                .AddTransient<ITimedTask, TimedTask>();
         }
 
         /// <summary>
@@ -86,18 +86,20 @@
         /// <param name="registry"></param>
         protected void RegisterStartupModuleCollection(ILocatorRegistry registry)
         {
-            if (StartupModuleCollection?.Count > 0)
+            if (!(StartupModuleCollection?.Count > 0)) { return; }
+
+            foreach (var module in StartupModuleCollection)
             {
-                foreach (var module in StartupModuleCollection)
+                if (module.ModuleInstance is object)
                 {
-                    if (module.ModuleInstance is object)
-                    {
-                        registry.Add(StartupModuleType, module.ModuleInstance);
-                    }
-                    else if (module.ModuleType is object)
-                    {
-                        registry.Add(StartupModuleType, module.ModuleType, null, Lifecycle.Singleton);
-                    }
+                    registry.Add(StartupModuleType, module.ModuleInstance);
+                    continue;
+                }
+
+                if (module.ModuleType is object)
+                {
+                    registry.Add(StartupModuleType, module.ModuleType, lifecycle: Lifecycle.Singleton);
+                    continue;
                 }
             }
         }

@@ -11,7 +11,7 @@ namespace DotNetStarter.Locators
     /// </summary>
     public class LightInjectLocatorRegistry : ILocatorRegistry, ILocatorRegistryWithContains, ILocatorRegistryWithResolveConfigureModules, ILocatorRegistryWithRemove, ILocatorRegistryWithVerification
     {
-        private IServiceContainer _container;
+        private readonly IServiceContainer _container;
         private readonly ContainerRegistrationCollection _registrations;
         private bool _verified;
 
