@@ -29,7 +29,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Stashbox" Version="2.7.3" />
+    <PackageReference Include="Stashbox" Version="2.7.8" />
     <ProjectReference Include="..\DotNetStarter.Abstractions\DotNetStarter.Abstractions.csproj" />
   </ItemGroup>
 

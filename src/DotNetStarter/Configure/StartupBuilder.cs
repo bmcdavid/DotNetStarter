@@ -9,7 +9,6 @@ namespace DotNetStarter.Configure
 {
     /// <summary>
     /// Provides fluent api for DotNetStarter Configuration
-    /// <para>IMPORTANT: For netstandard 1.0 applications, ConfigureAssemblies MUST be used as there is no default assembly loader!</para>
     /// </summary>
     public sealed class StartupBuilder
     {
@@ -46,9 +45,6 @@ namespace DotNetStarter.Configure
         {
             if (_isConfigured) { return this; }
             _isConfigured = true;
-
-            AddManualRegistrations();
-
             var objFactory = new StartupBuilderObjectFactory() { Environment = _environment };
             var assemblyExp = new AssemblyExpression();
             _assemblyExpression?.Invoke(assemblyExp);
@@ -56,7 +52,7 @@ namespace DotNetStarter.Configure
 
             var moduleExp = new StartupModulesExpression();
             _moduleExpression?.Invoke(moduleExp);
-            moduleExp.Build();
+            moduleExp.Build(_registrationCollectionExpression);
             objFactory.StartupModulesExpression = moduleExp;
 
             var overrideExp = new DefaultsExpression();
@@ -75,55 +71,35 @@ namespace DotNetStarter.Configure
         /// </summary>
         /// <param name="importEnabled"></param>
         /// <returns></returns>
-        public StartupBuilder UseImport(bool importEnabled = true)
-        {
-            _usingImport = importEnabled;
-            return this;
-        }
+        public StartupBuilder UseImport(bool importEnabled = true) => Do(() => _usingImport = importEnabled);
 
         /// <summary>
         /// Configures assemblies for DotNetStarter to scan for IStartup modules, ILocatorConfigure modules, and types with RegistrationAttribute
         /// </summary>
         /// <param name="assemblyExpression"></param>
         /// <returns></returns>
-        public StartupBuilder ConfigureAssemblies(Action<AssemblyExpression> assemblyExpression)
-        {
-            _assemblyExpression += assemblyExpression;
-            return this;
-        }
+        public StartupBuilder ConfigureAssemblies(Action<AssemblyExpression> assemblyExpression) => Do(() => _assemblyExpression += assemblyExpression);
 
         /// <summary>
         /// For manually adding/removing service from a given collection registrations
         /// </summary>
         /// <param name="registrationCollectionExpression"></param>
         /// <returns></returns>
-        public StartupBuilder ConfigureRegistrations(Action<IRegistrationCollection> registrationCollectionExpression)
-        {
-            _registrationCollectionExpression += registrationCollectionExpression;
-            return this;
-        }
+        public StartupBuilder ConfigureRegistrations(Action<IRegistrationCollection> registrationCollectionExpression) => Do(() => _registrationCollectionExpression += registrationCollectionExpression);
 
         /// <summary>
         /// Customize IStartupModule and ILocatorConfigure types in the startup process
         /// </summary>
         /// <param name="moduleExpression"></param>
         /// <returns></returns>
-        public StartupBuilder ConfigureStartupModules(Action<StartupModulesExpression> moduleExpression)
-        {
-            _moduleExpression += moduleExpression;
-            return this;
-        }
+        public StartupBuilder ConfigureStartupModules(Action<StartupModulesExpression> moduleExpression) => Do(() => _moduleExpression += moduleExpression);
 
         /// <summary>
         /// Overrides default services
         /// </summary>
         /// <param name="overrideExpression"></param>
         /// <returns></returns>
-        public StartupBuilder OverrideDefaults(Action<DefaultsExpression> overrideExpression)
-        {
-            _overrideExpression += overrideExpression;
-            return this;
-        }
+        public StartupBuilder OverrideDefaults(Action<DefaultsExpression> overrideExpression) => Do(() => _overrideExpression += overrideExpression);
 
         /// <summary>
         /// Runs IStartupModules
@@ -151,29 +127,7 @@ namespace DotNetStarter.Configure
         {
             _environment = startupEnvironment;
             return this;
-        }
-
-        /// <summary>
-        /// Add manual registrations if assigned
-        /// <para>IMPORTANT: Must execute before module expression!</para>
-        /// </summary>
-        private void AddManualRegistrations()
-        {
-            if (_registrationCollectionExpression is object)
-            {
-                var collection = new Internal.RegistrationDescriptionCollection();
-                _registrationCollectionExpression.Invoke(collection);
-
-                if (collection.Any())
-                {
-                    ConfigureStartupModules(moduleExpression =>
-                    {
-                        moduleExpression.ConfigureLocatorModuleCollection(config =>
-                            config.Add(new Internal.RegisterRegistrationDescriptionCollection(collection)));
-                    });
-                }
-            }
-        }
+        }        
 
         private void ExecuteBuild(StartupBuilderObjectFactory objFactory, IEnumerable<Assembly> assemblies, DefaultsExpression defaults, bool enableImport)
         {
@@ -194,6 +148,16 @@ namespace DotNetStarter.Configure
             return useDiscoverableAssemblies ?
                 AssemblyExpression.GetScannableAssemblies(defaultLoader.GetAssemblies()) :
                 defaultLoader.GetAssemblies().ToList();
+        }
+
+        private StartupBuilder Do(Action a)
+        {
+            if (_isConfigured)
+            {
+                return this;
+            }
+            a.Invoke();
+            return this;
         }
     }
 }

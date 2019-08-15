@@ -8,6 +8,11 @@
     /// </summary>
     public static class RegistryExtensions
     {
+        private static void GuardIfNull(this Type t, string argName)
+        {
+            if (t is null) { throw new ArgumentNullException(argName); }
+        }
+
         /// <summary>
         /// Adds an instance
         /// </summary>
@@ -106,19 +111,18 @@
         /// <param name="serviceImplementation"></param>
         public static void ConfirmService(Type serviceType, Type serviceImplementation)
         {
-            if (serviceImplementation is object && !serviceType.IsAssignableFromCheck(serviceImplementation))
+            serviceImplementation.GuardIfNull(nameof(serviceImplementation));
+            serviceType.GuardIfNull(nameof(serviceType));
+
+            if (serviceType.IsAssignableFromCheck(serviceImplementation))
             {
-                if (!serviceType.IsGenericType())
-                {
-                    ThrowRegisterException(serviceType, serviceImplementation);
-                }
-                else
-                {
-                    if (!serviceImplementation.IsGenericInterface(serviceType))
-                    {
-                        ThrowRegisterException(serviceType, serviceImplementation);
-                    }
-                }
+                return;
+            }
+
+            if (!serviceType.IsGenericType() || 
+                !serviceImplementation.IsGenericInterface(serviceType))
+            {
+                ThrowRegisterException(serviceType, serviceImplementation);
             }
         }
 

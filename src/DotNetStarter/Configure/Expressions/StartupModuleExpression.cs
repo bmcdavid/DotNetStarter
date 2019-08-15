@@ -1,6 +1,7 @@
 ﻿using DotNetStarter.Abstractions;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace DotNetStarter.Configure.Expressions
 {
@@ -75,15 +76,34 @@ namespace DotNetStarter.Configure.Expressions
         /// <summary>
         /// Configures the IStartupModule collection for ManualStartupModule
         /// </summary>
-        internal void Build()
+        internal void Build(Action<IRegistrationCollection> manualRegistrations)
         {
             var startupModuleCollection = new StartupModuleCollection();
             _startupModuleCollection?.Invoke(startupModuleCollection);
             InternalStartupModules = startupModuleCollection;
 
             var locatorModuleCollection = new LocatorConfigureCollection();
+            AddManualRegistrations(locatorModuleCollection, manualRegistrations);
             _locatorConfigureCollection?.Invoke(locatorModuleCollection);
             InternalConfigureModules = locatorModuleCollection;
+        }
+
+        /// <summary>
+        /// Add manual registrations if assigned
+        /// <para>IMPORTANT: Must execute before module expression!</para>
+        /// </summary>
+        private void AddManualRegistrations(LocatorConfigureCollection modules, Action<IRegistrationCollection> manualRegistrations)
+        {
+            if (manualRegistrations is object)
+            {
+                var collection = new Internal.RegistrationDescriptionCollection();
+                manualRegistrations.Invoke(collection);
+
+                if (collection.Any())
+                {
+                    modules.Add(new Internal.RegisterRegistrationDescriptionCollection(collection));
+                }
+            }
         }
     }
 }

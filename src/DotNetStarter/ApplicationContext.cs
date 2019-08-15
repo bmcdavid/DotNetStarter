@@ -19,8 +19,5 @@
         /// </summary>
         public static readonly string ScopedProviderKeyInContext = typeof(ApplicationContext).FullName + "." + nameof(IServiceProvider);
 
-        internal static IStartupContext _Default;
-
-        private ApplicationContext() { }
     }
 }

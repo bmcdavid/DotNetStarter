@@ -39,30 +39,29 @@
             if (task.RequireDebugMode && RequestSettingsProvider?.IsDebugMode != true)
             {
                 task.TimedAction();
-
                 return;
             }
 
-            Stopwatch s = new Stopwatch();
-            s.Start();
+            var s = Stopwatch.StartNew();
             task.TimedAction();
             s.Stop();
-
-            if (string.IsNullOrEmpty(task.Name))
-                task.Name = "TimedTask:" + Guid.NewGuid();
-
             task.Timer = s;
+            task.Name = !string.IsNullOrWhiteSpace(task.Name) ?
+                task.Name :
+                "TimedTask:" + Guid.NewGuid();
 
             if (task.Scope == TimedActionScope.Application)
-                _ApplicationTasks.Add(task);
-            else
             {
-                if (!ProviderHasItems(RequestSettingsProvider))
-                    throw new Exception($"Settings provider or its Items are null and TimerScope is set to {nameof(TimedActionScope.Request)}!");
-
-                RequestSettingsProvider.Items.Remove(task.Name);
-                RequestSettingsProvider.Items.Add(task.Name, task);
+                _ApplicationTasks.Add(task);
+                return;
             }
+
+            if (!ProviderHasItems(RequestSettingsProvider))
+            {
+                throw new Exception($"Settings provider or its Items are null and TimerScope is set to {nameof(TimedActionScope.Request)}!");
+            }
+
+            RequestSettingsProvider.Items[task.Name] = task;
         }
 
         /// <summary>
