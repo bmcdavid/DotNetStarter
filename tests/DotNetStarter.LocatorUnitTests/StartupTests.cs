@@ -77,8 +77,8 @@ namespace DotNetStarter.UnitTests
         [TestMethod]
         public void ShouldRemoveInitModule()
         {
-            var allCount = _TestSetup.TestContext.AllModuleTypes.Count();
-            var filteredCount = _TestSetup.TestContext.FilteredModuleTypes.Count();
+            var allCount = TestSetup.TestContext.AllModuleTypes.Count();
+            var filteredCount = TestSetup.TestContext.FilteredModuleTypes.Count();
 
             Assert.AreNotEqual(allCount, filteredCount);
         }
@@ -105,7 +105,7 @@ namespace DotNetStarter.UnitTests
         [TestMethod]
         public void ShouldShutdown()
         {
-            var shutdown = _TestSetup.TestContext.Locator.Get<IShutdownHandler>();
+            var shutdown = TestSetup.TestContext.Locator.Get<IShutdownHandler>();
             if (shutdown is Internal.ShutdownHandler sh) { sh.DisposeLocator = false; } // we don't really want to dispose container in unit test
             shutdown.Shutdown();
 
@@ -129,7 +129,7 @@ namespace DotNetStarter.UnitTests
         [TestMethod]
         public void ShouldThrowNullLocatorExceptionInDefaultHandler()
         {
-            new StartupHandler(() => new TimedTask(), null, null, null).ConfigureLocator(_TestSetup.TestContext.Configuration);
+            new StartupHandler(() => new TimedTask(), null, null, null).ConfigureLocator(TestSetup.TestContext.Configuration);
         }
     }
 }

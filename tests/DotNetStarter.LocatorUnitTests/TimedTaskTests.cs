@@ -9,7 +9,7 @@ namespace DotNetStarter.UnitTests
         [TestMethod]
         public void ShouldHaveTimers()
         {
-            var timers = _TestSetup.TestContext.Configuration.TimedTaskManager.GetAll(nameof(DotNetStarter));
+            var timers = TestSetup.TestContext.Configuration.TimedTaskManager.GetAll(nameof(DotNetStarter));
 
             Assert.IsTrue(timers.Any());
         }

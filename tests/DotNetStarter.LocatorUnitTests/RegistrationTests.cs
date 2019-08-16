@@ -11,14 +11,14 @@ namespace DotNetStarter.UnitTests
     {
         internal Import<IRemove> Remove;
 
-        public IFooTwo FooTwo => _TestSetup.TestContext.Locator.Get<IFooTwo>();
+        public IFooTwo FooTwo => TestSetup.TestContext.Locator.Get<IFooTwo>();
 
-        public IReflectionHelper ReflectionHelper => _TestSetup.TestContext.Locator.Get<IReflectionHelper>();
+        public IReflectionHelper ReflectionHelper => TestSetup.TestContext.Locator.Get<IReflectionHelper>();
 
         [TestMethod]
         public void ShouldCreateTimedTaskFromContainer()
         {
-            var task = _TestSetup.TestContext.Locator.Get<ITimedTask>();
+            var task = TestSetup.TestContext.Locator.Get<ITimedTask>();
 
             Assert.IsNotNull(task);
         }
@@ -26,7 +26,7 @@ namespace DotNetStarter.UnitTests
         [TestMethod]
         public void ShouldBeReadOnlyLocatorInAppContext()
         {
-            Assert.IsInstanceOfType(_TestSetup.TestContext.Locator, typeof(ILocator));
+            Assert.IsInstanceOfType(TestSetup.TestContext.Locator, typeof(ILocator));
         }
 
         [TestMethod]
@@ -45,7 +45,7 @@ namespace DotNetStarter.UnitTests
         [TestMethod]
         public void ShouldThrowResolveErrorWhenNotRegistered()
         {
-            Assert.IsTrue(_TestSetup.TestContext.Locator.Get<Mocks.INotRegistered>() is null);
+            Assert.IsTrue(TestSetup.TestContext.Locator.Get<Mocks.INotRegistered>() is null);
         }
 
         [TestMethod]
@@ -62,7 +62,7 @@ namespace DotNetStarter.UnitTests
         {
             if (A.SupportsServiceRemoval)
             {
-                Assert.IsNull(_TestSetup.TestContext.Locator.Get<IRemove>());
+                Assert.IsNull(TestSetup.TestContext.Locator.Get<IRemove>());
             }
             else
             {
@@ -94,7 +94,7 @@ namespace DotNetStarter.UnitTests
         public void ShouldGetDifferentServiceFromFactory()
         {
             var one = FooTwo;
-            var two = _TestSetup.TestContext.Locator.Get<IFooTwo>();
+            var two = TestSetup.TestContext.Locator.Get<IFooTwo>();
 
             Assert.AreNotEqual(one, two);
         }
@@ -102,7 +102,7 @@ namespace DotNetStarter.UnitTests
         [TestMethod]
         public void ShouldGetImplFromAbstract()
         {
-            var sut = _TestSetup.TestContext.Locator.Get<BaseTest>();
+            var sut = TestSetup.TestContext.Locator.Get<BaseTest>();
 
             Assert.IsNotNull(sut);
         }
@@ -110,7 +110,7 @@ namespace DotNetStarter.UnitTests
         [TestMethod]
         public void ShouldGetGenericService()
         {
-            var sut = _TestSetup.TestContext.Locator.Get<IPagedData<FooTwo>>(); // note: IPagedData<object> fails in LightInject
+            var sut = TestSetup.TestContext.Locator.Get<IPagedData<FooTwo>>(); // note: IPagedData<object> fails in LightInject
 
             Assert.IsNotNull(sut);
         }

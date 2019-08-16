@@ -15,8 +15,8 @@ namespace DotNetStarter.UnitTests
         [TestInitialize]
         public void Setup()
         {
-            _assemblyScanner = _TestSetup.TestContext.Configuration.AssemblyScanner;
-            _reflectionHelper = _TestSetup.TestContext.Locator.Get<IReflectionHelper>();
+            _assemblyScanner = TestSetup.TestContext.Configuration.AssemblyScanner;
+            _reflectionHelper = TestSetup.TestContext.Locator.Get<IReflectionHelper>();
         }
 
         [TestMethod]

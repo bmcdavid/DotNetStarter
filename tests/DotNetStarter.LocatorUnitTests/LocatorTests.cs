@@ -13,7 +13,7 @@ namespace DotNetStarter.UnitTests
     [TestClass]
     public class LocatorTests
     {
-        private IStartupContext _Context => _TestSetup.TestContext;
+        private IStartupContext _Context => TestSetup.TestContext;
 
         private Import<ILocatorScopedAccessor> _ScopeAccessor;
 
@@ -213,7 +213,7 @@ namespace DotNetStarter.UnitTests
         [TestMethod]
         public void ShouldImportContext()
         {
-           Assert.AreEqual(_Context, _TestSetup.TestContext);
+           Assert.AreEqual(_Context, TestSetup.TestContext);
         }
 
         [TestMethod]

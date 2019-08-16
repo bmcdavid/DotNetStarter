@@ -1,17 +1,30 @@
 ﻿using DotNetStarter.Abstractions;
 using DotNetStarter.Configure;
+using DotNetStarter.UnitTests.Mocks;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System;
 
 namespace DotNetStarter.UnitTests
 {
     [TestClass]
-    public sealed class _TestSetup
+    public sealed class TestSetup
     {
+        internal static Exception TestImport { get; private set; }
+
         internal static IStartupContext TestContext { get; private set; }
 
         [AssemblyInitialize]
         public static void Setup(TestContext context)
         {
+            try
+            {
+                var sut = new TestFooImport().FooImport.Service;
+            }
+            catch (Exception e)
+            {
+                TestImport = e;
+            }
+
             var builder = StartupBuilder.Create();
 
             builder
