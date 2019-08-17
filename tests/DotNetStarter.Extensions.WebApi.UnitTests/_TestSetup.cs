@@ -20,6 +20,7 @@ namespace DotNetStarter.Extensions.WebApi.Tests
             };
 
             Configure.StartupBuilder.Create()
+                .UseImport()
                 .ConfigureAssemblies(a => a.WithAssemblies(scannableAssemblies))
                 .Run();
         }

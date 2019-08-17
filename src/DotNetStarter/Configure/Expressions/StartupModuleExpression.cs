@@ -80,11 +80,18 @@ namespace DotNetStarter.Configure.Expressions
         {
             var startupModuleCollection = new StartupModuleCollection();
             _startupModuleCollection?.Invoke(startupModuleCollection);
-            InternalStartupModules = startupModuleCollection;
 
             var locatorModuleCollection = new LocatorConfigureCollection();
             AddManualRegistrations(locatorModuleCollection, manualRegistrations);
             _locatorConfigureCollection?.Invoke(locatorModuleCollection);
+            
+            foreach(var type in RemoveModuleTypes)
+            {
+                startupModuleCollection.RemoveAll(s => s.ModuleType == type);
+                locatorModuleCollection.RemoveAll(l => l.GetType() == type);
+            }
+
+            InternalStartupModules = startupModuleCollection;
             InternalConfigureModules = locatorModuleCollection;
         }
 

@@ -28,6 +28,7 @@ namespace DotNetStarter.UnitTests
             var builder = StartupBuilder.Create();
 
             builder
+                .UseImport()
                 .UseEnvironment(new UnitTestEnvironment())
                 .ConfigureStartupModules(x => x.RemoveStartupModule<Mocks.ExcludeModule>())
                 .ConfigureAssemblies(assemblies =>

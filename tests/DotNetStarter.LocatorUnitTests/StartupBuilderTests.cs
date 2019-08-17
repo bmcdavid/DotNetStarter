@@ -1,7 +1,6 @@
 using DotNetStarter.Abstractions;
 using DotNetStarter.Abstractions.Internal;
 using DotNetStarter.Configure;
-using DotNetStarter.Locators;
 using DotNetStarter.UnitTests.Mocks;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
@@ -24,12 +23,6 @@ namespace DotNetStarter.UnitTests
                         .WithAssemblyFromType<RegistrationConfiguration>()
                         .WithAssembliesFromTypes(typeof(StartupBuilder), typeof(TestFooImport));
                 })
-                .ConfigureStartupModules(modules =>
-                {
-                    modules
-                        .RemoveStartupModule<BadStartupModule>()
-                        .RemoveConfigureModule<BadConfigureModule>();
-                })
                 .OverrideDefaults(defaults =>
                 {
                     defaults
@@ -44,6 +37,68 @@ namespace DotNetStarter.UnitTests
 
             Assert.AreSame(sut1, sut2);
             Assert.AreEqual(sut1.DateTime, sut2.DateTime);
+        }
+
+        [TestMethod]
+        public void ShouldExecuteFromDefaults()
+        {
+            var b = StartupBuilder.Create();
+            b.Build().Run();
+            Assert.IsNotNull(b.StartupContext);
+        }
+
+        [ExpectedException(typeof(NotImplementedException))]
+        [TestMethod]
+        public void ShouldFailwithBadConfigureModule()
+        {
+            var builder = CreateTestBuilder();
+            builder.ConfigureStartupModules(modules =>
+            {
+                modules.ConfigureLocatorModuleCollection(l =>
+                {
+                    l.Add(new BadConfigureModule());
+                });
+            }).Run();
+        }
+
+        [ExpectedException(typeof(NotImplementedException))]
+        [TestMethod]
+        public void ShouldFailwithBadStartupModule()
+        {
+            var builder = CreateTestBuilder();
+            builder.ConfigureStartupModules(modules =>
+            {
+                modules.ConfigureStartupModuleCollection(s =>
+                {
+                    s.AddType<BadStartupModule>();
+                });
+            }).Run();
+        }
+
+        [TestMethod]
+        public void ShouldRegisterConfigureModuleViaConfiguration()
+        {
+            var sut = new ManualLocatorConfigure();
+            var builder = StartupBuilder.Create();
+            builder
+                .AddLocatorAssembly()
+                .ConfigureAssemblies(assemblies =>
+                {
+                    assemblies
+                        .WithAssembliesFromTypes(typeof(StringLogger), typeof(RegistrationConfiguration));
+                })
+                .ConfigureStartupModules(modules =>
+                {
+                    modules
+                        .ConfigureLocatorModuleCollection(configureModules =>
+                        {
+                            configureModules.Add(sut);
+                        });
+                })
+                .Build()
+                .Run();
+
+            Assert.IsTrue(sut.Executed);
         }
 
         [TestMethod]
@@ -68,42 +123,6 @@ namespace DotNetStarter.UnitTests
         }
 
         [TestMethod]
-        public void ShouldExecuteFromDefaults()
-        {
-            // todo: fix or remove
-            // only using discoverable assemblies to remove bad modules for unit testing
-            //StartupBuilder.Create().Build(useDiscoverableAssemblies: true).Run();
-            //Assert.IsNotNull(ApplicationContext.Default);
-            //Internal.UnitTestHelper.ResetApplication();
-        }
-        [TestMethod]
-        public void ShouldRegisterConfigureModuleViaConfiguration()
-        {
-            var sut = new ManualLocatorConfigure();
-            var builder = StartupBuilder.Create();
-            builder
-                .AddLocatorAssembly()
-                .ConfigureAssemblies(assemblies =>
-                {
-                    assemblies
-                        .WithAssembliesFromTypes(typeof(StringLogger), typeof(RegistrationConfiguration));
-                                        })
-                .ConfigureStartupModules(modules =>
-                {
-                    modules
-                        .ConfigureLocatorModuleCollection(configureModules =>
-                        {
-                            configureModules.Add(sut);
-                        })
-                        .RemoveConfigureModule<BadConfigureModule>();
-                })
-                .Build()
-                .Run();
-
-            Assert.IsTrue(sut.Executed);
-        }
-
-        [TestMethod]
         public void ShouldRegisterModuleViaConfiguration()
         {
             var builder = CreateTestBuilder();
@@ -121,16 +140,38 @@ namespace DotNetStarter.UnitTests
                         .ConfigureStartupModuleCollection(collection =>
                         {
                             collection.AddType<TestStartupModule>();
-                        })
-                        .RemoveConfigureModule<BadConfigureModule>()
-                        .RemoveStartupModule<BadStartupModule>()
-                        ;
+                        });
                 })
                 .Build()
                 .Run();
 
-            var sut = builder.StartupContext.Locator.GetAll<IStartupModule>().OfType<TestStartupModule>().FirstOrDefault();
+            var sut = builder.StartupContext.Locator.GetAll<IStartupModule>().FirstOrDefault(f => f is TestStartupModule) as TestStartupModule;
             Assert.IsTrue(sut.Executed);
+        }
+
+        [TestMethod]
+        public void ShouldRemoveBadModules()
+        {
+            var builder = CreateTestBuilder();
+            builder
+                .ConfigureStartupModules(modules =>
+                {
+                    modules.ConfigureLocatorModuleCollection(l =>
+                    {
+                        l.Add(new BadConfigureModule());
+                    })
+                    .ConfigureStartupModuleCollection(s =>
+                    {
+                        s.AddType<BadStartupModule>();
+                    });
+                })
+                .ConfigureStartupModules(modules =>
+                {
+                    modules
+                    .RemoveConfigureModule<BadConfigureModule>()
+                    .RemoveStartupModule<BadStartupModule>();
+                })
+                .Run();
         }
 
         [TestMethod]
@@ -156,21 +197,16 @@ namespace DotNetStarter.UnitTests
         }
 
         [TestMethod]
-        public void ShouldStartupAndResolveType()
+        public void ShouldStartupAndResolveTypeAndImport()
         {
             var builder = CreateTestBuilder();
             builder
+                .UseImport()
                 .ConfigureAssemblies(assemblies =>
                 {
                     assemblies
                         .WithAssemblyFromType<RegistrationConfiguration>()
                         .WithAssembliesFromTypes(typeof(StartupBuilder), typeof(BadStartupModule));
-                })
-                .ConfigureStartupModules(modules =>
-                {
-                    modules
-                        .RemoveStartupModule<BadStartupModule>()
-                        .RemoveConfigureModule<BadConfigureModule>();
                 })
                 .OverrideDefaults(defaults =>
                 {
@@ -184,81 +220,50 @@ namespace DotNetStarter.UnitTests
             var logger = builder.StartupContext.Locator.Get<IStartupLogger>();
             Assert.IsTrue(builder.StartupContext.Configuration.Environment.IsEnvironment("UnitTest1"));
             Assert.IsNotNull(logger);
-            //Assert.IsNotNull(new TestFooImport().FooImport.Service);
+            Assert.IsNotNull(new TestFooImport().FooImport.Service);
             // ran when test assembly is initialized
             Assert.IsTrue(TestSetup.TestImport is NullReferenceException);
         }
 
         [TestMethod]
-        public void ShouldStartupUsingAppContext()
+        public void ShouldStartupUsingStaticContext()
         {
-            //todo: fix
-            //Assert.IsFalse(ApplicationContext.Started);
+            var builder = CreateTestBuilder();
+            builder
+                .UseStatic()
+                .ConfigureAssemblies(assemblies =>
+                {
+                    assemblies
+                        .WithAssemblyFromType<RegistrationConfiguration>()
+                        .WithAssembly(typeof(StartupBuilderTests).Assembly())
+                        .WithAssembliesFromTypes(typeof(StartupBuilder));
+                })
+                .ConfigureStartupModules(modules =>
+                {
+                    modules
+                        .ConfigureLocatorModuleCollection(m => m.Add(new BadStaticTest()))
+                        .RemoveConfigureModule<ConfigureTestFooService>();
+                })
+                .OverrideDefaults(defaults =>
+                {
+                    defaults
+                        .UseLogger(new StringLogger(LogLevel.Info));
+                })
+                .Run(); // omitting build for default
 
-            //var builder = CreateTestBuilder();
-            //builder
-            //    .ConfigureAssemblies(assemblies =>
-            //    {
-            //        assemblies
-            //            .WithAssemblyFromType<RegistrationConfiguration>()
-            //            .WithAssembly(typeof(StartupBuilderTests).Assembly())
-            //            .WithAssembliesFromTypes(typeof(StartupBuilder));
-            //    })
-            //    .ConfigureStartupModules(modules =>
-            //    {
-            //        modules
-            //            .RemoveStartupModule<BadStartupModule>()
-            //            .RemoveConfigureModule<BadConfigureModule>()
-            //            .RemoveConfigureModule<ConfigureTestFooService>();
-            //    })
-            //    .OverrideDefaults(defaults =>
-            //    {
-            //        defaults
-            //            .UseLogger(new StringLogger(LogLevel.Info));
-            //    })
-            //    .Run(); // omitting build for default
+            builder.Build().Run(); // 2nd pass shouldn't do anything
 
-            //builder.Build().Run(); // 2nd pass shouldn't do anything
-
-            //var logger = builder.StartupContext.Locator.Get<IStartupLogger>();
-            //Assert.IsNotNull(logger);
-            //Assert.IsNotNull(ApplicationContext.Default);
-            //Assert.IsTrue(ApplicationContext.Started);
-            //Assert.AreEqual(builder.StartupContext, ApplicationContext.Default);
-            //Internal.UnitTestHelper.ResetApplication();
-        }
-
-        [TestMethod]
-        public void ShouldThrowErrorAccessingStaticContextDuringInit()
-        {
-            //todo: fix or remove
-            //string sut = string.Empty;
-            //try
-            //{
-            //    var builder = CreateTestBuilder();
-            //    builder
-            //        .ConfigureAssemblies(assemblies => assemblies.WithNoAssemblyScanning())
-            //        .ConfigureStartupModules(modules =>
-            //        {
-            //            modules
-            //                .ConfigureLocatorModuleCollection(c => c.Add(new FaultyAccessStaticDuringStartup()))
-            //                .RemoveStartupModule<BadStartupModule>()
-            //                .RemoveConfigureModule<BadConfigureModule>();
-            //        })
-            //        .Run();
-            //}
-            //catch (Exception e)
-            //{
-            //    sut = e.Message;
-            //}
-
-            //Assert.IsTrue(sut.StartsWith("Do not access"));
+            var logger = builder.StartupContext.Locator.Get<IStartupLogger>();
+            Assert.IsTrue(BadStaticTest.Executed);
+            Assert.IsNotNull(logger);
+            Assert.IsNotNull(builder.StartupContext.AsStatic());
+            Assert.AreEqual(builder.StartupContext, ((IStartupContext)null).AsStatic());
         }
 
         [TestMethod]
         public void ShouldThrowNoHandlerException()
         {
-            string sut = string.Empty;
+            bool failed = false;
             try
             {
                 var builder = CreateTestBuilder();
@@ -268,13 +273,14 @@ namespace DotNetStarter.UnitTests
                     .Build()
                     .Run();
             }
-            catch (Exception e)
+            catch (NullStartupHandlerException)
             {
-                sut = e.Message;
+                failed = true;
             }
 
-            Assert.IsTrue(sut.Contains("was called but no startup handler was defined"));
+            Assert.IsTrue(failed);
         }
+
         [TestMethod]
         public void ShouldUseEnvironmentItemsAcrossModules()
         {

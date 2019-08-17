@@ -7,6 +7,8 @@ namespace DotNetStarter.Abstractions
     /// </summary>
     public class StartupModuleDescriptor
     {
+        private Type _moduleType;
+
         /// <summary>
         /// IStartupModule instance
         /// </summary>
@@ -15,7 +17,7 @@ namespace DotNetStarter.Abstractions
         /// <summary>
         /// Access to Type for ILocator to resolve. If only providing type, please use UseModuleType!
         /// </summary>
-        public Type ModuleType { get; private set; }
+        public Type ModuleType => ModuleInstance?.GetType() ?? _moduleType;
 
         /// <summary>
         /// IStartupModule type, when used is resolved from ILocator
@@ -24,7 +26,7 @@ namespace DotNetStarter.Abstractions
         /// <returns></returns>
         public StartupModuleDescriptor UseModuleType<T>() where T : IStartupModule
         {
-            ModuleType = typeof(T);
+            _moduleType = typeof(T);
             return this;
         }
     }

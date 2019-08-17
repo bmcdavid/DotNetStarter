@@ -20,7 +20,7 @@ namespace DotNetStarter.Configure
         private Action<IRegistrationCollection> _registrationCollectionExpression;
         private bool _runOnce;
         private IStartupHandler _startupHandler;
-        private bool _usingImport = true;
+        private bool _usingImport = false;
 
         private StartupBuilder() { }
 
@@ -59,8 +59,6 @@ namespace DotNetStarter.Configure
             _overrideExpression?.Invoke(overrideExp);
             objFactory.OverrideExpression = overrideExp;
 
-            // if no assemblies have been configured follow the default scanner rule
-            // will throw exception for netstandard1.0 applications
             var assembliesForStartup = GetDefaultAssemblies(useDiscoverableAssemblies, assemblyExp);
             ExecuteBuild(objFactory, assembliesForStartup, overrideExp, _usingImport);
             return this;
@@ -112,7 +110,7 @@ namespace DotNetStarter.Configure
 
             if (_startupHandler is null)
             {
-                throw new Exception($"{nameof(Run)} was called but no startup handler was defined!");
+                throw new NullStartupHandlerException();
             }
 
             _startupHandler.TryExecuteStartupModules();

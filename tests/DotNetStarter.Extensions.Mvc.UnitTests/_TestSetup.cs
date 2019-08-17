@@ -20,6 +20,7 @@ namespace DotNetStarter.Extensions.Mvc.Tests
             };
 
             DotNetStarter.Configure.StartupBuilder.Create()
+                .UseImport()
                 .ConfigureAssemblies(a => a.WithAssemblies(scannableAssemblies))
                 //.ConfigureAssemblies(a => a.WithDiscoverableAssemblies())
                 .OverrideDefaults(d => d.UseLocatorRegistryFactory(new DotNetStarter.Locators.DryIocLocatorFactory()))
