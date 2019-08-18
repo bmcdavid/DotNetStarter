@@ -108,7 +108,7 @@ namespace DotNetStarter.Configure
             var sorted = config.DependencySorter.Sort<TFactoryAttr>(dependents);
 
             if (!(sorted.LastOrDefault()?.NodeAttribute is AssemblyFactoryBaseAttribute attr))
-                return default;
+                return default(TFactoryType);
 
             return (TFactoryType)Activator.CreateInstance(attr.FactoryType);
         }
