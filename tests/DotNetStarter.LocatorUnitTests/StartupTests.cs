@@ -44,10 +44,10 @@ namespace DotNetStarter.UnitTests
         {
             IEnumerable<Assembly> assemblies = new List<Assembly>
             {
-                Abstractions.Internal.TypeExtensions.Assembly(typeof(DotNetStarter.ApplicationContext))
+                Abstractions.Internal.TypeExtensions.Assembly(typeof(AssemblyFilter))
             };
 
-            var filter = DotNetStarter.Configure.Expressions.AssemblyExpression.GetScannableAssemblies(assemblies: assemblies);
+            var filter = Configure.Expressions.AssemblyExpression.GetScannableAssemblies(assemblies: assemblies);
 
             Assert.IsTrue(filter.Count() == 1);
         }
@@ -122,7 +122,7 @@ namespace DotNetStarter.UnitTests
         [TestMethod]
         public void ShouldThrowInvalidLocatoryRegistry()
         {
-            var check = new LocatorRegistryFactoryAttribute(typeof(object));
+            new LocatorRegistryFactoryAttribute(typeof(object));
         }
 
         [ExpectedException(typeof(NullLocatorException))]

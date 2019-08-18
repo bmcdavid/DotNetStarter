@@ -2,6 +2,7 @@
 using DotNetStarter.UnitTests.Mocks;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 
 #if NETSTANDARD
@@ -13,61 +14,13 @@ namespace DotNetStarter.UnitTests
     [TestClass]
     public class LocatorTests
     {
-        private IStartupContext _Context => TestSetup.TestContext;
-
-        private Import<ILocatorScopedAccessor> _ScopeAccessor;
-
-        private ILocatorScoped CreateScope(ILocator locator = null) => ((locator ?? _Context.Locator) as ILocatorWithCreateScope).CreateScope();
-
-        [TestMethod]
-        public void ShouldResolveAll()
-        {
-            var sut = _Context.Locator.GetAll(typeof(IStartupModule)).ToList();
-            var sut2 = _Context.Locator.GetAll<IStartupModule>().ToList();
-            Assert.IsTrue(sut.Any());
-            Assert.IsTrue(sut2.Any());
-            Assert.IsTrue(sut.Count() == sut2.Count());
-        }
-
-        [TestMethod]
-        public void ShouldHaveScopeAccessInScope()
-        {
-            using (var scope = _Context.Locator.Get<ILocatorScopedFactory>().CreateScope())
-            {
-                Assert.IsNotNull(_ScopeAccessor.Service.CurrentScope);
-            }
-        }
-
-        [TestMethod]
-        public void ShouldImplementIServiceProvider()
-        {
-            Assert.IsTrue(_Context.Locator is IServiceProvider);
-
-            using (var scope = CreateScope())
-                Assert.IsTrue(scope is IServiceProvider);
-        }
-
-        [TestMethod]
-        public void ShouldHaveAmbientLocatorInScope()
-        {
-            var ambientLocator = _Context.Locator.Get<ILocatorAmbient>();
-            Assert.AreSame(_Context.Locator, ambientLocator.Current);
-            Assert.IsFalse(ambientLocator.IsScoped);
-
-            using (var scope = _Context.Locator.Get<ILocatorScopedFactory>().CreateScope())
-            {
-                Assert.AreSame(scope, ambientLocator.Current);
-                Assert.IsTrue(ambientLocator.IsScoped);
-            }
-
-            Assert.AreSame(_Context.Locator, ambientLocator.Current);
-            Assert.IsFalse(ambientLocator.IsScoped);
-        }
+        private Import<ILocatorScopedAccessor> _scopeAccessor;
+        private readonly IStartupContext _context = TestSetup.TestContext;
 
         [TestMethod]
         public void ShouldCreateLocatorScope()
         {
-            var locator = _Context.Locator;
+            var locator = _context.Locator;
             ScopeTest noScopeTest = null;
 
             using (var scope = CreateScope())
@@ -102,7 +55,7 @@ namespace DotNetStarter.UnitTests
         [TestMethod]
         public void ShouldCreateScopeWithFactory()
         {
-            var locator = _Context.Locator;
+            var locator = _context.Locator;
             var factory = locator.Get<ILocatorScopedFactory>();
             ScopeTest noScopeTest;
 
@@ -135,7 +88,7 @@ namespace DotNetStarter.UnitTests
         [TestMethod]
         public void ShouldGetLocatorScopedFromAccessor()
         {
-            var factory = _Context.Locator.Get<ILocatorScopedFactory>();
+            var factory = _context.Locator.Get<ILocatorScopedFactory>();
             using (var scope1 = factory.CreateScope())
             {
                 var sut1 = scope1.Get<ILocatorScopedAccessor>().CurrentScope;
@@ -145,10 +98,51 @@ namespace DotNetStarter.UnitTests
         }
 
         [TestMethod]
+        public void ShouldHaveAmbientLocatorInScope()
+        {
+            var ambientLocator = _context.Locator.Get<ILocatorAmbient>();
+            Assert.AreSame(_context.Locator, ambientLocator.Current);
+            Assert.IsFalse(ambientLocator.IsScoped);
+
+            using (var scope = _context.Locator.Get<ILocatorScopedFactory>().CreateScope())
+            {
+                Assert.AreSame(scope, ambientLocator.Current);
+                Assert.IsTrue(ambientLocator.IsScoped);
+            }
+
+            Assert.AreSame(_context.Locator, ambientLocator.Current);
+            Assert.IsFalse(ambientLocator.IsScoped);
+        }
+
+        [TestMethod]
+        public void ShouldHaveScopeAccessInScope()
+        {
+            using (var scope = _context.Locator.Get<ILocatorScopedFactory>().CreateScope())
+            {
+                Assert.IsNotNull(_scopeAccessor.Service.CurrentScope);
+            }
+        }
+
+        [TestMethod]
+        public void ShouldImplementIServiceProvider()
+        {
+            Assert.IsTrue(_context.Locator is IServiceProvider);
+
+            using (var scope = CreateScope())
+                Assert.IsTrue(scope is IServiceProvider);
+        }
+
+        [TestMethod]
+        public void ShouldImportContext()
+        {
+            Assert.AreEqual(_context, TestSetup.TestContext);
+        }
+
+        [TestMethod]
         public void ShouldNotResolveILocatorScopeOutsideofScope()
         {
             bool failed = false;
-            var locator = _Context.Locator;
+            var locator = _context.Locator;
 
             try
             {
@@ -165,7 +159,7 @@ namespace DotNetStarter.UnitTests
         [TestMethod]
         public void ShouldOpenMultipleScopesFromFactory()
         {
-            var factory = _Context.Locator.Get<IServiceScopeFactory>();
+            var factory = _context.Locator.Get<IServiceScopeFactory>();
 
             var scope1 = factory.CreateScope();
             Assert.IsNotNull(scope1);
@@ -177,9 +171,47 @@ namespace DotNetStarter.UnitTests
         }
 
         [TestMethod]
+        public void ShouldResolveAll()
+        {
+            var sut = _context.Locator.GetAll(typeof(IStartupModule)).ToList();
+            var sut2 = _context.Locator.GetAll<IStartupModule>().ToList();
+            Assert.IsTrue(sut.Any());
+            Assert.IsTrue(sut2.Any());
+            Assert.IsTrue(sut.Count() == sut2.Count());
+        }
+
+        [TestMethod]
+        public void ShouldResolveClassWithGreedyInternalConstructor()
+        {
+            Assert.IsNotNull(_context.Locator.Get<Mocks.RegistrationTestGreedyInternal>());
+        }
+
+        [TestMethod]
+        public void ShouldResolveClassWithGreedyPrivateConstructor()
+        {
+            Assert.IsNotNull(_context.Locator.Get<Mocks.RegistrationTestGreedyPrivate>());
+        }
+
+        [TestMethod]
+        public void ShouldResolveClassWithStaticConstructor()
+        {
+            Assert.IsNotNull(_context.Locator.Get<Mocks.RegistrationTestStatic>());
+        }
+
+        [TestMethod]
+        public void ShouldResolveComplexFuncCreator()
+        {
+            var injectedArg = new TestInjectable() { Id = 42 };
+            var sut = _context.Locator.Get<Func<IInjectable, TestFuncCreationComplex>>();
+            var created = sut(injectedArg);
+
+            Assert.IsTrue(created.InjectionTest.Id == 42);
+        }
+
+        [TestMethod]
         public void ShouldResolveScopedTypeWithInjectedLocator()
         {
-            var locator = _Context.Locator;
+            var locator = _context.Locator;
             var factory = locator.Get<ILocatorScopedFactory>();
 
             using (var scopedLocator = factory.CreateScope())
@@ -192,7 +224,7 @@ namespace DotNetStarter.UnitTests
         [TestMethod]
         public void ShouldResolveSimpleFuncCreator()
         {
-            var sut = _Context.Locator.Get<Func<ILocatorScopedFactory>>();
+            var sut = _context.Locator.Get<Func<ILocatorScopedFactory>>();
             var sut1 = sut();
             var sut2 = sut();
 
@@ -200,38 +232,107 @@ namespace DotNetStarter.UnitTests
             Assert.AreSame(sut1, sut2);
         }
 
+        [ExpectedException(typeof(ArgumentException))]
         [TestMethod]
-        public void ShouldResolveComplexFuncCreator()
+        public void ShouldThrowLocatorWithNoCreateScope()
         {
-            var injectedArg = new TestInjectable() { Id = 42 };
-            var sut = _Context.Locator.Get<Func<IInjectable, TestFuncCreationComplex>>();
-            var created = sut(injectedArg);
-
-            Assert.IsTrue(created.InjectionTest.Id == 42);
+            var sut = new LocatorScopeFactory(new BadLocator(), null);
+            sut.CreateScope();
         }
 
+        [ExpectedException(typeof(MissingImplementationException))]
         [TestMethod]
-        public void ShouldImportContext()
+        public void ShouldThrowLocatorAccessorException()
         {
-           Assert.AreEqual(_Context, TestSetup.TestContext);
+            var sut = new LocatorScopeFactory(new StubLocatorForScope(), null);
+            sut.CreateScope();
         }
 
-        [TestMethod]
-        public void ShouldResolveClassWithGreedyInternalConstructor()
+        private ILocatorScoped CreateScope(ILocator locator = null) => ((locator ?? _context.Locator) as ILocatorWithCreateScope).CreateScope();
+
+        private class StubLocatorForScope : ILocator, ILocatorWithCreateScope, ILocatorScoped
         {
-            Assert.IsNotNull(_Context.Locator.Get<Mocks.RegistrationTestGreedyInternal>());
+            public ILocatorScoped Parent => throw new NotImplementedException();
+
+            public ILocatorScoped CreateScope()
+            {
+                return this;
+            }
+
+            public void Dispose()
+            {
+                throw new NotImplementedException();
+            }
+
+            private class BadAccessor : ILocatorScopedAccessor
+            {
+                public ILocatorScoped CurrentScope => throw new NotImplementedException();
+            }
+
+            public object Get(Type serviceType, string key = null)
+            {
+                if(serviceType == typeof(ILocatorScopedAccessor))
+                {
+                    return new BadAccessor();
+                }
+
+                throw new NotImplementedException();
+            }
+
+            public T Get<T>(string key = null) => (T)Get(typeof(T), key);
+
+            public IEnumerable<T> GetAll<T>(string key = null)
+            {
+                throw new NotImplementedException();
+            }
+
+            public IEnumerable<object> GetAll(Type serviceType, string key = null)
+            {
+                throw new NotImplementedException();
+            }
+
+            public object GetService(Type serviceType)
+            {
+                throw new NotImplementedException();
+            }
+
+            public void OnDispose(Action disposeAction)
+            {
+                throw new NotImplementedException();
+            }
         }
 
-        [TestMethod]
-        public void ShouldResolveClassWithGreedyPrivateConstructor()
+        private class BadLocator : ILocator
         {
-            Assert.IsNotNull(_Context.Locator.Get<Mocks.RegistrationTestGreedyPrivate>());
-        }
+            public void Dispose()
+            {
+                throw new NotImplementedException();
+            }
 
-        [TestMethod]
-        public void ShouldResolveClassWithStaticConstructor()
-        {
-            Assert.IsNotNull(_Context.Locator.Get<Mocks.RegistrationTestStatic>());
+            public object Get(Type serviceType, string key = null)
+            {
+                throw new NotImplementedException();
+            }
+
+            public T Get<T>(string key = null)
+            {
+                throw new NotImplementedException();
+            }
+
+            public IEnumerable<T> GetAll<T>(string key = null)
+            {
+                throw new NotImplementedException();
+            }
+
+            public IEnumerable<object> GetAll(Type serviceType, string key = null)
+            {
+                throw new NotImplementedException();
+            }
+
+            public object GetService(Type serviceType)
+            {
+                throw new NotImplementedException();
+            }
         }
     }
 }

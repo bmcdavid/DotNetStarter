@@ -4,19 +4,19 @@ using System.Reflection;
 namespace DotNetStarter.Extensions.WebApi.Tests
 {
     [TestClass]
-    public class _TestSetup
+    public class TestSetup
     {
         [AssemblyInitialize]
-        public static void Setup(TestContext context)
+        public static void Setup(TestContext _)
         {
             var scannableAssemblies = new Assembly[]
             {
                 typeof(DotNetStarter.Abstractions.IAssemblyFilter).Assembly,
-                typeof(DotNetStarter.ApplicationContext).Assembly,
+                typeof(DotNetStarter.AssemblyFilter).Assembly,
                 typeof(DotNetStarter.Locators.DryIocLocatorRegistry).Assembly,
                 typeof(DotNetStarter.Web.Startup).Assembly,
                 typeof(DotNetStarter.Extensions.WebApi.StartupWebApiConfigure).Assembly,
-                typeof(_TestSetup).Assembly
+                typeof(TestSetup).Assembly
             };
 
             Configure.StartupBuilder.Create()

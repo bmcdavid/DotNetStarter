@@ -4,7 +4,7 @@
     using System.Collections.Generic;
     using System.Linq;
     using System.Web;
-    using static ApplicationContext;
+    using static DotNetStarter.Abstractions.Keys;
 
     /// <summary>
     /// Initializes IHttpModules
@@ -12,8 +12,8 @@
     [Registration(typeof(IWebModuleStartupHandler), Lifecycle.Singleton)]
     public class WebModuleStartupHandler : IWebModuleStartupHandler
     {
-        private ILocatorScopedFactory _LocatorScopeFactory;
-        private IEnumerable<IStartupModule> _StartupModules;
+        private readonly ILocatorScopedFactory _locatorScopeFactory;
+        private readonly IEnumerable<IStartupModule> _startupModules;
 
         /// <summary>
         /// Constructor
@@ -22,8 +22,8 @@
         /// <param name="locator"></param>
         public WebModuleStartupHandler(ILocatorScopedFactory locatorScopeFactory, ILocator locator)
         {
-            _LocatorScopeFactory = locatorScopeFactory;
-            _StartupModules = locator.GetAll<IStartupModule>(); // hack: needed to get correct sorting on some locators!
+            _locatorScopeFactory = locatorScopeFactory;
+            _startupModules = locator.GetAll<IStartupModule>(); // hack: needed to get correct sorting on some locators!
         }
 
         /// <summary>
@@ -39,7 +39,7 @@
         /// <param name="startupModules"></param>
         public virtual void Startup(HttpApplication applicationContext, IEnumerable<IHttpModule> startupModules)
         {
-            startupModules = startupModules ?? _StartupModules.OfType<IHttpModule>();
+            startupModules = startupModules ?? _startupModules.OfType<IHttpModule>();
 
             foreach (var module in startupModules)
             {
@@ -63,7 +63,7 @@
             {
                 var x = sender as HttpApplication;
                 var context = x.Context;
-                var scopedLocator = _LocatorScopeFactory.CreateScope();
+                var scopedLocator = _locatorScopeFactory.CreateScope();
                 context.Items.Add(ScopedLocatorKeyInContext, scopedLocator);
             };
 

@@ -38,7 +38,7 @@ namespace DotNetStarter.Web.Tests
         public void ShouldNotInitMockModuleWithWebModuleHandler()
         {
             Mocks.MockHttpModule.InitCalled = false; //reset
-            var locator = _TestSetup.Builder.StartupContext.Locator;
+            var locator = TestSetup.Builder.StartupContext.Locator;
             var handler = new Mocks.DisabledWebModuleHandler(locator);
 
             if (handler.StartupEnabled())

@@ -49,16 +49,17 @@ namespace DotNetStarter
 
             if (!(accessor is ILocatorScopedWithSet setter))
             {
-                throw new Exception($"{accessor.GetType().FullName} must implement {typeof(ILocatorScopedWithSet).FullName}!");
+                throw new MissingImplementationException(accessor.GetType(), typeof(ILocatorScopedWithSet));
+            }
+
+            if (!(_locatorAmbient is ILocatorAmbientWithSet settable))
+            {
+                throw new MissingImplementationException(_locator.GetType(), typeof(ILocatorAmbientWithSet));
             }
 
             setter.SetCurrentScopedLocator(scope);
-
-            if (_locatorAmbient is ILocatorAmbientWithSet settable)
-            {
-                scope.OnDispose(() => settable.SetCurrentScopedLocator(null));
-                settable.SetCurrentScopedLocator(scope);
-            }
+            scope.OnDispose(() => settable.SetCurrentScopedLocator(null));
+            settable.SetCurrentScopedLocator(scope);
 
             return scope;
         }

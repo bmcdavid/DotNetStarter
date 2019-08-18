@@ -8,7 +8,7 @@
     using System.Linq;
     using System.Threading.Tasks;
     using AppFunc = System.Func<System.Collections.Generic.IDictionary<string, object>, System.Threading.Tasks.Task>;
-    using static DotNetStarter.ApplicationContext;
+    using static DotNetStarter.Abstractions.Keys;
 
 #if NET45
     using global::Owin;
@@ -146,9 +146,7 @@
                 if (scopedProvider is null)
                     throw new NullReferenceException($"Cannot get {typeof(IServiceProvider).FullName} from current context for key {ScopedProviderKeyInContext}!");
 
-                var middleware = scopedProvider.GetService(typeof(Func<AppFunc, TServiceMiddleware>)) as Func<AppFunc, TServiceMiddleware>;
-
-                if (middleware is null)
+                if (!(scopedProvider.GetService(typeof(Func<AppFunc, TServiceMiddleware>)) is Func<AppFunc, TServiceMiddleware> middleware))
                     return Next.Invoke(context);
 
                 return middleware(Next).Invoke(context);

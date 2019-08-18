@@ -2,7 +2,7 @@
 {
     using DotNetStarter.Abstractions;
     using System.Web;
-    using static ApplicationContext;
+    using static DotNetStarter.Abstractions.Keys;
 
     /// <summary>
     /// HttpContext extensions for System.Web

@@ -6,16 +6,16 @@ using System.Reflection;
 namespace DotNetStarter.Web.Tests
 {
     [TestClass]
-    public sealed class _TestSetup
+    public sealed class TestSetup
     {
         public static StartupBuilder Builder { get; private set; }
 
         [AssemblyInitialize]
-        public static void Setup(TestContext context)
+        public static void Setup(TestContext _)
         {
             var scannableAssemblies = new List<Assembly>
             {
-                typeof(DotNetStarter.ApplicationContext).Assembly,
+                typeof(DotNetStarter.AssemblyFilter).Assembly,
                 typeof(DotNetStarter.Abstractions.IAssemblyFilter).Assembly,
                 typeof(DotNetStarter.Locators.DryIocLocatorRegistry).Assembly,
                 typeof(DotNetStarter.Web.IHttpContextProvider).Assembly,
