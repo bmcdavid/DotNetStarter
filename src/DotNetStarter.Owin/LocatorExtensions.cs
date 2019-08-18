@@ -76,14 +76,12 @@
         /// Tries to get already scoped locator from HttpContextBase.Items dictionary
         /// </summary>
         /// <param name="environment"></param>
-        /// <param name="rootLocator"></param>
         /// <returns></returns>
-        internal static ILocator TryGetHttpScopedLocator(IDictionary<string, object> environment, ILocator rootLocator)
+        internal static ILocator TryGetHttpScopedLocator(IDictionary<string, object> environment)
         {
-            var reflectionHelper = rootLocator.Get<IReflectionHelper>();
             var httpContext = environment.Get<IServiceProvider>("System.Web.HttpContextBase", null);
             var httpContextItemProperty = httpContext is null ? null :
-                    reflectionHelper.GetProperties(httpContext.GetType()).FirstOrDefault(x => string.CompareOrdinal(x.Name, "Items") == 0);
+                    httpContext.GetType().GetProperties().FirstOrDefault(x => string.CompareOrdinal(x.Name, "Items") == 0);
 
             if (httpContextItemProperty?.GetValue(httpContext) is IDictionary contextItemDict)
             {
@@ -105,7 +103,7 @@
         {
             app.Use(new Func<AppFunc, AppFunc>(next => (async context =>
             {
-                var scoped = TryGetHttpScopedLocator(context, locator) as ILocatorScoped;
+                var scoped = TryGetHttpScopedLocator(context) as ILocatorScoped;
                 var hasScopedLocator = scoped is object;
                 scoped = scoped ?? locator.Get<ILocatorScopedFactory>().CreateScope(); // create via factory
 

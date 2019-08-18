@@ -53,6 +53,12 @@ namespace DotNetStarter.UnitTests
         }
 
         [TestMethod]
+        public void ShouldHaveStaticKeys()
+        {
+            Assert.AreEqual(Keys.ScopedLocatorKeyInContext, "DotNetStarter.Abstractions.Keys.ILocator");
+            Assert.AreEqual(Keys.ScopedProviderKeyInContext, "DotNetStarter.Abstractions.Keys.IServiceProvider");
+        }
+        [TestMethod]
         public void ShouldLogExceptionGreatherThanThreshold()
         {
             var sut = new StringLogger(LogLevel.Error, 10000);

@@ -24,11 +24,6 @@ namespace DotNetStarter.Abstractions.Internal
             return t.GetConstructors();
         }
 
-        public static IEnumerable<Attribute> CustomAttribute(this Type type, bool inherit)
-        {
-            return type.GetCustomAttributes(inherit).OfType<Attribute>();
-        }
-
         public static IEnumerable<Attribute> CustomAttribute(this Type t, Type attrType, bool inherit)
         {
             return t.GetCustomAttributes(attrType, inherit).OfType<Attribute>();
@@ -62,31 +57,6 @@ namespace DotNetStarter.Abstractions.Internal
                 .Concat(Interfaces(type))
                 .Concat(BaseType(type).GetBaseTypes())
                 .Distinct();
-
-        public static IEnumerable<EventInfo> GetEventsCheck(this Type type)
-        {
-            return type.GetEvents();
-        }
-
-        public static IEnumerable<FieldInfo> GetFieldsCheck(this Type type)
-        {
-            return type.GetFields();
-        }
-
-        public static IEnumerable<MemberInfo> GetMembersCheck(this Type type)
-        {
-            return type.GetMembers();
-        }
-
-        public static IEnumerable<MethodInfo> GetMethodsCheck(this Type type)
-        {
-            return type.GetMethods();
-        }
-
-        public static IEnumerable<PropertyInfo> GetPropertiesCheck(this Type type)
-        {
-            return type.GetProperties();
-        }
 
         public static Type GetTrueType(this Type type) => type.IsNullableType() ? Nullable.GetUnderlyingType(type) : type;
 

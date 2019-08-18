@@ -68,7 +68,7 @@
         /// <returns></returns>
         public virtual ITimedTask Get(string name)
         {
-            var t = _applicationTasks.FirstOrDefault(x => Internal.CrossPlatformHelpers.StringCompareIgnoreCase(x.Name, name));
+            var t = _applicationTasks.FirstOrDefault(x => string.Compare(x.Name, name, StringComparison.OrdinalIgnoreCase) == 0);
 
             if (t is object)
                 return t;

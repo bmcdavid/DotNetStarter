@@ -69,55 +69,11 @@
             Abstractions.Internal.TypeExtensions.CustomAttributes(assembly, inherit);
 
         /// <summary>
-        /// Gets all custom attributes
-        /// </summary>
-        /// <param name="type"></param>
-        /// <param name="inherit"></param>
-        /// <returns></returns>
-        public virtual IEnumerable<Attribute> GetCustomAttributes(Type type, bool inherit) =>
-            Abstractions.Internal.TypeExtensions.CustomAttribute(type, inherit);
-
-        /// <summary>
-        /// Get types events
-        /// </summary>
-        /// <param name="type"></param>
-        /// <returns></returns>
-        public virtual IEnumerable<EventInfo> GetEvents(Type type) => Abstractions.Internal.TypeExtensions.GetEventsCheck(type);
-
-        /// <summary>
-        /// Get types fields
-        /// </summary>
-        /// <param name="type"></param>
-        /// <returns></returns>
-        public virtual IEnumerable<FieldInfo> GetFields(Type type) => Abstractions.Internal.TypeExtensions.GetFieldsCheck(type);
-
-        /// <summary>
         /// Gets all interfaces for the type
         /// </summary>
         /// <param name="type"></param>
         /// <returns></returns>
         public virtual IEnumerable<Type> GetInterfaces(Type type) => Abstractions.Internal.TypeExtensions.Interfaces(type);
-
-        /// <summary>
-        /// Gets types members
-        /// </summary>
-        /// <param name="type"></param>
-        /// <returns></returns>
-        public virtual IEnumerable<MemberInfo> GetMembers(Type type) => Abstractions.Internal.TypeExtensions.GetMembersCheck(type);
-
-        /// <summary>
-        /// Get types methods
-        /// </summary>
-        /// <param name="type"></param>
-        /// <returns></returns>
-        public virtual IEnumerable<MethodInfo> GetMethods(Type type) => Abstractions.Internal.TypeExtensions.GetMethodsCheck(type);
-
-        /// <summary>
-        /// Get types properties
-        /// </summary>
-        /// <param name="type"></param>
-        /// <returns></returns>
-        public virtual IEnumerable<PropertyInfo> GetProperties(Type type) => Abstractions.Internal.TypeExtensions.GetPropertiesCheck(type);
 
         /// <summary>
         /// Gets true type, if nullable underlying type is returned
@@ -193,12 +149,5 @@
         /// <param name="type"></param>
         /// <returns></returns>
         public virtual bool IsNullableType(Type type) => Abstractions.Internal.TypeExtensions.IsNullableType(type);
-
-        /// <summary>
-        /// Determines if type is a value type
-        /// </summary>
-        /// <param name="type"></param>
-        /// <returns></returns>
-        public virtual bool IsValueType(Type type) => Abstractions.Internal.TypeExtensions.IsValueType(type);
     }
 }

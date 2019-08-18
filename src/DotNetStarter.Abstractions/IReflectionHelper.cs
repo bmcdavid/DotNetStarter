@@ -42,14 +42,6 @@
         IEnumerable<Attribute> GetCustomAttribute(Assembly assembly, Type attrType, bool inherit);
 
         /// <summary>
-        /// Gets all custom attributes for a type
-        /// </summary>
-        /// <param name="type"></param>
-        /// <param name="inherit"></param>
-        /// <returns></returns>
-        IEnumerable<Attribute> GetCustomAttributes(Type type, bool inherit);
-
-        /// <summary>
         /// Gets all custom attributes for an assembly
         /// </summary>
         /// <param name="assembly"></param>
@@ -58,46 +50,11 @@
         IEnumerable<Attribute> GetCustomAttributes(Assembly assembly, bool inherit);
 
         /// <summary>
-        /// Gets types events
-        /// </summary>
-        /// <param name="type"></param>
-        /// <returns></returns>
-        IEnumerable<EventInfo> GetEvents(Type type);
-
-        /// <summary>
-        /// Gets types fields
-        /// </summary>
-        /// <param name="type"></param>
-        /// <returns></returns>
-        IEnumerable<FieldInfo> GetFields(Type type);
-
-        /// <summary>
         /// Gets the interfaces implemented for a type
         /// </summary>
         /// <param name="type"></param>
         /// <returns></returns>
         IEnumerable<Type> GetInterfaces(Type type);
-
-        /// <summary>
-        /// Get types members
-        /// </summary>
-        /// <param name="type"></param>
-        /// <returns></returns>
-        IEnumerable<MemberInfo> GetMembers(Type type);
-
-        /// <summary>
-        /// Gets types methods
-        /// </summary>
-        /// <param name="type"></param>
-        /// <returns></returns>
-        IEnumerable<MethodInfo> GetMethods(Type type);
-
-        /// <summary>
-        /// Gets types properties
-        /// </summary>
-        /// <param name="type"></param>
-        /// <returns></returns>
-        IEnumerable<PropertyInfo> GetProperties(Type type);
 
         /// <summary>
         /// Gets types from an assembly
@@ -158,13 +115,6 @@
         /// <param name="type"></param>
         /// <returns></returns>
         bool IsInterface(Type type);
-
-        /// <summary>
-        /// Determines if type is a value type
-        /// </summary>
-        /// <param name="type"></param>
-        /// <returns></returns>
-        bool IsValueType(Type type);
 
         /// <summary>
         /// Determines if type is Nullable
