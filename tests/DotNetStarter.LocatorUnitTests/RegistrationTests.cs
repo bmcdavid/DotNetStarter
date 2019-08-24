@@ -23,6 +23,24 @@ namespace DotNetStarter.UnitTests
             Assert.IsNotNull(task);
         }
 
+        [DataRow(typeof(GenericStringBuilder), null)]
+        [DataRow(null, typeof(object))]
+        [ExpectedException(typeof(ArgumentNullException))]
+        [TestMethod]
+        public void ShouldFailRegistrationDescriptorForTypes(Type serviceType, Type implType)
+        {
+            new RegistrationDescriptor(serviceType, implType, Lifecycle.Transient);
+        }
+
+        [DataRow(typeof(GenericStringBuilder), null)]
+        [DataRow(null, null)]
+        [ExpectedException(typeof(ArgumentNullException))]
+        [TestMethod]
+        public void ShouldFailRegistrationDescriptorForServiceProvider(Type t, Func<IServiceProvider, GenericStringBuilder> f)
+        {
+            new RegistrationDescriptor(t, f, Lifecycle.Transient);
+        }
+
         [TestMethod]
         public void ShouldBeReadOnlyLocatorInAppContext()
         {

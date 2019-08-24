@@ -109,17 +109,42 @@ namespace DotNetStarter.UnitTests
                 .ConfigureAssemblies(a => a.WithNoAssemblyScanning())
                 .ConfigureRegistrations(r =>
                 {
-                    r.TryAddSingleton(new TestFooImport());
-                    r.AddSingleton<TestFooImport, TestFooImport>();
+                    r.AddScoped<ILocatorScopedAccessor, LocatorScopedAccessor>();
+                    r.AddSingleton<ILocatorAmbient, Internal.LocatorAmbient>();
+                    r.Add(
+                    RegistrationDescriptor.Singleton<ILocatorScopedFactory>(_ => new LocatorScopeFactory(_.GetService(typeof(ILocator)) as ILocator, _.GetService(typeof(ILocatorAmbient)) as ILocatorAmbient))
+                    );
+                    r.TryAddSingleton(new FooSingleton());
+                    r.AddSingleton<FooSingleton, FooSingleton>();
+                    r.TryAddTransient<FooTransient>();
+                    r.AddTransient(typeof(FooTransient), typeof(FooTransient));
+                    r.TryAddScoped<FooScoped>();
+                    r.AddScoped<FooScoped, FooScoped>();
                     //todo: test more usages
                 })
                 .Build()
                 .Run();
 
-            var sut1 = builder.StartupContext.Locator.Get<TestFooImport>();
-            var sut2 = builder.StartupContext.Locator.Get<TestFooImport>();
+            var l = builder.StartupContext.Locator;
+            var sut1 = l.Get<FooSingleton>();
+            var sut2 = l.Get(typeof(FooSingleton));
+            Assert.AreSame(sut1, sut2, "Singleton");
 
-            Assert.AreSame(sut1, sut2);
+            var sut3 = l.Get<FooTransient>();
+            var sut4 = l.Get(typeof(FooTransient));
+            Assert.AreNotSame(sut3, sut4, "Transient");
+
+            using (var scope = l.Get<ILocatorScopedFactory>().CreateScope())
+            {
+                sut3 = scope.Get<FooTransient>();
+                sut4 = scope.Get(typeof(FooTransient));
+                Assert.AreNotSame(sut3, sut4, "Transient In Scope");
+
+                var sut5 = scope.Get<FooScoped>();
+                var sut6 = scope.Get(typeof(FooScoped));
+
+                Assert.AreSame(sut5, sut6, "Scoped");
+            }
         }
 
         [TestMethod]

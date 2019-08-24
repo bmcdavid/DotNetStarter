@@ -38,4 +38,10 @@ namespace DotNetStarter.UnitTests.Mocks
     {
         public static IFooTwo CreateFoo() => new FooTwo();
     }
+
+    public class FooTransient { }
+
+    public class FooScoped { }
+
+    public class FooSingleton { }
 }
