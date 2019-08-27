@@ -200,6 +200,30 @@ namespace DotNetStarter.UnitTests
         }
 
         [TestMethod]
+        public void ShouldOverrideDefaults()
+        {
+            var sut = CreateTestBuilder();
+            sut.OverrideDefaults
+                (d =>   
+                {
+                    d.UseContainerDefaults(new TestContainerDefaults());
+                    d.UseRegistryFinalizer(l => RegistryFinalizer.Finalize(l));
+                    d.UseAssemblyScanner(new TestAssemblyScanner());
+                    d.UseDependencyFinder(new TestDependencyFinder());
+                    d.UseDependencySorter(new TestDependencySorter(TestDependencySorter.CreateDependencyNode));
+                    d.UseTimedTaskFactory(TestTimedTaskFactory.CreateTimedTask);
+                    d.UseTimedTaskManager(new TestTimedTaskManager(() => new RequestSettingsProvider()));
+                })
+                .Build()
+                .Run();
+
+            Assert.IsTrue(sut.StartupContext.Configuration.DependencyFinder is TestDependencyFinder);
+            Assert.IsTrue(sut.StartupContext.Configuration.DependencySorter is TestDependencySorter);
+            Assert.IsTrue(sut.StartupContext.Configuration.AssemblyScanner is TestAssemblyScanner);
+            Assert.IsTrue(sut.StartupContext.Configuration.TimedTaskManager is TestTimedTaskManager);
+        }
+
+        [TestMethod]
         public void ShouldRunWithNoScanning()
         {
             var sut = new ManualLocatorConfigure();

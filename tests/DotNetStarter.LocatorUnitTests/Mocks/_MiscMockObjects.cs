@@ -5,8 +5,12 @@ using System.Collections.Generic;
 
 [assembly: DiscoverTypes(typeof(IMock), typeof(IGenericeMock<>), typeof(IGenericeMock<object>), typeof(MockBaseClass))]
 
+[assembly: Exports(ExportsType.All)]
+
 namespace DotNetStarter.UnitTests.Mocks
 {
+    // todo: test a dynamic assembly, https://stackoverflow.com/questions/604501/generating-dll-assembly-dynamically-at-run-time
+
     public interface IGenericeMock<T> where T : new() { }
 
     public interface IMock { }
@@ -62,5 +66,44 @@ namespace DotNetStarter.UnitTests.Mocks
         public Import<NotRegisteredObject> Test { get; set; }
 
         public class NotRegisteredObject { }
+    }
+
+    internal class TestTimedTaskFactory
+    {
+        public static ITimedTask CreateTimedTask() => new TimedTask();
+    }
+
+    internal class RegistryFinalizer
+    {
+        public static bool Executed;
+
+        public static void Finalize(ILocatorRegistry registry)
+        {
+            Executed = true;
+        }
+    }
+
+    internal class TestContainerDefaults : Internal.ContainerDefaults { }
+
+    internal class TestAssemblyScanner : AssemblyScanner { }
+
+    internal class TestDependencyFinder : DependencyFinder { }
+
+    internal class TestDependencySorter : DependencySorter
+    {
+        public static IDependencyNode CreateDependencyNode(object nodeType, Type attributeType)
+        {
+            return new DependencyNode(nodeType, attributeType);
+        }
+
+        public TestDependencySorter(Func<object, Type, IDependencyNode> n) : base(n) { }
+    }
+
+    internal class TestTimedTaskManager : TimedTaskManager
+    {
+        public TestTimedTaskManager(Func<IRequestSettingsProvider> p) : base(p)
+        {
+
+        }
     }
 }
