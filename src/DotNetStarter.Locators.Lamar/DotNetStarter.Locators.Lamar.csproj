@@ -22,7 +22,7 @@
   <Import Project="..\..\targets\CommonNuGetPackage.props" />
 
   <ItemGroup>
-    <PackageReference Include="Lamar" Version="3.0.5" />
+    <PackageReference Include="Lamar" Version="4.0.0" />
     <ProjectReference Include="..\DotNetStarter.Abstractions\DotNetStarter.Abstractions.csproj" />
   </ItemGroup>
 

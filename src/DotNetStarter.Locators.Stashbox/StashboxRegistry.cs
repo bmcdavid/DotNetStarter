@@ -9,7 +9,7 @@ namespace DotNetStarter.Locators
     /// </summary>
     public class StashboxRegistry : ILocatorRegistry, ILocatorRegistryWithContains
     {
-        private IStashboxContainer _container;
+        private readonly IStashboxContainer _container;
 
         /// <summary>
         /// Constructor

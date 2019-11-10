@@ -1,12 +1,12 @@
 ﻿using DotNetStarter.Abstractions;
 using Stashbox.Lifetime;
-using Stashbox.Registration;
+using Stashbox.Registration.Fluent;
 
 namespace DotNetStarter.Locators
 {
     internal static class StashboxExtensions
     {
-        public static IFluentServiceRegistrator ConvertLifetime(this IFluentServiceRegistrator r, Lifecycle l)
+        public static FluentServiceConfigurator<RegistrationConfigurator> ConvertLifetime(this FluentServiceConfigurator<RegistrationConfigurator> r, Lifecycle l)
         {
             switch (l)
             {

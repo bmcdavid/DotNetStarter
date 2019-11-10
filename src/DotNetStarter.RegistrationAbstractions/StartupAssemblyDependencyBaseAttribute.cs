@@ -8,9 +8,10 @@
     [AttributeUsage(AttributeTargets.Assembly, AllowMultiple = false, Inherited = true)]
     public abstract class StartupAssemblyDependencyBaseAttribute : StartupDependencyBaseAttribute
     {
-        private StartupAssemblyDependencyBaseAttribute()
-        {
-        }
+        // todo: is this a breaking change?
+        //private StartupAssemblyDependencyBaseAttribute()
+        //{
+        //}
 
         /// <summary>
         /// Constructor

@@ -26,7 +26,7 @@
 
 
   <ItemGroup>
-    <PackageReference Include="LightInject" Version="5.5.0" />
+    <PackageReference Include="LightInject" Version="6.2.0" />
     <ProjectReference Include="..\DotNetStarter.Abstractions\DotNetStarter.Abstractions.csproj" />
   </ItemGroup>
 </Project>

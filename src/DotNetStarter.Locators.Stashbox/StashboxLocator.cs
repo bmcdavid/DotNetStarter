@@ -10,7 +10,7 @@ namespace DotNetStarter.Locators
     /// </summary>
     public class StashboxLocator : ILocator, ILocatorWithCreateScope, IServiceProvider
     {
-        private IStashboxContainer _container;
+        private readonly IStashboxContainer _container;
 
         /// <summary>
         /// Constructor

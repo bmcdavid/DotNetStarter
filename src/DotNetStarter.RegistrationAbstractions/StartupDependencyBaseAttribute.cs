@@ -27,7 +27,7 @@
         /// Constructor
         /// </summary>
         /// <param name="dependencies"></param>
-        public StartupDependencyBaseAttribute(params Type[] dependencies)
+        public StartupDependencyBaseAttribute(params Type[] dependencies) : this()
         {
             Dependencies = dependencies;
             IsAssemblyDependency = false;
