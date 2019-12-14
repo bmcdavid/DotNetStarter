@@ -14,7 +14,7 @@ namespace DotNetStarter.UnitTests
         internal static IStartupContext TestContext { get; private set; }
 
         [AssemblyInitialize]
-        public static void Setup(TestContext context)
+        public static void Setup(TestContext _)
         {
             try
             {
