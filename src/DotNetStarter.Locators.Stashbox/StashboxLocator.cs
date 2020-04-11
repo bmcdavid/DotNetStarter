@@ -2,6 +2,7 @@
 using Stashbox;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace DotNetStarter.Locators
 {
@@ -35,7 +36,16 @@ namespace DotNetStarter.Locators
         /// <param name="serviceType"></param>
         /// <param name="key"></param>
         /// <returns></returns>
-        public object Get(Type serviceType, string key = null) => _container.Resolve(serviceType);
+        public object Get(Type serviceType, string key = null)
+        {
+            if (typeof(IServiceProvider).IsAssignableFrom(serviceType))
+            {
+                // hack to fix, Resolve<IServiceProvider> returns its own
+                return _container.ResolveAll(serviceType).Last();
+            }
+
+            return _container.Resolve(serviceType);
+        }
 
         /// <summary>
         /// Gets service T instance
@@ -43,7 +53,7 @@ namespace DotNetStarter.Locators
         /// <typeparam name="T"></typeparam>
         /// <param name="key"></param>
         /// <returns></returns>
-        public T Get<T>(string key = null) => _container.Resolve<T>();
+        public T Get<T>(string key = null) => (T)Get(typeof(T), key);
 
         /// <summary>
         /// Gets all service T instances

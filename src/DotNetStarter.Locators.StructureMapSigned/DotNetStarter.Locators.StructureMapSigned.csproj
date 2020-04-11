@@ -29,4 +29,8 @@
     <PackageReference Include="structuremap-signed" version="3.1.9.463" />
   </ItemGroup>
 
+  <ItemGroup>
+    <PackageReference Update="Microsoft.SourceLink.GitHub" Version="1.0.0" />
+  </ItemGroup>
+
 </Project>

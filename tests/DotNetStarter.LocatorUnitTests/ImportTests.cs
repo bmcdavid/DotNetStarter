@@ -2,11 +2,13 @@
 using DotNetStarter.UnitTests.Mocks;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Text;
 
 namespace DotNetStarter.UnitTests
 {
+    [ExcludeFromCodeCoverage]
     [TestClass]
     public class ImportTests
     {
@@ -20,14 +22,26 @@ namespace DotNetStarter.UnitTests
         [TestMethod]
         public void ShouldGuardImportAccessorNullForAllServices()
         {
-            var sut = new ImportAccessor<object>(new StringBuilder(), null);
+            new ImportAccessor<object>(new StringBuilder(), null);
         }
 
         [ExpectedException(typeof(ArgumentNullException))]
         [TestMethod]
         public void ShouldGuardImportAccessorNullService()
         {
-            var sut = new ImportAccessor<object>(null, new object[] { });
+            new ImportAccessor<object>(null, new object[] { });
+        }
+
+        [ExpectedException(typeof(ArgumentNullException))]
+        [TestMethod]
+        public void ShouldGuardSetImportFactoryAndCreateNewInstances()
+        {
+            Func<object> nullFactory = null;
+
+            new TestImportFactory
+            {
+                ObjectFactory = ImportHelper.New(nullFactory)
+            };
         }
 
         [TestMethod]
@@ -93,7 +107,19 @@ namespace DotNetStarter.UnitTests
         [TestMethod]
         public void ShouldResolveServiceProvider()
         {
-            Assert.IsInstanceOfType(Locator.Service.Get<IServiceProvider>(), typeof(DotNetStarter.ServiceProvider));
+            var sut = Locator.Service.Get<IServiceProvider>();
+            Assert.IsInstanceOfType(sut, typeof(DotNetStarter.ServiceProvider), sut.GetType().FullName);
+        }
+
+        [TestMethod]
+        public void ShouldSetImportFactoryAndCreateNewInstances()
+        {
+            var testClass = new TestImportFactory
+            {
+                ObjectFactory = ImportHelper.New<object>(() => new object())
+            };
+
+            Assert.AreNotSame(testClass.ObjectFactory.CreateInstance(), testClass.ObjectFactory.CreateInstance());
         }
 
         [TestMethod]
@@ -122,6 +148,11 @@ namespace DotNetStarter.UnitTests
 
             Assert.IsNotNull(i.Service);
             Assert.IsTrue(i.Service.GetType() == typeof(StringBuilder));
+        }
+
+        private class TestImportFactory
+        {
+            public ImportFactory<object> ObjectFactory { get; set; }
         }
     }
 }

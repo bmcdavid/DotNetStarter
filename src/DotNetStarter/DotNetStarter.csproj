@@ -35,6 +35,10 @@
     <ProjectReference Include="..\DotNetStarter.RegistrationAbstractions\DotNetStarter.RegistrationAbstractions.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <PackageReference Update="Microsoft.SourceLink.GitHub" Version="1.0.0" />
+  </ItemGroup>
+
   <PropertyGroup Condition=" '$(TargetFramework)' == 'net45'">
     <DefineConstants>$(DefineConstants);NETFULLFRAMEWORK;HAS_APP_DOMAIN</DefineConstants>
   </PropertyGroup>

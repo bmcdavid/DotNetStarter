@@ -29,4 +29,8 @@
     <ProjectReference Include="..\DotNetStarter.Web\DotNetStarter.Web.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <PackageReference Update="Microsoft.SourceLink.GitHub" Version="1.0.0" />
+  </ItemGroup>
+
 </Project>
