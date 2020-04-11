@@ -77,6 +77,54 @@ namespace DotNetStarter.UnitTests
             }).Run();
         }
 
+        [DataRow(true, DisplayName = "DiscoverableAssemblies")]
+        [DataRow(false, DisplayName = "NoDiscoverableAssemblies")]
+        [TestMethod]
+        public void ShouldLoadAssemblies(bool discoverable)
+        {
+            var builder = CreateTestBuilder()
+                .Build(useDiscoverableAssemblies: discoverable);
+
+            Assert.IsTrue(builder.StartupContext.Configuration.Assemblies.Any());
+        }
+
+        [TestMethod]
+        public void ShouldNotDoActionAfterConfiguration()
+        {
+            var afterAction = false;
+            var builder = CreateTestBuilder()
+                .ConfigureAssemblies(c => c.WithNoAssemblyScanning())
+                .Build();
+
+            builder.ConfigureAssemblies(c => afterAction = true);
+
+            Assert.IsFalse(afterAction);
+        }
+
+        [TestMethod]
+        public void ShouldOverrideDefaults()
+        {
+            var sut = CreateTestBuilder();
+            sut.OverrideDefaults
+                (d =>
+                {
+                    d.UseContainerDefaults(new TestContainerDefaults());
+                    d.UseRegistryFinalizer(l => RegistryFinalizer.Finalize(l));
+                    d.UseAssemblyScanner(new TestAssemblyScanner());
+                    d.UseDependencyFinder(new TestDependencyFinder());
+                    d.UseDependencySorter(new TestDependencySorter(TestDependencySorter.CreateDependencyNode));
+                    d.UseTimedTaskFactory(TestTimedTaskFactory.CreateTimedTask);
+                    d.UseTimedTaskManager(new TestTimedTaskManager(() => new RequestSettingsProvider()));
+                })
+                .Build()
+                .Run();
+
+            Assert.IsTrue(sut.StartupContext.Configuration.DependencyFinder is TestDependencyFinder);
+            Assert.IsTrue(sut.StartupContext.Configuration.DependencySorter is TestDependencySorter);
+            Assert.IsTrue(sut.StartupContext.Configuration.AssemblyScanner is TestAssemblyScanner);
+            Assert.IsTrue(sut.StartupContext.Configuration.TimedTaskManager is TestTimedTaskManager);
+        }
+
         [TestMethod]
         public void ShouldRegisterConfigureModuleViaConfiguration()
         {
@@ -200,31 +248,6 @@ namespace DotNetStarter.UnitTests
                 })
                 .Run();
         }
-
-        [TestMethod]
-        public void ShouldOverrideDefaults()
-        {
-            var sut = CreateTestBuilder();
-            sut.OverrideDefaults
-                (d =>   
-                {
-                    d.UseContainerDefaults(new TestContainerDefaults());
-                    d.UseRegistryFinalizer(l => RegistryFinalizer.Finalize(l));
-                    d.UseAssemblyScanner(new TestAssemblyScanner());
-                    d.UseDependencyFinder(new TestDependencyFinder());
-                    d.UseDependencySorter(new TestDependencySorter(TestDependencySorter.CreateDependencyNode));
-                    d.UseTimedTaskFactory(TestTimedTaskFactory.CreateTimedTask);
-                    d.UseTimedTaskManager(new TestTimedTaskManager(() => new RequestSettingsProvider()));
-                })
-                .Build()
-                .Run();
-
-            Assert.IsTrue(sut.StartupContext.Configuration.DependencyFinder is TestDependencyFinder);
-            Assert.IsTrue(sut.StartupContext.Configuration.DependencySorter is TestDependencySorter);
-            Assert.IsTrue(sut.StartupContext.Configuration.AssemblyScanner is TestAssemblyScanner);
-            Assert.IsTrue(sut.StartupContext.Configuration.TimedTaskManager is TestTimedTaskManager);
-        }
-
         [TestMethod]
         public void ShouldRunWithNoScanning()
         {
@@ -359,7 +382,6 @@ namespace DotNetStarter.UnitTests
             Assert.IsTrue(sut[0] == "Configured Item!");
             Assert.IsTrue(sut[1] == "Started Item!");
         }
-
         private StartupBuilder CreateTestBuilder() => StartupBuilder.Create()
             .UseEnvironment(new StartupEnvironment("UnitTest1", ""))
             .UseTestLocator();
