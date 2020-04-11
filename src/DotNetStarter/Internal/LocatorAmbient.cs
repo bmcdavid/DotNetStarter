@@ -1,5 +1,7 @@
 ﻿using DotNetStarter.Abstractions;
 using DotNetStarter.Abstractions.Internal;
+using System;
+using System.Collections;
 using System.Collections.Generic;
 
 namespace DotNetStarter.Internal
@@ -10,7 +12,9 @@ namespace DotNetStarter.Internal
     [Registration(typeof(ILocatorAmbient), Lifecycle.Singleton)]
     public sealed class LocatorAmbient : ILocatorAmbient, ILocatorAmbientWithSet
     {
+        private static readonly string _key = typeof(LocatorAmbient).FullName;
         private readonly ILocator _unscopedLocator;
+        private Func<IDictionary> _contextStorage;
 
         /// <summary>
         /// Constructor
@@ -30,58 +34,86 @@ namespace DotNetStarter.Internal
         {
             get
             {
-                var stack = GetStack();
+                var stack = GetStack(_contextStorage);
                 return stack?.Count > 0 ? stack.Peek() : _unscopedLocator;
             }
         }
 
-        void ILocatorAmbientWithSet.SetCurrentScopedLocator(ILocatorScoped scopedLocator)
-        {
-            AddLocator(scopedLocator);
-        }
+        void ILocatorAmbientWithSet.SetCurrentScopedLocator(ILocatorScoped scopedLocator) =>
+            AddLocator(scopedLocator, _contextStorage);
 
-        private static void AddLocator(ILocatorScoped scopedLocator)
+        /// <summary>
+        /// Assigns preferred storage, ie HttpContext.Current.Items for ASP.Net Framework
+        /// </summary>
+        /// <param name="contextStorage"></param>
+        public void PreferredStorageAccessor(Func<IDictionary> contextStorage) => _contextStorage = contextStorage;
+
+        private static void AddLocator(ILocatorScoped scopedLocator, Func<IDictionary> preferredStorage)
         {
-            var stack = GetStack() ?? new Stack<ILocatorScoped>();
+            var stack = GetStack(preferredStorage) ?? new Stack<ILocatorScoped>();
             // clears on scope disposing
             if (scopedLocator is null && stack.Count > 0) { stack.Pop(); }
             // push newest scope to top
             else if (scopedLocator is object) { stack.Push(scopedLocator); }
-            SetStack(stack);
+            SetStack(stack, preferredStorage);
         }
 
 #if HAS_ASYNC_LOCAL
         // based on httpcontextaccessor
         private static readonly System.Threading.AsyncLocal<Stack<ILocatorScoped>> LocatorScopedContext = new System.Threading.AsyncLocal<Stack<ILocatorScoped>>();
 
-        private static Stack<ILocatorScoped> GetStack()
+        private static Stack<ILocatorScoped> GetStack(Func<IDictionary> preferredStorage)
         {
-            return LocatorScopedContext.Value;
+            var storageDictionary = preferredStorage?.Invoke();
+            if (storageDictionary is null)
+            {
+                return LocatorScopedContext.Value;
+            }
+
+            return storageDictionary[_key] as Stack<ILocatorScoped>;
         }
 
-        private static void SetStack(Stack<ILocatorScoped> stack)
+        private static void SetStack(Stack<ILocatorScoped> stack, Func<IDictionary> preferredStorage)
         {
+            if (preferredStorage?.Invoke() is IDictionary storage)
+            {
+                storage[_key] = stack;
+
+                return;
+            }
+
             LocatorScopedContext.Value = stack;
+
         }
 #elif NETFULLFRAMEWORK
 
         //based on httpcontext
-        private static readonly string Key = typeof(LocatorAmbient).FullName;
-
-        private static Stack<ILocatorScoped> GetStack()
+        private static Stack<ILocatorScoped> GetStack(Func<IDictionary> preferredStorage)
         {
-            return System.Runtime.Remoting.Messaging.CallContext.GetData(Key) as Stack<ILocatorScoped>;
+            var storageDictionary = preferredStorage?.Invoke();
+            if (storageDictionary is null)
+            {
+                return System.Runtime.Remoting.Messaging.CallContext.GetData(_key) as Stack<ILocatorScoped>;
+            }
+
+            return storageDictionary[_key] as Stack<ILocatorScoped>;
         }
 
-        private static void SetStack(Stack<ILocatorScoped> stack)
+        private static void SetStack(Stack<ILocatorScoped> stack, Func<IDictionary> preferredStorage)
         {
-            System.Runtime.Remoting.Messaging.CallContext.SetData(Key, stack);
-        }
+            if (preferredStorage?.Invoke() is IDictionary storage)
+            {
+                storage[_key] = stack;
 
+                return;
+            }
+
+            System.Runtime.Remoting.Messaging.CallContext.SetData(_key, stack);
+        }
 #else
-        private static Stack<ILocatorScoped> GetStack() { return null; }
+        private static Stack<ILocatorScoped> GetStack(Func<IDictionary> preferredStorage) { return null; }
 
-        private static void SetStack(Stack<ILocatorScoped> stack) { }
+        private static void SetStack(Stack<ILocatorScoped> stack, Func<IDictionary> preferredStorage) { }
 #endif
     }
 }

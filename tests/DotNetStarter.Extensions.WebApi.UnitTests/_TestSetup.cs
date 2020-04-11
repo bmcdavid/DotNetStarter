@@ -1,8 +1,10 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System.Diagnostics.CodeAnalysis;
 using System.Reflection;
 
 namespace DotNetStarter.Extensions.WebApi.Tests
 {
+    [ExcludeFromCodeCoverage]
     [TestClass]
     public class TestSetup
     {

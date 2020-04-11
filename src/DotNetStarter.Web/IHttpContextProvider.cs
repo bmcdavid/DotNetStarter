@@ -8,7 +8,7 @@ namespace DotNetStarter.Web
     public interface IHttpContextProvider
     {
         /// <summary>
-        /// Current HttpContext
+        /// Current HttpContext, best performance to read once per method
         /// </summary>
         HttpContextBase CurrentContext { get; }
     }

@@ -2,9 +2,11 @@ using DotNetStarter.Owin.Abstractions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 
 namespace DotNetStarter.Owin.Tests
 {
+    [ExcludeFromCodeCoverage]
     [TestClass]
     public class ContextTests
     {

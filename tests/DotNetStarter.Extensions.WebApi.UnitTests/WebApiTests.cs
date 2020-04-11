@@ -1,10 +1,12 @@
 ﻿using DotNetStarter.Abstractions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Web.Http;
 
 namespace DotNetStarter.Extensions.WebApi.Tests
 {
+    [ExcludeFromCodeCoverage]
     [TestClass]
     public class MvcTests
     {

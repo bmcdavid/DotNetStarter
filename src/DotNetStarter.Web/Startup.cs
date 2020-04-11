@@ -1,4 +1,5 @@
 ﻿using DotNetStarter.Abstractions;
+using System.Web;
 
 namespace DotNetStarter.Web
 {
@@ -10,9 +11,16 @@ namespace DotNetStarter.Web
     {
         private static bool IsRegistered = false;
 
-        void IStartupModule.Shutdown()
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="locatorAmbient"></param>
+        public Startup(ILocatorAmbient locatorAmbient)
         {
+            locatorAmbient.PreferredStorageAccessor(() => HttpContext.Current?.Items);
         }
+
+        void IStartupModule.Shutdown() { }
 
         void IStartupModule.Startup(IStartupEngine engine)
         {
@@ -24,20 +32,17 @@ namespace DotNetStarter.Web
         /// </summary>
         public static void RegisterWebModuleStartup()
         {
-            if (IsRegistered)
-            {
-                return;
-            }
+            if (IsRegistered) { return; }
 
             try
             {
                 var moduleType = typeof(WebModuleStartup);
 
-                System.Web.HttpApplication.RegisterModule(moduleType);
+                HttpApplication.RegisterModule(moduleType);
             }
             catch (System.InvalidOperationException)
             {
-                throw new System.InvalidOperationException($"Please execute {typeof(DotNetStarter.Configure.StartupBuilder).FullName} in a {typeof(System.Web.PreApplicationStartMethodAttribute)} startup method or the global asax constructor!");
+                throw new System.InvalidOperationException($"Please execute {typeof(Configure.StartupBuilder).FullName} in a {typeof(PreApplicationStartMethodAttribute)} startup method or the global asax constructor!");
             }
 
             IsRegistered = true;

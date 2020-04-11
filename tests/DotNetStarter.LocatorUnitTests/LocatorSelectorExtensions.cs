@@ -1,7 +1,9 @@
 using DotNetStarter.Configure;
+using System.Diagnostics.CodeAnalysis;
 
 namespace DotNetStarter.UnitTests
 {
+    [ExcludeFromCodeCoverage]
     public static class LocatorBuilderExtensiosn
     {
         public static StartupBuilder AddLocatorAssembly(this StartupBuilder builder)

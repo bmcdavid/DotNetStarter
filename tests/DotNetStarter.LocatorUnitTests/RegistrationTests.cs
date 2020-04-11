@@ -2,10 +2,12 @@
 using DotNetStarter.UnitTests.Mocks;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 
 namespace DotNetStarter.UnitTests
 {
+    [ExcludeFromCodeCoverage]
     [TestClass]
     public class RegistrationTests
     {

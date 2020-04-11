@@ -2,7 +2,9 @@
 using DotNetStarter.UnitTests.Mocks;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 
 #if NETSTANDARD
@@ -11,6 +13,7 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace DotNetStarter.UnitTests
 {
+    [ExcludeFromCodeCoverage]
     [TestClass]
     public class LocatorTests
     {
@@ -248,6 +251,27 @@ namespace DotNetStarter.UnitTests
             sut.CreateScope();
         }
 
+        [TestMethod]
+        public void ShouldUseAmbientPreferredStorage()
+        {
+            var sut = new Hashtable(); // simulates HttpContext.Current.Items
+            var locator = TestSetup.TestContext.Locator;
+            var ambientLocator = new Internal.LocatorAmbient(locator);
+            ambientLocator.PreferredStorageAccessor(() => sut);
+
+            var setter = ambientLocator as Abstractions.Internal.ILocatorAmbientWithSet;
+            using (var scoped = (locator as ILocatorWithCreateScope).CreateScope())
+            {
+                setter.SetCurrentScopedLocator(scoped);
+
+                Assert.IsTrue(sut.Count == 1);
+            }
+
+            setter.SetCurrentScopedLocator(null);
+            Assert.IsTrue(sut[typeof(Internal.LocatorAmbient).FullName]
+                is Stack<ILocatorScoped> stack && stack.Count == 0);
+        }
+
         private ILocatorScoped CreateScope(ILocator locator = null) => ((locator ?? _context.Locator) as ILocatorWithCreateScope).CreateScope();
 
         private class StubLocatorForScope : ILocator, ILocatorWithCreateScope, ILocatorScoped
@@ -271,7 +295,7 @@ namespace DotNetStarter.UnitTests
 
             public object Get(Type serviceType, string key = null)
             {
-                if(serviceType == typeof(ILocatorScopedAccessor))
+                if (serviceType == typeof(ILocatorScopedAccessor))
                 {
                     return new BadAccessor();
                 }

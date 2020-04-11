@@ -1,8 +1,10 @@
 ﻿using DotNetStarter.Abstractions;
+using System.Diagnostics.CodeAnalysis;
 using System.Web;
 
 namespace DotNetStarter.Web.Tests.Mocks
 {
+    [ExcludeFromCodeCoverage]
     [Registration(typeof(IHttpContextProvider), Lifecycle.Singleton, typeof(HttpContextProvider))]
     public class MockHttpContextProvider : IHttpContextProvider
     {
@@ -17,6 +19,7 @@ namespace DotNetStarter.Web.Tests.Mocks
             );
     }
 
+    [ExcludeFromCodeCoverage]
     public class MockHttpModule : IHttpModule
     {
         internal static bool InitCalled = false;
@@ -31,6 +34,7 @@ namespace DotNetStarter.Web.Tests.Mocks
         }
     }
 
+    [ExcludeFromCodeCoverage]
     public class DisabledWebModuleHandler : DotNetStarter.Web.WebModuleStartupHandler
     {
         public DisabledWebModuleHandler(ILocator locator) : base(locator.Get<ILocatorScopedFactory>(), locator)

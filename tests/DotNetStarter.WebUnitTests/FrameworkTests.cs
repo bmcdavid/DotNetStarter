@@ -1,9 +1,11 @@
 ﻿using DotNetStarter.Abstractions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System.Diagnostics.CodeAnalysis;
 using System.Web;
 
 namespace DotNetStarter.Web.Tests
 {
+    [ExcludeFromCodeCoverage]
     [TestClass]
     public class FrameworkTests
     {

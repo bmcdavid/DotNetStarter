@@ -1,10 +1,12 @@
 ﻿using DotNetStarter.Configure;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Reflection;
 
 namespace DotNetStarter.Web.Tests
 {
+    [ExcludeFromCodeCoverage]
     [TestClass]
     public sealed class TestSetup
     {

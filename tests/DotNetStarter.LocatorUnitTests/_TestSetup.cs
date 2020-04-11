@@ -3,9 +3,11 @@ using DotNetStarter.Configure;
 using DotNetStarter.UnitTests.Mocks;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
+using System.Diagnostics.CodeAnalysis;
 
 namespace DotNetStarter.UnitTests
 {
+    [ExcludeFromCodeCoverage]
     [TestClass]
     public sealed class TestSetup
     {
