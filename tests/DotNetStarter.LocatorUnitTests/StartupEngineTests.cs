@@ -1,5 +1,8 @@
-﻿using DotNetStarter.UnitTests.Mocks;
+﻿using DotNetStarter.Abstractions;
+using DotNetStarter.UnitTests.Mocks;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System;
+using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 
@@ -36,6 +39,53 @@ namespace DotNetStarter.UnitTests
             Assert.IsTrue(sut.FiredLocator, "failed to fire during locator config!");
             builder.Run();
             Assert.IsTrue(sut.FiredStartup);
+        }
+
+        [ExpectedException(typeof(ArgumentNullException))]
+        [TestMethod]
+        public void ShouldThrowArgumentNullException()
+        {
+            new StartupEngine(new FakeLocator(), null);
+        }
+
+        [ExpectedException(typeof(LocatorNotConfiguredException))]
+        [TestMethod]
+        public void ShouldThrowLocatorNotConfiguredException()
+        {
+            new StartupEngine(null, null);
+        }
+
+        private class FakeLocator : ILocator
+        {
+            public void Dispose()
+            {
+                throw new NotImplementedException();
+            }
+
+            public object Get(Type serviceType, string key = null)
+            {
+                throw new NotImplementedException();
+            }
+
+            public T Get<T>(string key = null)
+            {
+                throw new NotImplementedException();
+            }
+
+            public IEnumerable<T> GetAll<T>(string key = null)
+            {
+                throw new NotImplementedException();
+            }
+
+            public IEnumerable<object> GetAll(Type serviceType, string key = null)
+            {
+                throw new NotImplementedException();
+            }
+
+            public object GetService(Type serviceType)
+            {
+                throw new NotImplementedException();
+            }
         }
     }
 }

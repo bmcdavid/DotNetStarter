@@ -18,8 +18,8 @@
         public StartupEngine(ILocator locator, LocatorConfigureEngine startupConfigurationEngine)
         {
             Locator = locator ?? throw new LocatorNotConfiguredException();
+            _startupConfigurationEngine = startupConfigurationEngine ?? throw new ArgumentNullException(nameof(startupConfigurationEngine));
             Configuration = startupConfigurationEngine.Configuration;
-            _startupConfigurationEngine = startupConfigurationEngine;
         }
 
         /// <summary>
