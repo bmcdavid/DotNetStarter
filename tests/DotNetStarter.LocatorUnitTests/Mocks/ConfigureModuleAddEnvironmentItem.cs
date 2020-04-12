@@ -1,8 +1,10 @@
 ﻿using DotNetStarter.Abstractions;
+using System.Diagnostics.CodeAnalysis;
 using System.Text;
 
 namespace DotNetStarter.UnitTests.Mocks
 {
+    [ExcludeFromCodeCoverage]
     public class ConfigureModuleAddEnvironmentItem : ILocatorConfigure
     {
         public void Configure(ILocatorRegistry registry, ILocatorConfigureEngine configArgs)
@@ -12,6 +14,7 @@ namespace DotNetStarter.UnitTests.Mocks
         }
     }
 
+    [ExcludeFromCodeCoverage]
     public class StartupModuleUseEnvironmentItem : IStartupModule
     {
         public void Shutdown()

@@ -1,5 +1,6 @@
 using DotNetStarter.Abstractions;
 using DotNetStarter.UnitTests.Mocks;
+using System.Diagnostics.CodeAnalysis;
 
 #if LAMAR_LOCATOR || NETSTANDARD
 using Microsoft.Extensions.DependencyInjection;
@@ -7,6 +8,7 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace DotNetStarter.UnitTests
 {
+    [ExcludeFromCodeCoverage]
     [StartupModule]
     public class LocatorHacks : ILocatorConfigure
     {

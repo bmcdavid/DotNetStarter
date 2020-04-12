@@ -21,7 +21,7 @@
         /// <param name="requestSettingsProviderFactory"></param>
         public TimedTaskManager(Func<IRequestSettingsProvider> requestSettingsProviderFactory)
         {
-            _requestSettingsProvider = requestSettingsProviderFactory() ?? throw new ArgumentNullException(nameof(requestSettingsProviderFactory));
+            _requestSettingsProvider = requestSettingsProviderFactory?.Invoke() ?? throw new ArgumentNullException(nameof(requestSettingsProviderFactory));
         }
 
         /// <summary>
@@ -76,7 +76,7 @@
             if (_requestSettingsProvider is null || !ProviderHasItems(_requestSettingsProvider))
                 return null;
 
-            return _requestSettingsProvider.Items[name] as TimedTask;
+            return _requestSettingsProvider.Items[name] as ITimedTask;
         }
 
         /// <summary>
@@ -104,11 +104,6 @@
 
         private IEnumerable<ITimedTask> GetApplicationTasks(string prefix)
         {
-            if (_applicationTasks is null)
-            {
-                yield break;
-            }
-
             foreach (var task in _applicationTasks)
             {
                 if (task.Name.StartsWith(prefix, StringComparison.OrdinalIgnoreCase))
@@ -128,7 +123,7 @@
             foreach (object key in _requestSettingsProvider.Items.Keys)
             {
                 if (!(key is string name)) { continue; }
-                if (_requestSettingsProvider.Items[name] is TimedTask task && task.Name.StartsWith(prefix, StringComparison.OrdinalIgnoreCase) == true)
+                if (_requestSettingsProvider.Items[name] is ITimedTask task && task.Name.StartsWith(prefix, StringComparison.OrdinalIgnoreCase) == true)
                 {
                     yield return task;
                 }

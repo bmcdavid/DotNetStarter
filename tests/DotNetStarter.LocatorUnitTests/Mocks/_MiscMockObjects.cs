@@ -2,6 +2,7 @@
 using DotNetStarter.UnitTests.Mocks;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 
 [assembly: DiscoverTypes(typeof(IMock), typeof(IGenericeMock<>), typeof(IGenericeMock<object>), typeof(MockBaseClass))]
 
@@ -21,26 +22,35 @@ namespace DotNetStarter.UnitTests.Mocks
         int TotalItems { get; set; }
     }
 
+    [ExcludeFromCodeCoverage]
     public class BaseImpl : BaseTest
     {
+        [ExcludeFromCodeCoverage]
         public override string Prop => "Impl";
     }
 
+    [ExcludeFromCodeCoverage]
     public abstract class BaseTest : IFooTwo
     {
+        [ExcludeFromCodeCoverage]
         public abstract string Prop { get; }
 
         public string SaySomething => "Hi";
     }
 
+    [ExcludeFromCodeCoverage]
     public class GenericObject : IGenericeMock<object> { }
 
+    [ExcludeFromCodeCoverage]
     public class GenericStringBuilder : IGenericeMock<System.Text.StringBuilder> { }
 
+    [ExcludeFromCodeCoverage]
     public abstract class MockBaseClass : IMock { }
 
+    [ExcludeFromCodeCoverage]
     public class MockImplClass : MockBaseClass { }
 
+    [ExcludeFromCodeCoverage]
     [Registration(typeof(IPagedData<>), Lifecycle.Transient)]
     public class PagedData<T> : IPagedData<T>
     {
@@ -49,11 +59,13 @@ namespace DotNetStarter.UnitTests.Mocks
         public int TotalItems { get; set; }
     }
 
+    [ExcludeFromCodeCoverage]
     internal class MockClass
     {
         public Import<object> Test { get; set; }
     }
 
+    [ExcludeFromCodeCoverage]
     internal class MockFactory : ILocatorRegistryFactory
     {
         public ILocator CreateLocator() => throw new NotImplementedException();
@@ -61,6 +73,7 @@ namespace DotNetStarter.UnitTests.Mocks
         public ILocatorRegistry CreateRegistry() => throw new NotImplementedException();
     }
 
+    [ExcludeFromCodeCoverage]
     internal class MockImportClass
     {
         public Import<NotRegisteredObject> Test { get; set; }
@@ -68,11 +81,13 @@ namespace DotNetStarter.UnitTests.Mocks
         public class NotRegisteredObject { }
     }
 
+    [ExcludeFromCodeCoverage]
     internal class TestTimedTaskFactory
     {
         public static ITimedTask CreateTimedTask() => new TimedTask();
     }
 
+    [ExcludeFromCodeCoverage]
     internal class RegistryFinalizer
     {
         public static bool Executed;
@@ -83,12 +98,16 @@ namespace DotNetStarter.UnitTests.Mocks
         }
     }
 
+    [ExcludeFromCodeCoverage]
     internal class TestContainerDefaults : Internal.ContainerDefaults { }
 
+    [ExcludeFromCodeCoverage]
     internal class TestAssemblyScanner : AssemblyScanner { }
 
+    [ExcludeFromCodeCoverage]
     internal class TestDependencyFinder : DependencyFinder { }
 
+    [ExcludeFromCodeCoverage]
     internal class TestDependencySorter : DependencySorter
     {
         public static IDependencyNode CreateDependencyNode(object nodeType, Type attributeType)
@@ -99,6 +118,7 @@ namespace DotNetStarter.UnitTests.Mocks
         public TestDependencySorter(Func<object, Type, IDependencyNode> n) : base(n) { }
     }
 
+    [ExcludeFromCodeCoverage]
     internal class TestTimedTaskManager : TimedTaskManager
     {
         public TestTimedTaskManager(Func<IRequestSettingsProvider> p) : base(p)

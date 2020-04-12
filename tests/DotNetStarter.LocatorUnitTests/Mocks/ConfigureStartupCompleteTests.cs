@@ -1,7 +1,9 @@
 ﻿using DotNetStarter.Abstractions;
+using System.Diagnostics.CodeAnalysis;
 
 namespace DotNetStarter.UnitTests.Mocks
 {
+    [ExcludeFromCodeCoverage]
     public class ConfigureStartupCompleteTest : ILocatorConfigure
     {
         public bool FiredLocator { get; private set; }

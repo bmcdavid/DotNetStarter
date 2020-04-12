@@ -1,8 +1,10 @@
 ﻿using DotNetStarter.Abstractions;
 using DotNetStarter.Configure;
+using System.Diagnostics.CodeAnalysis;
 
 namespace DotNetStarter.UnitTests.Mocks
 {
+    [ExcludeFromCodeCoverage]
     public class BadStaticTest : ILocatorConfigure
     {
         internal static bool Executed = false;

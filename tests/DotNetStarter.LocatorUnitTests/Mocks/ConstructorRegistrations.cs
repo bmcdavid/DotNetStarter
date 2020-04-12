@@ -1,10 +1,12 @@
 ﻿using DotNetStarter.Abstractions;
 using System;
+using System.Diagnostics.CodeAnalysis;
 
 namespace DotNetStarter.UnitTests.Mocks
 {
     internal interface IInjectable { int Id { get; } }
 
+    [ExcludeFromCodeCoverage]
     [Registration(typeof(RegistrationTestGreedyInternal), Lifecycle.Transient)]
     public class RegistrationTestGreedyInternal
     {
@@ -13,6 +15,7 @@ namespace DotNetStarter.UnitTests.Mocks
         private RegistrationTestGreedyInternal(string a, string b, bool c, ITransient d) { }
     }
 
+    [ExcludeFromCodeCoverage]
     [Registration(typeof(RegistrationTestGreedyPrivate), Lifecycle.Transient)]
     public class RegistrationTestGreedyPrivate
     {
@@ -20,6 +23,8 @@ namespace DotNetStarter.UnitTests.Mocks
 
         private RegistrationTestGreedyPrivate(string a, string b, bool c, ITransient d) { }
     }
+
+    [ExcludeFromCodeCoverage]
     [Registration(typeof(RegistrationTestStatic), Lifecycle.Transient)]
     public class RegistrationTestStatic
     {
@@ -28,6 +33,7 @@ namespace DotNetStarter.UnitTests.Mocks
         public RegistrationTestStatic(ITransient d) { }
     }
 
+    [ExcludeFromCodeCoverage]
     [Registration(typeof(ScopeTest), Lifecycle.Scoped)]
     internal class ScopeTest
     {
@@ -39,6 +45,7 @@ namespace DotNetStarter.UnitTests.Mocks
         public long TestVariable { get; }
     }
 
+    [ExcludeFromCodeCoverage]
     [Registration(typeof(TestFuncCreationComplex), Lifecycle.Transient)]
     internal class TestFuncCreationComplex
     {
@@ -50,11 +57,13 @@ namespace DotNetStarter.UnitTests.Mocks
         public IInjectable InjectionTest { get; }
     }
 
+    [ExcludeFromCodeCoverage]
     internal class TestInjectable : IInjectable
     {
         public int Id { get; set; }
     }
 
+    [ExcludeFromCodeCoverage]
     [Registration(typeof(TestLocatorInjectionScoped), Lifecycle.Scoped)]
     internal class TestLocatorInjectionScoped
     {
@@ -65,6 +74,7 @@ namespace DotNetStarter.UnitTests.Mocks
         }
     }
 
+    [ExcludeFromCodeCoverage]
     [Registration(typeof(TestLocatorInjectionTransient), Lifecycle.Scoped)]
     internal class TestLocatorInjectionTransient
     {

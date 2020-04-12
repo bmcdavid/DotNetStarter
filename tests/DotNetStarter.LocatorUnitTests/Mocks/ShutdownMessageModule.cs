@@ -1,9 +1,11 @@
 ﻿using DotNetStarter.Abstractions;
 using System;
 using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
 
 namespace DotNetStarter.UnitTests.Mocks
 {
+    [ExcludeFromCodeCoverage]
     [StartupModule]
     public class ShutdownMessageModule : IStartupModule
     {
